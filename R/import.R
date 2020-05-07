@@ -3,9 +3,10 @@
 #' @param keycode representing some taxa on fishbase
 #' @return a dicottomoose object
 #' @export
-#' @importFrom dplyr slice
+#' @importFrom dplyr slice mutate select filter
 #' @importFrom httr POST
 #' @importFrom tidyr separate
+#' @importFrom stringr str_replace_all
 importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/keys/questions.php") {
   body <- list('keycode' = keycode)
 
@@ -22,9 +23,9 @@ importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/keys/que
   names(keytable)<-keytable[3,]
   keytable %>% slice(4:n()) %>% tidyr::separate(col = "Couplet",into=c("Statement","Choice"),sep=" ") %>%
     dplyr::rename(Species=Link) %>%
-    dplyr::mutate(Species=stringr::str_replace(Species,' Key','')) %>%
-    dplyr::mutate(Species=stringr::str_replace(Species,'^ ','')) %>%
-    dplyr::mutate(Species=stringr::str_replace(Species,' $','')) %>%
+    dplyr::mutate(Species=stringr::str_replace_all(Species,' Key','')) %>%
+    dplyr::mutate(Species=stringr::str_replace_all(Species,'^ ','')) %>%
+    dplyr::mutate(Species=stringr::str_replace_all(Species,' $','')) %>%
     dplyr::mutate(Species=stringr::str_replace_all(Species,',','')) ->
     cleankeytable
 
