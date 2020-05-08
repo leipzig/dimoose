@@ -26,11 +26,15 @@ importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/keys/que
     dplyr::mutate(Species=stringr::str_replace_all(Species,' Key','')) %>%
     dplyr::mutate(Species=stringr::str_replace_all(Species,'^ ','')) %>%
     dplyr::mutate(Species=stringr::str_replace_all(Species,' $','')) %>%
-    dplyr::mutate(Species=stringr::str_replace_all(Species,',','')) ->
+    dplyr::mutate(Species=stringr::str_replace_all(Species,',',''))  ->
     cleankeytable
 
   recursiveDescendingTree<-function(species,stmt,choice){
-    cleankeytable %>% dplyr::filter(Statement==stmt,Choice==choice) %>% dplyr::select(Statement,Choice,Character) %>% dplyr::mutate('Species'=species) -> trait
+    cleankeytable %>%
+      dplyr::filter(Statement==stmt,Choice==choice) %>%
+      dplyr::select(Statement,Choice,Character) %>%
+      dplyr::mutate('Species'=species) %>%
+      tidyr::separate_rows(sep = ";", convert = FALSE) -> trait
     #you've reached the head node
     if(all(!(cleankeytable$Next==stmt))){
       return(trait)
@@ -39,5 +43,6 @@ importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/keys/que
     return(rbind(recursiveDescendingTree(species,parent$Statement,parent$Choice),trait))
   }
 
-  cleankeytable %>% dplyr::filter(Next=='-')
+  cleankeytable %>% dplyr::filter(Next=='-') %>% dplyr::select(Species,Statement,Choice) -> leafs
+  res<-purrr::pmap_dfr(list(as.list(leafs$Species),as.list(leafs$Statement),as.list(leafs$Choice)),recursiveDescendingTree)
 }
