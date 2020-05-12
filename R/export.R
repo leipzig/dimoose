@@ -10,3 +10,21 @@
 #' @importFrom stringr str_replace_all
 exportWizard <- function(moose,displayLinks=TRUE,order='parsimony') {
 }
+
+
+toDataTree<-function(moose,includeStatementNodes=FALSE,includeLoneLeafNodes=FALSE){
+  res %>%
+    select(Statement,Choice,Character,pSt,pCh) %>%
+    mutate(name=paste0(Statement,Choice)) %>%
+    mutate(parent=paste0(pSt,pCh)) %>% distinct() %>%
+    select(name,parent,Character) %>%
+    mutate(parent=ifelse(parent=='','1',parent)) -> network
+  FromDataFrameNetwork(network)
+}
+
+toPhylo<-function(moose){
+
+}
+
+toPolyclave<-function(moose){
+}

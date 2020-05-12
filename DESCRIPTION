@@ -1,15 +1,18 @@
 Package: dicottomoose
 Type: Package
-Title: Tools to reshape and manipulate dichotomous keys used in species identification
+Title: Tools to reshape and manipulate dichotomous keys used in taxonomic identification
 Version: 0.1.0
 Author: Jeremy Leipzig
 Maintainer: Jeremy Leipzig <leipzig@gmail.com>
-Description: dicottomoose transform betweeen species phenotype feature matrices and dichotomous trees
+Description: dicottomoose transform betweeen dichotomous trees and a variety of phenotype formats including feature matrices, polyclave trees, and can also generate interactive dichotomous wizards
 License: GPL
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
 Imports: 
+    R6,
     httr,
     dplyr,
-    stringr
+    stringr,
+    data.tree
+

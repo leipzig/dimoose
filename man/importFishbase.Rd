@@ -7,11 +7,14 @@ see https://www.fishbase.se/keys/allkeys.php for a list of keys}
 \usage{
 importFishbase(
   keycode,
-  fishbaseUrl = "https://www.fishbase.se/keys/questions.php"
+  fishbaseUrl = "https://www.fishbase.se/",
+  separateTerms = TRUE
 )
 }
 \arguments{
 \item{keycode}{representing some taxa on fishbase}
+
+\item{fishbaseURL}{fishbase url (swedish one seems best?)}
 }
 \value{
 a dicottomoose object
