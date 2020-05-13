@@ -9,16 +9,19 @@
 #' @importFrom tidyr separate
 #' @importFrom stringr str_replace_all
 #' @importFrom rotl tnrs_match_names
+#' @importFrom rvest html_nodes
 importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/",separateTerms=TRUE) {
   #get desc
   #body > table.basic > tbody > tr:nth-child(1) > th
   httr::GET(paste0(fishbaseUrl,"keys/description.php?keycode=",keycode)) %>%
     httr::content() %>%
-    html_nodes("table") %>%
-    first() %>%
-    html_table(header=FALSE) %>%
-    first() %>% first() %>% first() ->
-    desc
+    rvest::html_nodes("table") %>%
+    dplyr::first() %>%
+    rvest::html_table(header=FALSE) -> colheaders
+
+    meta %>% dplyr::first() -> desc
+    meta %>% dplyr::nth(2) -> meta['citation']
+    meta %>% dplyr::nth(3) -> meta['transcription']
 
   #get the key
   # fishbase requires a POST
@@ -71,7 +74,7 @@ importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/",separa
   cleankeytable %>% dplyr::filter(Next=='-') %>% dplyr::select(Taxon,Statement,Choice) %>%
     dplyr::mutate(Resolved=rotl::tnrs_match_names(Taxon)) -> leafs
   res<-purrr::pmap_dfr(list(as.list(leafs$Taxon),as.list(leafs$Statement),as.list(leafs$Choice)),recursiveDescendingTree)
-  moose$new(res,desc)
+  moose$new(res,desc,meta)
 }
 
 

@@ -25,7 +25,7 @@ A moose object see https://www.fishbase.se/keys/allkeys.php for a list of keys
 \if{html}{\out{<a id="method-new"></a>}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$new(df, desc = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{moose$new(df, desc = NA, meta = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

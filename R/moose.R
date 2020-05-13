@@ -14,7 +14,8 @@ moose <- R6Class("dicttomoose",
                        cloneable = TRUE,
                        private = list(
                          .desc = NA,
-                         .df = NULL
+                         .df = NULL,
+                         .meta = NULL
                        ),
                        active = list(
                          desc = function(value) {
@@ -35,12 +36,14 @@ moose <- R6Class("dicttomoose",
                          }
                        ),
                        public = list(
-                         initialize = function(df, desc = NA) {
+                         initialize = function(df, desc = NA, meta = NA) {
                            private$.df <- df
                            private$.desc <- desc
+                           private$.meta <- desc
                          },
                          print = function(){
                            print(private$.desc)
+                           print(private$.meta)
                            print(private$.df)
                          },
                          toDataTree = function(includeStatementNodes=FALSE,includeLoneLeafNodes=FALSE){
@@ -75,7 +78,8 @@ rawhtml <- R6Class("rawhtml",
                         cloneable = TRUE,
                         private = list(
                           .desc = NA,
-                          .df = NULL
+                          .df = NULL,
+                          .meta = NULL
                         ),
                         active = list(
                           desc = function(value) {
@@ -99,6 +103,7 @@ rawhtml <- R6Class("rawhtml",
                           print = function(){
                             print(private$.desc)
                             print(private$.df)
+                            print(private$.meta)
                           },
                           initialize = function(keycode,fishbaseUrl="https://www.fishbase.se/",separateTerms=TRUE) {
                             #get desc
