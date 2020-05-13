@@ -1,10 +1,10 @@
-Package: dicottomoose
+Package: moose
 Type: Package
 Title: Tools to reshape and manipulate dichotomous keys used in taxonomic identification
 Version: 0.1.0
 Author: Jeremy Leipzig
 Maintainer: Jeremy Leipzig <leipzig@gmail.com>
-Description: dicottomoose transform betweeen dichotomous trees and a variety of phenotype formats including feature matrices, polyclave trees, and can also generate interactive dichotomous wizards
+Description: moose transform betweeen dichotomous trees and a variety of phenotype formats including feature matrices, polyclave trees, and can also generate interactive dichotomous wizards
 License: GPL
 Encoding: UTF-8
 LazyData: true
@@ -14,5 +14,5 @@ Imports:
     httr,
     dplyr,
     stringr,
-    data.tree
-
+    data.tree,
+    rotl

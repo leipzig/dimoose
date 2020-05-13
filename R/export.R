@@ -1,6 +1,6 @@
 #' Export an interactive dichotomous tree
 #' see https://www.fishbase.se/keys/allkeys.php for a list of keys
-#' @param moose a dicottomoose object
+#' @param moose a moose object
 #' @param displayLinks display HTML anchor links for navigation
 #' @param order order of statements, 'original' if imported from an existing tree, 'parsimony' for maximum parsimony
 #' @export

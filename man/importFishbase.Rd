@@ -17,7 +17,7 @@ importFishbase(
 \item{fishbaseURL}{fishbase url (swedish one seems best?)}
 }
 \value{
-a dicottomoose object
+a moose object
 }
 \description{
 Import a dichotomous key from fishbase

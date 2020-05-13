@@ -8,7 +8,7 @@ see https://www.fishbase.se/keys/allkeys.php for a list of keys}
 exportWizard(moose, displayLinks = TRUE, order = "parsimony")
 }
 \arguments{
-\item{moose}{a dicottomoose object}
+\item{moose}{a moose object}
 
 \item{displayLinks}{display HTML anchor links for navigation}
 

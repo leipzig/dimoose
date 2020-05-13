@@ -2,12 +2,13 @@
 #' see https://www.fishbase.se/keys/allkeys.php for a list of keys
 #' @param keycode representing some taxa on fishbase
 #' @param fishbaseURL fishbase url (swedish one seems best?)
-#' @return a dicottomoose object
+#' @return a moose object
 #' @export
 #' @importFrom dplyr slice mutate select filter
 #' @importFrom httr POST
 #' @importFrom tidyr separate
 #' @importFrom stringr str_replace_all
+#' @importFrom rotl tnrs_match_names
 importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/",separateTerms=TRUE) {
   #get desc
   #body > table.basic > tbody > tr:nth-child(1) > th
@@ -67,9 +68,10 @@ importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/",separa
     return(rbind(recursiveDescendingTree(Taxon,parent$Statement,parent$Choice),trait))
   }
 
-  cleankeytable %>% dplyr::filter(Next=='-') %>% dplyr::select(Taxon,Statement,Choice) -> leafs
+  cleankeytable %>% dplyr::filter(Next=='-') %>% dplyr::select(Taxon,Statement,Choice) %>%
+    dplyr::mutate(Resolved=rotl::tnrs_match_names(Taxon)) -> leafs
   res<-purrr::pmap_dfr(list(as.list(leafs$Taxon),as.list(leafs$Statement),as.list(leafs$Choice)),recursiveDescendingTree)
-  dicottomoose$new(res,desc)
+  moose$new(res,desc)
 }
 
 
