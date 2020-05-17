@@ -2,15 +2,17 @@
 #' see https://www.fishbase.se/keys/allkeys.php for a list of keys
 #' @param keycode representing some taxa on fishbase
 #' @param fishbaseURL fishbase url (swedish one seems best?)
+#' @param usePhyloService GNR for Global Names Resolver, TRNS for Phylotastic Taxonomic Name Resolution Service
 #' @return a moose object
 #' @export
-#' @importFrom dplyr slice mutate select filter
+#' @importFrom dplyr slice mutate select filter first nth n
 #' @importFrom httr POST
 #' @importFrom tidyr separate
 #' @importFrom stringr str_replace_all
-#' @importFrom rotl tnrs_match_names
-#' @importFrom rvest html_nodes
-importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/",separateTerms=TRUE) {
+#' @importFrom taxize tnrs gnr_resolve
+#' @importFrom rvest html_nodes html_table
+#' @import magrittr
+importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/",separateTerms=TRUE,usePhyloService='GNR') {
   #get desc
   #body > table.basic > tbody > tr:nth-child(1) > th
   httr::GET(paste0(fishbaseUrl,"keys/description.php?keycode=",keycode)) %>%
@@ -18,10 +20,11 @@ importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/",separa
     rvest::html_nodes("table") %>%
     dplyr::first() %>%
     rvest::html_table(header=FALSE) -> colheaders
-
-    meta %>% dplyr::first() -> desc
-    meta %>% dplyr::nth(2) -> meta['citation']
-    meta %>% dplyr::nth(3) -> meta['transcription']
+  meta<-list()
+  colheaders %>% dplyr::first() -> firstcol
+  firstcol %>% dplyr::first() -> desc
+  firstcol %>% dplyr::nth(2) -> meta['citation']
+  firstcol %>% dplyr::nth(3) -> meta['transcription']
 
   #get the key
   # fishbase requires a POST
@@ -71,10 +74,18 @@ importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/",separa
     return(rbind(recursiveDescendingTree(Taxon,parent$Statement,parent$Choice),trait))
   }
 
-  cleankeytable %>% dplyr::filter(Next=='-') %>% dplyr::select(Taxon,Statement,Choice) %>%
-    dplyr::mutate(Resolved=rotl::tnrs_match_names(Taxon)) -> leafs
+  cleankeytable %>% dplyr::filter(Next=='-') %>% dplyr::select(Taxon,Statement,Choice) -> leafs
+  if(usePhyloService=='GNR'){
+    resolved<-taxize::gnr_resolve(leafs$Taxon,best_match_only = TRUE)
+  }else{
+    if(usePhyloService=='TNRS'){
+      resolved<-taxize::tnrs(leafs$Taxon)
+    }else{
+      stop("Use GNR or TNRS for usePhyloService")
+    }
+  }
   res<-purrr::pmap_dfr(list(as.list(leafs$Taxon),as.list(leafs$Statement),as.list(leafs$Choice)),recursiveDescendingTree)
-  moose$new(res,desc,meta)
+  moose$new(res,desc,meta,resolved)
 }
 
 

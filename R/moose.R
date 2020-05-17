@@ -15,7 +15,8 @@ moose <- R6Class("dicttomoose",
                        private = list(
                          .desc = NA,
                          .df = NULL,
-                         .meta = NULL
+                         .meta = NULL,
+                         .taxa = NULL
                        ),
                        active = list(
                          desc = function(value) {
@@ -33,13 +34,32 @@ moose <- R6Class("dicttomoose",
                              private$.df <- value
                              self
                            }
+                         },
+                         meta = function(value) {
+                           if (missing(value)) {
+                             private$.meta
+                           } else {
+                             stopifnot(is.data.frame(value), nrow(value) > 0)
+                             private$.meta <- value
+                             self
+                           }
+                         },
+                         taxa = function(value) {
+                           if (missing(value)) {
+                             private$.taxa
+                           } else {
+                             stopifnot(is.data.frame(value), nrow(value) > 0)
+                             private$.taxa <- value
+                             self
+                           }
                          }
                        ),
                        public = list(
-                         initialize = function(df, desc = NA, meta = NA) {
+                         initialize = function(df, desc = NA, meta = NA, taxa = NA) {
                            private$.df <- df
                            private$.desc <- desc
-                           private$.meta <- desc
+                           private$.meta <- meta
+                           private$.taxa <- taxa
                          },
                          print = function(){
                            print(private$.desc)

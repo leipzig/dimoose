@@ -7,7 +7,7 @@ Dev: [![Build Status dev](https://travis-ci.org/leipzig/moose.svg?branch=dev)](h
 # moose
 An R package to manage dichotomous keys
 
-Dichotomous keys are bifurcating trees that are often used in species identification. More precisely, dichotomous keys are categorical decision trees in which the leaves are unique.
+Dichotomous keys are bifurcating trees that are often used in species identification. More precisely, dichotomous keys are binary categorical decision trees in which the leaves are unique.
 
 Despite their different uses, phylogenetic trees are similar to dichotomous keys:
 - the paths are traversed using mutation "decisions" instead of visible phenotypes
@@ -30,4 +30,4 @@ The manual is [here](https://CRAN.R-project.org/package=moose/moose.pdf)
 
 # Acknowledgments
 
-Moose borrows implementations from both data.tree and partykit.
+Moose is built on phylo4, since it has the closest native resemblance to dichotomous trees but also borrows from data.tree and partykit.
