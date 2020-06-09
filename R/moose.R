@@ -18,7 +18,7 @@ NULL
 #' @method print print
 #' @import R6
 #' @export
-moose <- R6Class("dicttomoose",
+moose <- R6Class("moose",
                        lock_object = FALSE,
                        lock_class = TRUE,
                        portable = TRUE,

@@ -89,9 +89,9 @@ importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/",separa
 }
 
 #' Load consensus matrix from I. Noguerola and A.R. Blanch "Identification of Vibrio spp. with a set of dichotomous keys" doi:10.1111/j.1365-2672.2008.03730.x
-#' @example consensus<-
-#' @example importVibrio(consensus)
+#' @example data(vibrio)
+#' @example importVibrio(vibrio)
 importVibrio<-function(consensus){
-
+  consensus
 }
 
