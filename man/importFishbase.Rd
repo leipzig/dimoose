@@ -8,11 +8,14 @@ see https://www.fishbase.se/keys/allkeys.php for a list of keys}
 importFishbase(
   keycode,
   fishbaseUrl = "https://www.fishbase.se/",
-  separateTerms = TRUE
+  separateTerms = TRUE,
+  usePhyloService = "GNR"
 )
 }
 \arguments{
 \item{keycode}{representing some taxa on fishbase}
+
+\item{usePhyloService}{GNR for Global Names Resolver, TRNS for Phylotastic Taxonomic Name Resolution Service}
 
 \item{fishbaseURL}{fishbase url (swedish one seems best?)}
 }
