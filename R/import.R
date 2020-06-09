@@ -28,10 +28,10 @@ importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/",separa
 
   #get the key
   # fishbase requires a POST
-    # <form action="questions.php" method="post" name="form2">
-    #   <input type="hidden" name="keycode" value="1">
-    #     <input type="submit" value="Open Key">
-    #       </form>
+  # <form action="questions.php" method="post" name="form2">
+  #   <input type="hidden" name="keycode" value="1">
+  #     <input type="submit" value="Open Key">
+  #       </form>
   httr::POST(paste0(fishbaseUrl,"keys/questions.php"), body = list('keycode' = keycode), encode = "form") %>%
     httr::content() %>%
     html_nodes("table") %>%
@@ -88,6 +88,10 @@ importFishbase <- function(keycode,fishbaseUrl="https://www.fishbase.se/",separa
   moose$new(res,desc,meta,resolved)
 }
 
+#' Load consensus matrix from I. Noguerola and A.R. Blanch "Identification of Vibrio spp. with a set of dichotomous keys" doi:10.1111/j.1365-2672.2008.03730.x
+#' @example consensus<-
+#' @example importVibrio(consensus)
+importVibrio<-function(consensus){
 
-
+}
 

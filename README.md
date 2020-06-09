@@ -15,12 +15,15 @@ Despite their different uses, phylogenetic trees are similar to dichotomous keys
 
 Moose supports phylogenetic trees in which the mutations are known, such as Phylotree.
 
-This package provides the following
-- parsers to convert from and to popular formats including consensus matrices, ape phylo, data.tree, data frames, JSON, YAML
-- tools to merge and prune dichotomous keys
-- tools to generate interactive dichotomous keys ("wizards")
-- metadata slots for provenance and supporting images
-- support for lexical analysis, ontological annotation, and specialized data types (single nucleotide variations) of criteria and taxa
+This package provides tools to do the following
+- convert from and to popular formats including consensus matrices, ape phylo, data.tree, data frames, JSON, YAML
+- merge and prune dichotomous keys
+- generate interactive dichotomous keys ("wizards")
+- produce training data for machine learning using splits
+- metadata slots for provenance and supporting guide images
+- perform basic lexical analysis, and specialized data types (single nucleotide variations) of criteria and taxa
+- ontological annotation, together with `pepper`(https://github.com/leipzig/pepper) labels at the decision nodes and edges can be mapped to ontologies using join tables
+- build mixed effects conditional inference trees (mecits)
 
 # Getting started
 
@@ -31,3 +34,5 @@ The manual is [here](https://CRAN.R-project.org/package=moose/moose.pdf)
 # Acknowledgments
 
 Moose is built on phylo4, since it has the closest native resemblance to dichotomous trees but also borrows from data.tree and partykit.
+
+Karl Broman's R Package Primer was useful in this process.

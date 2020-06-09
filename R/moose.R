@@ -1,3 +1,15 @@
+
+#' Manage, manipulate, and mine dichotomous keys
+#'
+#' A simple socket-based interface to Python. Provides a basic
+#' Python server script and R6 class for interacting with a
+#' Python process.
+
+#' @name moose-package
+#' @aliases moose
+#' @docType package
+NULL
+
 #' A moose object see https://www.fishbase.se/keys/allkeys.php for a list of keys
 #' @param df a dataframe
 #' @param desc a description
