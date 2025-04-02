@@ -1,0 +1,58 @@
+Feature Importance Analysis
+=========================
+
+1. Random Forest Important Features
+                   feature  importance
+27  alpha-ketoglutarate cs    0.034441
+36               D-mannose    0.033727
+42         Ampiciline 10ug    0.030516
+28        D-glucosamine cs    0.030211
+18                  Indole    0.028637
+14              Amygdaline    0.028532
+39                 Salicin    0.028446
+15                 Citrate    0.028405
+31              Lactose cs    0.028197
+13     Aesculin hydrolysis    0.027603
+21                    ONPG    0.026995
+33                 Arbutin    0.026313
+25         Voges-Proskauer    0.025466
+24                  Urease    0.025456
+5        Growth at 6% NaCl    0.025401
+
+2. XGBoost Important Features
+                          feature  importance
+0   Arginine dihydrolase (moller)         0.0
+23                       Swarming         0.0
+25                Voges-Proskauer         0.0
+26         Xanthine decomposition         0.0
+27         alpha-ketoglutarate cs         0.0
+28               D-glucosamine cs         0.0
+29                   D-glucose cs         0.0
+30                 L-arabinose cs         0.0
+31                     Lactose cs         0.0
+32                      Arabinose         0.0
+33                        Arbutin         0.0
+34                       Inositol         0.0
+35                        Manitol         0.0
+36                      D-mannose         0.0
+37                      Melibiose         0.0
+
+3. Common Important Features
+D-glucosamine cs
+Lactose cs
+alpha-ketoglutarate cs
+
+4. PCA Feature Importance
+
+Top 10 most important features (PCA):
+                    Importance
+Growth at 35 deg C    0.276244
+Growth at 40 deg C    0.259567
+Growth at 10% NaCl    0.253253
+Arabinose             0.253110
+L-arabinose cs        0.249432
+Citrate               0.237163
+Glucose gas           0.228266
+Growth at 6% NaCl     0.224339
+Growth at 8% NaCl     0.217413
+Salicin               0.211209

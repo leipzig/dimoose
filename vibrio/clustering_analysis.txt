@@ -1,0 +1,172 @@
+Vibrio Species Clustering Analysis
+================================
+
+1. K-means Clustering Results
+Optimal number of clusters: 2
+Species in each cluster:
+
+Cluster 1:
+- V.aerogenes
+- V.aestuarinus
+- V.agarivorans
+- V.anguillarum
+- V.brasiliensis
+- V.calviensis
+- V.campbellii
+- V.chagasi
+- V.comitans
+- V.crassostreae
+- V.cyclotriphicus
+- V.diazotrophicus
+- V.ezurae
+- V.fischeri
+- V.fortis
+- V.gallicus
+- V.gazogenes
+- V.gigantis
+- V.halioticoli
+- V.hepatarius
+- V.hispanicus
+- V.ichthyoen
+- V.inusitatus
+- V.kanaloae
+- V.lentus
+- V.litoralis
+- V.logei
+- V.mediterranei
+- V.metschnikovii
+- V.mytili
+- V.navarrensis
+- V.neonatus
+- V.neptunis
+- V.nereis
+- V.nigrapulchritudo
+- V.ordalii
+- V.orientalis
+- V.pacini
+- V.pectenicida
+- V.pelagius I
+- V.pelagius II
+- V.penaecida
+- V.pomeroyi
+- V.ponticus
+- V.rarus
+- V.rhizosphaerae
+- V.ruber
+- V.rumoiensis
+- V.salmonicida
+- V.scophthalmi
+- V.splendidusI
+- V.splendidusII
+- V.superstes
+- V.tapetis
+- V.tasmaniensis
+- V.tubiashi
+- V.wodanis
+- V.xuii
+
+Cluster 2:
+- V.alginolyticus
+- V.cholerae
+- V.cincinnatiensis
+- V.coralliilyticus
+- V.diabolicus
+- V.fluvialis
+- V.furnisii
+- V.harveyi
+- V.mimicus
+- V.natriegens
+- V.parahaemolyticus
+- V.proteolyticus
+- V.rotiferianus
+- V.vulnificus B1
+- V.vulnificus B2
+- V.vulnificus B3
+
+2. DBSCAN Clustering Results
+Number of clusters: 0
+Species in each cluster:
+
+Noise points (outliers):
+- V.aerogenes
+- V.aestuarinus
+- V.agarivorans
+- V.alginolyticus
+- V.anguillarum
+- V.brasiliensis
+- V.calviensis
+- V.campbellii
+- V.chagasi
+- V.cholerae
+- V.cincinnatiensis
+- V.comitans
+- V.coralliilyticus
+- V.crassostreae
+- V.cyclotriphicus
+- V.diabolicus
+- V.diazotrophicus
+- V.ezurae
+- V.fischeri
+- V.fluvialis
+- V.fortis
+- V.furnisii
+- V.gallicus
+- V.gazogenes
+- V.gigantis
+- V.halioticoli
+- V.harveyi
+- V.hepatarius
+- V.hispanicus
+- V.ichthyoen
+- V.inusitatus
+- V.kanaloae
+- V.lentus
+- V.litoralis
+- V.logei
+- V.mediterranei
+- V.metschnikovii
+- V.mimicus
+- V.mytili
+- V.natriegens
+- V.navarrensis
+- V.neonatus
+- V.neptunis
+- V.nereis
+- V.nigrapulchritudo
+- V.ordalii
+- V.orientalis
+- V.pacini
+- V.parahaemolyticus
+- V.pectenicida
+- V.pelagius I
+- V.pelagius II
+- V.penaecida
+- V.pomeroyi
+- V.ponticus
+- V.proteolyticus
+- V.rarus
+- V.rhizosphaerae
+- V.rotiferianus
+- V.ruber
+- V.rumoiensis
+- V.salmonicida
+- V.scophthalmi
+- V.splendidusI
+- V.splendidusII
+- V.superstes
+- V.tapetis
+- V.tasmaniensis
+- V.tubiashi
+- V.vulnificus B1
+- V.vulnificus B2
+- V.vulnificus B3
+- V.wodanis
+- V.xuii
+
+3. PCA Analysis
+Cumulative explained variance ratio for first 5 components:
+Component 1: 0.135
+Component 2: 0.219
+Component 3: 0.287
+Component 4: 0.348
+Component 5: 0.401

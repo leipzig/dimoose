@@ -1,0 +1,52 @@
+Decision Tree Structure:
+======================
+
+|--- Aesculin hydrolysis <= -0.98
+|   |--- Indole <= -1.08
+|   |   |--- D-glucosamine cs <= -1.33
+|   |   |   |--- class: 18
+|   |   |--- D-glucosamine cs >  -1.33
+|   |   |   |--- Rhamnose <= -0.19
+|   |   |   |   |--- class: 61
+|   |   |   |--- Rhamnose >  -0.19
+|   |   |   |   |--- class: 33
+|   |--- Indole >  -1.08
+|   |   |--- Growth at 3% NaCl <= -2.09
+|   |   |   |--- class: 68
+|   |   |--- Growth at 3% NaCl >  -2.09
+|   |   |   |--- Rhamnose <= -0.19
+|   |   |   |   |--- class: 9
+|   |   |   |--- Rhamnose >  -0.19
+|   |   |   |   |--- class: 15
+|--- Aesculin hydrolysis >  -0.98
+|   |--- Arginine dihydrolase (moller) <= -0.40
+|   |   |--- Amygdaline <= -0.48
+|   |   |   |--- Voges-Proskauer <= 0.42
+|   |   |   |   |--- class: 7
+|   |   |   |--- Voges-Proskauer >  0.42
+|   |   |   |   |--- class: 3
+|   |   |--- Amygdaline >  -0.48
+|   |   |   |--- Lactose cs <= -0.33
+|   |   |   |   |--- class: 11
+|   |   |   |--- Lactose cs >  -0.33
+|   |   |   |   |--- class: 2
+|   |--- Arginine dihydrolase (moller) >  -0.40
+|   |   |--- Growth at 40 deg C <= -0.38
+|   |   |   |--- Growth at 4 deg C <= -0.31
+|   |   |   |   |--- class: 0
+|   |   |   |--- Growth at 4 deg C >  -0.31
+|   |   |   |   |--- class: 1
+|   |   |--- Growth at 40 deg C >  -0.38
+|   |   |   |--- D-glucosamine cs <= -0.32
+|   |   |   |   |--- class: 36
+|   |   |   |--- D-glucosamine cs >  -0.32
+|   |   |   |   |--- class: 5
+
+
+Comparison with Paper's A/L/O Primary Tests:
+=========================================
+
+Importance of A/L/O tests in Random Forest:
+Arginine dihydrolase (moller): 0.0233
+Lysine decarboxylase(Moller): 0.0155
+Ornithine decarboxylase(moller): 0.0178
