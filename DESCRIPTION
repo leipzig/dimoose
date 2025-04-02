@@ -15,4 +15,8 @@ Imports:
     dplyr,
     stringr,
     data.tree,
-    rotl
+    rotl,
+    rpart,
+    randomForest,
+    gbm,
+    base64enc
