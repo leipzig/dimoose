@@ -5,7 +5,8 @@
 #' the choices made (each one clickable to go back to it) and supports the
 #' browser's Back button. Without JavaScript, the same page is the full key
 #' with every lead hyperlinked to its next couplet or taxon. Each taxon gets
-#' a result section listing the characters on its path.
+#' a result section listing the characters on its path, and a map of the
+#' key shows where the user is (see `map`).
 #'
 #' The key is checked first: leads pointing at missing couplets, terminal
 #' leads without a taxon, couplets with fewer than two leads and couplets
@@ -21,6 +22,15 @@
 #' @param order Order of couplets. Only `"original"` (the key's own order) is
 #'   implemented.
 #' @param title Page title. Defaults to the key's description.
+#' @param staticPaths If `TRUE`, write each taxon's path through the key into
+#'   the page, so it shows without JavaScript. If `FALSE`, the page builds
+#'   the path in the browser when a result is shown, which keeps large keys
+#'   (such as [phylotreeKey()] on the whole tree) much smaller. The default
+#'   is `TRUE` for keys with up to 1,000 taxa.
+#' @param map If `TRUE`, include a map of the key: the whole key drawn as a
+#'   tree, marking the current couplet, the path taken so far and the
+#'   branches (and number of taxa) still possible. It sits beside the key on
+#'   wide screens and behind a Map button on phones.
 #' @return The path to `file`, invisibly, or the HTML as a character string if
 #'   `file` is `NULL`.
 #' @examples
@@ -30,7 +40,8 @@
 #' }
 #' @export
 exportWizard <- function(moose, file = NULL, displayLinks = TRUE,
-                         order = c("original", "parsimony"), title = NULL) {
+                         order = c("original", "parsimony"), title = NULL,
+                         map = TRUE, staticPaths = NULL) {
   order <- match.arg(order)
   if (order == "parsimony") {
     stop("order = \"parsimony\" is not implemented yet; use \"original\"", call. = FALSE)
@@ -48,26 +59,35 @@ exportWizard <- function(moose, file = NULL, displayLinks = TRUE,
   if (is.null(title)) {
     title <- if (length(moose$desc) == 1 && !is.na(moose$desc)) moose$desc else "Dichotomous key"
   }
+  nodeLabel <- metaValue(moose$meta, "node_label")
+  if (is.na(nodeLabel) || !nzchar(nodeLabel)) nodeLabel <- "Couplet"
+  if (is.null(staticPaths)) {
+    staticPaths <- length(unique(leads$Taxon[leads$Next == "-" & nzchar(leads$Taxon)])) <= 1000
+  }
   html <- renderWizard(leads, check,
+    nodeLabel = nodeLabel,
+    staticPaths = isTRUE(staticPaths),
     title = title,
     citation = metaValue(moose$meta, "citation"),
     taxa = moose$taxa,
     images = embeddedImages(moose$meta),
-    displayLinks = displayLinks
+    displayLinks = displayLinks,
+    map = map
   )
   if (is.null(file)) {
     return(html)
   }
-  con <- file(file, open = "w", encoding = "UTF-8")
+  # Write bytes so UTF-8 text survives non-UTF-8 locales
+  con <- file(file, open = "wb")
   on.exit(close(con))
-  writeLines(html, con)
+  writeBin(charToRaw(enc2utf8(html)), con)
   invisible(file)
 }
 
 # ---- key checks --------------------------------------------------------------
 
 normalizeLeads <- function(leads) {
-  for (col in c("Statement", "Choice", "Character", "Next", "Taxon", "Image", "ImageLink", "TaxonUrl")) {
+  for (col in c("Statement", "Choice", "Character", "Next", "Taxon", "Label", "Image", "ImageLink", "TaxonUrl")) {
     if (is.null(leads[[col]])) leads[[col]] <- rep("", nrow(leads))
     x <- as.character(leads[[col]])
     x[is.na(x)] <- ""
@@ -77,10 +97,15 @@ normalizeLeads <- function(leads) {
   as.data.frame(leads, stringsAsFactors = FALSE)
 }
 
+# Display label of each lead: its Label if given, otherwise couplet + choice ("7b")
+leadLabels <- function(leads) {
+  ifelse(nzchar(leads$Label), leads$Label, paste0(leads$Statement, leads$Choice))
+}
+
 # Root couplet, reachability, parents and a list of problems found.
 checkLeads <- function(leads) {
   couplets <- unique(leads$Statement)
-  label <- paste0(leads$Statement, leads$Choice)
+  label <- leadLabels(leads)
   targets <- leads$Next[leads$Next != "-"]
   problems <- character()
 
@@ -125,11 +150,11 @@ checkLeads <- function(leads) {
 
 # Lead indices from the root to lead `i`, following the first parent lead of
 # each couplet.
-pathToLead <- function(leads, i, root) {
+pathToLead <- function(leads, i, root, parentLead = match(leads$Statement, leads$Next)) {
   path <- i
   seen <- leads$Statement[i]
   while (leads$Statement[path[1]] != root) {
-    parent <- which(leads$Next == leads$Statement[path[1]])[1]
+    parent <- parentLead[path[1]]
     if (is.na(parent) || leads$Statement[parent] %in% seen) break
     seen <- c(seen, leads$Statement[parent])
     path <- c(parent, path)
@@ -181,9 +206,14 @@ figuresHtml <- function(thumbs, fulls, images, alt) {
   paste0("<figure class=\"figs\">", paste(items, collapse = ""), "</figure>")
 }
 
-renderWizard <- function(leads, check, title, citation, taxa, images, displayLinks) {
-  label <- paste0(leads$Statement, leads$Choice)
-  coupletId <- function(cp) paste0("c-", gsub("[^A-Za-z0-9_-]", "_", cp))
+renderWizard <- function(leads, check, title, citation, taxa, images, displayLinks, map = TRUE,
+                         nodeLabel = "Couplet", staticPaths = TRUE) {
+  label <- leadLabels(leads)
+  # Section ids: sanitized names, made unique (e.g. M4'67 and M4"67)
+  ids <- paste0("c-", gsub("[^A-Za-z0-9_-]", "_", check$couplets))
+  ids <- ifelse(duplicated(ids) | duplicated(ids, fromLast = TRUE), paste0(ids, "-", seq_along(ids)), ids)
+  names(ids) <- check$couplets
+  coupletId <- function(cp) unname(ids[cp])
 
   terminal <- which(leads$Next == "-" & leads$Taxon != "")
   taxonNames <- unique(leads$Taxon[terminal])
@@ -195,7 +225,8 @@ renderWizard <- function(leads, check, title, citation, taxa, images, displayLin
     parents <- which(leads$Next == cp)
     from <- if (length(parents) > 0) {
       sprintf(" <span class=\"from\">from %s</span>", paste(sprintf(
-        "<a href=\"#%s\">%s</a>", coupletId(leads$Statement[parents]), htmlEscape(label[parents])
+        "<a href=\"#%s\">%s</a>", coupletId(leads$Statement[parents]),
+        htmlEscape(ifelse(label[parents] == cp, leads$Statement[parents], label[parents]))
       ), collapse = ", "))
     } else {
       ""
@@ -232,28 +263,36 @@ renderWizard <- function(leads, check, title, citation, taxa, images, displayLin
     }, character(1))
     id <- coupletId(cp)
     sprintf(
-      "<section class=\"couplet\" id=\"%s\" aria-labelledby=\"h-%s\">\n<h2 id=\"h-%s\" tabindex=\"-1\">Couplet <span class=\"num\">%s</span>%s</h2>\n<ul class=\"leads\">\n%s\n</ul>\n</section>",
-      id, id, id, htmlEscape(cp), from, paste(leadItems, collapse = "\n")
+      "<section class=\"couplet\" id=\"%s\" aria-labelledby=\"h-%s\">\n<h2 id=\"h-%s\" tabindex=\"-1\">%s <span class=\"num\">%s</span>%s</h2>\n<ul class=\"leads\">\n%s\n</ul>\n</section>",
+      id, id, id, htmlEscape(nodeLabel), htmlEscape(cp), from, paste(leadItems, collapse = "\n")
     )
   }, character(1))
 
   # Taxon result sections
+  parentLead <- match(leads$Statement, leads$Next)
+  terminalsOf <- split(terminal, factor(leads$Taxon[terminal], levels = taxonNames))
+  taxaRow <- if (is.data.frame(taxa) && "submitted_name" %in% names(taxa)) match(taxonNames, taxa$submitted_name) else rep(NA, length(taxonNames))
+  names(taxaRow) <- taxonNames
   taxonHtml <- vapply(taxonNames, function(tx) {
-    i <- terminal[leads$Taxon[terminal] == tx][1]
-    path <- pathToLead(leads, i, check$root)
-    steps <- vapply(path, function(p) {
-      sprintf("<li><a class=\"step\" href=\"#%s\">%s</a>%s</li>",
-        coupletId(leads$Statement[p]), htmlEscape(label[p]), htmlEscape(leads$Character[p]))
-    }, character(1))
+    i <- terminalsOf[[tx]][1]
+    steps <- if (staticPaths) {
+      path <- pathToLead(leads, i, check$root, parentLead)
+      vapply(path, function(p) {
+        sprintf("<li><a class=\"step\" href=\"#%s\">%s</a>%s</li>",
+          coupletId(leads$Statement[p]), htmlEscape(label[p]), htmlEscape(leads$Character[p]))
+      }, character(1))
+    } else {
+      "<li class=\"pending\">The path through the key appears here when the page script runs.</li>"
+    }
     verified <- ""
-    if (is.data.frame(taxa) && all(c("submitted_name", "matched_name") %in% names(taxa))) {
-      row <- taxa[taxa$submitted_name == tx, , drop = FALSE]
+    if (!is.na(taxaRow[[tx]]) && "matched_name" %in% names(taxa)) {
+      row <- taxa[taxaRow[[tx]], , drop = FALSE]
       if (nrow(row) > 0 && !is.na(row$matched_name[1]) && row$matched_name[1] != tx) {
         src <- if (!is.null(row$data_source) && !is.na(row$data_source[1])) paste0(" (", row$data_source[1], ")") else ""
         verified <- sprintf("<p class=\"verified\">Accepted name: %s%s</p>", htmlEscape(row$matched_name[1]), htmlEscape(src))
       }
     }
-    others <- terminal[leads$Taxon[terminal] == tx]
+    others <- terminalsOf[[tx]]
     alsoVia <- if (length(others) > 1) {
       sprintf("<p class=\"verified\">Also reached from lead %s.</p>", htmlEscape(paste(label[others[-1]], collapse = ", ")))
     } else {
@@ -263,8 +302,9 @@ renderWizard <- function(leads, check, title, citation, taxa, images, displayLin
     link <- if (nzchar(url)) sprintf("<a href=\"%s\" target=\"_blank\" rel=\"noopener\">More on FishBase</a>", htmlEscape(url)) else ""
     id <- taxonId[[tx]]
     sprintf(
-      "<section class=\"taxon\" id=\"%s\" aria-labelledby=\"h-%s\">\n<p class=\"eyebrow\">Identified as</p>\n<h2 id=\"h-%s\" tabindex=\"-1\">%s</h2>\n%s%s<h3>Path through the key</h3>\n<ol class=\"diagnosis\">\n%s\n</ol>\n<p class=\"actions\"><a href=\"#%s\">Identify another specimen</a>%s</p>\n</section>",
-      id, id, id, htmlEscape(tx), verified, alsoVia, paste(steps, collapse = "\n"), coupletId(check$root), link
+      "<section class=\"taxon\" id=\"%s\" aria-labelledby=\"h-%s\">\n<p class=\"eyebrow\">Identified as</p>\n<h2 id=\"h-%s\" tabindex=\"-1\">%s</h2>\n%s%s<h3>Path through the key</h3>\n<ol class=\"diagnosis\"%s>\n%s\n</ol>\n<p class=\"actions\"><a href=\"#%s\">Identify another specimen</a>%s</p>\n</section>",
+      id, id, id, htmlEscape(tx), verified, alsoVia, if (staticPaths) "" else " data-auto=\"1\"",
+      paste(steps, collapse = "\n"), coupletId(check$root), link
     )
   }, character(1))
 
@@ -275,6 +315,8 @@ renderWizard <- function(leads, check, title, citation, taxa, images, displayLin
     ""
   }
   citationHtml <- if (!is.na(citation) && nzchar(citation)) sprintf("<p class=\"cite\">%s</p>", htmlEscape(citation)) else ""
+
+  mapHtml <- if (isTRUE(map)) renderMap(leads, check, coupletId, taxonId, nodeLabel) else ""
 
   css <- paste(readLines(system.file("wizard", "wizard.css", package = "moose"), warn = FALSE), collapse = "\n")
   js <- paste(readLines(system.file("wizard", "wizard.js", package = "moose"), warn = FALSE), collapse = "\n")
@@ -294,14 +336,131 @@ renderWizard <- function(leads, check, title, citation, taxa, images, displayLin
     "<button type=\"button\" id=\"mk-back\" disabled>&larr; Back</button>",
     "<a href=\"#", coupletId(check$root), "\" id=\"mk-restart\">Start over</a>",
     "<span class=\"spacer\"></span>",
-    "<button type=\"button\" id=\"mk-mode\" aria-pressed=\"false\">Show full key</button></nav>\n",
+    if (isTRUE(map)) "<button type=\"button\" id=\"mk-maptoggle\" aria-controls=\"mk-map\" aria-expanded=\"false\">Map</button>" else "",
+    "<button type=\"button\" id=\"mk-mode\" aria-pressed=\"false\"><span class=\"long\">Show full key</span><span class=\"short\">Full key</span></button></nav>\n",
     "<ol class=\"trail\" id=\"mk-trail\" aria-label=\"Choices so far\" aria-live=\"polite\"></ol>\n</header>\n",
+    "<div class=\"columns", if (isTRUE(map)) " has-map" else "", "\">\n", mapHtml,
     "<main>\n", warningsHtml, "\n", paste(coupletHtml, collapse = "\n"), "\n",
     if (length(taxonHtml) > 0) "<h2 class=\"group\">Taxa</h2>\n" else "",
-    paste(taxonHtml, collapse = "\n"), "\n</main>\n",
-    "<footer><p>", length(check$couplets), " couplets, ", length(taxonNames), " taxa. ",
+    paste(taxonHtml, collapse = "\n"), "\n</main>\n</div>\n",
+    "<footer><p>", length(check$couplets), if (nodeLabel == "Couplet") " couplets, " else " steps, ",
+    length(taxonNames), if (nodeLabel == "Couplet") " taxa. " else " possible results. ",
     "<span class=\"hint\">Press a, b (or 1, 2) to choose a lead. </span>",
     "Generated by the moose R package.</p></footer>\n",
     "<script>\n", js, "\n</script>\n</body>\n</html>\n"
+  )
+}
+
+# ---- key map -----------------------------------------------------------------
+
+# Inline SVG drawing of the key as a tree: couplets at their depth from the
+# root (left to right), terminal leads as named leaves on the right. A couplet
+# reached from more than one lead is drawn once; the extra links are dashed.
+# Every node links to its section and carries data attributes the page script
+# uses to mark the current position, the path so far and what is still ahead.
+renderMap <- function(leads, check, coupletId, taxonId, nodeLabel = "Couplet") {
+  label <- leadLabels(leads)
+  # Long couplet names (e.g. haplogroups) do not fit inside a node: draw small
+  # nodes and show names only along the user's path (see wizard.css).
+  named <- max(nchar(check$couplets)) > 3
+  rowH <- 20
+  pad <- 14
+  r <- if (named) 4.5 else 8.5
+
+  nodes <- list()
+  edges <- list()
+  extra <- list()
+  placed <- character()
+  row <- 0
+
+  visit <- function(cp, depth, anc) {
+    placed <<- c(placed, cp)
+    me <- coupletId(cp)
+    ys <- numeric()
+    for (i in which(leads$Statement == cp)) {
+      nx <- leads$Next[i]
+      if (nx == "-") {
+        if (!nzchar(leads$Taxon[i])) next
+        row <<- row + 1
+        key <- paste0("L", i)
+        nodes[[key]] <<- list(kind = "leaf", target = taxonId[[leads$Taxon[i]]], x = depth + 1, y = row,
+                              label = leads$Taxon[i], anc = c(anc, me))
+        edges[[length(edges) + 1]] <<- list(from = me, to = key, lead = label[i], text = leads$Character[i])
+        ys <- c(ys, row)
+      } else if (nx %in% check$couplets && !nx %in% placed) {
+        ys <- c(ys, visit(nx, depth + 1, c(anc, me)))
+        edges[[length(edges) + 1]] <<- list(from = me, to = coupletId(nx), lead = label[i], text = leads$Character[i])
+      } else if (nx %in% placed) {
+        extra[[length(extra) + 1]] <<- list(from = me, to = coupletId(nx), lead = label[i], text = leads$Character[i])
+      }
+    }
+    if (length(ys) == 0) {
+      row <<- row + 1
+      ys <- row
+    }
+    y <- (min(ys) + max(ys)) / 2
+    nodes[[me]] <<- list(kind = "couplet", target = me, x = depth, y = y, label = cp, anc = anc)
+    y
+  }
+  visit(check$root, 0, character())
+
+  leafNodes <- Filter(function(n) n$kind == "leaf", nodes)
+  labelW <- if (length(leafNodes)) max(nchar(vapply(leafNodes, `[[`, "", "label"))) * 6.4 + 14 else 0
+  depth <- max(1, vapply(nodes, `[[`, 0, "x"))
+  # Narrow the columns (down to 20px) so typical keys fit a ~400px panel
+  colW <- max(20, min(30, (400 - labelW - 2 * pad - r) / depth))
+  px <- function(n) pad + r + n$x * colW
+  py <- function(n) pad + (n$y - 1) * rowH
+  width <- ceiling(pad + r + depth * colW + labelW + pad)
+  height <- ceiling(2 * pad + (row - 1) * rowH)
+
+  edgeSvg <- vapply(edges, function(e) {
+    a <- nodes[[e$from]]
+    b <- nodes[[e$to]]
+    endX <- px(b) - if (b$kind == "couplet") r else 3.5
+    sprintf(
+      "<path class=\"medge\" data-from=\"%s\" data-to=\"%s\" d=\"M%.1f %.1fV%.1fH%.1f\"><title>%s %s</title></path>",
+      e$from, b$target, px(a), py(a), py(b), endX,
+      htmlEscape(e$lead), htmlEscape(e$text)
+    )
+  }, character(1))
+  extraSvg <- vapply(extra, function(e) {
+    a <- nodes[[e$from]]
+    b <- nodes[[e$to]]
+    sprintf(
+      "<path class=\"medge cross\" data-from=\"%s\" data-to=\"%s\" d=\"M%.1f %.1fL%.1f %.1f\"><title>%s %s (also leads to couplet %s)</title></path>",
+      e$from, e$to, px(a), py(a), px(b), py(b),
+      htmlEscape(e$lead), htmlEscape(e$text), htmlEscape(b$label)
+    )
+  }, character(1))
+  nodeSvg <- vapply(names(nodes), function(k) {
+    n <- nodes[[k]]
+    anc <- if (length(n$anc)) n$anc[length(n$anc)] else ""
+    if (n$kind == "couplet") {
+      sprintf(
+        "<a class=\"mnode mcouplet\" href=\"#%s\" data-id=\"%s\" data-p=\"%s\" data-x=\"%.0f\" data-y=\"%.0f\" aria-label=\"%s %s\"><circle cx=\"%.1f\" cy=\"%.1f\" r=\"%.1f\"/><text x=\"%.1f\" y=\"%.1f\">%s</text></a>",
+        n$target, n$target, anc, px(n), py(n), htmlEscape(nodeLabel), htmlEscape(n$label),
+        px(n), py(n), r, if (named) px(n) + 6 else px(n), if (named) py(n) - 6 else py(n) + 3.2, htmlEscape(n$label)
+      )
+    } else {
+      sprintf(
+        "<a class=\"mnode mleaf\" href=\"#%s\" data-id=\"%s\" data-p=\"%s\" data-x=\"%.0f\" data-y=\"%.0f\" aria-label=\"%s\"><circle cx=\"%.1f\" cy=\"%.1f\" r=\"3.5\"/><text x=\"%.1f\" y=\"%.1f\">%s</text></a>",
+        n$target, n$target, anc, px(n), py(n), htmlEscape(n$label),
+        px(n), py(n), px(n) + 8, py(n) + 3.5, htmlEscape(n$label)
+      )
+    }
+  }, character(1))
+
+  nTaxa <- length(unique(vapply(leafNodes, `[[`, "", "target")))
+  paste0(
+    "<aside class=\"map\" id=\"mk-map\" aria-label=\"Map of the key\">\n",
+    "<div class=\"map-head\"><span class=\"eyebrow\">Map of the key</span>",
+    "<span class=\"map-count\" id=\"mk-left\" aria-live=\"polite\">", nTaxa, " taxa</span></div>\n",
+    "<div class=\"map-scroll\" id=\"mk-map-scroll\">\n",
+    sprintf("<svg class=\"keymap%s\" width=\"%d\" height=\"%d\" viewBox=\"0 0 %d %d\" xmlns=\"http://www.w3.org/2000/svg\">\n", if (named) " named" else "", width, height, width, height),
+    "<g class=\"edges\">", paste(c(edgeSvg, extraSvg), collapse = ""), "</g>\n",
+    "<g class=\"nodes\">", paste(nodeSvg, collapse = ""), "</g>\n</svg>\n</div>\n",
+    "<p class=\"map-legend\"><span class=\"k here\"></span>You are here <span class=\"k done\"></span>Your path <span class=\"k ahead\"></span>Still possible</p>\n",
+    "</aside>\n"
   )
 }

@@ -1,4 +1,7 @@
-fixture <- function(name) test_path("fixtures", name)
+fixture <- function(name) {
+  file <- c(fishbaseDescription.html = "key1-description.html", fishbaseDetail.html = "key1-questions.html")[[name]]
+  system.file("extdata", "fishbase", file, package = "moose")
+}
 
 sharks <- function(...) {
   parseFishbase(

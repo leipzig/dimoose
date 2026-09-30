@@ -70,6 +70,7 @@ h1 { margin: 0; font-size: clamp(1.6rem, 4.5vw, 2.3rem); line-height: 1.15; font
 }
 .toolbar button:disabled { opacity: .45; cursor: default; }
 .toolbar .spacer { flex: 1; }
+.toolbar .short { display: none; }
 
 .trail {
   list-style: none;
@@ -165,6 +166,7 @@ a.choose:active { background: var(--accent-soft); }
 .diagnosis li { padding: .35rem 0; border-top: 1px solid var(--rule); }
 .diagnosis li:first-child { border-top: 0; }
 .diagnosis .step { font: 600 .8125rem var(--sans); margin-right: .5rem; }
+.diagnosis .pending { color: var(--muted); font-size: .9rem; }
 .taxon .actions { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; margin-top: 1rem; font: 500 .9rem var(--sans); }
 
 .warnings { margin: 0 0 1.5rem; padding: .75rem 1rem; border: 1px dashed var(--warn); border-radius: 10px; color: var(--warn); font: .875rem/1.4 var(--sans); }
@@ -173,6 +175,73 @@ a.choose:active { background: var(--accent-soft); }
 footer { padding-bottom: 2.5rem; color: var(--muted); font: .8125rem/1.5 var(--sans); }
 .hint { display: none; }
 @media (hover: hover) and (pointer: fine) { .js.wizard .hint { display: inline; } }
+
+
+/* Map of the key */
+.map { max-width: 46rem; margin: 0 auto 1.25rem; padding: 0 1rem; font-family: var(--sans); }
+.js .map { display: none; }
+.js.map-open .map { display: block; }
+.map-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .4rem; }
+.map-head .eyebrow { margin: 0; }
+.map-count { font: 600 .8125rem/1.2 var(--sans); color: var(--accent); }
+.map-scroll {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  max-height: 38vh;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+}
+.keymap { display: block; font-family: var(--sans); }
+.medge { fill: none; stroke: var(--muted); stroke-width: 1.4; opacity: .6; }
+.medge.cross { stroke-dasharray: 3 3; }
+.mnode { cursor: pointer; }
+.mnode circle { fill: var(--card); stroke: var(--muted); stroke-width: 1.4; }
+.mnode.mcouplet text { font-size: 8.5px; font-weight: 700; text-anchor: middle; fill: var(--ink); pointer-events: none; }
+.mnode.mleaf circle { fill: var(--muted); stroke: none; }
+/* named nodes (e.g. haplogroups): names only on the path and current node */
+.keymap.named .mnode.mcouplet text { display: none; text-anchor: start; font-size: 9.5px; paint-order: stroke; stroke: var(--card); stroke-width: 3px; stroke-linejoin: round; }
+.keymap.named .mnode.mcouplet.done text, .keymap.named .mnode.mcouplet.here text { display: inline; fill: var(--accent); }
+.keymap.named .mnode.mcouplet:hover text, .keymap.named .mnode.mcouplet:focus text { display: inline; }
+.mnode.mleaf text { font-size: 10.5px; fill: var(--ink); }
+.mnode:focus-visible circle { stroke: var(--focus); stroke-width: 3; }
+@media (hover: hover) { .mnode:hover circle { stroke: var(--accent); stroke-width: 2.2; } }
+/* states set by the page script */
+.keymap.live .mnode, .keymap.live .medge { opacity: .22; transition: opacity .15s; }
+.keymap.live .mnode.ahead, .keymap.live .mnode.done { opacity: 1; }
+.keymap.live .medge.ahead { opacity: .75; }
+.keymap.live .medge.done { opacity: 1; stroke: var(--accent); stroke-width: 3; }
+.mnode.done circle { fill: var(--accent); stroke: var(--accent); }
+.mnode.done.couplet text { fill: var(--accent-ink); }
+.mnode.here circle { fill: var(--accent); stroke: var(--focus); stroke-width: 3.5; }
+.mnode.here.mcouplet text { fill: var(--accent-ink); }
+.mnode.mleaf.here circle { stroke: var(--focus); stroke-width: 3; }
+.mnode.mleaf.here text, .mnode.mleaf.done text { font-weight: 700; fill: var(--accent); }
+.map-legend { margin: .45rem 0 0; font-size: .75rem; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: .3rem 1.2rem; }
+.map-legend .k { display: inline-block; width: .8rem; height: .8rem; border-radius: 50%; margin-right: -.55rem; vertical-align: middle; }
+.map-legend .k.here { background: var(--accent); box-shadow: 0 0 0 2px var(--focus); }
+.map-legend .k.done { height: 3px; border-radius: 2px; background: var(--accent); }
+.map-legend .k.ahead { background: var(--card); border: 1.5px solid var(--muted); }
+
+/* Wide screens: map beside the key, always visible */
+@media (min-width: 76rem) {
+  body:has(.has-map) .masthead, body:has(.has-map) footer { max-width: 76rem; }
+  .masthead h1, .masthead .cite { max-width: 46rem; }
+  .columns.has-map {
+    display: grid;
+    grid-template-columns: minmax(0, 46rem) minmax(18rem, 1fr);
+    gap: 2rem;
+    align-items: start;
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  .columns.has-map main { grid-column: 1; grid-row: 1; max-width: none; margin: 0; padding: 0 0 2rem; }
+  .columns.has-map .map { grid-column: 2; grid-row: 1; position: sticky; top: 1rem; margin: 0; padding: 0; display: block; }
+  .columns.has-map .map-scroll { max-height: calc(100vh - 6rem); }
+  #mk-maptoggle { display: none; }
+}
 
 /* Step-by-step mode: one section at a time */
 .wizard .couplet, .wizard .taxon, .wizard .group { display: none; }
@@ -197,6 +266,10 @@ footer { padding-bottom: 2.5rem; color: var(--muted); font: .8125rem/1.5 var(--s
   }
   .toolbar button, .toolbar a { flex: 1; justify-content: center; padding: .6rem .5rem; }
   .toolbar .spacer { display: none; }
+  .toolbar .long { display: none; }
+  .toolbar .short { display: inline; }
+  .toolbar button, .toolbar a { font-size: .8125rem; }
+  .map-scroll { max-height: 34vh; }
   .js .trail {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -225,7 +298,7 @@ footer { padding-bottom: 2.5rem; color: var(--muted); font: .8125rem/1.5 var(--s
 }
 @media print {
   body { background: #fff; }
-  .toolbar, .trail, .hint { display: none !important; }
+  .toolbar, .trail, .hint, .map { display: none !important; }
   .wizard .couplet, .wizard .taxon, .wizard .group { display: block; }
   .couplet, .taxon { break-inside: avoid; }
 }

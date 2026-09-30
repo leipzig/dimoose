@@ -34,7 +34,10 @@ plus optional `Prev`, `Image`, `ImageLink` and `TaxonUrl`. Derived from
 \itemize{
 \item \href{#method-moose-new}{\code{moose$new()}}
 \item \href{#method-moose-print}{\code{moose$print()}}
+\item \href{#method-moose-summary}{\code{moose$summary()}}
+\item \href{#method-moose-validate}{\code{moose$validate()}}
 \item \href{#method-moose-toDataTree}{\code{moose$toDataTree()}}
+\item \href{#method-moose-toNewick}{\code{moose$toNewick()}}
 \item \href{#method-moose-toPolyclave}{\code{moose$toPolyclave()}}
 \item \href{#method-moose-clone}{\code{moose$clone()}}
 }
@@ -68,7 +71,7 @@ Create a new moose object.
 \if{html}{\out{<a id="method-moose-print"></a>}}
 \if{latex}{\out{\hypertarget{method-moose-print}{}}}
 \subsection{Method \code{print()}}{
-Print the description, metadata and lead table.
+Print a short overview of the key.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{moose$print(...)}\if{html}{\out{</div>}}
 }
@@ -82,22 +85,61 @@ Print the description, metadata and lead table.
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-moose-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-moose-summary}{}}}
+\subsection{Method \code{summary()}}{
+Counts describing the key.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{moose$summary()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A one-row data frame: `title`, `couplets`, `leads`, `taxa`,
+  `depth` (longest path in steps) and `problems` (see `validate()`).
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-moose-validate"></a>}}
+\if{latex}{\out{\hypertarget{method-moose-validate}{}}}
+\subsection{Method \code{validate()}}{
+Check the key: leads to missing couplets, terminal leads
+  without a taxon, couplets with fewer than two leads, and couplets
+  that cannot be reached from the first one.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{moose$validate()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A character vector of problems, invisibly if there are none.
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-moose-toDataTree"></a>}}
 \if{latex}{\out{\hypertarget{method-moose-toDataTree}{}}}
 \subsection{Method \code{toDataTree()}}{
-Convert the key to a [data.tree::Node].
+Convert the key to a [data.tree::Node]: couplets are
+  internal nodes and taxa leaves; each child node carries the `lead`
+  label and the `character` text of the lead that leads to it. A
+  couplet reached from several leads is attached under the first.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$toDataTree(includeStatementNodes = FALSE, includeLoneLeafNodes = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{moose$toDataTree()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{includeStatementNodes}}{Not yet implemented.}
-
-\item{\code{includeLoneLeafNodes}}{Not yet implemented.}
 }
-\if{html}{\out{</div>}}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-moose-toNewick"></a>}}
+\if{latex}{\out{\hypertarget{method-moose-toNewick}{}}}
+\subsection{Method \code{toNewick()}}{
+Write the key's topology in Newick format, with couplets
+  as internal node labels and taxa as leaves (labels quoted when
+  needed). A couplet reached from several leads is placed under the
+  first.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{moose$toNewick()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A single string ending in `;`.
 }
 }
 \if{html}{\out{<hr>}}

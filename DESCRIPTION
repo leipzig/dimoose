@@ -9,11 +9,18 @@ Authors@R:
 Description: Transforms between dichotomous identification keys and a
     variety of phenotype formats, including feature matrices and polyclave
     (multi-access) keys, and generates interactive dichotomous key wizards.
-    Imports keys from 'FishBase' <https://www.fishbase.se/keys/allkeys.php>.
+    Imports keys from 'FishBase' <https://www.fishbase.se/keys/allkeys.php>
+    and includes PhyloTree Build 17, the human mitochondrial DNA phylogeny
+    (van Oven 2015, <doi:10.1016/j.fsigss.2015.09.155>), as distributed by
+    'Haplogrep' 3.
 License: GPL
+Copyright: See inst/COPYRIGHTS for the PhyloTree data.
 URL: https://github.com/leipzig/moose
 BugReports: https://github.com/leipzig/moose/issues
 Encoding: UTF-8
+LazyData: true
+Depends:
+    R (>= 3.5.0)
 Imports:
     base64enc,
     data.tree,

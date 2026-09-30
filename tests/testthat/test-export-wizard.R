@@ -1,10 +1,4 @@
-sharks <- function() {
-  parseFishbase(
-    test_path("fixtures", "fishbaseDescription.html"),
-    test_path("fixtures", "fishbaseDetail.html"),
-    usePhyloService = "none"
-  )
-}
+sharks <- function() sharkKey()
 count <- function(html, pattern) lengths(regmatches(html, gregexpr(pattern, html, fixed = TRUE)))
 
 tinyKey <- function(leads) {
@@ -102,4 +96,39 @@ test_that("leads are rebuilt from paths when a key has no lead table", {
 test_that("unimplemented options fail clearly", {
   expect_error(exportWizard(sharks(), order = "parsimony"), "not implemented")
   expect_error(exportWizard(list()), "moose object")
+})
+
+test_that("the map draws every couplet and taxon, linked to the sections", {
+  html <- exportWizard(sharks())
+  svg <- regmatches(html, regexpr("<svg class=\"keymap\".*?</svg>", html))
+  expect_length(svg, 1)
+  expect_equal(count(svg, "class=\"mnode mcouplet\""), 23)
+  expect_equal(count(svg, "class=\"mnode mleaf\""), 24)
+  expect_equal(count(svg, "class=\"medge\""), 46)
+  targets <- sub(".*href=\"#([^\"]+)\"", "\\1", regmatches(svg, gregexpr("class=\"mnode[^\"]*\" href=\"#[^\"]+\"", svg))[[1]])
+  sections <- sub(".*id=\"([^\"]+)\"", "\\1", regmatches(html, gregexpr("<section class=\"(couplet|taxon)\" id=\"[^\"]+\"", html))[[1]])
+  expect_setequal(targets, sections)
+  # map node classes must not collide with section classes hidden in step mode
+  expect_false(grepl("class=\"mnode couplet\"|class=\"mnode taxon\"", svg))
+  expect_match(html, "id=\"mk-maptoggle\"", fixed = TRUE)
+})
+
+test_that("map = FALSE leaves the map out", {
+  html <- exportWizard(sharks(), map = FALSE)
+  expect_false(grepl("<svg class=\"keymap\"|id=\"mk-maptoggle\"|<aside class=\"map\"", html))
+})
+
+test_that("a couplet reached from two leads is drawn once with a dashed cross-link", {
+  leads <- data.frame(
+    Statement = c("1", "1", "2", "2", "3", "3"),
+    Choice = c("a", "b", "a", "b", "a", "b"),
+    Character = c("x", "y", "p", "q", "m", "n"),
+    Next = c("2", "3", "-", "-", "2", "-"),
+    Taxon = c("", "", "A", "B", "", "C"),
+    stringsAsFactors = FALSE
+  )
+  svg <- regmatches(html <- exportWizard(tinyKey(leads)), regexpr("<svg class=\"keymap\".*?</svg>", html))
+  expect_equal(count(svg, "data-id=\"c-2\""), 1)
+  expect_equal(count(svg, "class=\"medge cross\""), 1)
+  expect_match(svg, "class=\"medge cross\" data-from=\"c-3\" data-to=\"c-2\"", fixed = TRUE)
 })

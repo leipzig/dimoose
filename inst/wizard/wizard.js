@@ -13,6 +13,24 @@
   var backBtn = doc.getElementById("mk-back");
   var modeBtn = doc.getElementById("mk-mode");
 
+  // Map of the key (optional)
+  var mapEl = doc.getElementById("mk-map");
+  var mapSvg = mapEl ? mapEl.querySelector("svg.keymap") : null;
+  var mapScroll = doc.getElementById("mk-map-scroll");
+  var mapLeft = doc.getElementById("mk-left");
+  var mapBtn = doc.getElementById("mk-maptoggle");
+  var mapNodes = mapSvg ? Array.prototype.slice.call(mapSvg.querySelectorAll(".mnode")) : [];
+  var mapEdges = mapSvg ? Array.prototype.slice.call(mapSvg.querySelectorAll(".medge")) : [];
+  var totalTaxa = {};
+  var mapKids = {}; // parent couplet id -> map nodes directly below it
+  mapNodes.forEach(function (n) {
+    if (n.classList.contains("mleaf")) totalTaxa[n.getAttribute("data-id")] = true;
+    var p = n.getAttribute("data-p");
+    if (p) (mapKids[p] = mapKids[p] || []).push(n);
+  });
+  totalTaxa = Object.keys(totalTaxa).length;
+  var smooth = !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
   function currentId() {
     var id = decodeURIComponent(location.hash.slice(1));
     return byId[id] ? id : root;
@@ -53,6 +71,99 @@
     trailEl.scrollLeft = trailEl.scrollWidth; // keep the latest choice in view on narrow screens
   }
 
+  function mark(el, cls, on) { el.classList[on ? "add" : "remove"](cls); }
+
+  function centerMap(id) {
+    if (!mapScroll || !mapScroll.clientHeight) return; // hidden
+    var n = mapSvg.querySelector('.mnode[data-id="' + id + '"]');
+    if (!n) return;
+    var x = +n.getAttribute("data-x"), y = +n.getAttribute("data-y");
+    var opts = { left: x - mapScroll.clientWidth / 2, top: y - mapScroll.clientHeight / 2 };
+    if (smooth) opts.behavior = "smooth";
+    mapScroll.scrollTo(opts);
+  }
+
+  function renderMap(id) {
+    if (!mapSvg) return;
+    mapSvg.classList.add("live");
+    var onTrail = {}, steps = {};
+    for (var k = 0; k < trail.length; k++) {
+      onTrail[trail[k].id] = true;
+      if (k > 0) steps[trail[k - 1].id + ">" + trail[k].id] = true;
+    }
+    // everything below the current position is still possible
+    var ahead = {}, aheadCouplets = {}, left = {};
+    ahead[id] = true;
+    aheadCouplets[id] = true;
+    var queue = [id];
+    while (queue.length) {
+      (mapKids[queue.pop()] || []).forEach(function (n) {
+        var nid = n.getAttribute("data-id");
+        ahead[nid] = true;
+        if (n.classList.contains("mleaf")) {
+          left[nid] = true;
+        } else if (!aheadCouplets[nid]) {
+          aheadCouplets[nid] = true;
+          queue.push(nid);
+        }
+      });
+    }
+    if (byId[id] && byId[id].classList.contains("taxon")) left[id] = true;
+    mapNodes.forEach(function (n) {
+      var nid = n.getAttribute("data-id");
+      var here = nid === id;
+      mark(n, "here", here);
+      mark(n, "done", !here && !!onTrail[nid]);
+      mark(n, "ahead", !!ahead[nid]);
+    });
+    mapEdges.forEach(function (e) {
+      var from = e.getAttribute("data-from");
+      mark(e, "done", !!steps[from + ">" + e.getAttribute("data-to")]);
+      mark(e, "ahead", !!aheadCouplets[from]);
+    });
+    var n = Object.keys(left).length;
+    if (mapLeft) {
+      mapLeft.textContent = byId[id].classList.contains("taxon")
+        ? "Identified \u00b7 1 of " + totalTaxa + " taxa"
+        : n + " of " + totalTaxa + " taxa still possible";
+    }
+    centerMap(id);
+  }
+
+  // For large keys the path to each result is built here, when it is shown
+  var leadTo = null;
+  function fillDiagnosis(section) {
+    var ol = section.querySelector("ol.diagnosis[data-auto]");
+    if (!ol || ol.getAttribute("data-done")) return;
+    if (!leadTo) {
+      leadTo = {};
+      Array.prototype.forEach.call(doc.querySelectorAll("main a.choose"), function (a) {
+        var t = a.getAttribute("href").slice(1);
+        if (!leadTo[t]) leadTo[t] = a;
+      });
+    }
+    var path = [], target = section.id, guard = 0;
+    while (leadTo[target] && guard++ < 1000) {
+      var a = leadTo[target];
+      var from = a.closest("section");
+      path.unshift({ from: from.id, lead: a.getAttribute("data-lead"), text: a.querySelector(".text").textContent });
+      if (from.id === root) break;
+      target = from.id;
+    }
+    ol.innerHTML = "";
+    path.forEach(function (st) {
+      var li = doc.createElement("li");
+      var link = doc.createElement("a");
+      link.className = "step";
+      link.href = "#" + st.from;
+      link.textContent = st.lead;
+      li.appendChild(link);
+      li.appendChild(doc.createTextNode(st.text));
+      ol.appendChild(li);
+    });
+    ol.setAttribute("data-done", "1");
+  }
+
   function update(moveFocus) {
     var id = currentId();
     var seen = -1;
@@ -65,9 +176,11 @@
       if (last && !step) trail = []; // jumped somewhere unrelated: start a new trail
       trail.push({ id: id, via: step });
     }
+    if (byId[id].classList.contains("taxon")) fillDiagnosis(byId[id]);
     sections.forEach(function (s) { s.classList.toggle("active", s.id === id); });
     body.classList.toggle("stepping", id !== root);
     renderTrail();
+    renderMap(id);
     backBtn.disabled = trail.length < 2;
     if (moveFocus && body.classList.contains("wizard")) {
       window.scrollTo(0, 0);
@@ -82,12 +195,29 @@
 
   modeBtn.addEventListener("click", function () {
     var stepping = body.classList.toggle("wizard");
-    modeBtn.textContent = stepping ? "Show full key" : "Step through";
+    modeBtn.innerHTML = stepping
+      ? '<span class="long">Show full key</span><span class="short">Full key</span>'
+      : '<span class="long">Step through</span><span class="short">Steps</span>';
     modeBtn.setAttribute("aria-pressed", stepping ? "false" : "true");
+    if (!stepping) sections.forEach(function (sec) { if (sec.classList.contains("taxon")) fillDiagnosis(sec); });
     var active = byId[currentId()];
     if (!stepping && active) active.scrollIntoView();
     if (stepping) window.scrollTo(0, 0);
   });
+
+  if (mapBtn && mapEl) {
+    var setMap = function (open) {
+      body.classList.toggle("map-open", open);
+      mapBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      mapBtn.textContent = open ? "Hide map" : "Map";
+      try { localStorage.setItem("moose-map-open", open ? "1" : "0"); } catch (e) { /* storage unavailable */ }
+      if (open) centerMap(currentId());
+    };
+    var saved = null;
+    try { saved = localStorage.getItem("moose-map-open"); } catch (e) { /* storage unavailable */ }
+    mapBtn.addEventListener("click", function () { setMap(!body.classList.contains("map-open")); });
+    if (saved === "1") setMap(true);
+  }
 
   // Keyboard: a/b/c... or 1/2/3... picks a lead of the current couplet.
   doc.addEventListener("keydown", function (e) {

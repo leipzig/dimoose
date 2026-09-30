@@ -1,0 +1,75 @@
+Unnamed: 0	Arginine dihydrolase (moller)	Lysine decarboxylase(Moller)	Ornithine decarboxylase(moller)	Growth at 0% NaCl	Growth at 3% NaCl	Growth at 6% NaCl	Growth at 8% NaCl	Growth at 10% NaCl	Growth at 4 deg C	Growth at 20 deg C	Growth at 30 deg C	Growth at 35 deg C	Growth at 40 deg C	Aesculin hydrolysis	Amygdaline	Citrate	Gelatinase	Glucose gas	Indole	Luminiscence	NO2	ONPG	Oxidase	Swarming	Urease	Voges-Proskauer	Xanthine decomposition	alpha-ketoglutarate cs	D-glucosamine cs	D-glucose cs	L-arabinose cs	Lactose cs	Acid from:	Arabinose	Arbutin	Inositol	Manitol	D-mannose	Melibiose	Rhamnose	Salicin	Sorbitol	Sucrose	Resistance to: 	Ampiciline 10ug	O/129 10ug	O/129 150ug
+V.aerogenes	+	-	-	-	+	+	-	-	-	+	+	+	-	ND	ND	+	+	+	+	-	+	+	-	-	ND	-	ND	ND	ND	+	ND	-		-	ND	+	+	+	-	ND	ND	-	+		ND	+	+
+V.aestuarinus	+	v	-	-	+	+	v	-	+	+	+	+	-	v	+	+	+	-	+	-	+	+	+	-	v	-	v	v	v	v	v	v		-	v	-	+	+	-	v	-	v	+		-	-	-
+V.agarivorans	-	-	-	-	ND	ND	ND	ND	-	+	+	+	-	+	ND	-	ND	-	-	-	+	ND	+	ND	ND	ND	ND	-	+	+	-	+		-	ND	-	+	-	+	-	-	-	-		ND	ND	ND
+V.alginolyticus	-	+	(+)	-	+	+	+	+	v	+	+	+	+	(-)	-	(+)	+	-	+	-	+	-	+	(+)	(-)	(+)	-	+	v	+	-	-		-	-	-	+	d	-	-	v	-	(+)		+	+	(-)
+V.anguillarum	+	-	-	v	+	v	-	-	v	+	+	+	-	(-)	-	+	+	-	(+)	-	+	+	+	-	-	+	-	v	+	+	v	-		(+)	-	-	+	+	-	-	-	(+)	+		+	v	-
+V.brasiliensis	+	-	-	-	+	+	-	-	-	+	+	+	+	ND	+	+	+	ND	+	-	+	+	+	ND	-	+	ND	ND	+	+	ND	-		-	ND	-	+	+	-	-	ND	-	+		ND	-	-
+V.calviensis	-	ND	ND	-	+	+	+	+	+	+	+	-	-	ND	ND	+	+	-	-	-	+	+	+	ND	+	-	ND	ND	-	-	-	ND		-	ND	ND	+	+	+	ND	ND	ND	ND		-	-	-
+V.campbellii	-	v	-	-	+	v	v	-	-	+	+	+	-	v	-	v	+	-	+	-	(+)	-	+	-	-	-	-	+	-	+	-	-		-	-	-	v	d	-	-	v	-	-		+	v	-
+V.chagasi	v	-	-	-	+	+	+	-	v	+	+	-	-	ND	-	+	ND	ND	+	-	+	-	+	-	-	ND	ND	+	+	+	-	-		-	ND	-	+	ND	-	-	ND	ND	-		+	-	-
+V.cholerae	-	+	+	+	+	-	-	-	-	+	+	+	+	-	-	v	+	-	+	-	+	+	+	-	-	+	-	+	+	+	-	-		-	-	-	+	v	-	-	-	-	+		(-)	(-)	-
+V.cincinnatiensis	-	+	-	-	+	+	-	-	-	ND	+	+	ND	v	-	+	-	-	-	-	+	+	+	v	-	-	-	+	v	+	+	-		+	+	+	+	+	v	v	+	-	+		-	+	-
+V.comitans	-	-	-	-	+	+	ND	ND	(+)	+	+	-	-	ND	ND	v	-	-	-	-	+	(+)	+	-	ND	ND	ND	ND	+	+	-	-		ND	ND	-	+	-	-	-	ND	-	-		ND	-	-
+V.coralliilyticus	v	ND	+	-	+	+	-	-	ND	ND	+	ND	ND	ND	-	(+)	+	ND	+	-	+	+	+	ND	-	ND	ND	ND	+	ND	ND	ND		ND	ND	+	(+)	+	-	ND	ND	ND	+		+	-	-
+V.crassostreae	+	-	-	-	+	+	-	-	+	ND	ND	ND	ND	+	+	ND	+	ND	+	ND	+	-	+	-	-	ND	ND	ND	+	+	-	-		-	ND	-	+	+	+	-	-	-	+		ND	-	-
+V.cyclotriphicus	+	-	-	-	+	+	+	+	+	+	+	+	-	ND	ND	ND	+	-	-	-	-	-	+	ND	-	-	ND	ND	ND	ND	-	ND		-	ND	-	+	-	v	ND	-	-	+		-	-	-
+V.diabolicus	-	+	+	-	ND	+	ND	ND	-	+	+	+	+	-	-	+	+	ND	+	-	+	-	+	+	-	+	ND	ND	+	+	-	ND		-	ND	-	+	+	-	ND	-	-	+		ND	-	-
+V.diazotrophicus	(+)	-	-	-	+	+	+	v	(+)	v	+	+	v	+	+	+	-	-	+	-	+	+	+	-	(-)	-	-	(+)	+	+	+	(+)		+	+	-	+	-	-	v	+	-	+		-	v	-
+V.ezurae	-	-	-	-	+	-	-	-	-	+	+	-	-	ND	ND	-	-	-	+	-	+	-	+	-	ND	ND	ND	-	+	+	-	-		ND	ND	-	+	+	-	-	ND	-	-		ND	-	-
+V.fischeri	-	+	(-)	-	+	+	-	-	(-)	+	+	v	-	-	-	v	-	-	-	(+)	+	(-)	+	-	+	-	-	-	-	v	-	-		-	(-)	-	(-)	d	-	-	v	-	v		v	(-)	-
+V.fluvialis	+	-	-	v	+	+	(+)	(+)	-	+	+	+	+	v	(+)	+	+	-	(+)	-	+	+	+	-	-	-	-	+	+	+	+	-		+	(+)	-	+	+	-	-	(+)	(-)	+		+	+	-
+V.fortis	-	-	-	-	+	+	+	-	+	+	+	+	-	ND	+	ND	+	ND	+	ND	+	+	+	-	-	ND	ND	ND	+	+	ND	ND		ND	ND	-	+	+	+	-	ND	-	ND		ND	+	+
+V.furnisii	+	-	-	v	+	+	+	+	-	+	+	+	+	-	-	+	+	+	(-)	-	+	+	+	-	-	-	-	+	+	+	+	-		+	-	-	+	d	-	-	-	-	+		+	+	-
+V.gallicus	-	-	-	-	ND	ND	ND	ND	-	+	+	-	-	ND	ND	-	-	-	ND	-	+	-	+	ND	ND	ND	ND	ND	-	+	-	-		ND	ND	ND	+	-	-	ND	ND	-	-		ND	ND	ND
+V.gazogenes	-	-	-	-	+	+	+	+	-	+	+	+	+	v	v	+	+	+	-	-	-	v	-	-	-	-	v	+	v	+	+	-		+	v	-	+	+	v	-	+	v	+		v	-	v
+V.gigantis	+	-	-	-	+	+	-	-	+	ND	ND	ND	ND	+	+	ND	+	ND	ND	ND	+	-	+	-	-	ND	ND	ND	ND	+	-	-		-	-	-	+	+	+	-	-	-	-		ND	-	-
+V.halioticoli	-	-	-	-	+	-	-	-	-	+	+	-	-	v	v	-	-	-	+	-	+	+	+	-	v	-	v	-	-	+	-	-		-	v	-	+	d	-	-	v	-	-		v	v	-
+V.harveyi	-	+	+	-	+	(+)	(+)	(-)	-	+	+	+	v	v	-	v	+	-	+	v	+	v	+	(-)	v	-	-	(+)	-	+	(-)	-		-	v	-	+	+	-	-	(+)	-	-		v	v	(-)
+V.hepatarius	ND	-	-	+	+	+	+		+	+	+	+	-	ND	+	ND	ND	ND	+	ND	+	-	+	-	-	ND	ND	ND	+	+	-	ND		-	ND	-	+	ND	-	-	ND	ND	+		ND	ND	ND
+V.hispanicus	+	-	-	+	+	+	+	+	+	+	+	+	+	ND	(+)	+	-	-	+	-	+	-	+	-	-	-	ND	ND	+	+	ND	(+)		ND	ND	ND	+	+	-	+	ND	-	+		v	-	-
+V.ichthyoen	-	-	-	-	+	+	-	-	-	+	+	-	-	v	v	-	-	-	-	-	+	-	+	-	v	-	v	v	v	+	v	+		-	v	-	-	+	-	-	-	-	+		v	-	-
+V.inusitatus	-	-	-	-	+	+	ND	ND	+	+	+	-	-	ND	ND	-	-	-	-	-	+	-	+	-	ND	ND	ND	ND	v	+	-	-		ND	ND	-	+	+	-	-	ND	-	-		ND	-	-
+V.kanaloae	+	-	-	-	+	+	+	-	+	+	+	-	-	ND	-	-	+	ND	+	-	+	-	+	-	-	+	ND	+	+	+	+	-		+	ND	-	+	+	-	-	ND	-	+		+	-	-
+V.lentus	+	-	-	-	ND	ND	ND	-	+	+	+	-	-	ND	-	+	+	-	+	-	+	+	+	-	ND	ND	ND	+	-	+	-	-		-	ND	-	+	+	-	-	-	-	-		ND	+	+
+V.litoralis	-	ND	ND	-	+	+	+	+	+	+	+	+	+	-	ND	+	-	-	-	-	+	-	+	ND	+	ND	ND	ND	+	+	+	ND		+	ND	ND	+	+	ND	ND	ND	ND	-		ND	-	-
+V.logei	-	+	(+)	-	+	-	-	-	+	+	-	-	-	v	v	-	-	-	-	(+)	+	v	+	-	v	-	v	-	v	+	-	-		-	v	-	(+)	d	-	-	-	-	(-)		v	v	v
+V.mediterranei	v	v	-	-	+	+	v	-	-	+	+	(+)	-	+	v	-	-	-	+	v	+	v	+	v	-	-	v	v	v	v	-	+		-	v	-	+	+	(+)	v	+	+	+		v	v	-
+V.metschnikovii	v	v	-	v	+	(+)	(+)	(-)	v	+	+	+	+	v	-	v	+	-	(-)	-	-	(+)	-	-	-	(+)	-	-	v	+	-	v		-	v	-	+	d	-	-	v	v	+		v	-	-
+V.mimicus	v	+	+	+	+	v	-	-	-	v	+	+	v	-	-	+	+	-	+	-	+	+	+	-	-	(-)	-	+	+	+	-	-		-	v	-	(+)	+	-	-	-	-	-		-	(-)	-
+V.mytili	+	-	-	-	+	+	+	+	-	+	+	+	-	+	v	(+)	-	+	-	-	+	v	+	-	-	-	-	+	+	+	(+)	(+)		+	+	-	+	d	-	-	+	-	+		v	v	-
+V.natriegens	-	-	-	-	+	v	+	-	-	+	+	+	+	+	v	+	+	-	-	-	+	v	+	-	v	-	-	+	+	+	+	-		+	+	(-)	+	d	v	+	+	(-)	+		-	+	-
+V.navarrensis	-	-	-	v	+	+	v	-	v	+	+	+	+	v	v	(+)	+	-	+	-	+	+	+	-	-	-	v	(+)	+	+	-	-		-	v	-	+	ND	-	-	v	-	+		v	-	-
+V.neonatus	-	-	-	-	+	-	-	-	-	+	+	-	-	ND	ND	-	-	-	+	-	+	-	+	-	ND	ND	ND	-	+	+	-	-		ND	ND	-	+	-	-	-	ND	-	-		ND	-	-
+V.neptunis	+	-	-	-	+	+	-	-	-	+	+	+	-	ND	-	+	+	ND	+	-	+	-	+	-	-	+	ND	ND	+	+	-	-		-	ND	-	-	+	-	-	ND	-	+		+	-	-
+V.nereis	+	-	-	-	+	v	+	(-)	(-)	+	+	+	v	-	-	+	v	-	(+)	-	+	-	+	-	-	-	-	+	+	+	v	-		-	-	-	-	d	-	-	-	-	+		-	(-)	-
+V.nigrapulchritudo	-	-	-	-	+	v	-	-	-	+	+	-	-	v	-	+	+	-	+	-	+	+	+	-	-	-	-	(+)	+	+	-	(+)		-	-	-	-	+	(+)	-	(-)	-	-		-	-	-
+V.ordalii	-	-	-	-	+	(+)	-	-	v	+	-	-	-	v	-	+	+	-	-	-	(-)	-	+	-	-	-	-	-	(+)	+	-	-		-	-	-	(-)	-	-	-	(-)	-	+		+	-	-
+V.orientalis	v	+	-	-	+	+	+	-	+	+	+	+	-	v	v	+	+	-	+	+	+	v	+	-	v	-	v	-	v	+	-	-		-	v	-	+	+	v	v	-	-	+		v	v	v
+V.pacini	+	-	-	-	+	+	+	-	+	+	+	+	-	ND	+	+	+	ND	-	-	+	-	+	-	-	+	ND	-	-	+	-	+		-	ND	-	-	+	-	-	ND	-	+		ND	-	-
+V.parahaemolyticus	-	+	+	-	+	+	+	-	-	+	+	+	+	-	-	+	+	-	+	-	+	-	+	v	v	-	-	+	+	+	(+)	-		(+)	-	-	+	d	-	-	-	-	-		+	+	-
+V.pectenicida	-	-	-	-	+	+	-	-	(+)	+	v	(-)	v	v	v	v	+	-	-	-	+	-	+	+	v	-	v	v	+	+	-	v		-	v	-	-	-	-	+	v	-	-		v	v	-
+V.pelagius I	-	-	-	-	+	+	+	-	v	+	+	+	-	v	-	+	-	-	-	-	+	+	+	-	v	-	v	-	v	+	-	v		-	v	-	+	d	-	-	-	-	+		v	v	v
+V.pelagius II	-	-	-	-	+	+	-	-	v	+	+	+	-	v	-	+	+	-	+	-	+	+	+	-	v	-	v	(-)	v	+	-	v		-	v	-	+	+	-	-	-	-	v		v	v	v
+V.penaecida	-	-	-	-	+	-	-	-	-	+	+	-	-	ND	ND	v	+	-	v	-	+	+	+	-	ND	-	ND	ND	ND	ND	-	v		-	ND	ND	-	+	-	-	-	-	-		ND	-	-
+V.pomeroyi	+	-	-	-	+	+	+	-	+	+	+	-	-	ND	-	-	+	ND	+	-	+	+	+	-	-	v	ND	-	+	+	-	-		-	ND	-	+	+	-	-	ND	-	+		+	-	-
+V.ponticus	-	+	-	-	+	+	+	-	-	+	+	+	-	ND	-	+	-	-	+	-	+	ND	+	-	ND	-	ND	-	+	(+)	-	-		ND	ND	ND	(+)	(+)	-	-	-	-	(+)		ND	ND	ND
+V.proteolyticus	+	+	-	-	+	+	+	+	-	+	+	+	+	-	-	+	v	-	+	-	+	-	+	+	v	(+)	-	+	+	+	-	-		-	-	-	+	ND	-	-	-	(+)	-		-	+	v
+V.rarus	-	-	-	-	+	+	ND	ND	-	+	+	-	-	ND	ND	-	-	-	+	-	+	-	+	-	ND	ND	ND	ND	+	+	-	-		ND	ND	-	+	+	-	-	ND	-	-		ND	-	-
+V.rhizosphaerae	-	-	-	-	+	+	+	+	-	+	+	+	+	ND	ND	+	+	+	-	-	-	ND	-	-	ND	+	ND	ND	ND	+	ND	+		ND	ND	+	+	+	+	ND	+	+	+		ND	ND	ND
+V.rotiferianus	-	+	+	-	+	+	-	-	-	-	+	+	+	ND	ND	-	+	-	+	-	ND	-	+	-	+	-	ND	-	+	+	+	(-)		+	ND	ND	-	+	+	-	ND	-	+		(+)	-	-
+V.ruber	-	-	-	-	+	+	+	+	-	+	+	+	+	ND	ND	+	+	+	-	-	+	ND	-	-	ND	ND	ND	ND	ND	+	ND	+		+	ND	-	+	+	+	ND	+	ND	+		-	+	+
+V.rumoiensis	-	ND	ND	-	+	+	-	-	+	+	+	-	-	ND	ND	+	-	ND	-	ND	+	ND	+	ND	ND	-	ND	ND	ND	+	+	+		+	ND	-	+	+	-	-	ND	-	+		ND	-	-
+V.salmonicida	-	-	-	-	v	-	-	-	+	+	-	-	-	-	-	-	-	-	-	v	-	-	+	-	-	-	v	v	v	v	-	-		-	-	-	+	d	-	-	-	-	-		v	-	-
+V.scophthalmi	+	-	-	-	+	-	-	-	-	+	+	v	-	v	-	-	-	-	-	-	+	-	+	-	-	-	v	v	+	+	-	-		-	v	-	-	ND	-	-	v	-	+		v	-	-
+V.splendidusI	(+)	-	-	-	v	v	v	-	v	+	+	v	-	v	-	v	+	-	+	-	+	(+)	+	-	-	-	-	+	-	+	-	-		-	-	-	+	+	-	-	-	-	(+)		-	-	-
+V.splendidusII	v	-	-	-	v	v	v	-	-	+	+	-	-	v	-	v	+	-	v	-	+	v	+	-	-	-	-	v	-	+	-	-		-	-	-	+	-	-	-	-	-	-		+	v	-
+V.superstes	-	-	-	-	+	-	-	-	-	+	+	-	-	ND	ND	-	-	-	-	-	+	-	+	-	ND	ND	ND	ND	+	+	-	+		-	ND	-	+	+	+	-	ND	-	+		ND	-	-
+V.tapetis	-	-	-	-	+	-	-	-	+	+	-	-	-	-	-	-	+	v	+	-	+	+	+	-	-	-	v	v	+	+	-	-		-	+	-	-	d	-	-	v	-	-		v	v	-
+V.tasmaniensis	-	-	-	-	+	+	-	-	+	+	+	+	-	ND	+	ND	-	ND	+	ND	+	-	+	-	-	+	ND	-	+	+	-	ND		-	ND	-	+	+	-	-	ND	-	-		+	-	-
+V.tubiashi	(+)	-	-	-	v	v	v	-	-	v	v	v	-	-	-	+	+	-	+	-	+	+	+	-	v	-	+	-	v	+	-	-		-	v	-	+	+	(+)	-	(-)	-	+		-	-	-
+V.vulnificus B1	-	+	+	-	+	+	-	-	-	+	+	+	+	-	+	+	+	-	+	-	+	+	+	-	-	-	-	(+)	+	+	-	(+)		-	+	-	+	+	-	-	+	-	(-)		-	(-)	-
+V.vulnificus B2	-	+	-	-	+	(+)	-	-	-	+	+	+	+	-	+	+	+	-	-	-	+	+	+	-	-	-	-	+	+	+	-	-		-	+	-	-	+	-	-	-	-	(-)		-	(-)	-
+V.vulnificus B3	-	+	v	-	+	+	-	-	-	+	+	+	+	-	+	-	+	-	+	-	+	-	+	-	-	-	-	+	-	+	-	-		-	+	-	-	v	-	-	-	-	-		-	-	-
+V.wodanis	-	-	-	-	+	v	ND	ND	+	+	-	-	-	-	ND	ND	+	-	(+)	-	ND	-	+	-	(-)	-	ND	ND	+	+	-	-		-	ND	-	v	+	-	-	-	-	+		-	-	-
+V.xuii	+	-	-	-	+	+	+	+	-	+	+	+	+	ND	+	+	-	ND	+	-	+	-	+	ND	-	+	ND	ND	+	+	+	-		+	ND	-	+	+	-	-	ND	-	+		ND	-	-

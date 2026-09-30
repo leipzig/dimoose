@@ -220,57 +220,57 @@ cleanTaxon <- function(x) {
 # identify the lead that points at this lead's couplet ("" at the root).
 # A couplet reached from more than one lead contributes one path per parent.
 keyPaths <- function(keytable, separateTerms = TRUE) {
-  leadRows <- function(stmt, choice) {
-    rows <- keytable[keytable$Statement == stmt & keytable$Choice == choice,
-      c("Statement", "Choice", "Character"),
-      drop = FALSE
-    ]
-    if (separateTerms && nrow(rows) > 0) {
-      parts <- strsplit(rows$Character, ";", fixed = TRUE)
-      parts[lengths(parts) == 0] <- ""
-      rows <- data.frame(
-        Statement = rep(rows$Statement, lengths(parts)),
-        Choice = rep(rows$Choice, lengths(parts)),
-        Character = trimws(unlist(parts)),
-        stringsAsFactors = FALSE
-      )
+  n <- nrow(keytable)
+  empty <- data.frame(
+    Statement = character(), Choice = character(), Character = character(),
+    Taxon = character(), pSt = character(), pCh = character(),
+    stringsAsFactors = FALSE
+  )
+  if (n == 0) return(empty)
+  stmt <- as.character(keytable$Statement)
+  nxt <- as.character(keytable$Next)
+  parentsOf <- split(seq_len(n), factor(nxt, levels = unique(stmt)))
+
+  # Every path from the root to lead i, as vectors of lead indices
+  pathsTo <- function(i, visited) {
+    if (stmt[i] %in% visited) {
+      stop("Cycle in key: couplet ", stmt[i], " is reachable from itself", call. = FALSE)
     }
-    rownames(rows) <- NULL
-    rows
+    parents <- parentsOf[[stmt[i]]]
+    if (length(parents) == 0) return(list(i))
+    unlist(lapply(parents, function(p) {
+      lapply(pathsTo(p, c(visited, stmt[i])), function(path) c(path, i))
+    }), recursive = FALSE)
   }
 
-  walk <- function(taxon, stmt, choice, visited) {
-    if (stmt %in% visited) {
-      stop("Cycle in key: couplet ", stmt, " is reachable from itself", call. = FALSE)
-    }
-    trait <- leadRows(stmt, choice)
-    trait$Taxon <- rep(taxon, nrow(trait))
-    parents <- keytable[keytable$Next == stmt, c("Statement", "Choice"), drop = FALSE]
-    if (nrow(parents) == 0) {
-      trait$pSt <- rep("", nrow(trait))
-      trait$pCh <- rep("", nrow(trait))
-      return(trait)
-    }
-    paths <- lapply(seq_len(nrow(parents)), function(i) {
-      here <- trait
-      here$pSt <- rep(parents$Statement[i], nrow(here))
-      here$pCh <- rep(parents$Choice[i], nrow(here))
-      rbind(walk(taxon, parents$Statement[i], parents$Choice[i], c(visited, stmt)), here)
-    })
-    do.call(rbind, paths)
+  leaves <- which(nxt == "-")
+  paths <- list()
+  taxa <- character()
+  for (leaf in leaves) {
+    found <- pathsTo(leaf, character())
+    paths <- c(paths, found)
+    taxa <- c(taxa, rep(keytable$Taxon[leaf], length(found)))
   }
+  if (length(paths) == 0) return(empty)
 
-  leaves <- keytable[keytable$Next == "-", , drop = FALSE]
-  out <- do.call(rbind, Map(walk, leaves$Taxon, leaves$Statement, leaves$Choice,
-    MoreArgs = list(visited = character())
-  ))
-  if (is.null(out)) {
-    out <- data.frame(
-      Statement = character(), Choice = character(), Character = character(),
-      Taxon = character(), pSt = character(), pCh = character(),
-      stringsAsFactors = FALSE
-    )
+  lead <- unlist(paths)
+  prev <- unlist(lapply(paths, function(path) c(NA, path[-length(path)])))
+  taxon <- rep(taxa, lengths(paths))
+  terms <- as.list(as.character(keytable$Character))
+  if (separateTerms) {
+    terms <- lapply(strsplit(as.character(keytable$Character), ";", fixed = TRUE), trimws)
+    terms[lengths(terms) == 0] <- ""
   }
+  reps <- lengths(terms)[lead]
+  out <- data.frame(
+    Statement = rep(stmt[lead], reps),
+    Choice = rep(as.character(keytable$Choice)[lead], reps),
+    Character = unlist(terms[lead], use.names = FALSE),
+    Taxon = rep(taxon, reps),
+    pSt = rep(ifelse(is.na(prev), "", stmt[prev]), reps),
+    pCh = rep(ifelse(is.na(prev), "", as.character(keytable$Choice)[prev]), reps),
+    stringsAsFactors = FALSE
+  )
   rownames(out) <- NULL
   out
 }
