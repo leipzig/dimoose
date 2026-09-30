@@ -220,7 +220,7 @@ def extract_from_key_sections(key_sections: List[Dict[str, str]]) -> List[Dichot
     return keys
 
 def main():
-    text_file = "borror-the-study-of-insect1.txt"
+    text_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "references", "borror-the-study-of-insect1.txt")
     output_file = "dichotomous_keys.json"
     
     # Extract key sections from the text

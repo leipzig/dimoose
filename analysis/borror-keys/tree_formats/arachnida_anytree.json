@@ -1,0 +1,130 @@
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "id": "2'",
+              "name": "Opisthosoma not petiolate, but broadly joined to prosoma (Figures 5-15 through 5-22) Acari (Order: Acari)"
+            }
+          ],
+          "id": "2",
+          "name": "Opisthosoma petiolate (Figures 5-5 and 5-9 through 5-13) Araneae (Order: Araneae)"
+        },
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "id": "6'",
+                                      "name": "Eyes lacking; tail short, one- to four-segmented; pedipalps arching upward, forward, and downward and moving vertically; body yellowish or brownish, less than 8 mm in length Schizomida (Order: Schizomida)"
+                                    }
+                                  ],
+                                  "id": "6",
+                                  "name": "With two median eyes on a tubercle anteriorly and a group of three eyes on each lateral margin; tail long, filiform, and many-segmented; pedipalps nearly straight or curved mesad, extending forward, and moving laterally (Figure 5-4B); body blackish, more than 50 mm in length Uropygi (Order: Uropygi)"
+                                }
+                              ],
+                              "id": "5'",
+                              "name": "Pedipalps usually much stouter than any of the legs (Figure 5-4B); mostly larger forms"
+                            }
+                          ],
+                          "id": "5",
+                          "name": "Pedipalps slender, similar to legs (Figure 5-4A); minute forms, 5 mm or less in length Palpigradi (Order: Palpigradi)"
+                        }
+                      ],
+                      "id": "4'",
+                      "name": "Opisthosoma not ending in a sting; first pair of legs longer than other pairs (Figure 5-4A,B); second ventral segment of opisthosoma without comblike organs"
+                    }
+                  ],
+                  "id": "4",
+                  "name": "Opisthosoma ending in a sting (Figure 5-3); first pair of legs not greatly elongated; second ventral segment of opisthosoma with a pair of comblike organs Scorpiones (Order: Scorpiones)"
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "children": [
+                                        {
+                                          "children": [
+                                            {
+                                              "id": "10'",
+                                              "name": "Prosoma wider than long, lateral margins rounded or arched, and without a transverse suture; opisthosoma without a terminal appendage; length variable, up to about 50 mm Amblypygi (Order: Amblypygi)"
+                                            }
+                                          ],
+                                          "id": "10",
+                                          "name": "Prosoma longer than wide, lateral margins nearly parallel, and with a transverse membranous suture in caudal third; opisthosoma with a very short terminal appendage; length 5-8 mm (see also couplet 6') Schizomida (Order: Schizomida)"
+                                        },
+                                        {
+                                          "children": [
+                                            {
+                                              "children": [
+                                                {
+                                                  "id": "11'",
+                                                  "name": "Size and color variable, but without broad flap at anterior end of prosoma covering chelicerae; legs variable in length, often very long and slender (Figure 5-14); widely distributed Opiliones (Order: Opiliones)"
+                                                }
+                                              ],
+                                              "id": "11",
+                                              "name": "Orange-red to brown arachnids, about 3 mm in length, with broad flap at anterior end of prosoma concealing chelicerae; legs not unusually long, animal somewhat mitelike or ticklike in appearance; recorded from Rio Grande Valley of Texas Ricinulei (Order: Ricinulei)"
+                                            }
+                                          ],
+                                          "id": "9'",
+                                          "name": "First legs similar to the others and (except in the Opiliones) not usually long; opisthosoma not particularly constricted at base"
+                                        }
+                                      ],
+                                      "id": "9",
+                                      "name": "First pair of legs very long, with long tarsi; opisthosoma constricted at base; mainly tropical"
+                                    }
+                                  ],
+                                  "id": "8'",
+                                  "name": "Without the preceding combination of characters"
+                                }
+                              ],
+                              "id": "8",
+                              "name": "Chelicerae very large, usually about as long as prosoma, and extending forward, and body slightly narrowed in middle (Figure 5-4C); color pale yellow to brownish; length 20 to 30 mm; mostly nocturnal desert forms occurring in western United States Solifugae (Order: Solifugae)"
+                            }
+                          ],
+                          "id": "7'",
+                          "name": "Pedipalps raptorial or leglike, but not chelate; body not particularly flattened; size variable"
+                        }
+                      ],
+                      "id": "7",
+                      "name": "Pedipalps chelate (pincerlike) (Figure 5-23); body more or less oval, flattened, usually less than 5 mm in length Pseudoscorpiones (Order: Pseudoscorpiones)"
+                    }
+                  ],
+                  "id": "3'",
+                  "name": "Opisthosoma without a tail-like prolongation or with a very short leaflike appendage"
+                }
+              ],
+              "id": "3",
+              "name": "Opisthosoma with a tail-like prolongation that is either thick and terminating in a sting (Figure 5-3) or slender and more or less whiplike (Figure 5-4A,B); mostly tropical"
+            }
+          ],
+          "id": "1'",
+          "name": "Opisthosoma distinctly segmented, without spinnerets"
+        }
+      ],
+      "id": "1",
+      "name": "Opisthosoma (abdomen) unsegmented or, if segmented, with spinnerets posteriorly on ventral side (Figures 5-5 and 5-8, ALS,PLS,PMS)"
+    }
+  ],
+  "id": "title",
+  "name": "Key to the Orders of Arachnida"
+}

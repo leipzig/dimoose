@@ -25,6 +25,37 @@ This package provides tools to do the following
 - ontological annotation, together with `pepper`(https://github.com/leipzig/pepper) labels at the decision nodes and edges can be mapped to ontologies using join tables
 - build mixed effects conditional inference trees (mecits)
 
+# Quick start
+
+```r
+library(moose)
+
+# Four example keys, all moose objects with the same methods
+sharks    <- sharkKey()          # FishBase key 1: shark families
+arachnids <- arachnidaKey()      # Borror & DeLong: orders of Arachnida
+vibrios   <- vibrioKey()         # generated from the Noguerola & Blanch matrix
+h2a       <- phylotreeKey("H2a") # PhyloTree Build 17 (via Haplogrep 3)
+
+summary(sharks)
+arachnids$toNewick()
+vibrios$validate()
+exportWizard(h2a, "h2a.html")    # interactive, mobile-friendly key with a map
+
+# Your own keys
+importFishbase(10)               # any FishBase key
+keyFromLeads(my_leads)           # a table of couplets and leads
+keyFromRpart(my_rpart_tree)      # a classification tree
+```
+
+# Repository layout
+
+| Path | Contents |
+|---|---|
+| `R/`, `man/`, `tests/`, `inst/`, `data/` | The R package (`inst/wizard/` holds the wizard's CSS and JavaScript) |
+| `data-raw/phylotree17/` | How `data/phylotree17*.rda` are built from Haplogrep's tree, and a check against GitHub |
+| `analysis/` | Exploratory work outside the package: Borror key extraction, PhyloTree comparisons, Vibrio analyses, table extraction (see `analysis/README.md`) |
+| `references/` | Copyrighted source PDFs used by the analyses; git-ignored |
+
 # Getting started
 
 To get started, you might want to read the [introduction vignette](https://CRAN.R-project.org/package=moose/vignettes/moose.html). There is also a vignette containing some [examples and applications](https://CRAN.R-project.org/package=moose/vignettes/applications.html).

@@ -193,7 +193,7 @@ def process_key_section(title: str, text: str) -> Optional[DichotomousKey]:
     return key
 
 def main():
-    text_file = "borror-the-study-of-insect1.txt"
+    text_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "references", "borror-the-study-of-insect1.txt")
     output_dir = "dichotomous_keys"
     
     # Find key sections

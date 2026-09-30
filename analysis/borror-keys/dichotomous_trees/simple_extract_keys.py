@@ -105,7 +105,7 @@ def process_entries(entries: List[Dict[str, str]]) -> List[Dict[str, Any]]:
     return nodes
 
 def main():
-    text_file = "borror-the-study-of-insect1.txt"
+    text_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "references", "borror-the-study-of-insect1.txt")
     output_dir = "insect_keys"
     
     # Create output directory

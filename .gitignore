@@ -1,7 +1,27 @@
+# R
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
-.DS_Store
+*.Rcheck/
+moose_*.tar.gz
 scrap.R
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Node
+node_modules/
+
+# macOS
+.DS_Store
+
+# Copyrighted reference material: kept locally for the analysis scripts,
+# never committed (see analysis/README.md)
+references/
+
+# Source spreadsheet for the Vibrio table
 vibrio.xlsx
