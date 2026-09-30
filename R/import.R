@@ -1,286 +1,313 @@
-#' Import a dichotomous key from fishbase
-#' see https://www.fishbase.se/keys/allkeys.php for a list of keys
-#' @param keycode representing some taxa on fishbase
-#' @param fishbaseURL fishbase url (swedish one seems best?)
-#' @param usePhyloService GNR for Global Names Resolver, TRNS for Phylotastic Taxonomic Name Resolution Service
-#' @return a moose object
+#' Import a dichotomous key from FishBase
+#'
+#' Downloads a key from FishBase and converts it into a [moose] object. See
+#' <https://www.fishbase.se/keys/allkeys.php> for the list of keys and their
+#' key codes.
+#'
+#' @param keycode Numeric or character FishBase key code.
+#' @param fishbaseUrl Base URL of the FishBase mirror, with a trailing slash.
+#' @param separateTerms If `TRUE`, split each lead's character statement on
+#'   `";"` into one row per term.
+#' @param usePhyloService Taxonomic name resolution: `"GNA"` verifies terminal
+#'   taxa with the Global Names verifier (`taxize::gna_verifier()`, requires
+#'   the 'taxize' package); `"none"` skips resolution. `"GNR"` is accepted as
+#'   an alias for `"GNA"`. `"TNRS"` is no longer available because
+#'   `taxize::tnrs()` is defunct.
+#' @param embedImages If `TRUE`, download the key's morphology images and store
+#'   them base64-encoded in `meta`. Image URLs are always stored.
+#' @return A [moose] object.
+#' @seealso [parseFishbase()] to build a key from saved HTML pages.
+#' @examples
+#' \dontrun{
+#' sharks <- importFishbase(1)
+#' sharks$taxa
+#' }
 #' @export
-#' @importFrom dplyr slice mutate select filter first nth n
-#' @importFrom httr POST GET content
-#' @importFrom tidyr separate
-#' @importFrom stringr str_replace_all
-#' @importFrom taxize tnrs gna_verifier
-#' @importFrom rvest html_nodes html_table html_attr
-#' @import magrittr
-#' @importFrom base64enc base64encode
-
-# Helper function to download and encode images
-downloadAndEncodeImage <- function(img_url, base_url = "https://www.fishbase.se") {
-  tryCatch(
-    {
-      full_url <- if (startsWith(img_url, "http")) img_url else paste0(base_url, sub("^\\.\\.?", "", img_url))
-      response <- httr::GET(full_url)
-      if (httr::status_code(response) == 200) {
-        raw_content <- httr::content(response, as = "raw")
-        encoded <- base64enc::base64encode(raw_content)
-        return(encoded)
-      }
-      return(NULL)
-    },
-    error = function(e) {
-      warning(paste("Failed to download image:", img_url))
-      return(NULL)
-    }
+importFishbase <- function(keycode,
+                           fishbaseUrl = "https://www.fishbase.se/",
+                           separateTerms = TRUE,
+                           usePhyloService = c("GNA", "GNR", "none", "TNRS"),
+                           embedImages = FALSE) {
+  usePhyloService <- match.arg(usePhyloService)
+  pages <- fetchFishbasePages(keycode, fishbaseUrl)
+  parseFishbase(
+    pages$description, pages$questions,
+    separateTerms = separateTerms,
+    usePhyloService = usePhyloService,
+    embedImages = embedImages,
+    pageUrl = pages$questionsUrl
   )
 }
 
-importFishbase <- function(keycode, fishbaseUrl = "https://www.fishbase.se/", separateTerms = TRUE, usePhyloService = "GNR") {
-  # get desc
-  response <- httr::GET(paste0(fishbaseUrl, "keys/description.php?keycode=", keycode))
-  content <- httr::content(response)
-  tables <- rvest::html_nodes(content, "table")
+#' Build a moose object from FishBase key pages
+#'
+#' The offline half of [importFishbase()]: parses a FishBase key description
+#' page and its questions (couplet) page, both already downloaded.
+#'
+#' @param description The description page (`keys/description.php`): an
+#'   `xml_document`, a file path, or a string of HTML.
+#' @param questions The questions page (`keys/questions.php`), in any of the
+#'   same forms.
+#' @inheritParams importFishbase
+#' @param pageUrl URL of the questions page, used to resolve relative image
+#'   links.
+#' @return A [moose] object.
+#' @examples
+#' \dontrun{
+#' parseFishbase("description.html", "questions.html", usePhyloService = "none")
+#' }
+#' @export
+parseFishbase <- function(description, questions,
+                          separateTerms = TRUE,
+                          usePhyloService = c("GNA", "GNR", "none", "TNRS"),
+                          embedImages = FALSE,
+                          pageUrl = "https://www.fishbase.se/keys/questions.php") {
+  usePhyloService <- match.arg(usePhyloService)
+  descDoc <- asHtmlDocument(description)
+  keyDoc <- asHtmlDocument(questions)
 
-  # Extract description and metadata
-  desc_table <- rvest::html_table(tables[[1]], header = FALSE)
-  meta_list <- list()
+  info <- parseFishbaseDescription(descDoc)
+  keytable <- parseFishbaseKeyTable(keyDoc)
+  df <- keyPaths(keytable, separateTerms = separateTerms)
 
-  # Handle the description table structure
-  if (is.data.frame(desc_table)) {
-    desc <- desc_table[1, 1]
-    meta_list[["citation"]] <- desc_table[2, 1]
-    meta_list[["transcription"]] <- desc_table[3, 1]
-  } else {
-    desc <- desc_table[[1]][1, 1]
-    meta_list[["citation"]] <- desc_table[[1]][2, 1]
-    meta_list[["transcription"]] <- desc_table[[1]][3, 1]
-  }
+  leaves <- keytable[keytable$Next == "-", , drop = FALSE]
+  taxa <- resolveTaxa(leaves$Taxon, service = usePhyloService)
 
-  # get the key
-  key_response <- httr::POST(paste0(fishbaseUrl, "keys/questions.php"),
-    body = list("keycode" = keycode),
-    encode = "form"
-  )
-  key_content <- httr::content(key_response)
-  key_tables <- rvest::html_nodes(key_content, "table")
-  keytable <- rvest::html_table(key_tables[[1]])
-
-  # Get images from the page
-  imgs <- rvest::html_nodes(key_content, "img")
-  img_srcs <- rvest::html_attr(imgs, "src")
-  # Filter for GIF images in Morphpic directory
-  gif_srcs <- img_srcs[grepl("Morphpic/.*\\.gif$", img_srcs)]
-
-  # Download and encode images
-  for (img_src in unique(gif_srcs)) {
-    encoded <- downloadAndEncodeImage(img_src, fishbaseUrl)
-    if (!is.null(encoded)) {
-      # Extract the image name from the path
-      img_name <- sub(".*/(.*)\\.gif$", "\\1", img_src)
-      meta_list[[paste0("image_", img_name)]] <- encoded
-    }
-  }
-
-  # Convert meta_list to data frame
-  meta_df <- data.frame(
-    key = names(meta_list),
-    value = unlist(meta_list),
+  imageUrls <- fishbaseImageUrls(keyDoc, pageUrl)
+  imageNames <- sub("\\.gif$", "", basename(imageUrls), ignore.case = TRUE)
+  meta <- data.frame(
+    key = c("citation", "transcription", paste0("image_url_", imageNames)),
+    value = c(info$citation, info$transcription, imageUrls),
     stringsAsFactors = FALSE
   )
-
-  # fishbase keytables
-  col_names <- as.character(unlist(keytable[3, ]))
-  names(keytable) <- col_names
-  keytable %>%
-    slice(4:n()) %>%
-    tidyr::separate(col = "Couplet", into = c("Statement", "Choice"), sep = " ") %>%
-    dplyr::rename(Taxon = Link) %>%
-    dplyr::mutate(Taxon = stringr::str_replace_all(Taxon, " Key", "")) %>%
-    dplyr::mutate(Taxon = stringr::str_replace_all(Taxon, "^ ", "")) %>%
-    dplyr::mutate(Taxon = stringr::str_replace_all(Taxon, " $", "")) %>%
-    dplyr::mutate(Taxon = stringr::str_replace_all(Taxon, ",", "")) ->
-  cleankeytable
-
-  # internal func to descend tree form leaf node to root
-  recursiveDescendingTree <- function(Taxon, stmt, choice) {
-    cleankeytable %>%
-      dplyr::filter(Statement == stmt, Choice == choice) %>%
-      dplyr::select(Statement, Choice, Character) %>%
-      dplyr::mutate("Taxon" = Taxon) -> trait
-    if (separateTerms == TRUE) {
-      trait %>% tidyr::separate_rows(Character, sep = ";", convert = FALSE) -> trait
-    }
-    # you've reached the head node
-    if (all(!(cleankeytable$Next == stmt))) {
-      trait$pSt <- ""
-      trait$pCh <- ""
-      return(trait)
-    }
-    cleankeytable %>%
-      dplyr::filter(Next == stmt) %>%
-      dplyr::select(Statement, Choice) -> parent
-    trait$pSt <- parent$Statement
-    trait$pCh <- parent$Choice
-    return(rbind(recursiveDescendingTree(Taxon, parent$Statement, parent$Choice), trait))
+  if (isTRUE(embedImages) && length(imageUrls) > 0) {
+    encoded <- vapply(imageUrls, downloadAndEncodeImage, character(1))
+    keep <- !is.na(encoded)
+    meta <- rbind(meta, data.frame(
+      key = paste0("image_", imageNames[keep]),
+      value = unname(encoded[keep]),
+      stringsAsFactors = FALSE
+    ))
   }
 
-  # Get leaf nodes and resolve taxa
-  cleankeytable %>%
-    dplyr::filter(Next == "-") %>%
-    dplyr::select(Taxon, Statement, Choice) -> leafs
+  moose$new(df, info$desc, meta, taxa)
+}
 
-  # Handle taxonomy resolution
-  tryCatch(
-    {
-      if (usePhyloService == "GNR") {
-        # Create a standardized taxonomy data frame
-        taxa <- data.frame(
-          submitted_name = leafs$Taxon,
-          matched_name = leafs$Taxon, # Default to submitted name
-          stringsAsFactors = FALSE
-        )
+# ---- internals --------------------------------------------------------------
 
-        # Try to get verified names
-        verified <- taxize::gna_verifier(leafs$Taxon)
-        if (!is.null(verified) && nrow(verified) > 0) {
-          # Convert verified to data frame if it's a tibble
-          verified <- as.data.frame(verified)
-          # Map verified names back to taxa data frame
-          for (i in seq_along(leafs$Taxon)) {
-            match_idx <- which(verified$name_submitted == leafs$Taxon[i])
-            if (length(match_idx) > 0) {
-              taxa$matched_name[i] <- verified$name_matched[match_idx[1]]
-            }
-          }
-        }
-      } else if (usePhyloService == "TNRS") {
-        tnrs_result <- taxize::tnrs(leafs$Taxon)
-        taxa <- data.frame(
-          submitted_name = leafs$Taxon,
-          matched_name = tnrs_result$matched_name,
-          stringsAsFactors = FALSE
-        )
-      } else {
-        stop("Use GNR or TNRS for usePhyloService")
-      }
-    },
-    error = function(e) {
-      # If taxonomy resolution fails, create a basic resolved data frame
-      warning("Taxonomy resolution failed. Creating basic resolution table.")
-      taxa <- data.frame(
-        submitted_name = leafs$Taxon,
-        matched_name = leafs$Taxon,
-        stringsAsFactors = FALSE
-      )
-    }
+mooseUserAgent <- function() {
+  httr::user_agent("moose R package (https://github.com/leipzig/moose)")
+}
+
+asHtmlDocument <- function(x) {
+  if (inherits(x, "xml_document")) {
+    return(x)
+  }
+  xml2::read_html(x)
+}
+
+fetchFishbasePages <- function(keycode, fishbaseUrl) {
+  descUrl <- paste0(fishbaseUrl, "keys/description.php?keycode=", keycode)
+  descResponse <- httr::GET(descUrl, mooseUserAgent(), httr::timeout(60))
+  httr::stop_for_status(descResponse, task = "download the FishBase key description")
+
+  # FishBase serves the couplets only in response to a form POST
+  questionsUrl <- paste0(fishbaseUrl, "keys/questions.php")
+  keyResponse <- httr::POST(questionsUrl,
+    body = list(keycode = keycode), encode = "form",
+    mooseUserAgent(), httr::timeout(60)
   )
+  httr::stop_for_status(keyResponse, task = "download the FishBase key couplets")
 
-  # Process all leaf nodes
-  df <- purrr::pmap_dfr(
-    list(
-      as.list(leafs$Taxon),
-      as.list(leafs$Statement),
-      as.list(leafs$Choice)
-    ),
-    recursiveDescendingTree
+  list(
+    description = httr::content(descResponse),
+    questions = httr::content(keyResponse),
+    questionsUrl = questionsUrl
   )
+}
 
-  # Ensure df is a data frame with required columns
-  if (!is.data.frame(df) || nrow(df) == 0) {
-    df <- data.frame(
-      Statement = character(),
-      Choice = character(),
-      Character = character(),
-      Taxon = character(),
-      pSt = character(),
-      pCh = character(),
-      stringsAsFactors = FALSE
+# Title, citation and transcription note from the first table of the
+# description page, as plain strings.
+parseFishbaseDescription <- function(doc) {
+  tables <- rvest::html_nodes(doc, "table")
+  if (length(tables) == 0) {
+    stop("No table found in the FishBase key description page", call. = FALSE)
+  }
+  cells <- trimws(as.character(rvest::html_table(tables[[1]], header = FALSE)[[1]]))
+  list(desc = cells[1], citation = cells[2], transcription = cells[3])
+}
+
+# One row per lead: Statement (couplet number), Choice (a/b/...), Character,
+# Next (couplet it leads to, or "-" for a terminal lead), Prev, Taxon.
+parseFishbaseKeyTable <- function(doc) {
+  tables <- rvest::html_nodes(doc, "table")
+  if (length(tables) == 0) {
+    stop("No table found in the FishBase key page", call. = FALSE)
+  }
+  raw <- rvest::html_table(tables[[1]], header = FALSE, convert = FALSE)
+  header <- which(trimws(raw[[1]]) == "Couplet")[1]
+  if (is.na(header)) {
+    stop("Could not find the 'Couplet' header row in the FishBase key table", call. = FALSE)
+  }
+  body <- raw[seq_len(nrow(raw)) > header, , drop = FALSE]
+  names(body) <- trimws(unlist(raw[header, ], use.names = FALSE))
+
+  required <- c("Couplet", "Character", "Next", "Prev", "Link")
+  missing <- setdiff(required, names(body))
+  if (length(missing) > 0) {
+    stop("FishBase key table is missing column(s): ",
+      paste(missing, collapse = ", "),
+      call. = FALSE
     )
   }
 
-  moose$new(df, desc, meta_df, taxa)
+  couplet <- strsplit(trimws(body$Couplet), "\\s+")
+  data.frame(
+    Statement = vapply(couplet, function(x) x[1], character(1)),
+    Choice = vapply(couplet, function(x) if (length(x) >= 2) x[2] else "", character(1)),
+    Character = trimws(body$Character),
+    Next = trimws(body$Next),
+    Prev = gsub("[()]", "", trimws(body$Prev)),
+    Taxon = cleanTaxon(body$Link),
+    stringsAsFactors = FALSE
+  )
 }
 
-#' Load consensus matrix from I. Noguerola and A.R. Blanch "Identification of Vibrio spp. with a set of dichotomous keys" doi:10.1111/j.1365-2672.2008.03730.x
-#' @example data(vibrio)
-#' @example importVibrio(vibrio)
-importVibrio <- function(consensus) {
-  consensus
+# "Echinorhinidae, Key" -> "Echinorhinidae"
+cleanTaxon <- function(x) {
+  x <- trimws(ifelse(is.na(x), "", x))
+  x <- sub(",?\\s*Key$", "", x)
+  trimws(gsub(",", "", x))
 }
 
-#' Generate a tree from a feature matrix using various machine learning methods
-#' @param data A data frame containing the feature matrix
-#' @param target_col The name of the target/response column
-#' @param method The method to use for tree generation: "rpart", "randomForest", or "gbm"
-#' @param params Optional list of parameters specific to the chosen method
-#' @return A tree object of the corresponding type (rpart, randomForest, or gbm)
-#' @export
-#' @importFrom rpart rpart
-#' @importFrom randomForest randomForest
-#' @importFrom gbm gbm
-generateTree <- function(data, target_col, method = "rpart", params = list()) {
-  # Validate inputs
-  if (!is.data.frame(data)) {
-    stop("data must be a data frame")
-  }
-  if (!target_col %in% names(data)) {
-    stop("target_col must be a column name in data")
-  }
-  if (!method %in% c("rpart", "randomForest", "gbm")) {
-    stop('method must be one of: "rpart", "randomForest", "gbm"')
-  }
-
-  # Create formula
-  feature_cols <- setdiff(names(data), target_col)
-  formula <- as.formula(paste(target_col, "~", paste(feature_cols, collapse = " + ")))
-
-  # Generate tree based on chosen method
-  tree <- switch(method,
-    "rpart" = {
-      # Default rpart parameters
-      default_params <- list(
-        method = "class",
-        control = rpart::rpart.control(minsplit = 20, minbucket = 7, cp = 0.01)
-      )
-      # Merge user params with defaults
-      params <- modifyList(default_params, params)
-      # Call rpart with all parameters
-      do.call(
-        rpart::rpart,
-        c(list(formula = formula, data = data), params)
-      )
-    },
-    "randomForest" = {
-      # Default randomForest parameters
-      default_params <- list(
-        ntree = 500,
-        mtry = floor(sqrt(length(feature_cols)))
-      )
-      # Merge user params with defaults
-      params <- modifyList(default_params, params)
-      # Call randomForest with all parameters
-      do.call(
-        randomForest::randomForest,
-        c(list(formula = formula, data = data), params)
-      )
-    },
-    "gbm" = {
-      # Default gbm parameters
-      default_params <- list(
-        distribution = "bernoulli",
-        n.trees = 100,
-        interaction.depth = 3,
-        shrinkage = 0.1,
-        cv.folds = 5
-      )
-      # Merge user params with defaults
-      params <- modifyList(default_params, params)
-      # Call gbm with all parameters
-      do.call(
-        gbm::gbm,
-        c(list(formula = formula, data = data), params)
+# For every terminal lead, walk back to the root and emit the leads on the
+# path. Columns: Statement, Choice, Character, Taxon, pSt, pCh, where pSt/pCh
+# identify the lead that points at this lead's couplet ("" at the root).
+# A couplet reached from more than one lead contributes one path per parent.
+keyPaths <- function(keytable, separateTerms = TRUE) {
+  leadRows <- function(stmt, choice) {
+    rows <- keytable[keytable$Statement == stmt & keytable$Choice == choice,
+      c("Statement", "Choice", "Character"),
+      drop = FALSE
+    ]
+    if (separateTerms && nrow(rows) > 0) {
+      parts <- strsplit(rows$Character, ";", fixed = TRUE)
+      parts[lengths(parts) == 0] <- ""
+      rows <- data.frame(
+        Statement = rep(rows$Statement, lengths(parts)),
+        Choice = rep(rows$Choice, lengths(parts)),
+        Character = trimws(unlist(parts)),
+        stringsAsFactors = FALSE
       )
     }
-  )
+    rownames(rows) <- NULL
+    rows
+  }
 
-  return(tree)
+  walk <- function(taxon, stmt, choice, visited) {
+    if (stmt %in% visited) {
+      stop("Cycle in key: couplet ", stmt, " is reachable from itself", call. = FALSE)
+    }
+    trait <- leadRows(stmt, choice)
+    trait$Taxon <- rep(taxon, nrow(trait))
+    parents <- keytable[keytable$Next == stmt, c("Statement", "Choice"), drop = FALSE]
+    if (nrow(parents) == 0) {
+      trait$pSt <- rep("", nrow(trait))
+      trait$pCh <- rep("", nrow(trait))
+      return(trait)
+    }
+    paths <- lapply(seq_len(nrow(parents)), function(i) {
+      here <- trait
+      here$pSt <- rep(parents$Statement[i], nrow(here))
+      here$pCh <- rep(parents$Choice[i], nrow(here))
+      rbind(walk(taxon, parents$Statement[i], parents$Choice[i], c(visited, stmt)), here)
+    })
+    do.call(rbind, paths)
+  }
+
+  leaves <- keytable[keytable$Next == "-", , drop = FALSE]
+  out <- do.call(rbind, Map(walk, leaves$Taxon, leaves$Statement, leaves$Choice,
+    MoreArgs = list(visited = character())
+  ))
+  if (is.null(out)) {
+    out <- data.frame(
+      Statement = character(), Choice = character(), Character = character(),
+      Taxon = character(), pSt = character(), pCh = character(),
+      stringsAsFactors = FALSE
+    )
+  }
+  rownames(out) <- NULL
+  out
+}
+
+# One row per unique submitted name. matched_name falls back to the submitted
+# name when resolution is skipped, unavailable, or finds no match.
+resolveTaxa <- function(taxa, service = c("GNA", "GNR", "none", "TNRS")) {
+  service <- match.arg(service)
+  if (service == "TNRS") {
+    stop("usePhyloService = \"TNRS\" is no longer available: taxize::tnrs() is defunct ",
+      "because the Phylotastic TNRS service shut down. Use \"GNA\" or \"none\".",
+      call. = FALSE
+    )
+  }
+  taxa <- unique(taxa[!is.na(taxa) & nzchar(taxa)])
+  out <- data.frame(
+    submitted_name = taxa,
+    matched_name = taxa,
+    current_name = rep(NA_character_, length(taxa)),
+    match_type = rep(NA_character_, length(taxa)),
+    data_source = rep(NA_character_, length(taxa)),
+    stringsAsFactors = FALSE
+  )
+  if (service == "none" || length(taxa) == 0) {
+    return(out)
+  }
+  if (!requireNamespace("taxize", quietly = TRUE)) {
+    warning("Package 'taxize' is not installed; skipping taxonomic name resolution.",
+      call. = FALSE
+    )
+    return(out)
+  }
+  verified <- tryCatch(
+    taxize::gna_verifier(taxa),
+    error = function(e) {
+      warning("Taxonomic name resolution failed: ", conditionMessage(e), call. = FALSE)
+      NULL
+    }
+  )
+  if (is.null(verified) || nrow(verified) == 0) {
+    return(out)
+  }
+  idx <- match(out$submitted_name, verified$submittedName)
+  canonical <- as.character(verified$matchedCanonicalSimple[idx])
+  found <- !is.na(canonical) & nzchar(canonical)
+  out$matched_name[found] <- canonical[found]
+  out$current_name <- as.character(verified$currentCanonicalSimple[idx])
+  out$match_type <- as.character(verified$matchType[idx])
+  out$data_source <- as.character(verified$dataSourceTitleShort[idx])
+  out
+}
+
+fishbaseImageUrls <- function(doc, pageUrl) {
+  src <- rvest::html_attr(rvest::html_nodes(doc, "img"), "src")
+  src <- unique(src[!is.na(src) & grepl("morphpic/.*\\.gif$", src, ignore.case = TRUE)])
+  xml2::url_absolute(src, pageUrl)
+}
+
+# Base64-encoded image, or NA on failure.
+downloadAndEncodeImage <- function(url) {
+  tryCatch(
+    {
+      response <- httr::GET(url, mooseUserAgent(), httr::timeout(30))
+      if (httr::status_code(response) != 200) {
+        warning("Failed to download image: ", url, call. = FALSE)
+        return(NA_character_)
+      }
+      base64enc::base64encode(httr::content(response, as = "raw"))
+    },
+    error = function(e) {
+      warning("Failed to download image: ", url, call. = FALSE)
+      NA_character_
+    }
+  )
 }

@@ -2,28 +2,43 @@
 % Please edit documentation in R/moose.R
 \name{moose}
 \alias{moose}
-\title{A moose object see https://www.fishbase.se/keys/allkeys.php for a list of keys}
-\value{
-a moose object
-}
+\title{A dichotomous key}
 \description{
-A moose object see https://www.fishbase.se/keys/allkeys.php for a list of keys
+An R6 object holding a dichotomous key as a table of the leads on every
+path from the root to a terminal taxon. Usually created by
+[importFishbase()] or [parseFishbase()]. See
+<https://www.fishbase.se/keys/allkeys.php> for FishBase keys.
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{desc}}{Key title or description (read-only).}
 
-A moose object see https://www.fishbase.se/keys/allkeys.php for a list of keys
+\item{\code{df}}{Data frame with one row per lead (or per term, if terms were
+separated) per terminal taxon, with columns `Statement`, `Choice`,
+`Character`, `Taxon`, and `pSt`/`pCh` for the parent lead.}
+
+\item{\code{meta}}{Key/value data frame of metadata (citation, image URLs, ...).}
+
+\item{\code{taxa}}{Data frame of terminal taxa and their resolved names.}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{moose$new()}}
-\item \href{#method-print}{\code{moose$print()}}
-\item \href{#method-toDataTree}{\code{moose$toDataTree()}}
-\item \href{#method-toPolyclave}{\code{moose$toPolyclave()}}
-\item \href{#method-clone}{\code{moose$clone()}}
+\item \href{#method-moose-new}{\code{moose$new()}}
+\item \href{#method-moose-print}{\code{moose$print()}}
+\item \href{#method-moose-toDataTree}{\code{moose$toDataTree()}}
+\item \href{#method-moose-toPolyclave}{\code{moose$toPolyclave()}}
+\item \href{#method-moose-clone}{\code{moose$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
+\if{html}{\out{<a id="method-moose-new"></a>}}
+\if{latex}{\out{\hypertarget{method-moose-new}{}}}
 \subsection{Method \code{new()}}{
+Create a new moose object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{moose$new(df, desc = NA, meta = NA, taxa = NA)}\if{html}{\out{</div>}}
 }
@@ -31,39 +46,74 @@ A moose object see https://www.fishbase.se/keys/allkeys.php for a list of keys
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{df}}{a dataframe}
+\item{\code{df}}{Data frame of leads (see the `df` field).}
 
-\item{\code{desc}}{a description}
+\item{\code{desc}}{Key title or description.}
+
+\item{\code{meta}}{Key/value metadata data frame.}
+
+\item{\code{taxa}}{Data frame of terminal taxa.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
+\if{html}{\out{<a id="method-moose-print"></a>}}
+\if{latex}{\out{\hypertarget{method-moose-print}{}}}
 \subsection{Method \code{print()}}{
+Print the description, metadata and lead table.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$print()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{moose$print(...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Unused.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-toDataTree"></a>}}
+\if{html}{\out{<a id="method-moose-toDataTree"></a>}}
+\if{latex}{\out{\hypertarget{method-moose-toDataTree}{}}}
 \subsection{Method \code{toDataTree()}}{
+Convert the key to a [data.tree::Node].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{moose$toDataTree(includeStatementNodes = FALSE, includeLoneLeafNodes = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{includeStatementNodes}}{Not yet implemented.}
+
+\item{\code{includeLoneLeafNodes}}{Not yet implemented.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-toPolyclave"></a>}}
+\if{html}{\out{<a id="method-moose-toPolyclave"></a>}}
+\if{latex}{\out{\hypertarget{method-moose-toPolyclave}{}}}
 \subsection{Method \code{toPolyclave()}}{
+Convert the key to a polyclave (multi-access key). Not yet
+  implemented: currently returns the lead table unchanged.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{moose$toPolyclave(delim = ";")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{delim}}{Separator between character terms.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
+\if{html}{\out{<a id="method-moose-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-moose-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
