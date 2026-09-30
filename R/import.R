@@ -67,7 +67,7 @@ parseFishbase <- function(description, questions,
   keyDoc <- asHtmlDocument(questions)
 
   info <- parseFishbaseDescription(descDoc)
-  keytable <- parseFishbaseKeyTable(keyDoc)
+  keytable <- parseFishbaseKeyTable(keyDoc, pageUrl = pageUrl)
   df <- keyPaths(keytable, separateTerms = separateTerms)
 
   leaves <- keytable[keytable$Next == "-", , drop = FALSE]
@@ -90,7 +90,7 @@ parseFishbase <- function(description, questions,
     ))
   }
 
-  moose$new(df, info$desc, meta, taxa)
+  moose$new(df, info$desc, meta, taxa, leads = keytable)
 }
 
 # ---- internals --------------------------------------------------------------
@@ -138,8 +138,10 @@ parseFishbaseDescription <- function(doc) {
 }
 
 # One row per lead: Statement (couplet number), Choice (a/b/...), Character,
-# Next (couplet it leads to, or "-" for a terminal lead), Prev, Taxon.
-parseFishbaseKeyTable <- function(doc) {
+# Next (couplet it leads to, or "-" for a terminal lead), Prev, Taxon, plus
+# absolute URLs from the lead's Link cell: Image (thumbnails, ";"-separated),
+# ImageLink (full-size figures) and TaxonUrl (FishBase species list or key).
+parseFishbaseKeyTable <- function(doc, pageUrl = "https://www.fishbase.se/keys/questions.php") {
   tables <- rvest::html_nodes(doc, "table")
   if (length(tables) == 0) {
     stop("No table found in the FishBase key page", call. = FALSE)
@@ -149,7 +151,8 @@ parseFishbaseKeyTable <- function(doc) {
   if (is.na(header)) {
     stop("Could not find the 'Couplet' header row in the FishBase key table", call. = FALSE)
   }
-  body <- raw[seq_len(nrow(raw)) > header, , drop = FALSE]
+  keep <- seq_len(nrow(raw)) > header
+  body <- raw[keep, , drop = FALSE]
   names(body) <- trimws(unlist(raw[header, ], use.names = FALSE))
 
   required <- c("Couplet", "Character", "Next", "Prev", "Link")
@@ -161,6 +164,8 @@ parseFishbaseKeyTable <- function(doc) {
     )
   }
 
+  links <- linkCellUrls(tables[[1]], nrow(raw), match("Link", names(body)), pageUrl)
+
   couplet <- strsplit(trimws(body$Couplet), "\\s+")
   data.frame(
     Statement = vapply(couplet, function(x) x[1], character(1)),
@@ -169,8 +174,38 @@ parseFishbaseKeyTable <- function(doc) {
     Next = trimws(body$Next),
     Prev = gsub("[()]", "", trimws(body$Prev)),
     Taxon = cleanTaxon(body$Link),
+    Image = links$Image[keep],
+    ImageLink = links$ImageLink[keep],
+    TaxonUrl = links$TaxonUrl[keep],
     stringsAsFactors = FALSE
   )
+}
+
+# URLs found in the Link cell of each table row. Rows whose <tr> count does
+# not match the parsed table (unexpected markup) get empty strings.
+linkCellUrls <- function(table, nrows, linkCol, pageUrl) {
+  empty <- rep("", nrows)
+  out <- list(Image = empty, ImageLink = empty, TaxonUrl = empty)
+  rows <- rvest::html_nodes(table, "tr")
+  if (length(rows) != nrows || is.na(linkCol)) {
+    return(out)
+  }
+  absolute <- function(x) {
+    x <- x[!is.na(x) & nzchar(x)]
+    if (length(x) == 0) character() else unique(xml2::url_absolute(x, pageUrl))
+  }
+  for (i in seq_len(nrows)) {
+    cells <- rvest::html_nodes(rows[[i]], "td")
+    if (length(cells) < linkCol) next
+    cell <- cells[[linkCol]]
+    img <- absolute(rvest::html_attr(rvest::html_nodes(cell, "img"), "src"))
+    href <- absolute(rvest::html_attr(rvest::html_nodes(cell, "a"), "href"))
+    isFigure <- grepl("\\.(gif|jpe?g|png)$", href, ignore.case = TRUE)
+    out$Image[i] <- paste(img, collapse = ";")
+    out$ImageLink[i] <- paste(href[isFigure], collapse = ";")
+    out$TaxonUrl[i] <- if (any(!isFigure)) href[!isFigure][1] else ""
+  }
+  out
 }
 
 # "Echinorhinidae, Key" -> "Echinorhinidae"

@@ -1,6 +1,307 @@
-# Not yet implemented: export an interactive dichotomous key ("wizard").
-# Kept internal until it does something; see
-# https://www.fishbase.se/keys/allkeys.php for example keys.
-exportWizard <- function(moose, displayLinks = TRUE, order = c("parsimony", "original")) {
-  stop("exportWizard() is not implemented yet", call. = FALSE)
+#' Export an interactive dichotomous key
+#'
+#' Writes a moose key as a single self-contained HTML page. With JavaScript
+#' on, the page steps through the key one couplet at a time, keeps a trail of
+#' the choices made (each one clickable to go back to it) and supports the
+#' browser's Back button. Without JavaScript, the same page is the full key
+#' with every lead hyperlinked to its next couplet or taxon. Each taxon gets
+#' a result section listing the characters on its path.
+#'
+#' The key is checked first: leads pointing at missing couplets, terminal
+#' leads without a taxon, couplets with fewer than two leads and couplets
+#' that cannot be reached from the first one are reported as warnings and
+#' marked in the page.
+#'
+#' @param moose A [moose] object, e.g. from [importFishbase()].
+#' @param file Path of the HTML file to write. If `NULL`, the HTML is returned
+#'   as a string instead.
+#' @param displayLinks If `TRUE`, show the couplet numbers each lead leads to
+#'   and comes from, as in a printed key. If `FALSE`, hide them. Leads stay
+#'   clickable either way.
+#' @param order Order of couplets. Only `"original"` (the key's own order) is
+#'   implemented.
+#' @param title Page title. Defaults to the key's description.
+#' @return The path to `file`, invisibly, or the HTML as a character string if
+#'   `file` is `NULL`.
+#' @examples
+#' \dontrun{
+#' sharks <- importFishbase(1, usePhyloService = "none")
+#' exportWizard(sharks, "sharks.html")
+#' }
+#' @export
+exportWizard <- function(moose, file = NULL, displayLinks = TRUE,
+                         order = c("original", "parsimony"), title = NULL) {
+  order <- match.arg(order)
+  if (order == "parsimony") {
+    stop("order = \"parsimony\" is not implemented yet; use \"original\"", call. = FALSE)
+  }
+  if (!inherits(moose, "moose")) {
+    stop("`moose` must be a moose object", call. = FALSE)
+  }
+  leads <- normalizeLeads(moose$leads)
+  if (nrow(leads) == 0) {
+    stop("This key has no leads to export", call. = FALSE)
+  }
+  check <- checkLeads(leads)
+  for (w in check$problems) warning(w, call. = FALSE)
+
+  if (is.null(title)) {
+    title <- if (length(moose$desc) == 1 && !is.na(moose$desc)) moose$desc else "Dichotomous key"
+  }
+  html <- renderWizard(leads, check,
+    title = title,
+    citation = metaValue(moose$meta, "citation"),
+    taxa = moose$taxa,
+    images = embeddedImages(moose$meta),
+    displayLinks = displayLinks
+  )
+  if (is.null(file)) {
+    return(html)
+  }
+  con <- file(file, open = "w", encoding = "UTF-8")
+  on.exit(close(con))
+  writeLines(html, con)
+  invisible(file)
+}
+
+# ---- key checks --------------------------------------------------------------
+
+normalizeLeads <- function(leads) {
+  for (col in c("Statement", "Choice", "Character", "Next", "Taxon", "Image", "ImageLink", "TaxonUrl")) {
+    if (is.null(leads[[col]])) leads[[col]] <- rep("", nrow(leads))
+    x <- as.character(leads[[col]])
+    x[is.na(x)] <- ""
+    leads[[col]] <- trimws(x)
+  }
+  leads$Next[leads$Next == ""] <- "-"
+  as.data.frame(leads, stringsAsFactors = FALSE)
+}
+
+# Root couplet, reachability, parents and a list of problems found.
+checkLeads <- function(leads) {
+  couplets <- unique(leads$Statement)
+  label <- paste0(leads$Statement, leads$Choice)
+  targets <- leads$Next[leads$Next != "-"]
+  problems <- character()
+
+  unreferenced <- setdiff(couplets, targets)
+  root <- if (length(unreferenced) > 0) unreferenced[1] else couplets[1]
+  if (length(unreferenced) == 0) {
+    problems <- c(problems, "Every couplet is the target of some lead (the key has a cycle); starting at the first couplet")
+  }
+
+  missingTarget <- leads$Next != "-" & !leads$Next %in% couplets
+  for (i in which(missingTarget)) {
+    problems <- c(problems, sprintf("Lead %s leads to couplet %s, which is not in the key", label[i], leads$Next[i]))
+  }
+  noTaxon <- leads$Next == "-" & leads$Taxon == ""
+  for (i in which(noTaxon)) {
+    problems <- c(problems, sprintf("Lead %s ends the key but names no taxon", label[i]))
+  }
+  leadCount <- table(factor(leads$Statement, levels = couplets))
+  for (cp in names(leadCount)[leadCount < 2]) {
+    problems <- c(problems, sprintf("Couplet %s has only one lead", cp))
+  }
+
+  reachable <- root
+  frontier <- root
+  while (length(frontier) > 0) {
+    nxt <- leads$Next[leads$Statement %in% frontier]
+    nxt <- setdiff(nxt[nxt %in% couplets], reachable)
+    reachable <- c(reachable, nxt)
+    frontier <- nxt
+  }
+  unreachable <- setdiff(couplets, reachable)
+  if (length(unreachable) > 0) {
+    problems <- c(problems, sprintf(
+      "Couplet(s) %s cannot be reached from couplet %s",
+      paste(unreachable, collapse = ", "), root
+    ))
+  }
+
+  list(root = root, couplets = couplets, missingTarget = missingTarget,
+       unreachable = unreachable, problems = problems)
+}
+
+# Lead indices from the root to lead `i`, following the first parent lead of
+# each couplet.
+pathToLead <- function(leads, i, root) {
+  path <- i
+  seen <- leads$Statement[i]
+  while (leads$Statement[path[1]] != root) {
+    parent <- which(leads$Next == leads$Statement[path[1]])[1]
+    if (is.na(parent) || leads$Statement[parent] %in% seen) break
+    seen <- c(seen, leads$Statement[parent])
+    path <- c(parent, path)
+  }
+  path
+}
+
+# ---- rendering ---------------------------------------------------------------
+
+htmlEscape <- function(x) {
+  x <- gsub("&", "&amp;", x, fixed = TRUE)
+  x <- gsub("<", "&lt;", x, fixed = TRUE)
+  x <- gsub(">", "&gt;", x, fixed = TRUE)
+  x <- gsub("\"", "&quot;", x, fixed = TRUE)
+  gsub("'", "&#39;", x, fixed = TRUE)
+}
+
+metaValue <- function(meta, key) {
+  if (!is.data.frame(meta) || !all(c("key", "value") %in% names(meta))) return(NA_character_)
+  v <- meta$value[meta$key == key]
+  if (length(v) == 0) NA_character_ else as.character(v[1])
+}
+
+# Named vector: image base name -> base64 data, from importFishbase(embedImages = TRUE)
+embeddedImages <- function(meta) {
+  if (!is.data.frame(meta) || !all(c("key", "value") %in% names(meta))) return(character())
+  rows <- grepl("^image_", meta$key) & !grepl("^image_url_", meta$key)
+  stats::setNames(as.character(meta$value[rows]), sub("^image_", "", meta$key[rows]))
+}
+
+splitUrls <- function(x) {
+  if (is.na(x) || !nzchar(x)) character() else strsplit(x, ";", fixed = TRUE)[[1]]
+}
+
+figuresHtml <- function(thumbs, fulls, images, alt) {
+  if (length(thumbs) == 0) return("")
+  items <- vapply(thumbs, function(t) {
+    name <- sub("\\.(gif|jpe?g|png)$", "", basename(t), ignore.case = TRUE)
+    src <- if (!is.na(images[name])) paste0("data:image/gif;base64,", images[name]) else t
+    full <- fulls[basename(fulls) == sub("^tn_", "", basename(t))][1]
+    img <- sprintf("<img src=\"%s\" alt=\"%s\" loading=\"lazy\">", htmlEscape(src), htmlEscape(alt))
+    if (is.na(full)) {
+      sprintf("<span>%s</span>", img)
+    } else {
+      sprintf("<a href=\"%s\" target=\"_blank\" rel=\"noopener\" title=\"Open full-size figure\">%s</a>",
+        htmlEscape(full), img)
+    }
+  }, character(1))
+  paste0("<figure class=\"figs\">", paste(items, collapse = ""), "</figure>")
+}
+
+renderWizard <- function(leads, check, title, citation, taxa, images, displayLinks) {
+  label <- paste0(leads$Statement, leads$Choice)
+  coupletId <- function(cp) paste0("c-", gsub("[^A-Za-z0-9_-]", "_", cp))
+
+  terminal <- which(leads$Next == "-" & leads$Taxon != "")
+  taxonNames <- unique(leads$Taxon[terminal])
+  taxonId <- stats::setNames(paste0("t-", seq_along(taxonNames)), taxonNames)
+
+  # Couplet sections
+  coupletHtml <- vapply(check$couplets, function(cp) {
+    idx <- which(leads$Statement == cp)
+    parents <- which(leads$Next == cp)
+    from <- if (length(parents) > 0) {
+      sprintf(" <span class=\"from\">from %s</span>", paste(sprintf(
+        "<a href=\"#%s\">%s</a>", coupletId(leads$Statement[parents]), htmlEscape(label[parents])
+      ), collapse = ", "))
+    } else {
+      ""
+    }
+    leadItems <- vapply(idx, function(i) {
+      text <- if (nzchar(leads$Character[i])) leads$Character[i] else "(no description)"
+      if (leads$Next[i] == "-") {
+        if (nzchar(leads$Taxon[i])) {
+          href <- paste0("#", taxonId[[leads$Taxon[i]]])
+          dest <- paste0("&rarr; ", htmlEscape(leads$Taxon[i]))
+        } else {
+          href <- NA
+          dest <- "no taxon given"
+        }
+      } else if (check$missingTarget[i]) {
+        href <- NA
+        dest <- sprintf("&rarr; couplet %s (missing from key)", htmlEscape(leads$Next[i]))
+      } else {
+        href <- paste0("#", coupletId(leads$Next[i]))
+        dest <- paste0("&rarr; ", htmlEscape(leads$Next[i]))
+      }
+      inner <- sprintf(
+        "<span class=\"letter\" aria-hidden=\"true\">%s</span><span class=\"text\">%s</span><span class=\"dest\">%s</span>",
+        if (nzchar(leads$Choice[i])) htmlEscape(leads$Choice[i]) else "&bull;", htmlEscape(text), dest
+      )
+      choose <- if (is.na(href)) {
+        sprintf("<span class=\"choose broken\" data-lead=\"%s\">%s</span>", htmlEscape(label[i]), inner)
+      } else {
+        sprintf("<a class=\"choose\" href=\"%s\" data-lead=\"%s\">%s</a>", href, htmlEscape(label[i]), inner)
+      }
+      figs <- figuresHtml(splitUrls(leads$Image[i]), splitUrls(leads$ImageLink[i]), images,
+        paste("Figure for lead", label[i]))
+      sprintf("<li class=\"lead\">%s%s</li>", choose, figs)
+    }, character(1))
+    id <- coupletId(cp)
+    sprintf(
+      "<section class=\"couplet\" id=\"%s\" aria-labelledby=\"h-%s\">\n<h2 id=\"h-%s\" tabindex=\"-1\">Couplet <span class=\"num\">%s</span>%s</h2>\n<ul class=\"leads\">\n%s\n</ul>\n</section>",
+      id, id, id, htmlEscape(cp), from, paste(leadItems, collapse = "\n")
+    )
+  }, character(1))
+
+  # Taxon result sections
+  taxonHtml <- vapply(taxonNames, function(tx) {
+    i <- terminal[leads$Taxon[terminal] == tx][1]
+    path <- pathToLead(leads, i, check$root)
+    steps <- vapply(path, function(p) {
+      sprintf("<li><a class=\"step\" href=\"#%s\">%s</a>%s</li>",
+        coupletId(leads$Statement[p]), htmlEscape(label[p]), htmlEscape(leads$Character[p]))
+    }, character(1))
+    verified <- ""
+    if (is.data.frame(taxa) && all(c("submitted_name", "matched_name") %in% names(taxa))) {
+      row <- taxa[taxa$submitted_name == tx, , drop = FALSE]
+      if (nrow(row) > 0 && !is.na(row$matched_name[1]) && row$matched_name[1] != tx) {
+        src <- if (!is.null(row$data_source) && !is.na(row$data_source[1])) paste0(" (", row$data_source[1], ")") else ""
+        verified <- sprintf("<p class=\"verified\">Accepted name: %s%s</p>", htmlEscape(row$matched_name[1]), htmlEscape(src))
+      }
+    }
+    others <- terminal[leads$Taxon[terminal] == tx]
+    alsoVia <- if (length(others) > 1) {
+      sprintf("<p class=\"verified\">Also reached from lead %s.</p>", htmlEscape(paste(label[others[-1]], collapse = ", ")))
+    } else {
+      ""
+    }
+    url <- leads$TaxonUrl[i]
+    link <- if (nzchar(url)) sprintf("<a href=\"%s\" target=\"_blank\" rel=\"noopener\">More on FishBase</a>", htmlEscape(url)) else ""
+    id <- taxonId[[tx]]
+    sprintf(
+      "<section class=\"taxon\" id=\"%s\" aria-labelledby=\"h-%s\">\n<p class=\"eyebrow\">Identified as</p>\n<h2 id=\"h-%s\" tabindex=\"-1\">%s</h2>\n%s%s<h3>Path through the key</h3>\n<ol class=\"diagnosis\">\n%s\n</ol>\n<p class=\"actions\"><a href=\"#%s\">Identify another specimen</a>%s</p>\n</section>",
+      id, id, id, htmlEscape(tx), verified, alsoVia, paste(steps, collapse = "\n"), coupletId(check$root), link
+    )
+  }, character(1))
+
+  warningsHtml <- if (length(check$problems) > 0) {
+    sprintf("<div class=\"warnings\" role=\"note\"><strong>Problems found in this key</strong><ul>%s</ul></div>",
+      paste0("<li>", htmlEscape(check$problems), "</li>", collapse = ""))
+  } else {
+    ""
+  }
+  citationHtml <- if (!is.na(citation) && nzchar(citation)) sprintf("<p class=\"cite\">%s</p>", htmlEscape(citation)) else ""
+
+  css <- paste(readLines(system.file("wizard", "wizard.css", package = "moose"), warn = FALSE), collapse = "\n")
+  js <- paste(readLines(system.file("wizard", "wizard.js", package = "moose"), warn = FALSE), collapse = "\n")
+
+  paste0(
+    "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n",
+    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\">\n",
+    "<meta name=\"theme-color\" content=\"#f6f3eb\" media=\"(prefers-color-scheme: light)\">\n",
+    "<meta name=\"theme-color\" content=\"#131a1b\" media=\"(prefers-color-scheme: dark)\">\n",
+    "<meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n",
+    "<meta name=\"mobile-web-app-capable\" content=\"yes\">\n",
+    "<meta name=\"generator\" content=\"moose ", utils::packageVersion("moose"), "\">\n",
+    "<title>", htmlEscape(title), "</title>\n<style>\n", css, "\n</style>\n</head>\n",
+    "<body data-root=\"", coupletId(check$root), "\"", if (!isTRUE(displayLinks)) " class=\"nolinks\"" else "", ">\n",
+    "<header class=\"masthead\">\n<p class=\"eyebrow\">Dichotomous key</p>\n<h1>", htmlEscape(title), "</h1>\n", citationHtml, "\n",
+    "<nav class=\"toolbar\" aria-label=\"Key navigation\">",
+    "<button type=\"button\" id=\"mk-back\" disabled>&larr; Back</button>",
+    "<a href=\"#", coupletId(check$root), "\" id=\"mk-restart\">Start over</a>",
+    "<span class=\"spacer\"></span>",
+    "<button type=\"button\" id=\"mk-mode\" aria-pressed=\"false\">Show full key</button></nav>\n",
+    "<ol class=\"trail\" id=\"mk-trail\" aria-label=\"Choices so far\" aria-live=\"polite\"></ol>\n</header>\n",
+    "<main>\n", warningsHtml, "\n", paste(coupletHtml, collapse = "\n"), "\n",
+    if (length(taxonHtml) > 0) "<h2 class=\"group\">Taxa</h2>\n" else "",
+    paste(taxonHtml, collapse = "\n"), "\n</main>\n",
+    "<footer><p>", length(check$couplets), " couplets, ", length(taxonNames), " taxa. ",
+    "<span class=\"hint\">Press a, b (or 1, 2) to choose a lead. </span>",
+    "Generated by the moose R package.</p></footer>\n",
+    "<script>\n", js, "\n</script>\n</body>\n</html>\n"
+  )
 }

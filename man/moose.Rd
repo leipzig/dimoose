@@ -21,6 +21,11 @@ separated) per terminal taxon, with columns `Statement`, `Choice`,
 \item{\code{meta}}{Key/value data frame of metadata (citation, image URLs, ...).}
 
 \item{\code{taxa}}{Data frame of terminal taxa and their resolved names.}
+
+\item{\code{leads}}{Data frame with one row per lead: `Statement`, `Choice`,
+`Character`, `Next` (next couplet, or `"-"` if terminal) and `Taxon`,
+plus optional `Prev`, `Image`, `ImageLink` and `TaxonUrl`. Derived from
+`df` when the object was created without one.}
 }
 \if{html}{\out{</div>}}
 }
@@ -40,7 +45,7 @@ separated) per terminal taxon, with columns `Statement`, `Choice`,
 \subsection{Method \code{new()}}{
 Create a new moose object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$new(df, desc = NA, meta = NA, taxa = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{moose$new(df, desc = NA, meta = NA, taxa = NA, leads = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -53,6 +58,8 @@ Create a new moose object.
 \item{\code{meta}}{Key/value metadata data frame.}
 
 \item{\code{taxa}}{Data frame of terminal taxa.}
+
+\item{\code{leads}}{Optional data frame of leads (see the `leads` field).}
 }
 \if{html}{\out{</div>}}
 }

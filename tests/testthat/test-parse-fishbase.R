@@ -18,7 +18,10 @@ test_that("description page yields plain strings", {
 
 test_that("key table is found by its header row, not by position", {
   kt <- moose:::parseFishbaseKeyTable(xml2::read_html(fixture("fishbaseDetail.html")))
-  expect_named(kt, c("Statement", "Choice", "Character", "Next", "Prev", "Taxon"))
+  expect_named(kt, c("Statement", "Choice", "Character", "Next", "Prev", "Taxon", "Image", "ImageLink", "TaxonUrl"))
+  expect_match(kt$Image[1], "^https://www.fishbase.se/images/thumbnails/morphpic/tn_1term1.gif$")
+  expect_identical(kt$ImageLink[1], "https://www.fishbase.se/keys/pic/1term1.gif")
+  expect_match(kt$TaxonUrl[kt$Taxon == "Squatinidae"], "specieslist.php")
   expect_equal(nrow(kt), 46)
   expect_identical(kt$Statement[1:2], c("1", "1"))
   expect_identical(kt$Choice[1:2], c("a", "b"))

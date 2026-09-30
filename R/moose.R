@@ -12,6 +12,10 @@
 #'   `Character`, `Taxon`, and `pSt`/`pCh` for the parent lead.
 #' @field meta Key/value data frame of metadata (citation, image URLs, ...).
 #' @field taxa Data frame of terminal taxa and their resolved names.
+#' @field leads Data frame with one row per lead: `Statement`, `Choice`,
+#'   `Character`, `Next` (next couplet, or `"-"` if terminal) and `Taxon`,
+#'   plus optional `Prev`, `Image`, `ImageLink` and `TaxonUrl`. Derived from
+#'   `df` when the object was created without one.
 #' @export
 moose <- R6::R6Class("moose",
   lock_objects = FALSE,
@@ -23,7 +27,8 @@ moose <- R6::R6Class("moose",
     .desc = NA,
     .df = NULL,
     .meta = NULL,
-    .taxa = NULL
+    .taxa = NULL,
+    .leads = NULL
   ),
   active = list(
     desc = function(value) {
@@ -59,6 +64,15 @@ moose <- R6::R6Class("moose",
         private$.taxa <- value
         self
       }
+    },
+    leads = function(value) {
+      if (missing(value)) {
+        if (is.null(private$.leads)) leadsFromPaths(private$.df) else private$.leads
+      } else {
+        stopifnot(is.data.frame(value), nrow(value) > 0)
+        private$.leads <- value
+        self
+      }
     }
   ),
   public = list(
@@ -67,11 +81,13 @@ moose <- R6::R6Class("moose",
     #' @param desc Key title or description.
     #' @param meta Key/value metadata data frame.
     #' @param taxa Data frame of terminal taxa.
-    initialize = function(df, desc = NA, meta = NA, taxa = NA) {
+    #' @param leads Optional data frame of leads (see the `leads` field).
+    initialize = function(df, desc = NA, meta = NA, taxa = NA, leads = NULL) {
       private$.df <- df
       private$.desc <- desc
       private$.meta <- meta
       private$.taxa <- taxa
+      private$.leads <- leads
     },
     #' @description Print the description, metadata and lead table.
     #' @param ... Unused.
@@ -164,3 +180,35 @@ rawhtml <- R6::R6Class("rawhtml",
     }
   )
 )
+
+# Rebuild a lead table from the path table (`moose$df`): one row per lead,
+# with Next taken from the leads whose parent is this lead.
+leadsFromPaths <- function(df) {
+  if (is.null(df) || nrow(df) == 0) {
+    return(data.frame(
+      Statement = character(), Choice = character(), Character = character(),
+      Next = character(), Taxon = character(), stringsAsFactors = FALSE
+    ))
+  }
+  leadKey <- paste(df$Statement, df$Choice, sep = "\r")
+  parentKey <- paste(df$pSt, df$pCh, sep = "\r")
+  keys <- unique(leadKey)
+  rows <- lapply(keys, function(k) {
+    here <- df[leadKey == k, , drop = FALSE]
+    children <- unique(df$Statement[parentKey == k])
+    terminal <- length(children) == 0
+    data.frame(
+      Statement = here$Statement[1],
+      Choice = here$Choice[1],
+      Character = paste(unique(here$Character), collapse = "; "),
+      Next = if (terminal) "-" else children[1],
+      Taxon = if (terminal) unique(here$Taxon)[1] else "",
+      stringsAsFactors = FALSE
+    )
+  })
+  out <- do.call(rbind, rows)
+  ord <- order(suppressWarnings(as.numeric(out$Statement)), out$Statement, out$Choice)
+  out <- out[ord, , drop = FALSE]
+  rownames(out) <- NULL
+  out
+}
