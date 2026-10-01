@@ -32,3 +32,6 @@ vibrio.xlsx
 .env.*
 __pycache__/
 .pytest_cache/
+
+# Planning and design docs (kept locally and in the project, not tracked)
+docs/
