@@ -87,3 +87,22 @@ test_that("looKey rebuilds without the held-out image", {
   expect_true(e$accuracy >= 0 && e$accuracy <= 1)
   expect_equal(nrow(e$results), 6)
 })
+
+test_that("featureScores computes term and text features from embeddings", {
+  f <- termFixture()
+  s <- featureScores(f$key, patches = f$v$patches)
+  expect_equal(colnames(s), f$key$features$id)
+  expect_equal(unname(s[, 1]), unname(f$s[, sub("^term:", "", f$key$features$id[1])]))
+
+  textFeat <- featureTable("text:q", "clip_text_pair", prompt = "a thing with q", negative_prompt = "a thing with not q")
+  leads <- data.frame(Statement = "1", Choice = c("a", "b"), Character = c("Has q", "Lacks q"), Next = "-",
+    Taxon = c("A", "B"), Feature = "text:q", Test = c(">", "<="), Threshold = 0, stringsAsFactors = FALSE)
+  k <- keyFromLeads(leads, "t", features = textFeat)
+  img <- rbind(x = c(1, 0), y = c(0, 1))
+  txt <- rbind(c(1, 0), c(0, 1)); rownames(txt) <- c("a thing with q", "a thing with not q")
+  s2 <- featureScores(k, image = img, textEmb = txt)
+  expect_equal(unname(s2[, "text:q"]), c(1, -1))
+  expect_equal(classify(k, s2)$result, c("A", "B"))
+  expect_error(featureScores(k, image = img), "textEmb")
+  expect_error(featureScores(f$key, image = img), "patches")
+})

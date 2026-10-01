@@ -117,7 +117,7 @@ classify <- function(key, scores) {
       if (!cp %in% names(byCouplet)) return(list(NA_character_, path))
     }
   }
-  res <- lapply(seq_len(nrow(scores)), function(r) walk(scores[r, ]))
+  res <- lapply(seq_len(nrow(scores)), function(r) walk(stats::setNames(scores[r, ], colnames(scores))))
   data.frame(id = ids, result = vapply(res, `[[`, "", 1),
              path = vapply(res, function(x) paste(x[[2]], collapse = " "), ""), stringsAsFactors = FALSE)
 }
@@ -168,4 +168,41 @@ looKey <- function(images, build, score, groups = NULL) {
        accuracy = mean(r$correct),
        groupAccuracy = if (is.null(groups)) NA_real_ else mean(r$groupCorrect),
        confusion = table(actual = r$actual, predicted = ifelse(is.na(r$predicted), "<none>", r$predicted)))
+}
+
+#' Compute a key's feature scores from embeddings
+#'
+#' Model-free: give it the embeddings and it applies each feature's rule.
+#' `centroid_patch_max` features need `patches`; `clip_text_pair` features
+#' need `image` and `textEmb` (rows named by prompt). For `external`
+#' features supply the scores yourself.
+#'
+#' @param key A [moose] key with a `features` table.
+#' @param image `objects x d` matrix of image embeddings (unit rows).
+#' @param patches `objects x patches x d` array of patch embeddings.
+#' @param textEmb `prompts x d` matrix of text embeddings whose row names are
+#'   the prompt texts, e.g. from [embedTexts()].
+#' @return An `objects x features` matrix with feature ids as column names.
+#' @seealso [scoreImages()] for images-to-scores in one call.
+#' @export
+featureScores <- function(key, image = NULL, patches = NULL, textEmb = NULL) {
+  f <- key$features
+  if (is.null(f)) stop("This key has no features table", call. = FALSE)
+  n <- if (!is.null(image)) nrow(image) else if (!is.null(patches)) dim(patches)[1] else stop("Give `image` or `patches`", call. = FALSE)
+  ids <- if (!is.null(image)) rownames(image) else dimnames(patches)[[1]]
+  out <- matrix(NA_real_, n, nrow(f), dimnames = list(ids, f$id))
+  for (j in seq_len(nrow(f))) {
+    kind <- f$kind[j]
+    if (kind == "centroid_patch_max") {
+      if (is.null(patches)) stop("Feature ", f$id[j], " needs `patches`", call. = FALSE)
+      out[, j] <- termScores(patches, matrix(f$embedding[[j]], 1))[, 1]
+    } else if (kind == "clip_text_pair") {
+      if (is.null(image) || is.null(textEmb)) stop("Feature ", f$id[j], " needs `image` and `textEmb`", call. = FALSE)
+      for (p in c(f$prompt[j], f$negative_prompt[j])) if (!p %in% rownames(textEmb)) stop("`textEmb` has no row for the prompt: ", p, call. = FALSE)
+      out[, j] <- image %*% textEmb[f$prompt[j], ] - image %*% textEmb[f$negative_prompt[j], ]
+    } else if (kind != "external") {
+      stop("Unknown feature kind: ", kind, call. = FALSE)
+    }
+  }
+  out
 }
