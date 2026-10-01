@@ -131,6 +131,7 @@ toIgraph <- function(key) {
 toTreedata <- function(key) {
   if (!requireNamespace("tidytree", quietly = TRUE)) stop("Install the tidytree package", call. = FALSE)
   if (!requireNamespace("ape", quietly = TRUE)) stop("Install the ape package", call. = FALSE)
+  if (!requireNamespace("tibble", quietly = TRUE)) stop("Install the tibble package", call. = FALSE)
   leads <- normalizeLeads(key$leads)
   check <- checkLeads(leads)
   lab <- leadLabels(leads)

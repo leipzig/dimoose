@@ -13,7 +13,7 @@
 ^\.venv$
 ^venv$
 ^node_modules$
-^__pycache__$
+(^|/)__pycache__(/|$)
 ^docs$
 ^.*\.pt$
 ^\.env.*$

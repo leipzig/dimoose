@@ -65,6 +65,10 @@ checkFeatures <- function(leads, features) {
     if (length(i) == 2 && leads$Feature[i[1]] == leads$Feature[i[2]] && leads$Test[i[1]] == leads$Test[i[2]]) {
       problems <- c(problems, sprintf("Couplet %s tests %s with the same Test on both leads; they must be opposite", cp, leads$Feature[i[1]]))
     }
+    if (length(i) == 2 && leads$Feature[i[1]] != leads$Feature[i[2]]) {
+      problems <- c(problems, sprintf("Couplet %s tests two different features (%s, %s); both leads of a couplet must test the same feature",
+        cp, leads$Feature[i[1]], leads$Feature[i[2]]))
+    }
   }
   problems
 }

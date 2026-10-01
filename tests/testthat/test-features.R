@@ -106,3 +106,11 @@ test_that("featureScores computes term and text features from embeddings", {
   expect_error(featureScores(k, image = img), "textEmb")
   expect_error(featureScores(f$key, image = img), "patches")
 })
+
+test_that("validate flags a couplet whose two leads test different features", {
+  leads <- data.frame(Statement = c("1", "1"), Choice = c("a", "b"), Character = c("Has x", "Lacks y"),
+    Next = c("-", "-"), Taxon = c("A", "B"), Feature = c("term:x", "term:y"),
+    Test = c(">", "<="), Threshold = c(0.5, 0.5), stringsAsFactors = FALSE)
+  f <- featureTable(c("term:x", "term:y"), "centroid_patch_max", embedding = list(c(1, 0), c(0, 1)))
+  expect_match(keyFromLeads(leads, "t", features = f)$validate(), "different features", all = FALSE)
+})

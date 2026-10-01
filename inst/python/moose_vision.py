@@ -93,6 +93,11 @@ def embed_images(vm, paths, region=None, patches=True, batch=16):
             pooled, tokens = visual(x)
             images.append(_unit(pooled.float().cpu().numpy()))
             if patches:
+                grid = vm.spec["patch_grid"]
+                if tokens.shape[1] != grid * grid:
+                    raise ValueError(
+                        "expected %d patch tokens but got %d; this open_clip model/version "
+                        "returns tokens in a shape moose does not handle" % (grid * grid, tokens.shape[1]))
                 if visual.proj is not None:
                     tokens = tokens @ visual.proj
                 patch_out.append(_unit(tokens.float().cpu().numpy(), axis=2))

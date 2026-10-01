@@ -22,7 +22,6 @@ This package provides tools to do the following
 - produce training data for machine learning using splits
 - metadata slots for provenance and supporting guide images
 - perform basic lexical analysis, and specialized data types (single nucleotide variations) of criteria and taxa
-- ontological annotation, together with `pepper`(https://github.com/leipzig/pepper) labels at the decision nodes and edges can be mapped to ontologies using join tables
 - build mixed effects conditional inference trees (mecits)
 
 # Getting started

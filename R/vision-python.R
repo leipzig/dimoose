@@ -25,6 +25,9 @@ pyVision <- local({
 #'   and `spec` (library, architecture, weights SHA-256, image size, ...).
 #' @export
 visionModel <- function(weights = NULL, name = "ViT-B-32", pretrained = "openai", python = NULL) {
+  if (!requireNamespace("reticulate", quietly = TRUE)) {
+    stop("Install the reticulate package (and Python with torch and open_clip_torch) to embed images", call. = FALSE)
+  }
   if (!is.null(python)) reticulate::use_python(python, required = TRUE)
   mod <- pyVision()
   py <- mod$load_model(name = name, pretrained = pretrained, weights = weights)
