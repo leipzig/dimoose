@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key to the Orders of Arachnida - Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c7623;
+            border-bottom: 2px solid #2c7623;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2c7623;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .visualization {
+            margin-top: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .visualization img {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .explanation {
+            margin-bottom: 30px;
+        }
+        .legend {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+        }
+        .legend-item {
+            margin: 10px 0;
+        }
+        .color-box {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .lightblue {
+            background-color: lightblue;
+        }
+        .lightgreen {
+            background-color: #AAFFAA;
+        }
+        .download-links {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        .download-links a {
+            color: #2c7623;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        .download-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Key to the Orders of Arachnida</h1>
+        
+        <div class="explanation">
+            <p>
+                This page presents visualizations of the dichotomous key for identifying the Orders of Arachnida, 
+                based on the key from "Borror and DeLong's Study of Insects". The key has been converted into a 
+                tree structure to facilitate visual navigation of the identification process.
+            </p>
+        </div>
+        
+        <div class="legend">
+            <h3>Legend</h3>
+            <div class="legend-item">
+                <span class="color-box lightblue"></span> Decision node - requires further identification steps
+            </div>
+            <div class="legend-item">
+                <span class="color-box lightgreen"></span> Terminal node - identifies an Order of Arachnida
+            </div>
+            <p>
+                <strong>Edges:</strong> Green "Yes" paths indicate the specimen matches the described characteristic, 
+                while red "No" paths indicate it does not match.
+            </p>
+        </div>
+        
+        <h2>Vertical Tree Visualization</h2>
+        <div class="visualization">
+            <img src="visualizations/arachnida_key_tree_vertical.png" alt="Vertical Arachnida Key Tree">
+        </div>
+        
+        <div class="explanation">
+            <p>
+                The vertical layout presents the key with decision points arranged from top to bottom. Each node contains 
+                the key couplet number and the diagnostic characters. Terminal nodes (in light green) indicate the Order 
+                identification.
+            </p>
+            <p>
+                <strong>How to use:</strong> Start at the top and follow the path that matches your specimen's 
+                characteristics. At each decision point, choose the "Yes" path if your specimen matches the description, 
+                or the "No" path if it does not.
+            </p>
+        </div>
+        
+        <h2>Original Horizontal Tree Visualization</h2>
+        <div class="visualization">
+            <img src="visualizations/arachnida_key_tree.png" alt="Horizontal Arachnida Key Tree">
+        </div>
+        
+        <div class="explanation">
+            <p>
+                The horizontal layout presents the key with decision points arranged from left to right, showing the 
+                branching structure of the dichotomous key. This layout might be preferred for wider screens and provides 
+                an alternative perspective on the identification process.
+            </p>
+        </div>
+        
+        <div class="download-links">
+            <h3>Download Files</h3>
+            <a href="visualizations/arachnida_key_tree_vertical.pdf" download>Download PDF Version</a>
+            <a href="visualizations/arachnida_key_tree_vertical.png" download>Download Vertical PNG</a>
+            <a href="visualizations/arachnida_key_tree.png" download>Download Horizontal PNG</a>
+        </div>
+    </div>
+</body>
+</html> 

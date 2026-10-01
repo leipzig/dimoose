@@ -1,0 +1,32 @@
+test_that("imageSet labels from file names, vectors or functions", {
+  paths <- c("/x/1948-1950.png", "/x/1967.png", "/x/1967_alt.png")
+  s <- imageSet(paths)
+  expect_equal(s$id, c("1948-1950", "1967", "1967_alt"))
+  expect_equal(s$label, s$id)
+  expect_equal(imageSet(paths, label = function(x) sub("_.*$", "", x))$label, c("1948-1950", "1967", "1967"))
+  expect_equal(imageSet(paths, label = c("a", "b", "b"))$label, c("a", "b", "b"))
+  expect_error(imageSet(paths, label = c("a", "b")), "length")
+})
+
+test_that("imageMime reads magic bytes and imageMeta makes data URIs", {
+  png <- tempfile(fileext = ".png")
+  png::writePNG(array(runif(4 * 4 * 3), c(4, 4, 3)), png)
+  jpg <- tempfile(fileext = ".jpg")
+  jpeg::writeJPEG(array(runif(4 * 4 * 3), c(4, 4, 3)), jpg)
+  txt <- tempfile(fileext = ".txt"); writeLines("hi", txt)
+  expect_equal(imageMime(png), "image/png")
+  expect_equal(imageMime(jpg), "image/jpeg")
+  expect_true(is.na(imageMime(txt)))
+  m <- imageMeta(c(png, jpg), ids = c("a", "b"))
+  expect_equal(m$key, c("image_a", "image_b"))
+  expect_match(m$value[1], "^data:image/png;base64,")
+  expect_match(m$value[2], "^data:image/jpeg;base64,")
+  expect_error(imageMeta(txt), "not an image")
+})
+
+test_that("the synthetic fixture has the promised shapes", {
+  v <- syntheticVision()
+  expect_equal(dim(v$patches), c(6, 9, 8))
+  expect_equal(nrow(v$images), 6)
+  expect_equal(unname(round(sqrt(rowSums(v$image^2)), 6)), rep(1, 6))
+})

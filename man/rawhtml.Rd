@@ -2,34 +2,51 @@
 % Please edit documentation in R/moose.R
 \name{rawhtml}
 \alias{rawhtml}
-\title{A raw HTML object with the potential to be a moose}
-\value{
-a rawhtml object
-}
+\title{Raw FishBase key tables}
 \description{
-A raw HTML object with the potential to be a moose
+An R6 object holding a FishBase key's description and its couplet table as
+downloaded, before conversion to a [moose] object.
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{desc}}{Key title (read-only).}
 
-A raw HTML object with the potential to be a moose
+\item{\code{df}}{The key's couplet table: one row per lead, with columns
+`Statement`, `Choice`, `Character`, `Next`, `Prev` and `Taxon`.}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-print}{\code{rawhtml$print()}}
-\item \href{#method-new}{\code{rawhtml$new()}}
-\item \href{#method-clone}{\code{rawhtml$clone()}}
+\item \href{#method-rawhtml-print}{\code{rawhtml$print()}}
+\item \href{#method-rawhtml-new}{\code{rawhtml$new()}}
+\item \href{#method-rawhtml-clone}{\code{rawhtml$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
+\if{html}{\out{<a id="method-rawhtml-print"></a>}}
+\if{latex}{\out{\hypertarget{method-rawhtml-print}{}}}
 \subsection{Method \code{print()}}{
+Print the description, table and metadata.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{rawhtml$print()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{rawhtml$print(...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Unused.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
+\if{html}{\out{<a id="method-rawhtml-new"></a>}}
+\if{latex}{\out{\hypertarget{method-rawhtml-new}{}}}
 \subsection{Method \code{new()}}{
+Download a FishBase key.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{rawhtml$new(
   keycode,
@@ -38,9 +55,21 @@ A raw HTML object with the potential to be a moose
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{keycode}}{FishBase key code.}
+
+\item{\code{fishbaseUrl}}{Base URL of the FishBase mirror.}
+
+\item{\code{separateTerms}}{Ignored; kept for backward compatibility.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
+\if{html}{\out{<a id="method-rawhtml-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-rawhtml-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

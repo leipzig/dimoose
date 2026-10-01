@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arachnida Key Edge-Labeled Tree</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c7623;
+            border-bottom: 2px solid #2c7623;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2c7623;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #2c7623;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .tree-container {
+            max-width: 900px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .tree-container img {
+            max-width: 100%;
+            height: auto;
+            margin: 15px auto;
+            border: 1px solid #eee;
+            display: block;
+        }
+        .download-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .download-link {
+            display: inline-block;
+            margin: 5px 10px 5px 0;
+            padding: 8px 15px;
+            background-color: #2c7623;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .download-link:hover {
+            background-color: #235c1c;
+        }
+        .explanation {
+            margin-bottom: 20px;
+        }
+        .legend {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .legend-item {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+        .color-box {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+        }
+        .blue {
+            background-color: lightblue;
+        }
+        .green {
+            background-color: #AAFFAA;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .structure {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+        .couplet-table {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .couplet-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+        .couplet-table th {
+            background-color: #2c7623;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        .couplet-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .couplet-table tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+        .couplet-table td:first-child {
+            font-weight: bold;
+            width: 60px;
+            color: #2c7623;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edge-Labeled Tree for Arachnida Key</h1>
+        
+        <div class="explanation">
+            <p>
+                This page shows a simplified edge-labeled representation of the "Key to the Orders of Arachnida" 
+                from "Borror and DeLong's Study of Insects". This representation places couplet numbers on the 
+                edges and descriptions in the nodes, matching how taxonomists use dichotomous keys in practice.
+            </p>
+        </div>
+
+        <h2>Tree Structure</h2>
+        
+        <div class="structure">
+            start node<br>
+            ├── 1 → [description] → 2 → <b style="color:darkgreen;">Araneae</b><br>
+            │   └── 2' → <b style="color:darkgreen;">Acari</b><br>
+            └── 1' → [description] → 3 → 4 → <b style="color:darkgreen;">Scorpiones</b><br>
+                │   └── 4' → 5 → <b style="color:darkgreen;">Palpigradi</b><br>
+                │       └── 5' → 6 → <b style="color:darkgreen;">Uropygi</b><br>
+                │           └── 6' → <b style="color:darkgreen;">Schizomida</b><br>
+                └── 3' → 7 → <b style="color:darkgreen;">Pseudoscorpiones</b><br>
+                    └── 7' → 8 → <b style="color:darkgreen;">Solifugae</b><br>
+                        └── 8' → 9 → 10 → <b style="color:darkgreen;">Schizomida</b><br>
+                            │   └── 10' → <b style="color:darkgreen;">Amblypygi</b><br>
+                            └── 9' → 11 → <b style="color:darkgreen;">Ricinulei</b><br>
+                                └── 11' → <b style="color:darkgreen;">Opiliones</b><br>
+        </div>
+            
+        <div class="tree-container">
+            <h3>Edge-Labeled Arachnida Key Tree</h3>
+            <p>
+                The visualization below shows the edge-labeled tree structure of the Arachnida key. 
+                Each node contains descriptive content, and the edges are labeled with couplet numbers 
+                (e.g., 1, 1', 2, 2'). This representation closely aligns with how taxonomists use dichotomous 
+                keys in practice.
+            </p>
+            
+            <div class="legend">
+                <h4>Legend</h4>
+                <div class="legend-item">
+                    <span class="color-box blue"></span> Decision node (contains descriptive characteristics)
+                </div>
+                <div class="legend-item">
+                    <span class="color-box green"></span> Terminal node (Order identification)
+                </div>
+                <div class="legend-item">
+                    <span class="color-box" style="background-color: gold;"></span> Starting point
+                </div>
+                <div class="legend-item">
+                    <div style="display: inline-block; width: 80px; height: 2px; background-color: darkgreen;"></div>
+                    Non-prime couplet (e.g., 1, 2, 3)
+                </div>
+                <div class="legend-item">
+                    <div style="display: inline-block; width: 80px; height: 2px; background-color: darkred;"></div>
+                    Prime couplet (e.g., 1', 2', 3')
+                </div>
+                <div class="legend-item">
+                    <div style="display: inline-block; width: 80px; height: 2px; background-color: black;"></div>
+                    Connection to terminal order node
+                </div>
+            </div>
+            
+            <img src="visualizations/arachnida_simplified_tree.png" alt="Edge-Labeled Arachnida Tree">
+            
+            <div class="download-section">
+                <a href="visualizations/arachnida_simplified_tree.pdf" class="download-link" download>Download PDF</a>
+                <a href="visualizations/arachnida_simplified_tree.png" class="download-link" download>Download PNG</a>
+            </div>
+        </div>
+
+        <h2>Key Features of the Edge-Labeled Tree</h2>
+        
+        <table>
+            <tr>
+                <th>Feature</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>Edge Labels</td>
+                <td>Couplet numbers (1, 1', 2, 2', etc.) appear on the edges rather than in the nodes</td>
+            </tr>
+            <tr>
+                <td>Node Content</td>
+                <td>Nodes contain only descriptive characteristics without couplet numbers</td>
+            </tr>
+            <tr>
+                <td>Starting Point</td>
+                <td>A gold "Start" node indicates where to begin the identification process</td>
+            </tr>
+            <tr>
+                <td>Edge Colors</td>
+                <td>Non-prime couplets (1, 2, 3) are green; Prime couplets (1', 2', 3') are red</td>
+            </tr>
+            <tr>
+                <td>Terminal Nodes</td>
+                <td>Green nodes with larger, bold text clearly display the order names (Araneae, Acari, etc.)</td>
+            </tr>
+            <tr>
+                <td>Navigation Flow</td>
+                <td>Follow edges with couplet numbers from the start to a terminal node</td>
+            </tr>
+        </table>
+        
+        <h2>How to Use This Tree</h2>
+        
+        <div class="explanation">
+            <p>
+                To identify an arachnid specimen using this tree:
+            </p>
+            
+            <ol>
+                <li>Start at the gold "Start" node</li>
+                <li>Read the descriptions in the nodes connected by edges 1 and 1'</li>
+                <li>Choose the description that matches your specimen and follow that edge</li>
+                <li>Continue following edges based on the specimen's characteristics</li>
+                <li>When you reach a green terminal node, you have identified the order</li>
+            </ol>
+            
+            <p>
+                This representation aligns with traditional dichotomous keys, where taxonomists navigate between 
+                couplets by their numbers rather than by traversing a binary yes/no tree. The edge labels 
+                (couplet numbers) serve as navigational aids, while the node content focuses on the actual 
+                characteristics of the specimen.
+            </p>
+        </div>
+    </div>
+
+    <h2>Couplet Definitions</h2>
+    <div class="couplet-table">
+        <table>
+            <tr>
+                <th>Couplet</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Opisthosoma (abdomen) unsegmented or, if segmented, with spinnerets posteriorly on ventral side (Figures 5-5 and 5-8, ALS,PLS,PMS)</td>
+            </tr>
+            <tr>
+                <td>1'</td>
+                <td>Opisthosoma distinctly segmented, without spinnerets</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Opisthosoma petiolate (Figures 5-5 and 5-9 through 5-13) → Araneae</td>
+            </tr>
+            <tr>
+                <td>2'</td>
+                <td>Opisthosoma not petiolate, but broadly joined to prosoma (Figures 5-15 through 5-22) → Acari</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Opisthosoma with a tail-like prolongation that is either thick and terminating in a sting (Figure 5-3) or slender and more or less whiplike (Figure 5-4A,B); mostly tropical</td>
+            </tr>
+            <tr>
+                <td>3'</td>
+                <td>Opisthosoma without a tail-like prolongation or with a very short leaflike appendage</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Opisthosoma ending in a sting (Figure 5-3); first pair of legs not greatly elongated; second ventral segment of opisthosoma with a pair of comblike organs → Scorpiones</td>
+            </tr>
+            <tr>
+                <td>4'</td>
+                <td>Opisthosoma not ending in a sting; first pair of legs longer than other pairs (Figure 5-4A,B); second ventral segment of opisthosoma without comblike organs</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Pedipalps slender, similar to legs (Figure 5-4A); minute forms, 5 mm or less in length → Palpigradi</td>
+            </tr>
+            <tr>
+                <td>5'</td>
+                <td>Pedipalps usually much stouter than any of the legs (Figure 5-4B); mostly larger forms</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>With two median eyes on a tubercle anteriorly and a group of three eyes on each lateral margin; tail long, filiform, and many-segmented; pedipalps nearly straight or curved mesad, extending forward, and moving laterally (Figure 5-4B); body blackish, more than 50 mm in length → Uropygi</td>
+            </tr>
+            <tr>
+                <td>6'</td>
+                <td>Eyes lacking; tail short, one- to four-segmented; pedipalps arching upward, forward, and downward and moving vertically; body yellowish or brownish, less than 8 mm in length → Schizomida</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>Pedipalps chelate (pincerlike) (Figure 5-23); body more or less oval, flattened, usually less than 5 mm in length → Pseudoscorpiones</td>
+            </tr>
+            <tr>
+                <td>7'</td>
+                <td>Pedipalps raptorial or leglike, but not chelate; body not particularly flattened; size variable</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>Chelicerae very large, usually about as long as prosoma, and extending forward, and body slightly narrowed in middle (Figure 5-4C); color pale yellow to brownish; length 20 to 30 mm; mostly nocturnal desert forms occurring in western United States → Solifugae</td>
+            </tr>
+            <tr>
+                <td>8'</td>
+                <td>Without the preceding combination of characters</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>First pair of legs very long, with long tarsi; opisthosoma constricted at base; mainly tropical</td>
+            </tr>
+            <tr>
+                <td>9'</td>
+                <td>First legs similar to the others and (except in the Opiliones) not usually long; opisthosoma not particularly constricted at base</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>Prosoma longer than wide, lateral margins nearly parallel, and with a transverse membranous suture in caudal third; opisthosoma with a very short terminal appendage; length 5-8 mm (see also couplet 6') → Schizomida</td>
+            </tr>
+            <tr>
+                <td>10'</td>
+                <td>Prosoma wider than long, lateral margins rounded or arched, and without a transverse suture; opisthosoma without a terminal appendage; length variable, up to about 50 mm → Amblypygi</td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td>Orange-red to brown arachnids, about 3 mm in length, with broad flap at anterior end of prosoma concealing chelicerae; legs not unusually long, animal somewhat mitelike or ticklike in appearance; recorded from Rio Grande Valley of Texas → Ricinulei</td>
+            </tr>
+            <tr>
+                <td>11'</td>
+                <td>Size and color variable, but without broad flap at anterior end of prosoma covering chelicerae; legs variable in length, often very long and slender (Figure 5-14); widely distributed → Opiliones</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html> 

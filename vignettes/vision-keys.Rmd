@@ -1,0 +1,163 @@
+---
+title: "Building identification keys from images"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Building identification keys from images}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = FALSE)
+```
+
+Most moose keys are written by people. This vignette shows the other route:
+building a key **from a folder of labelled images** with a vision model, the
+way the [fordera](https://github.com/leipzig/fordera) project classifies Ford
+trucks by model year. moose follows fordera's two methods and generalizes
+them to any embedding model.
+
+The design has two layers:
+
+- an **R core** that works on plain numeric matrices of embeddings, so it
+  needs no Python and works with any model (`discoverTerms()`,
+  `keyFromTerms()`, `keyFromClusters()`, `classify()`, `evaluateKey()`,
+  `looKey()`);
+- a thin **Python layer**, reached through
+  [reticulate](https://rstudio.github.io/reticulate/), that computes CLIP
+  image, patch and text embeddings (`visionModel()`, `embedImages()`,
+  `embedTexts()`, `scoreImages()`).
+
+Only the embedding step needs Python; everything else is ordinary R.
+
+## Setup
+
+Install the Python side once (CLIP through
+[open_clip](https://github.com/mlfoundations/open_clip)):
+
+```sh
+pip install -r "$(Rscript -e 'cat(system.file("python/requirements.txt", package="moose"))')"
+```
+
+Then load a model. `visionModel()` downloads OpenAI's ViT-B/32 by default, or
+takes a local checkpoint:
+
+```{r}
+library(moose)
+model <- visionModel()                       # or visionModel("ViT-B-32.pt")
+```
+
+## An image set
+
+`imageSet()` records one row per image. The `label` argument says which class
+each image belongs to; several images can share a label (for example two
+photographs of the same species), and a function derives the label from the
+file name:
+
+```{r}
+images <- imageSet(
+  list.files("pics", pattern = "\\.png$", full.names = TRUE),
+  label = function(x) sub("_.*$", "", x)      # "1967_alt" -> "1967"
+)
+```
+
+Embed every image. `embedImages()` returns a global embedding per image and,
+by default, the per-patch embeddings a vision transformer produces:
+
+```{r}
+emb <- embedImages(model, images$path)
+dim(emb$image)     # images x dimensions
+dim(emb$patches)   # images x patches x dimensions
+```
+
+## Method 1: invented visual terms
+
+`discoverTerms()` clusters every image patch with k-means. Each cluster is a
+recurring visual motif, given an invented, pronounceable name because it has
+no English one. `termScores()` then scores each image against each term by the
+most similar patch, and `keyFromTerms()` grows a key whose every step asks
+whether the specimen has one term.
+
+```{r}
+terms  <- discoverTerms(emb$patches, k = 40)
+scores <- termScores(emb$patches, terms$centroids)
+key    <- keyFromTerms(scores, images, terms)
+key
+```
+
+`keyFromTerms()` offers two tree builders: `"balanced"` (fordera's method,
+the default: at each step the term that most evenly splits the remaining
+classes) and `"rpart"` (a classification tree, with the split points as
+thresholds).
+
+Add example crops so the wizard and the glossary can show what each term
+looks like, then export:
+
+```{r}
+key <- patchExemplars(model, key, images)
+exportWizard(key, "terms.html")
+```
+
+The exported page is a step-through wizard with a glossary: each invented
+term is defined only by the image patches that match it best.
+
+## Method 2: questions from a vocabulary
+
+The second method keeps the questions in words. You supply a vocabulary of
+contrasting visual features; moose clusters the classes, and for each split
+picks the vocabulary pair that best separates the two sides, phrased as a
+yes/no question.
+
+```{r}
+vocab <- data.frame(
+  feature  = c("round headlights", "a flat hood", "a chrome bumper"),
+  opposite = c("square headlights", "a curved hood", "a painted bumper")
+)
+txt  <- embedTexts(model, vocabularyPrompts(vocab, "a pickup truck with {x}"))
+qkey <- keyFromClusters(emb$image, images, vocab, txt,
+                        template = "a pickup truck with {x}")
+exportWizard(qkey, "questions.html")
+```
+
+## Following a key by machine
+
+A key built this way carries a `features` table describing how to compute
+each lead's test from an image, so a machine can walk it. `scoreImages()`
+embeds new images and scores them; `classify()` walks the key:
+
+```{r}
+s <- scoreImages(key, model, "new-specimen.png")
+classify(key, s)
+#>            id result        path
+#> 1 new-specimen   1967  1a 3b 7a
+```
+
+`evaluateKey()` reports accuracy over a labelled set, optionally grouped (for
+example model years grouped into design generations). `looKey()` does
+leave-one-out evaluation, rebuilding the key without each held-out image:
+
+```{r}
+evaluateKey(key, scores, images$label)$accuracy
+
+looKey(images,
+  build = function(train) keyFromTerms(scores[train, ], images[train, ], terms),
+  score = function(key, i) scores[i, , drop = FALSE])$accuracy
+```
+
+With one image per class these figures are optimistic; the leave-one-out
+number is the honest one.
+
+## Any model, no Python
+
+Because the core works on matrices, embeddings from any model can be used
+directly. If you have an `images x dimensions` matrix `X` and a
+`images x patches x dimensions` array `P` from your own encoder, every
+function above works without `visionModel()`:
+
+```{r}
+terms <- discoverTerms(P, k = 40)
+key   <- keyFromTerms(termScores(P, terms$centroids), images, terms)
+```
+
+This is how a domain model such as BioCLIP can drive moose for biological
+images: embed with that model, then build and evaluate the key in R.

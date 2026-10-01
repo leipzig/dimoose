@@ -1,0 +1,1 @@
+- fordera/: checks of the vision keys against fordera's outputs (needs a fordera checkout and CLIP weights; see REPORT.md).

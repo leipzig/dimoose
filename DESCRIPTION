@@ -1,22 +1,55 @@
 Package: moose
 Type: Package
-Title: Tools to reshape and manipulate dichotomous keys used in taxonomic identification
+Title: Tools to Reshape and Manipulate Dichotomous Keys Used in Taxonomic
+    Identification
 Version: 0.1.0
-Author: Jeremy Leipzig
-Maintainer: Jeremy Leipzig <leipzig@gmail.com>
-Description: moose transform betweeen dichotomous trees and a variety of phenotype formats including feature matrices, polyclave trees, and can also generate interactive dichotomous wizards
+Authors@R:
+    person("Jeremy", "Leipzig", , "leipzig@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-7224-9620"))
+Description: Transforms between dichotomous identification keys and a
+    variety of phenotype formats, including feature matrices and polyclave
+    (multi-access) keys, and generates interactive dichotomous key wizards.
+    Imports keys from 'FishBase' <https://www.fishbase.se/keys/allkeys.php>
+    and includes PhyloTree Build 17, the human mitochondrial DNA phylogeny
+    (van Oven 2015, <doi:10.1016/j.fsigss.2015.09.155>), as distributed by
+    'Haplogrep' 3.
 License: GPL
+Copyright: See inst/COPYRIGHTS for the PhyloTree data.
+URL: https://github.com/leipzig/moose
+BugReports: https://github.com/leipzig/moose/issues
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
-Imports: 
-    R6,
-    httr,
-    dplyr,
-    stringr,
+Depends:
+    R (>= 3.5.0)
+Imports:
+    base64enc,
     data.tree,
-    rotl,
+    dplyr,
+    httr,
+    magrittr,
+    R6,
+    rlang,
     rpart,
-    randomForest,
+    rvest,
+    stats,
+    utils,
+    xml2
+Suggests:
+    ape,
     gbm,
-    base64enc
+    igraph,
+    jpeg,
+    jsonlite,
+    knitr,
+    png,
+    randomForest,
+    reticulate,
+    rmarkdown,
+    tidytree,
+    taxize (>= 0.9.100),
+    testthat (>= 3.0.0),
+    tibble,
+    withr
+Config/testthat/edition: 3
+RoxygenNote: 7.3.1
+VignetteBuilder: knitr

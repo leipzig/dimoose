@@ -2,27 +2,47 @@
 % Please edit documentation in R/import.R
 \name{importFishbase}
 \alias{importFishbase}
-\title{Import a dichotomous key from fishbase
-see https://www.fishbase.se/keys/allkeys.php for a list of keys}
+\title{Import a dichotomous key from FishBase}
 \usage{
 importFishbase(
   keycode,
   fishbaseUrl = "https://www.fishbase.se/",
   separateTerms = TRUE,
-  usePhyloService = "GNR"
+  usePhyloService = c("GNA", "GNR", "none", "TNRS"),
+  embedImages = FALSE
 )
 }
 \arguments{
-\item{keycode}{representing some taxa on fishbase}
+\item{keycode}{Numeric or character FishBase key code.}
 
-\item{usePhyloService}{GNR for Global Names Resolver, TRNS for Phylotastic Taxonomic Name Resolution Service}
+\item{fishbaseUrl}{Base URL of the FishBase mirror, with a trailing slash.}
 
-\item{fishbaseURL}{fishbase url (swedish one seems best?)}
+\item{separateTerms}{If `TRUE`, split each lead's character statement on
+`";"` into one row per term.}
+
+\item{usePhyloService}{Taxonomic name resolution: `"GNA"` verifies terminal
+taxa with the Global Names verifier (`taxize::gna_verifier()`, requires
+the 'taxize' package); `"none"` skips resolution. `"GNR"` is accepted as
+an alias for `"GNA"`. `"TNRS"` is no longer available because
+`taxize::tnrs()` is defunct.}
+
+\item{embedImages}{If `TRUE`, download the key's morphology images and store
+them base64-encoded in `meta`. Image URLs are always stored.}
 }
 \value{
-a moose object
+A [moose] object.
 }
 \description{
-Import a dichotomous key from fishbase
-see https://www.fishbase.se/keys/allkeys.php for a list of keys
+Downloads a key from FishBase and converts it into a [moose] object. See
+<https://www.fishbase.se/keys/allkeys.php> for the list of keys and their
+key codes.
+}
+\examples{
+\dontrun{
+sharks <- importFishbase(1)
+sharks$taxa
+}
+}
+\seealso{
+[parseFishbase()] to build a key from saved HTML pages.
 }

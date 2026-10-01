@@ -2,19 +2,66 @@
 % Please edit documentation in R/export.R
 \name{exportWizard}
 \alias{exportWizard}
-\title{Export an interactive dichotomous tree
-see https://www.fishbase.se/keys/allkeys.php for a list of keys}
+\title{Export an interactive dichotomous key}
 \usage{
-exportWizard(moose, displayLinks = TRUE, order = "parsimony")
+exportWizard(
+  moose,
+  file = NULL,
+  displayLinks = TRUE,
+  order = c("original", "parsimony"),
+  title = NULL,
+  map = TRUE,
+  staticPaths = NULL
+)
 }
 \arguments{
-\item{moose}{a moose object}
+\item{moose}{A [moose] object, e.g. from [importFishbase()].}
 
-\item{displayLinks}{display HTML anchor links for navigation}
+\item{file}{Path of the HTML file to write. If `NULL`, the HTML is returned
+as a string instead.}
 
-\item{order}{order of statements, 'original' if imported from an existing tree, 'parsimony' for maximum parsimony}
+\item{displayLinks}{If `TRUE`, show the couplet numbers each lead leads to
+and comes from, as in a printed key. If `FALSE`, hide them. Leads stay
+clickable either way.}
+
+\item{order}{Order of couplets. Only `"original"` (the key's own order) is
+implemented.}
+
+\item{title}{Page title. Defaults to the key's description.}
+
+\item{map}{If `TRUE`, include a map of the key: the whole key drawn as a
+tree, marking the current couplet, the path taken so far and the
+branches (and number of taxa) still possible. It sits beside the key on
+wide screens and behind a Map button on phones.}
+
+\item{staticPaths}{If `TRUE`, write each taxon's path through the key into
+the page, so it shows without JavaScript. If `FALSE`, the page builds
+the path in the browser when a result is shown, which keeps large keys
+(such as [phylotreeKey()] on the whole tree) much smaller. The default
+is `TRUE` for keys with up to 1,000 taxa.}
+}
+\value{
+The path to `file`, invisibly, or the HTML as a character string if
+  `file` is `NULL`.
 }
 \description{
-Export an interactive dichotomous tree
-see https://www.fishbase.se/keys/allkeys.php for a list of keys
+Writes a moose key as a single self-contained HTML page. With JavaScript
+on, the page steps through the key one couplet at a time, keeps a trail of
+the choices made (each one clickable to go back to it) and supports the
+browser's Back button. Without JavaScript, the same page is the full key
+with every lead hyperlinked to its next couplet or taxon. Each taxon gets
+a result section listing the characters on its path, and a map of the
+key shows where the user is (see `map`).
+}
+\details{
+The key is checked first: leads pointing at missing couplets, terminal
+leads without a taxon, couplets with fewer than two leads and couplets
+that cannot be reached from the first one are reported as warnings and
+marked in the page.
+}
+\examples{
+\dontrun{
+sharks <- importFishbase(1, usePhyloService = "none")
+exportWizard(sharks, "sharks.html")
+}
 }
