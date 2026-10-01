@@ -2,15 +2,19 @@
 
 An R package to manage dichotomous keys.
 
+## Dichotomous keys
+
 Dichotomous keys are bifurcating trees that are often used in species identification. More precisely, dichotomous keys are binary categorical decision trees with unique leaves. They have been a staple of taxonomic identification for centuries — Lamarck's *Flore française* (1778) is often credited with popularizing the form — and remain in everyday use in field guides and laboratory manuals today.
 
-## Relationship to phylogenetic trees
+### Relationship to phylogenetic trees
 
 Despite their different uses, phylogenetic trees are similar to dichotomous keys:
 - the paths are traversed using mutation "decisions" instead of visible phenotypes
 - all points on a phylogenetic tree represent an organism that actually existed (instead of a group of possibilities)
 
 Moose supports phylogenetic trees in which the mutations are known, such as PhyloTree, and ships PhyloTree Build 17 (the human mitochondrial DNA phylogeny, as distributed by Haplogrep 3).
+
+## Package methods
 
 This package provides tools to:
 - convert from and to popular formats including consensus matrices, `ape` phylo, `data.tree`, data frames, JSON, YAML, and Newick
