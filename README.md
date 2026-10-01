@@ -25,42 +25,48 @@ This package provides tools to do the following
 - ontological annotation, together with `pepper`(https://github.com/leipzig/pepper) labels at the decision nodes and edges can be mapped to ontologies using join tables
 - build mixed effects conditional inference trees (mecits)
 
-# Quick start
-
-```r
-library(moose)
-
-# Four example keys, all moose objects with the same methods
-sharks    <- sharkKey()          # FishBase key 1: shark families
-arachnids <- arachnidaKey()      # Borror & DeLong: orders of Arachnida
-vibrios   <- vibrioKey()         # generated from the Noguerola & Blanch matrix
-h2a       <- phylotreeKey("H2a") # PhyloTree Build 17 (via Haplogrep 3)
-
-summary(sharks)
-arachnids$toNewick()
-vibrios$validate()
-exportWizard(h2a, "h2a.html")    # interactive, mobile-friendly key with a map
-
-# Your own keys
-importFishbase(10)               # any FishBase key
-keyFromLeads(my_leads)           # a table of couplets and leads
-keyFromRpart(my_rpart_tree)      # a classification tree
-```
-
-# Repository layout
-
-| Path | Contents |
-|---|---|
-| `R/`, `man/`, `tests/`, `inst/`, `data/` | The R package (`inst/wizard/` holds the wizard's CSS and JavaScript) |
-| `data-raw/phylotree17/` | How `data/phylotree17*.rda` are built from Haplogrep's tree, and a check against GitHub |
-| `analysis/` | Exploratory work outside the package: Borror key extraction, PhyloTree comparisons, Vibrio analyses, table extraction (see `analysis/README.md`) |
-| `references/` | Copyrighted source PDFs used by the analyses; git-ignored |
-
 # Getting started
 
 To get started, you might want to read the [introduction vignette](https://CRAN.R-project.org/package=moose/vignettes/moose.html). There is also a vignette containing some [examples and applications](https://CRAN.R-project.org/package=moose/vignettes/applications.html).
 
 The manual is [here](https://CRAN.R-project.org/package=moose/moose.pdf)
+
+# Keys from images
+
+moose can build a key from a folder of labelled images, the way
+[fordera](https://github.com/leipzig/fordera) does for Ford trucks, with any
+model that gives embeddings. The default is CLIP ViT-B/32 through Python's
+open_clip:
+
+```sh
+pip install -r "$(Rscript -e 'cat(system.file("python/requirements.txt", package="moose"))')"
+```
+
+```r
+library(moose)
+model  <- visionModel("ViT-B-32.pt")            # or visionModel() to download
+images <- imageSet(list.files("pics", full.names = TRUE), label = function(x) sub("_.*$", "", x))
+emb    <- embedImages(model, images$path)
+
+# 1. Invented terms: k-means on patch embeddings
+terms  <- discoverTerms(emb$patches, k = 40)
+key    <- keyFromTerms(termScores(emb$patches, terms$centroids), images, terms)
+key    <- patchExemplars(model, key, images)     # example crops for the wizard
+exportWizard(key, "terms.html")
+
+# 2. Questions from a vocabulary
+vocab  <- data.frame(feature = c("round headlights", "a flat hood"),
+                     opposite = c("square headlights", "a curved hood"))
+txt    <- embedTexts(model, vocabularyPrompts(vocab, "a pickup truck with {x}"))
+qkey   <- keyFromClusters(emb$image, images, vocab, txt, template = "a pickup truck with {x}")
+
+# Follow a key by machine
+classify(key, scoreImages(key, model, "new.png"))
+```
+
+The R side works on plain matrices, so embeddings from any other model can be
+passed to `discoverTerms()`, `keyFromTerms()`, `keyFromClusters()` and
+`featureScores()` directly.
 
 # Acknowledgments
 

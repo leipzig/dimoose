@@ -132,9 +132,10 @@ def patch_box(vm, path, patch_index):
 
 
 def crop_png(path, box, pad=48, size=96):
+    pad, size = int(pad), int(size)
     img = Image.open(path).convert("RGB")
     w, h = img.size
-    x0, y0, x1, y1 = box
+    x0, y0, x1, y1 = (int(v) for v in box)
     crop = img.crop((max(0, x0 - pad), max(0, y0 - pad), min(w, x1 + pad), min(h, y1 + pad)))
     crop = crop.resize((size, size), Image.BICUBIC)
     buf = io.BytesIO()
