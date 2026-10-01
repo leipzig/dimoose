@@ -110,4 +110,6 @@ Moose is built on phylo4, since it has the closest native resemblance to dichoto
 
 FishBase key import is made possible by the work of Scott Chamberlain and Carl Boettiger on rOpenSci's `rfishbase` and the R tooling for FishBase data.
 
+The image-based key work builds on the [Imageomics Institute](https://imageomics.osu.edu/) and the NSF HDR-BGNN (Harnessing the Data Revolution — Biology-Guided Neural Networks) effort, whose BioCLIP and TreeOfLife models make domain-specific biological embeddings possible.
+
 Karl Broman's R Package Primer was useful in this process.
