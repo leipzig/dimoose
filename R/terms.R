@@ -48,7 +48,8 @@ inventNames <- function(n, seed = 1) {
 #' @examples
 #' set.seed(1)
 #' patches <- array(rnorm(5 * 9 * 8), c(5, 9, 8))
-#' patches <- patches / sqrt(apply(patches^2, c(1, 2), sum))[, , rep(1, 8)]
+#' norms <- sqrt(apply(patches^2, c(1, 2), sum))
+#' patches <- sweep(patches, c(1, 2), norms, "/")
 #' dimnames(patches) <- list(letters[1:5], NULL, NULL)
 #' discoverTerms(patches, k = 3)$terms
 #' @export

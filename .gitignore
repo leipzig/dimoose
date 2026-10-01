@@ -30,3 +30,5 @@ vibrio.xlsx
 *.pt
 .env
 .env.*
+__pycache__/
+.pytest_cache/
