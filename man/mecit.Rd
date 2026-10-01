@@ -43,8 +43,10 @@ the candidate variables).}
 \item{ranefstart}{If `TRUE`, start from random effects estimated without a
 tree.}
 
-\item{abstol, maxit}{Convergence tolerance on the random-effect
-contribution, and the maximum number of iterations.}
+\item{abstol, maxit}{Convergence tolerance and the maximum number of
+iterations. For `"ctree"` the tolerance is on the largest change in any
+observation's random-effect contribution; for `"mob"` it is passed to
+[glmertree::lmertree()], where it applies to the change in log-likelihood.}
 }
 \value{
 An object of class `mecit`: `tree` (a partykit tree), `lmer` (the

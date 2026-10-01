@@ -73,7 +73,7 @@ On null genes no method made a false split, apart from LM (8%).
 | 1 | 1.00 | 1.00 | 1.00 |
 | 2 | 1.00 | 1.00 | 1.00 |
 
-Plain ctree's false splits grow with baseline strength: 3.8, 7.2 and 9.4 per
+Plain ctree's false splits grow with baseline strength: 3.8, 7.2 and 9.3 per
 gene at macro SD 0.5, 1 and 2. MECIT's stay at zero.
 
 **Random slopes** (effect 1, macro SD 1, slope SD 1: each site's effect varies

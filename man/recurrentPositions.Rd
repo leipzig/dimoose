@@ -15,7 +15,9 @@ recurrentPositions(
 site mutates.}
 
 \item{types}{Mutation types to count; by default substitutions and
-back-mutations (insertions and deletions are left out).}
+back-mutations. Insertions and deletions are left out, except that a
+reverted insertion counts as a back-mutation at its insertion site
+(for example `"5899.1"`).}
 
 \item{mutations}{Default [phylotree17_mutations].}
 }

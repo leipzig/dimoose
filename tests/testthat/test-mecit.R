@@ -121,3 +121,24 @@ test_that("mecit recovers simulated recurrent-mutation effects without clade-mar
   expect_true(all(truthSites %in% splitVariables(fit)))
   expect_false(any(sim$markerSites %in% splitVariables(fit)))
 })
+
+test_that("partition columns may share names with mecit's internal columns", {
+  skip_if_no_mecit()
+  f <- mecitFixture()
+  X <- f$X; colnames(X) <- c("y_", "ystar_", "cluster_")
+  fit <- mecit(f$y, X, f$cluster)
+  expect_equal(splitVariables(fit), "y_")       # the real effect, not the response
+  X2 <- f$X; colnames(X2) <- c("node_", "d", "e")
+  expect_equal(splitVariables(mecit(f$y, X2, f$cluster)), "node_")
+})
+
+test_that("factor splits become text-only couplets with a warning", {
+  skip_if_no_mecit()
+  f <- mecitFixture()
+  X <- data.frame(tissue = factor(ifelse(f$X[, "a"] == 1, sample(c("liver", "lung"), length(f$y), TRUE), "skin")),
+                  e = f$X[, "e"])
+  fit <- mecit(f$y, X, f$cluster)
+  expect_equal(splitVariables(fit), "tissue")
+  expect_warning(key <- keyFromMecit(fit), "classify")
+  expect_match(key$leads$Character[1], "^tissue is ")
+})

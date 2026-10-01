@@ -22,4 +22,7 @@ with its stratum level and size. Splits on 0/1 variables read as
 "Carries 16311" / "Does not carry 16311". The leads carry machine-readable
 tests on the split variables, so [classify()] can place new samples given
 their [haplotypeMatrix()], and [exportWizard()] can draw the tree.
+Splits on factor columns become text-only couplets ("tissue is liver or
+lung"), which a person can follow but [classify()] cannot; the function
+warns when the key has any.
 }

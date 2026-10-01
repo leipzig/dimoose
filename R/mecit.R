@@ -37,8 +37,10 @@
 #' @param maxdepth Maximum tree depth.
 #' @param ranefstart If `TRUE`, start from random effects estimated without a
 #'   tree.
-#' @param abstol,maxit Convergence tolerance on the random-effect
-#'   contribution, and the maximum number of iterations.
+#' @param abstol,maxit Convergence tolerance and the maximum number of
+#'   iterations. For `"ctree"` the tolerance is on the largest change in any
+#'   observation's random-effect contribution; for `"mob"` it is passed to
+#'   [glmertree::lmertree()], where it applies to the change in log-likelihood.
 #' @return An object of class `mecit`: `tree` (a partykit tree), `lmer` (the
 #'   final mixed model, or `NULL`), `strata` (data frame of `node`, `mean`
 #'   and `n`; `mean` is the stratum level net of random effects), `node`
@@ -88,7 +90,9 @@ mecit <- function(y, partition, cluster = NULL, method = c("ctree", "mob"), slop
   if (length(slope) && !all(slope %in% orig)) {
     stop("`slope` names column(s) not in `partition`: ", paste(setdiff(slope, orig), collapse = ", "), call. = FALSE)
   }
-  safe <- make.names(orig, unique = TRUE)
+  # syntactic names that cannot collide with the internal columns
+  reserved <- c("y_", "ystar_", "cluster_", "node_")
+  safe <- make.names(c(reserved, orig), unique = TRUE)[-seq_along(reserved)]
   names(X) <- safe
   d <- data.frame(y_ = as.numeric(y), X, check.names = FALSE)
   treeFormula <- stats::reformulate(paste0("`", safe, "`"), response = "ystar_")
@@ -122,6 +126,8 @@ mecit <- function(y, partition, cluster = NULL, method = c("ctree", "mob"), slop
       out$lmer <- fit$lmer
       re <- reContrib(fit$lmer)
       out$iterations <- as.integer(fit$iterations)
+      # lmertree stops on convergence, on oscillation, or at maxit; it does
+      # not record which, so reaching maxit is reported as not converged
       out$converged <- fit$iterations < maxit
     } else {
       re <- if (ranefstart) reContrib(fitLmer(paste0("y_ ~ 1", slopeFixed, " + ", reTerm))) else rep(0, nrow(d))
@@ -190,6 +196,9 @@ splitVariables <- function(fit) {
 #' "Carries 16311" / "Does not carry 16311". The leads carry machine-readable
 #' tests on the split variables, so [classify()] can place new samples given
 #' their [haplotypeMatrix()], and [exportWizard()] can draw the tree.
+#' Splits on factor columns become text-only couplets ("tissue is liver or
+#' lung"), which a person can follow but [classify()] cannot; the function
+#' warns when the key has any.
 #'
 #' @param fit A [mecit()] fit.
 #' @param desc Title of the key.
@@ -205,7 +214,7 @@ keyFromMecit <- function(fit, desc = NULL, digits = 2) {
     s <- strata[strata$node == id, ]
     sprintf("Stratum %d: %s (n = %d)", id, formatC(s$mean, format = "f", digits = digits), s$n)
   }
-  rows <- list(); counter <- 0L; used <- character()
+  rows <- list(); counter <- 0L; used <- character(); factorSplits <- FALSE
   walk <- function(nd) {
     if (partykit::is.terminal(nd)) return(list(leaf = leafLabel(partykit::id_node(nd))))
     counter <<- counter + 1L
@@ -230,7 +239,10 @@ keyFromMecit <- function(fit, desc = NULL, digits = 2) {
     } else {
       idx <- partykit::index_split(sp)
       lev <- levels(x)
+      # ordered factors split at a break on the level index
+      if (is.null(idx)) idx <- ifelse(seq_along(lev) <= partykit::breaks_split(sp), 1L, 2L)
       order <- 1:2
+      factorSplits <<- TRUE
       text <- vapply(1:2, function(k) sprintf("%s is %s", orig, paste(lev[!is.na(idx) & idx == k], collapse = " or ")), "")
       feature <- ""; test <- ""; threshold <- NA_real_
     }
@@ -244,6 +256,7 @@ keyFromMecit <- function(fit, desc = NULL, digits = 2) {
     list(id = id)
   }
   walk(partykit::node_party(tree))
+  if (factorSplits) warning("The tree splits on factor variables; those couplets are text-only and classify() cannot follow them", call. = FALSE)
   leads <- do.call(rbind, rows[order(as.integer(names(rows)))])
   rownames(leads) <- NULL
   features <- if (length(used)) featureTable(id = paste0("var:", used), kind = "external", label = used) else NULL
