@@ -2,7 +2,9 @@
 
 An R package to manage dichotomous keys.
 
-Dichotomous keys are bifurcating trees that are often used in species identification. More precisely, dichotomous keys are binary categorical decision trees with unique leaves.
+Dichotomous keys are bifurcating trees that are often used in species identification. More precisely, dichotomous keys are binary categorical decision trees with unique leaves. They have been a staple of taxonomic identification for centuries — Lamarck's *Flore française* (1778) is often credited with popularizing the form — and remain in everyday use in field guides and laboratory manuals today.
+
+## Relationship to phylogenetic trees
 
 Despite their different uses, phylogenetic trees are similar to dichotomous keys:
 - the paths are traversed using mutation "decisions" instead of visible phenotypes
