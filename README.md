@@ -90,4 +90,6 @@ readHaplogrep("tree.xml")           # load any Haplogrep / PhyloTree tree XML
 
 Moose is built on phylo4, since it has the closest native resemblance to dichotomous trees but also borrows from data.tree and partykit.
 
+FishBase key import is made possible by the work of Scott Chamberlain and Carl Boettiger on rOpenSci's `rfishbase` and the R tooling for FishBase data.
+
 Karl Broman's R Package Primer was useful in this process.
