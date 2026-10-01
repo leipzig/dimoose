@@ -87,12 +87,15 @@ exportWizard <- function(moose, file = NULL, displayLinks = TRUE,
 # ---- key checks --------------------------------------------------------------
 
 normalizeLeads <- function(leads) {
-  for (col in c("Statement", "Choice", "Character", "Next", "Taxon", "Label", "Image", "ImageLink", "TaxonUrl")) {
+  for (col in c("Statement", "Choice", "Character", "Next", "Taxon", "Label", "Image", "ImageLink", "TaxonUrl",
+                "Question", "Feature", "Test")) {
     if (is.null(leads[[col]])) leads[[col]] <- rep("", nrow(leads))
     x <- as.character(leads[[col]])
     x[is.na(x)] <- ""
     leads[[col]] <- trimws(x)
   }
+  if (is.null(leads$Threshold)) leads$Threshold <- rep(NA_real_, nrow(leads))
+  leads$Threshold <- suppressWarnings(as.numeric(leads$Threshold))
   leads$Next[leads$Next == ""] <- "-"
   as.data.frame(leads, stringsAsFactors = FALSE)
 }

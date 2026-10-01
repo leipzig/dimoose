@@ -25,3 +25,8 @@ references/
 
 # Source spreadsheet for the Vibrio table
 vibrio.xlsx
+
+# Model weights and local environment files
+*.pt
+.env
+.env.*

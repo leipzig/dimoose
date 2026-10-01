@@ -13,6 +13,8 @@
 #' @param meta Key/value data frame of metadata (e.g. `citation`).
 #' @param taxa Data frame of results with `submitted_name` and
 #'   `matched_name`; by default every taxon matches itself.
+#' @param features Optional [featureTable()] for keys a machine can follow
+#'   (the leads then also carry `Feature`, `Test` and `Threshold`).
 #' @return A [moose] object.
 #' @examples
 #' leads <- data.frame(
@@ -24,7 +26,7 @@
 #' k
 #' k$toNewick()
 #' @export
-keyFromLeads <- function(leads, desc = NA, meta = NULL, taxa = NULL) {
+keyFromLeads <- function(leads, desc = NA, meta = NULL, taxa = NULL, features = NULL) {
   if (!is.data.frame(leads)) stop("`leads` must be a data frame", call. = FALSE)
   missing <- setdiff(c("Statement", "Choice", "Character", "Next", "Taxon"), names(leads))
   if (length(missing)) {
@@ -44,7 +46,8 @@ keyFromLeads <- function(leads, desc = NA, meta = NULL, taxa = NULL) {
     tx <- unique(leads$Taxon[leads$Next == "-" & nzchar(leads$Taxon)])
     taxa <- data.frame(submitted_name = tx, matched_name = tx, stringsAsFactors = FALSE)
   }
-  moose$new(keyPaths(leads, separateTerms = FALSE), desc, meta, taxa, leads = leads)
+  if (!is.null(leads$Threshold)) leads$Threshold <- as.numeric(leads$Threshold)
+  moose$new(keyPaths(leads, separateTerms = FALSE), desc, meta, taxa, leads = leads, features = features)
 }
 
 #' Build a moose key from a classification tree

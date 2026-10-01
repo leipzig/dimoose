@@ -11,9 +11,10 @@
   --focus: #c98a1b;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --paper: #131a1b;
     --card: #1b2324;
     --ink: #e7e3d9;
@@ -24,7 +25,21 @@
     --accent-soft: #1f3530;
     --warn: #f0a07f;
     --focus: #e6b54a;
+    color-scheme: dark;
   }
+}
+:root[data-theme="dark"] {
+  --paper: #131a1b;
+  --card: #1b2324;
+  --ink: #e7e3d9;
+  --muted: #9ea9a6;
+  --rule: #2f3a3b;
+  --accent: #6cc4a6;
+  --accent-ink: #0f1a17;
+  --accent-soft: #1f3530;
+  --warn: #f0a07f;
+  --focus: #e6b54a;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }

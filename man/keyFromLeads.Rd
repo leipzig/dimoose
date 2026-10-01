@@ -4,7 +4,7 @@
 \alias{keyFromLeads}
 \title{Build a moose key from a table of leads}
 \usage{
-keyFromLeads(leads, desc = NA, meta = NULL, taxa = NULL)
+keyFromLeads(leads, desc = NA, meta = NULL, taxa = NULL, features = NULL)
 }
 \arguments{
 \item{leads}{Data frame with columns `Statement` (couplet), `Choice`,
@@ -19,6 +19,9 @@ columns `Label`, `Image`, `ImageLink` and `TaxonUrl` are used by
 
 \item{taxa}{Data frame of results with `submitted_name` and
 `matched_name`; by default every taxon matches itself.}
+
+\item{features}{Optional [featureTable()] for keys a machine can follow
+(the leads then also carry `Feature`, `Test` and `Threshold`).}
 }
 \value{
 A [moose] object.

@@ -24,8 +24,12 @@ separated) per terminal taxon, with columns `Statement`, `Choice`,
 
 \item{\code{leads}}{Data frame with one row per lead: `Statement`, `Choice`,
 `Character`, `Next` (next couplet, or `"-"` if terminal) and `Taxon`,
-plus optional `Prev`, `Image`, `ImageLink` and `TaxonUrl`. Derived from
-`df` when the object was created without one.}
+plus optional `Prev`, `Image`, `ImageLink`, `TaxonUrl`, `Question`,
+`Feature`, `Test` and `Threshold`. Derived from `df` when the object
+was created without one.}
+
+\item{\code{features}}{Data frame of features a machine can compute, one per
+row (see [featureTable()]), or `NULL` for keys meant only for people.}
 }
 \if{html}{\out{</div>}}
 }
@@ -48,7 +52,7 @@ plus optional `Prev`, `Image`, `ImageLink` and `TaxonUrl`. Derived from
 \subsection{Method \code{new()}}{
 Create a new moose object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$new(df, desc = NA, meta = NA, taxa = NA, leads = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{moose$new(df, desc = NA, meta = NA, taxa = NA, leads = NULL, features = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -63,6 +67,9 @@ Create a new moose object.
 \item{\code{taxa}}{Data frame of terminal taxa.}
 
 \item{\code{leads}}{Optional data frame of leads (see the `leads` field).}
+
+\item{\code{features}}{Optional data frame of machine-readable features (see
+[featureTable()]).}
 }
 \if{html}{\out{</div>}}
 }
@@ -103,8 +110,9 @@ A one-row data frame: `title`, `couplets`, `leads`, `taxa`,
 \if{latex}{\out{\hypertarget{method-moose-validate}{}}}
 \subsection{Method \code{validate()}}{
 Check the key: leads to missing couplets, terminal leads
-  without a taxon, couplets with fewer than two leads, and couplets
-  that cannot be reached from the first one.
+  without a taxon, couplets with fewer than two leads, couplets that
+  cannot be reached from the first one, and (for keys with features)
+  leads whose machine test is missing or inconsistent.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{moose$validate()}\if{html}{\out{</div>}}
 }

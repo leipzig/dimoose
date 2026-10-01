@@ -3,6 +3,7 @@
 S3method(summary,moose)
 export(arachnidaKey)
 export(exportWizard)
+export(featureTable)
 export(generateTree)
 export(importFishbase)
 export(keyFromLeads)

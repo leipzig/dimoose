@@ -14,8 +14,11 @@
 #' @field taxa Data frame of terminal taxa and their resolved names.
 #' @field leads Data frame with one row per lead: `Statement`, `Choice`,
 #'   `Character`, `Next` (next couplet, or `"-"` if terminal) and `Taxon`,
-#'   plus optional `Prev`, `Image`, `ImageLink` and `TaxonUrl`. Derived from
-#'   `df` when the object was created without one.
+#'   plus optional `Prev`, `Image`, `ImageLink`, `TaxonUrl`, `Question`,
+#'   `Feature`, `Test` and `Threshold`. Derived from `df` when the object
+#'   was created without one.
+#' @field features Data frame of features a machine can compute, one per
+#'   row (see [featureTable()]), or `NULL` for keys meant only for people.
 #' @export
 moose <- R6::R6Class("moose",
   lock_objects = FALSE,
@@ -28,7 +31,8 @@ moose <- R6::R6Class("moose",
     .df = NULL,
     .meta = NULL,
     .taxa = NULL,
-    .leads = NULL
+    .leads = NULL,
+    .features = NULL
   ),
   active = list(
     desc = function(value) {
@@ -73,6 +77,15 @@ moose <- R6::R6Class("moose",
         private$.leads <- value
         self
       }
+    },
+    features = function(value) {
+      if (missing(value)) {
+        private$.features
+      } else {
+        stopifnot(is.null(value) || is.data.frame(value))
+        private$.features <- value
+        self
+      }
     }
   ),
   public = list(
@@ -82,12 +95,15 @@ moose <- R6::R6Class("moose",
     #' @param meta Key/value metadata data frame.
     #' @param taxa Data frame of terminal taxa.
     #' @param leads Optional data frame of leads (see the `leads` field).
-    initialize = function(df, desc = NA, meta = NA, taxa = NA, leads = NULL) {
+    #' @param features Optional data frame of machine-readable features (see
+    #'   [featureTable()]).
+    initialize = function(df, desc = NA, meta = NA, taxa = NA, leads = NULL, features = NULL) {
       private$.df <- df
       private$.desc <- desc
       private$.meta <- meta
       private$.taxa <- taxa
       private$.leads <- leads
+      private$.features <- features
     },
     #' @description Print a short overview of the key.
     #' @param ... Unused.
@@ -119,11 +135,13 @@ moose <- R6::R6Class("moose",
       )
     },
     #' @description Check the key: leads to missing couplets, terminal leads
-    #'   without a taxon, couplets with fewer than two leads, and couplets
-    #'   that cannot be reached from the first one.
+    #'   without a taxon, couplets with fewer than two leads, couplets that
+    #'   cannot be reached from the first one, and (for keys with features)
+    #'   leads whose machine test is missing or inconsistent.
     #' @return A character vector of problems, invisibly if there are none.
     validate = function() {
-      problems <- checkLeads(normalizeLeads(self$leads))$problems
+      leads <- normalizeLeads(self$leads)
+      problems <- c(checkLeads(leads)$problems, checkFeatures(leads, private$.features))
       if (length(problems)) problems else invisible(character())
     },
     #' @description Convert the key to a [data.tree::Node]: couplets are

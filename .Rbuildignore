@@ -14,3 +14,7 @@
 ^venv$
 ^node_modules$
 ^__pycache__$
+^docs$
+^.*\.pt$
+^\.env.*$
+^tests/python$

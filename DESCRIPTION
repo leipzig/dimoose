@@ -36,7 +36,11 @@ Imports:
     xml2
 Suggests:
     gbm,
+    jpeg,
+    jsonlite,
+    png,
     randomForest,
+    reticulate,
     taxize (>= 0.9.100),
     testthat (>= 3.0.0),
     withr
