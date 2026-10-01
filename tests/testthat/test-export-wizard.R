@@ -132,3 +132,55 @@ test_that("a couplet reached from two leads is drawn once with a dashed cross-li
   expect_equal(count(svg, "class=\"medge cross\""), 1)
   expect_match(svg, "class=\"medge cross\" data-from=\"c-3\" data-to=\"c-2\"", fixed = TRUE)
 })
+
+glossaryKey <- function() {
+  v <- syntheticVision(k = 3)
+  t <- discoverTerms(v$patches, k = 3)
+  key <- keyFromTerms(termScores(v$patches, t$centroids), v$images, t, quantile = 0.5)
+  cpng <- tempfile(fileext = ".png"); png::writePNG(array(0.5, c(8, 8, 3)), cpng)
+  cb64 <- base64enc::base64encode(cpng)
+  f <- key$features
+  for (j in seq_len(nrow(f))) f$exemplars[[j]]$png <- rep(cb64, nrow(f$exemplars[[j]]))
+  key$features <- f
+  ipng1 <- tempfile(fileext = ".png"); png::writePNG(array(runif(8 * 8 * 3), c(8, 8, 3)), ipng1)
+  ipng2 <- tempfile(fileext = ".png"); png::writePNG(array(runif(8 * 8 * 3), c(8, 8, 3)), ipng2)
+  key$meta <- rbind(key$meta, imageMeta(c(ipng1, ipng2), ids = c("1948-1950", "H2a+152")))
+  l <- key$leads; l$Image[1] <- "1948-1950;H2a+152"; key$leads <- l
+  key
+}
+
+test_that("each embedded image appears once and with its own MIME type", {
+  key <- glossaryKey()
+  html <- exportWizard(key)
+  uri <- key$meta$value[key$meta$key == "image_1948-1950"]
+  expect_equal(lengths(regmatches(html, gregexpr(uri, html, fixed = TRUE))), 1)
+  expect_match(html, "--img-1948-1950:url(\"data:image/png;base64,", fixed = TRUE)
+  expect_match(html, "style=\"background-image:var(--img-1948-1950)\"", fixed = TRUE)
+})
+
+test_that("image names are sanitized for CSS", {
+  html <- exportWizard(glossaryKey())
+  expect_match(html, "--img-H2a_152:", fixed = TRUE)
+  expect_false(grepl("--img-H2a+152", html, fixed = TRUE))
+})
+
+test_that("legacy base64 images without a data: prefix still render as gif", {
+  k <- sharkKey()
+  k$meta <- rbind(k$meta, data.frame(key = "image_tn_x", value = base64enc::base64encode(charToRaw("GIF89a")), stringsAsFactors = FALSE))
+  l <- k$leads; l$Image[1] <- "https://example.org/tn_x.gif"; k$leads <- l
+  expect_match(exportWizard(k), "--img-tn_x:url(\"data:image/gif;base64,", fixed = TRUE)
+})
+
+test_that("Question is the step heading and the glossary lists terms with crops", {
+  key <- glossaryKey()
+  html <- exportWizard(key)
+  q <- key$leads$Question[1]
+  expect_match(html, sprintf("<h2 id=\"h-c-1\" tabindex=\"-1\">%s <span class=\"num\">Term 1</span>", q), fixed = TRUE)
+  expect_match(html, "<section class=\"glossary\" id=\"glossary\"", fixed = TRUE)
+  expect_match(html, sprintf("id=\"g-%s\"", key$features$label[1]), fixed = TRUE)
+  expect_match(html, sprintf("href=\"#g-%s\"", key$features$label[1]), fixed = TRUE)
+})
+
+test_that("keys without features have no glossary", {
+  expect_false(grepl("class=\"glossary\"", exportWizard(arachnidaKey()), fixed = TRUE))
+})

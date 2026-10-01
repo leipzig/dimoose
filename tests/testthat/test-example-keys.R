@@ -2,7 +2,8 @@ keys <- list(
   sharks = sharkKey,
   arachnida = arachnidaKey,
   vibrio = vibrioKey,
-  phylotree = function() phylotreeKey("H2a")
+  phylotree = function() phylotreeKey("H2a"),
+  terms = function() { v <- syntheticVision(k = 3); t <- discoverTerms(v$patches, k = 3); keyFromTerms(termScores(v$patches, t$centroids), v$images, t, quantile = 0.5) }
 )
 
 for (name in names(keys)) {

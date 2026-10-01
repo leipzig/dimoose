@@ -2,7 +2,7 @@
   var doc = document;
   var body = doc.body;
   var root = body.getAttribute("data-root");
-  var sections = Array.prototype.slice.call(doc.querySelectorAll("main .couplet, main .taxon"));
+  var sections = Array.prototype.slice.call(doc.querySelectorAll("main .couplet, main .taxon, main .glossary"));
   var byId = {};
   sections.forEach(function (s) { byId[s.id] = s; });
   if (!root || !byId[root]) return;
@@ -33,7 +33,10 @@
 
   function currentId() {
     var id = decodeURIComponent(location.hash.slice(1));
-    return byId[id] ? id : root;
+    if (byId[id]) return id;
+    var el = id && doc.getElementById(id);
+    if (el && el.closest && el.closest(".glossary")) return "glossary";
+    return root;
   }
 
   // The lead in section `fromId` that points at `toId`, as "1a Text of lead".
@@ -173,19 +176,23 @@
     } else {
       var last = trail.length ? trail[trail.length - 1].id : null;
       var step = last ? via(last, id) : null;
-      if (last && !step) trail = []; // jumped somewhere unrelated: start a new trail
+      if (last && !step && id !== "glossary") trail = []; // jumped somewhere unrelated: start a new trail
       trail.push({ id: id, via: step });
     }
     if (byId[id].classList.contains("taxon")) fillDiagnosis(byId[id]);
     sections.forEach(function (s) { s.classList.toggle("active", s.id === id); });
     body.classList.toggle("stepping", id !== root);
     renderTrail();
-    renderMap(id);
+    if (id !== "glossary") renderMap(id);
     backBtn.disabled = trail.length < 2;
     if (moveFocus && body.classList.contains("wizard")) {
       window.scrollTo(0, 0);
       var h = byId[id].querySelector("h2");
       if (h) h.focus({ preventScroll: true });
+    }
+    if (id === "glossary") {
+      var target = doc.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (target && target !== byId[id]) target.scrollIntoView();
     }
   }
 
@@ -251,5 +258,11 @@
   });
 
   window.addEventListener("hashchange", function () { update(true); });
+
+  doc.addEventListener("click", function (ev) {
+    var fig = ev.target.closest && ev.target.closest(".fig");
+    if (fig && !fig.closest("a")) fig.classList.toggle("big");
+  });
+
   update(false);
 })();

@@ -72,7 +72,8 @@ exportWizard <- function(moose, file = NULL, displayLinks = TRUE,
     taxa = moose$taxa,
     images = embeddedImages(moose$meta),
     displayLinks = displayLinks,
-    map = map
+    map = map,
+    features = moose$features
   )
   if (is.null(file)) {
     return(html)
@@ -181,11 +182,42 @@ metaValue <- function(meta, key) {
   if (length(v) == 0) NA_character_ else as.character(v[1])
 }
 
-# Named vector: image base name -> base64 data, from importFishbase(embedImages = TRUE)
+# Named vector: image id -> data URI, from meta rows image_<id>. Values that
+# are bare base64 (importFishbase(embedImages = TRUE) wrote those) are GIFs.
 embeddedImages <- function(meta) {
   if (!is.data.frame(meta) || !all(c("key", "value") %in% names(meta))) return(character())
   rows <- grepl("^image_", meta$key) & !grepl("^image_url_", meta$key)
-  stats::setNames(as.character(meta$value[rows]), sub("^image_", "", meta$key[rows]))
+  v <- as.character(meta$value[rows])
+  v <- ifelse(startsWith(v, "data:"), v, paste0("data:image/gif;base64,", v))
+  stats::setNames(v, sub("^image_", "", meta$key[rows]))
+}
+
+cssName <- function(id) paste0("--img-", gsub("[^A-Za-z0-9_-]", "_", id))
+
+# <style> block declaring every embedded image once as a CSS custom property
+imageStyle <- function(images) {
+  if (length(images) == 0) return("")
+  paste0("<style>:root{", paste0(cssName(names(images)), ":url(\"", images, "\")", collapse = ";"), "}</style>\n")
+}
+
+# Glossary of the key's term features: name, example crops, where found
+glossaryHtml <- function(features, leads, coupletId) {
+  if (is.null(features)) return("")
+  terms <- which(features$kind == "centroid_patch_max")
+  if (length(terms) == 0) return("")
+  entries <- vapply(terms, function(j) {
+    ex <- features$exemplars[[j]]
+    crops <- if (!is.null(ex) && !is.null(ex$png)) paste0(sprintf(
+      "<span class=\"fig\" role=\"img\" aria-label=\"%s in %s\" style=\"background-image:url(&quot;data:image/png;base64,%s&quot;)\"></span>",
+      htmlEscape(features$label[j]), htmlEscape(ex$image), ex$png), collapse = "") else ""
+    where <- if (!is.null(ex)) sprintf("<p class=\"found\">Seen in %s</p>", htmlEscape(paste(unique(ex$image), collapse = ", "))) else ""
+    asked <- unique(leads$Statement[leads$Feature == features$id[j]])
+    links <- paste(sprintf("<a href=\"#%s\">%s</a>", coupletId(asked), htmlEscape(asked)), collapse = ", ")
+    sprintf("<div class=\"term\" id=\"g-%s\"><h3>%s</h3><div class=\"figs\">%s</div>%s<p class=\"found\">Asked at %s</p></div>",
+      htmlEscape(features$label[j]), htmlEscape(features$label[j]), crops, where, links)
+  }, character(1))
+  sprintf("<section class=\"glossary\" id=\"glossary\" aria-labelledby=\"h-glossary\">\n<h2 id=\"h-glossary\" tabindex=\"-1\">Glossary of terms</h2>\n<p>Each term is defined only by the image patches that match it best. \"Has <i>term</i>\" means the specimen has a region that looks like these.</p>\n%s\n</section>",
+    paste(entries, collapse = "\n"))
 }
 
 splitUrls <- function(x) {
@@ -195,22 +227,23 @@ splitUrls <- function(x) {
 figuresHtml <- function(thumbs, fulls, images, alt) {
   if (length(thumbs) == 0) return("")
   items <- vapply(thumbs, function(t) {
-    name <- sub("\\.(gif|jpe?g|png)$", "", basename(t), ignore.case = TRUE)
-    src <- if (!is.na(images[name])) paste0("data:image/gif;base64,", images[name]) else t
+    name <- sub("\\.(gif|jpe?g|png|webp)$", "", basename(t), ignore.case = TRUE)
     full <- fulls[basename(fulls) == sub("^tn_", "", basename(t))][1]
-    img <- sprintf("<img src=\"%s\" alt=\"%s\" loading=\"lazy\">", htmlEscape(src), htmlEscape(alt))
-    if (is.na(full)) {
-      sprintf("<span>%s</span>", img)
+    img <- if (!is.na(images[name])) {
+      sprintf("<span class=\"fig\" role=\"img\" aria-label=\"%s\" style=\"background-image:var(%s)\"></span>",
+        htmlEscape(alt), cssName(name))
     } else {
-      sprintf("<a href=\"%s\" target=\"_blank\" rel=\"noopener\" title=\"Open full-size figure\">%s</a>",
-        htmlEscape(full), img)
+      sprintf("<img class=\"fig\" src=\"%s\" alt=\"%s\" loading=\"lazy\">", htmlEscape(t), htmlEscape(alt))
+    }
+    if (is.na(full)) img else {
+      sprintf("<a href=\"%s\" target=\"_blank\" rel=\"noopener\" title=\"Open full-size figure\">%s</a>", htmlEscape(full), img)
     }
   }, character(1))
   paste0("<figure class=\"figs\">", paste(items, collapse = ""), "</figure>")
 }
 
 renderWizard <- function(leads, check, title, citation, taxa, images, displayLinks, map = TRUE,
-                         nodeLabel = "Couplet", staticPaths = TRUE) {
+                         nodeLabel = "Couplet", staticPaths = TRUE, features = NULL) {
   label <- leadLabels(leads)
   # Section ids: sanitized names, made unique (e.g. M4'67 and M4"67)
   ids <- paste0("c-", gsub("[^A-Za-z0-9_-]", "_", check$couplets))
@@ -262,12 +295,26 @@ renderWizard <- function(leads, check, title, citation, taxa, images, displayLin
       }
       figs <- figuresHtml(splitUrls(leads$Image[i]), splitUrls(leads$ImageLink[i]), images,
         paste("Figure for lead", label[i]))
-      sprintf("<li class=\"lead\">%s%s</li>", choose, figs)
+      gloss <- ""
+      if (!is.null(features) && nzchar(leads$Feature[i])) {
+        fr <- match(leads$Feature[i], features$id)
+        if (!is.na(fr) && features$kind[fr] == "centroid_patch_max") {
+          gloss <- sprintf("<a class=\"gloss\" href=\"#g-%s\" title=\"What does this term look like?\">?</a>",
+            htmlEscape(features$label[fr]))
+        }
+      }
+      sprintf("<li class=\"lead\">%s%s%s</li>", choose, gloss, figs)
     }, character(1))
     id <- coupletId(cp)
+    q <- if (!is.null(leads$Question)) leads$Question[idx[1]] else ""
+    heading <- if (!is.null(q) && nzchar(q)) {
+      sprintf("%s <span class=\"num\">%s %s</span>", htmlEscape(q), htmlEscape(nodeLabel), htmlEscape(cp))
+    } else {
+      sprintf("%s <span class=\"num\">%s</span>", htmlEscape(nodeLabel), htmlEscape(cp))
+    }
     sprintf(
-      "<section class=\"couplet\" id=\"%s\" aria-labelledby=\"h-%s\">\n<h2 id=\"h-%s\" tabindex=\"-1\">%s <span class=\"num\">%s</span>%s</h2>\n<ul class=\"leads\">\n%s\n</ul>\n</section>",
-      id, id, id, htmlEscape(nodeLabel), htmlEscape(cp), from, paste(leadItems, collapse = "\n")
+      "<section class=\"couplet\" id=\"%s\" aria-labelledby=\"h-%s\">\n<h2 id=\"h-%s\" tabindex=\"-1\">%s%s</h2>\n<ul class=\"leads\">\n%s\n</ul>\n</section>",
+      id, id, id, heading, from, paste(leadItems, collapse = "\n")
     )
   }, character(1))
 
@@ -332,7 +379,7 @@ renderWizard <- function(leads, check, title, citation, taxa, images, displayLin
     "<meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n",
     "<meta name=\"mobile-web-app-capable\" content=\"yes\">\n",
     "<meta name=\"generator\" content=\"moose ", utils::packageVersion("moose"), "\">\n",
-    "<title>", htmlEscape(title), "</title>\n<style>\n", css, "\n</style>\n</head>\n",
+    "<title>", htmlEscape(title), "</title>\n<style>\n", css, "\n</style>\n", imageStyle(images), "</head>\n",
     "<body data-root=\"", coupletId(check$root), "\"", if (!isTRUE(displayLinks)) " class=\"nolinks\"" else "", ">\n",
     "<header class=\"masthead\">\n<p class=\"eyebrow\">Dichotomous key</p>\n<h1>", htmlEscape(title), "</h1>\n", citationHtml, "\n",
     "<nav class=\"toolbar\" aria-label=\"Key navigation\">",
@@ -345,7 +392,7 @@ renderWizard <- function(leads, check, title, citation, taxa, images, displayLin
     "<div class=\"columns", if (isTRUE(map)) " has-map" else "", "\">\n", mapHtml,
     "<main>\n", warningsHtml, "\n", paste(coupletHtml, collapse = "\n"), "\n",
     if (length(taxonHtml) > 0) "<h2 class=\"group\">Taxa</h2>\n" else "",
-    paste(taxonHtml, collapse = "\n"), "\n</main>\n</div>\n",
+    paste(taxonHtml, collapse = "\n"), "\n", glossaryHtml(features, leads, coupletId), "\n</main>\n</div>\n",
     "<footer><p>", length(check$couplets), if (nodeLabel == "Couplet") " couplets, " else " steps, ",
     length(taxonNames), if (nodeLabel == "Couplet") " taxa. " else " possible results. ",
     "<span class=\"hint\">Press a, b (or 1, 2) to choose a lead. </span>",

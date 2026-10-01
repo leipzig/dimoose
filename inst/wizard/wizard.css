@@ -168,9 +168,17 @@ a.choose:active { background: var(--accent-soft); }
 .choose.broken .dest { color: var(--warn); }
 .nolinks .choose .dest, .nolinks .couplet h2 .from { display: none; }
 
-.figs { margin: 0; padding: .6rem; display: flex; flex-direction: column; gap: .4rem; justify-content: center; }
-.figs a { display: block; border: 1px solid var(--rule); border-radius: 8px; padding: .25rem; background: #fff; }
-.figs img { display: block; max-width: 7.5rem; max-height: 7.5rem; height: auto; }
+.figs { margin: 0; padding: .6rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+.figs a { display: block; }
+.fig { display: block; width: 6rem; height: 6rem; border: 1px solid var(--rule); border-radius: 8px; background: #fff center / contain no-repeat; cursor: zoom-in; }
+.fig.big { width: 100%; height: 18rem; cursor: zoom-out; }
+img.fig { object-fit: contain; }
+.gloss { display: inline-block; min-width: 1.4em; margin-left: .3em; text-align: center; border: 1px solid var(--rule); border-radius: 999px; font-size: .8em; text-decoration: none; }
+.glossary .term { padding: .75rem 0; border-top: 1px solid var(--rule); }
+.glossary .term h3 { margin: 0 0 .25rem; font-family: monospace; }
+.glossary .found { margin: .25rem 0 0; color: var(--muted); font-size: .875rem; }
+.wizard .glossary { display: none; }
+.wizard .glossary.active { display: block; }
 
 .group { font: 600 .75rem var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 2rem 0 .75rem; }
 .taxon { border-left: 6px solid var(--accent); }
@@ -306,8 +314,7 @@ footer { padding-bottom: 2.5rem; color: var(--muted); font: .8125rem/1.5 var(--s
   .stepping .masthead .eyebrow, .stepping .cite { display: none; }
   .choose { padding: .85rem .9rem; grid-template-columns: 2rem 1fr; gap: .2rem .65rem; }
   .choose .letter { width: 2rem; height: 2rem; }
-  .figs { flex-direction: row; flex-wrap: wrap; justify-content: flex-start; }
-  .figs img { max-width: 55vw; max-height: 9rem; }
+  .fig { width: 5rem; height: 5rem; }
   .taxon .actions a { min-height: 44px; display: inline-flex; align-items: center; }
   .hint { display: none !important; }
 }
