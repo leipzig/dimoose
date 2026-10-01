@@ -19,7 +19,7 @@ syntheticVision <- function(n_labels = 6, per_label = 1, k = 4, p = 9, d = 8, se
     ids[r] <- if (j == 1) labels[r] else paste0(labels[r], "_", j)
     own <- which(has[i, ])
     for (q in seq_len(p)) {
-      base <- if (length(own) && q <= length(own)) concepts[own[q], ] else rnorm(d)
+      base <- concepts[own[((q - 1) %% length(own)) + 1], ]
       patches[r, q, ] <- base + noise * rnorm(d)
     }
     patches[r, , ] <- unit(patches[r, , ])
