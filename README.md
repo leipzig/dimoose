@@ -116,6 +116,14 @@ Moose is built on phylo4, since it has the closest native resemblance to dichoto
 
 FishBase key import is made possible by the work of Scott Chamberlain and Carl Boettiger on rOpenSci's `rfishbase` and the R tooling for FishBase data.
 
+The bundled PhyloTree Build 17 is taken from [Haplogrep](https://haplogrep.i-med.ac.at/), whose tree files and documentation of PhyloTree's notation made the PhyloTree key possible. Thanks to the Haplogrep authors at the Institute of Genetic Epidemiology, Medical University of Innsbruck:
+
+- Kloss-Brandstätter A, Pacher D, Schönherr S, Weissensteiner H, Binna R, Specht G, Kronenberg F (2011). HaploGrep: a fast and reliable algorithm for automatic classification of mitochondrial DNA haplogroups. *Human Mutation* 32, 25–32. [doi:10.1002/humu.21382](https://doi.org/10.1002/humu.21382)
+- Weissensteiner H, Pacher D, Kloss-Brandstätter A, Forer L, Specht G, Bandelt H-J, Kronenberg F, Salas A, Schönherr S (2016). HaploGrep 2: mitochondrial haplogroup classification in the era of high-throughput sequencing. *Nucleic Acids Research* 44, W58–W63.
+- Schönherr S, Weissensteiner H, Kronenberg F, Forer L (2023). Haplogrep 3 – an interactive haplogroup classification and analysis platform. *Nucleic Acids Research* 51, W263–W268. [doi:10.1093/nar/gkad284](https://doi.org/10.1093/nar/gkad284)
+
+and to Mannis van Oven for PhyloTree itself.
+
 The image-based key work builds on the [Imageomics Institute](https://imageomics.osu.edu/) and the NSF HDR-BGNN (Harnessing the Data Revolution — Biology-Guided Neural Networks) effort, whose BioCLIP and TreeOfLife models make domain-specific biological embeddings possible.
 
 Karl Broman's R Package Primer was useful in this process.
