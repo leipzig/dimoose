@@ -35,3 +35,7 @@ __pycache__/
 
 # Planning and design docs (kept locally and in the project, not tracked)
 docs/
+
+# Local editor/agent files, kept out of the repository
+WARP.md
+*.Rproj
