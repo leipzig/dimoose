@@ -35,7 +35,9 @@ Imports:
     utils,
     xml2
 Suggests:
+    ape,
     gbm,
+    igraph,
     jpeg,
     jsonlite,
     knitr,
@@ -43,8 +45,10 @@ Suggests:
     randomForest,
     reticulate,
     rmarkdown,
+    tidytree,
     taxize (>= 0.9.100),
     testthat (>= 3.0.0),
+    tibble,
     withr
 Config/testthat/edition: 3
 RoxygenNote: 7.3.1

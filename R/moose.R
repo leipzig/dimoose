@@ -165,9 +165,9 @@ moose <- R6::R6Class("moose",
           if (nx == "-") {
             name <- if (nzchar(leads$Taxon[i])) leads$Taxon[i] else label[i]
             if (name %in% names(parent$children)) name <- paste0(name, " (", label[i], ")")
-            parent$AddChild(name, lead = label[i], character = leads$Character[i], taxon = TRUE)
+            parent$AddChild(dataTreeSafeName(name, parent), label = name, lead = label[i], character = leads$Character[i], taxon = TRUE)
           } else if (nx %in% check$couplets && is.null(nodes[[nx]])) {
-            nodes[[nx]] <- parent$AddChild(nx, lead = label[i], character = leads$Character[i], taxon = FALSE)
+            nodes[[nx]] <- parent$AddChild(dataTreeSafeName(nx, parent), label = nx, lead = label[i], character = leads$Character[i], taxon = FALSE)
             queue <- c(queue, nx)
           }
         }

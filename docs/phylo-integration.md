@@ -66,6 +66,13 @@ No R package reads Haplogrep or PhyloTree files; the closest is MTseeker, which 
 
 Measured on Haplogrep's `phylotree-rcrs-17` 17.3 `tree.xml`: 5,435 haplogroups, maximum depth 31, maximum 86 children at one node, 13,384 mutations. 361 names contain spaces, `+` or parentheses (`H2a+152  16311`, `H2a2a+(16235)`), so they need Newick quoting and break Auspice's no-spaces rule unless renamed. No mutation matches Auspice's nucleotide regex, because PhyloTree gives position and derived base only; the reference base has to be looked up in `rcrs.fasta` from the same release. The Haplogrep tree catalogue (`genepi/haplogrep-trees`) also lists RSRS 17.2, the Forensic Update 1.3 and FamilyTreeDNA's Mitotree (non-commercial licence).
 
+## Status (2026-09-30)
+
+All six recommendations below are now implemented in moose (`R/phylo-integration.R`),
+with tests in `tests/testthat/test-phylo-integration.R`:
+`toTreedata()`, `toNewick(labels=, annotate=)`, `toAuspiceJSON()`, `toIgraph()`,
+the `toDataTree()` reserved-name guard, and `readHaplogrep()`.
+
 ## Recommendations for moose
 
 1. **`toTreedata()` bridge for ggtree.** Build a `tidytree` table from the lead table (parent = `Statement`, node = `Next` or a leaf), attach `Character`, `Choice` and `Taxon` as node data (the data of a child node describes the edge into it), and return `as.treedata()`. ggtree then draws lead text on branches with `geom_label(aes(x = branch, label = Character))`, couplet ids with `geom_nodelab()`, and users join their own data with `%<+%`. Join by `node`, never by label, because taxa repeat across leaves. From `treedata`, `write.beast()` gives annotated Nexus for FigTree and IcyTree, and `write.jtree()` a JSON that round-trips. This is the highest-value item: it plugs moose into the most-used R tree stack with one conversion.
