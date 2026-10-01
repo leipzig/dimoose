@@ -119,3 +119,5 @@ FishBase key import is made possible by the work of Scott Chamberlain and Carl B
 The image-based key work builds on the [Imageomics Institute](https://imageomics.osu.edu/) and the NSF HDR-BGNN (Harnessing the Data Revolution — Biology-Guided Neural Networks) effort, whose BioCLIP and TreeOfLife models make domain-specific biological embeddings possible.
 
 Karl Broman's R Package Primer was useful in this process.
+
+Moose was built in Whitefish, Montana.
