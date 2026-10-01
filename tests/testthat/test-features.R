@@ -34,3 +34,56 @@ test_that("keys without features validate as before", {
   expect_length(arachnidaKey()$validate(), 0)
   expect_null(arachnidaKey()$features)
 })
+
+termFixture <- function() {
+  v <- syntheticVision(k = 4)
+  t <- discoverTerms(v$patches, k = 4)
+  s <- termScores(v$patches, t$centroids)
+  list(v = v, t = t, s = s, key = keyFromTerms(s, v$images, t, quantile = 0.5))
+}
+
+test_that("classify walks every image to a result and records the path", {
+  f <- termFixture()
+  r <- classify(f$key, f$s)
+  expect_equal(names(r), c("id", "result", "path"))
+  expect_equal(r$id, rownames(f$s))
+  expect_true(all(r$result %in% f$key$leads$Taxon))
+  expect_match(r$path[1], "^1[ab]( [0-9]+[ab])*$")
+})
+
+test_that("unresolvable couplet gives NA", {
+  f <- termFixture()
+  s <- f$s
+  s[1, ] <- NA
+  r <- classify(f$key, s)
+  expect_true(is.na(r$result[1]))
+  expect_equal(r$path[1], "")
+  bad <- f$key$clone()
+  l <- bad$leads; l$Test <- ">"; bad$leads <- l
+  expect_true(all(is.na(classify(bad, f$s)$result)))
+})
+
+test_that("classify needs every feature column", {
+  f <- termFixture()
+  expect_error(classify(f$key, f$s[, 1:2]), "missing scores")
+})
+
+test_that("evaluateKey reports accuracy and groups", {
+  f <- termFixture()
+  e <- evaluateKey(f$key, f$s, f$v$images$label, groups = c(L1 = "g1", L2 = "g1", L3 = "g2", L4 = "g2", L5 = "g3", L6 = "g3"))
+  expect_equal(e$accuracy, 1)
+  expect_equal(e$groupAccuracy, 1)
+  expect_s3_class(e$confusion, "table")
+  expect_equal(nrow(e$results), 6)
+})
+
+test_that("looKey rebuilds without the held-out image", {
+  f <- termFixture()
+  calls <- 0
+  e <- looKey(f$v$images,
+    build = function(train) { calls <<- calls + 1; keyFromTerms(f$s[train, , drop = FALSE], f$v$images[train, ], f$t, quantile = 0.5) },
+    score = function(key, test) f$s[test, , drop = FALSE])
+  expect_equal(calls, 6)
+  expect_true(e$accuracy >= 0 && e$accuracy <= 1)
+  expect_equal(nrow(e$results), 6)
+})

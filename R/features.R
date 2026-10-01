@@ -68,3 +68,104 @@ checkFeatures <- function(leads, features) {
   }
   problems
 }
+
+#' Follow a key by machine
+#'
+#' Walks each row of `scores` through `key`: at every couplet the lead whose
+#' test (`Feature`, `Test`, `Threshold`) passes is taken. When no lead or
+#' more than one passes (for instance on a missing score), the result is `NA`.
+#'
+#' @param key A [moose] key with `Feature`, `Test` and `Threshold` lead
+#'   columns, e.g. from [keyFromTerms()].
+#' @param scores A numeric matrix, one row per object, with a column for every
+#'   feature id the key tests (see [featureScores()] and [scoreImages()]).
+#' @return A data frame with `id` (row names of `scores`), `result` and
+#'   `path` (the leads taken, e.g. `"1a 3b"`).
+#' @export
+classify <- function(key, scores) {
+  leads <- normalizeLeads(key$leads)
+  needed <- unique(leads$Feature[nzchar(leads$Feature)])
+  if (length(needed) == 0) stop("This key has no machine-readable tests", call. = FALSE)
+  if (is.null(dim(scores))) scores <- matrix(scores, 1, dimnames = list(NULL, names(scores)))
+  # Score columns may be keyed by feature id (featureScores/scoreImages) or by
+  # the bare label (termScores output); map labels to ids so either works.
+  f <- key$features
+  if (!is.null(f)) {
+    byLabel <- stats::setNames(f$id, f$label)
+    hit <- colnames(scores) %in% names(byLabel) & !colnames(scores) %in% f$id
+    colnames(scores)[hit] <- byLabel[colnames(scores)[hit]]
+  }
+  missing <- setdiff(needed, colnames(scores))
+  if (length(missing)) stop("`scores` is missing scores for: ", paste(missing, collapse = ", "), call. = FALSE)
+  root <- checkLeads(leads)$root
+  byCouplet <- split(seq_len(nrow(leads)), leads$Statement)
+  ids <- rownames(scores); if (is.null(ids)) ids <- as.character(seq_len(nrow(scores)))
+  walk <- function(s) {
+    cp <- root; path <- character(); seen <- character()
+    repeat {
+      if (cp %in% seen) return(list(NA_character_, path))
+      seen <- c(seen, cp)
+      i <- byCouplet[[cp]]
+      v <- s[leads$Feature[i]]
+      ok <- ifelse(leads$Test[i] == ">", v > leads$Threshold[i], v <= leads$Threshold[i])
+      ok[is.na(ok)] <- FALSE
+      if (sum(ok) != 1) return(list(NA_character_, path))
+      take <- i[ok]
+      path <- c(path, paste0(leads$Statement[take], leads$Choice[take]))
+      if (leads$Next[take] == "-") return(list(leads$Taxon[take], path))
+      cp <- leads$Next[take]
+      if (!cp %in% names(byCouplet)) return(list(NA_character_, path))
+    }
+  }
+  res <- lapply(seq_len(nrow(scores)), function(r) walk(scores[r, ]))
+  data.frame(id = ids, result = vapply(res, `[[`, "", 1),
+             path = vapply(res, function(x) paste(x[[2]], collapse = " "), ""), stringsAsFactors = FALSE)
+}
+
+#' Accuracy of a key followed by machine
+#'
+#' @inheritParams classify
+#' @param labels True label of each row of `scores`.
+#' @param groups Optional named vector mapping labels to coarser groups (e.g.
+#'   model years to generations) for a second accuracy figure.
+#' @return A list: `results` (one row per object with `actual`, `predicted`,
+#'   `correct`, `groupCorrect`), `accuracy`, `groupAccuracy` and `confusion`.
+#' @export
+evaluateKey <- function(key, scores, labels, groups = NULL) {
+  r <- classify(key, scores)
+  r$actual <- as.character(labels)
+  r$predicted <- r$result; r$result <- NULL
+  r$correct <- !is.na(r$predicted) & r$predicted == r$actual
+  r$groupCorrect <- if (is.null(groups)) NA else !is.na(r$predicted) & groups[r$predicted] == groups[r$actual]
+  r$groupCorrect[is.na(r$groupCorrect)] <- FALSE
+  list(results = r[, c("id", "actual", "predicted", "correct", "groupCorrect", "path")],
+       accuracy = mean(r$correct),
+       groupAccuracy = if (is.null(groups)) NA_real_ else mean(r$groupCorrect),
+       confusion = table(actual = r$actual, predicted = ifelse(is.na(r$predicted), "<none>", r$predicted)))
+}
+
+#' Leave-one-out evaluation of a key builder
+#'
+#' @param images [imageSet()] data frame of all images.
+#' @param build Function of the training row indices returning a key.
+#' @param score Function of (key, test row index) returning a one-row scores
+#'   matrix for that image.
+#' @param groups As in [evaluateKey()].
+#' @return As [evaluateKey()].
+#' @export
+looKey <- function(images, build, score, groups = NULL) {
+  n <- nrow(images)
+  rows <- lapply(seq_len(n), function(i) {
+    key <- build(setdiff(seq_len(n), i))
+    r <- classify(key, score(key, i))
+    data.frame(id = images$id[i], actual = images$label[i], predicted = r$result[1], path = r$path[1], stringsAsFactors = FALSE)
+  })
+  r <- do.call(rbind, rows)
+  r$correct <- !is.na(r$predicted) & r$predicted == r$actual
+  r$groupCorrect <- if (is.null(groups)) NA else !is.na(r$predicted) & groups[r$predicted] == groups[r$actual]
+  r$groupCorrect[is.na(r$groupCorrect)] <- FALSE
+  list(results = r[, c("id", "actual", "predicted", "correct", "groupCorrect", "path")],
+       accuracy = mean(r$correct),
+       groupAccuracy = if (is.null(groups)) NA_real_ else mean(r$groupCorrect),
+       confusion = table(actual = r$actual, predicted = ifelse(is.na(r$predicted), "<none>", r$predicted)))
+}
