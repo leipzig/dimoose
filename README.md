@@ -23,8 +23,6 @@ This package provides tools to:
 
 # Getting started
 
-Four example keys ship with the package and share the same methods: `sharkKey()` (FishBase), `arachnidaKey()`, `vibrioKey()` (generated from a consensus matrix), and `phylotreeKey()` (PhyloTree Build 17).
-
 ```r
 library(moose)
 sharks <- sharkKey()
@@ -33,6 +31,26 @@ exportWizard(sharks, "sharks.html")   # an interactive, self-contained wizard
 ```
 
 There are vignettes on the package basics, example applications, and [building keys from images](vignettes/vision-keys.Rmd).
+
+# Included datasets
+
+Four example keys ship with the package. They come from very different sources and are built in different ways, but they are all ordinary moose objects: they share the same fields (`leads`, `df`, `meta`, `taxa`, `desc`) and methods (`print()`, `summary()`, `validate()`, `toDataTree()`, `toNewick()`) and all work with `exportWizard()` and the phylogenetics exports.
+
+## Sharks — `sharkKey()`
+
+FishBase key 1, the *Key to the families of sharks in the Western Central Pacific* (Compagno 1998), parsed from saved FishBase pages in `inst/extdata/fishbase/`. A classic, human-authored morphological key: **23 couplets, 24 families**. It carries guide-image links, so the exported wizard shows a figure at each lead. This is the key the `importFishbase()` / `parseFishbase()` machinery produces from a live or saved FishBase page.
+
+## Arachnids — `arachnidaKey()` (dataset `arachnida`)
+
+The *Key to the Orders of Arachnida* from Triplehorn & Johnson (2005), *Borror and DeLong's Introduction to the Study of Insects*, 7th ed., transcribed by hand (see `data-raw/arachnida/`). **11 couplets, 11 orders** (Schizomida is reached from two couplets, so it is a small DAG rather than a strict tree). The `arachnida` dataset is the underlying table of leads; `keyFromLeads()` turns it into the key.
+
+## Vibrio — `vibrioKey()` (dataset `vibrio`)
+
+A key **generated** from a biochemical consensus matrix rather than written by a person. The `vibrio` dataset is the identification matrix of Noguerola & Blanch (2008), **74 taxa × 45 tests** (`+`/`-`/`(+)`/`(-)`/`v`/`ND`). `vibrioKey()` scores the tests, fits an `rpart` classification tree, and converts it with `keyFromRpart()` into a **73-couplet** key reaching all 74 species. Species the tests cannot separate share a result. This is the template for turning any feature matrix into a dichotomous key.
+
+## PhyloTree — `phylotreeKey()` (datasets `phylotree17`, `phylotree17_mutations`)
+
+PhyloTree Build 17, the human mitochondrial DNA phylogeny (van Oven 2015), as distributed by Haplogrep 3: **5,435 haplogroups** and **13,384 mutations**. `phylotree17` is one row per haplogroup (name, parent, depth, subclade count, mutations); `phylotree17_mutations` is one row per mutation (position, type, ancestral/derived base). `phylotreeKey()` turns the tree, or any subtree, into a key whose "characters" are the defining mutations — for example `phylotreeKey("H2a")`. The full tree is large (2,420 steps), so a subtree or a `maxDepth` is usually more practical for the wizard. This is the "phylogenetic tree as a key" case, where the decisions are mutations rather than visible phenotypes.
 
 # Keys from images
 
