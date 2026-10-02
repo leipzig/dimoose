@@ -42,3 +42,18 @@ inst/extdata/mtdna.fasta
   90:675-684), both as distributed in the Haplogrep 3 tree
   "phylotree-rsrs-17" under the MIT License reproduced above. They are not
   sequences of individuals; see data-raw/alignments/build.R.
+
+inst/extdata/pics/, inst/extdata/new-photos/
+  42 photographs from the Fruits-360 dataset, 100x100 version
+  (https://github.com/fruits-360/fruits-360-100x100, commit c3b8394),
+  Copyright (c) 2017- Mihai Oltean, licensed under the Creative Commons
+  Attribution-ShareAlike 4.0 International License
+  (https://creativecommons.org/licenses/by-sa/4.0/). See also Muresan H,
+  Oltean M (2018), Fruit recognition from images using deep learning, Acta
+  Universitatis Sapientiae, Informatica 10:26-42.
+  The files are unmodified copies from the dataset's Training folders
+  "Banana 1", "Blueberry 1", "Kiwi 1", "Lemon 1", "Pineapple 1" and
+  "Strawberry 1"; those in pics/ keep their original file names, and those in
+  new-photos/ are renamed unknown1.jpg to unknown6.jpg (one per fruit, in the
+  order above). data-raw/photos/build.R lists the selection. These images
+  remain under CC BY-SA 4.0, separately from the licence of moose's code.

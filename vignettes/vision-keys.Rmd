@@ -32,7 +32,8 @@ data instead. This vignette goes from a pile of photos to a dichotomous key;
 ```{r}
 library(moose)
 
-images <- imageSet("pics")                   # 1. photos and their labels
+pics   <- system.file("extdata", "pics", package = "moose")   # example photos; or your own folder
+images <- imageSet(pics)                     # 1. photos and their labels
 model  <- visionModel()                      # 2. a vision model
 emb    <- embedImages(model, images)         # 3. photos -> embeddings
 sniglets <- discoverSniglets(emb$patches)    # 4. sniglets: recurring visual features...
@@ -41,8 +42,14 @@ key      <- keyFromSniglets(scores, images, sniglets, method = "rpart")   # ...a
 key    <- patchExemplars(model, key, images) # 5. example crops, then a web page
 exportWizard(key, "key.html")
 
-key <- renameSniglets(key, c(smeinfisshiesk = "an egg-crate grille"))   # 6. name what you see
+key <- renameSniglets(key, c(zhuprierl = "a dimpled yellow peel"))   # 6. name what you see
 ```
+
+The example photos ship with moose, so this runs as written: 36 small photos
+of six fruits (banana, blueberry, kiwi, lemon, pineapple, strawberry), six of
+each, from the [Fruits-360](https://github.com/fruits-360/fruits-360-100x100)
+dataset (CC BY-SA 4.0). To use your own photos, put the path of your folder
+in place of `pics`.
 
 `key.html` is a self-contained page that walks a person through the key,
 showing example crops for each choice. The rest of this vignette explains
@@ -86,34 +93,41 @@ takes the name of the folder it is in:
 
 ```
 pics/
-  cardinal/  IMG_0012.jpg  IMG_0013.jpg
-  robin/     IMG_0012.jpg  IMG_0044.jpg
+  banana/    0_100.jpg  204_100.jpg  ...
+  blueberry/ 0_100.jpg  176_100.jpg  ...
+  ...
 ```
 
 ```{r}
-images <- imageSet("pics")
+pics   <- system.file("extdata", "pics", package = "moose")
+images <- imageSet(pics)
 ```
+
+The example photos are laid out this way. The other two layouts are for your
+own photos; the folder and file names below are placeholders.
 
 **The class is in the file name.** Give a function that turns a file name
 (without its extension) into the label:
 
 ```{r}
 # robin_01.jpg, robin_02.jpg, wren_01.jpg -> "robin", "robin", "wren"
-images <- imageSet("pics", label = function(x) sub("_.*$", "", x))
+images <- imageSet("my_photos", label = function(x) sub("_.*$", "", x))
 ```
 
 **The labels are in a table.** Read the spreadsheet and pass one label per
 file:
 
 ```{r}
-tab    <- read.csv("labels.csv")             # columns: file, species
-images <- imageSet(file.path("pics", tab$file), label = tab$species)
+tab    <- read.csv("my_labels.csv")          # columns: file, species
+images <- imageSet(file.path("my_photos", tab$file), label = tab$species)
 ```
 
 Check the result before going on:
 
 ```{r}
 table(images$label)
+#>     banana  blueberry       kiwi      lemon  pineapple strawberry
+#>          6          6          6          6          6          6
 ```
 
 ## Step 2: load a vision model
@@ -150,7 +164,7 @@ like.
 
 `discoverSniglets()` clusters all the patches. Each cluster is a recurring
 visual feature. It has no name, so moose coins a pronounceable word for it
-(`smeinfisshiesk`) and defines it by the patches that match it best. These are
+(`zhuprierl`) and defines it by the patches that match it best. These are
 **sniglets**. `snigletScores()` scores each photo for each sniglet, and
 `keyFromSniglets()` grows a key in which each step asks whether the specimen
 has one sniglet:
@@ -160,6 +174,8 @@ sniglets <- discoverSniglets(emb$patches, k = 40)
 scores   <- snigletScores(emb$patches, sniglets$centroids)
 key      <- keyFromSniglets(scores, images, sniglets, method = "rpart")
 key
+#> <moose key> Key generated from sniglets
+#>   5 couplets, 10 leads, 6 taxa, up to 5 steps deep
 ```
 
 `keyFromSniglets()` has two tree builders:
@@ -171,8 +187,8 @@ key
   the sniglet that splits the remaining classes most evenly. It is meant for
   **one photo per class**.
 
-On 32 photos of pickup trucks in three classes (about ten photos each),
-`"rpart"` put 81% of held-out photos in the right class and `"balanced"` 47%.
+On the example photos (six per class), `"rpart"` puts 72% of held-out photos
+in the right class and `"balanced"` 44%.
 
 ### Questions in words
 
@@ -182,13 +198,24 @@ and, for each fork, picks the pair that best separates its two sides:
 
 ```{r}
 vocab <- data.frame(
-  feature  = c("round headlights", "a flat hood", "a chrome bumper"),
-  opposite = c("square headlights", "a curved hood", "a painted bumper")
+  feature  = c("a smooth skin", "a round shape", "a yellow colour", "green leaves on top"),
+  opposite = c("a rough skin", "a long shape", "a dark colour", "no leaves")
 )
-template <- "a pickup truck with {x}"
+template <- "a photo of a fruit with {x}"
 txt  <- embedTexts(model, vocabularyPrompts(vocab, template))
 qkey <- keyFromClusters(emb$image, images, vocab, txt, template = template)
+qkey$leads[1:6, c("Statement", "Character", "Next", "Taxon")]
+#>   Statement           Character Next      Taxon
+#> 1         1   Has a smooth skin    2
+#> 2         1    Has a rough skin    -  pineapple
+#> 3         2 Has a yellow colour    3
+#> 4         2   Has a dark colour    4
+#> 5         3   Has a round shape    - strawberry
+#> 6         3    Has a long shape    -     banana
 ```
+
+The model's answers are not always a person's: here it files the strawberry
+under "a yellow colour".
 
 The questions can only be as good as the vocabulary: write pairs a person
 could check by eye, and give more pairs than the key has forks.
@@ -199,8 +226,18 @@ A key is an ordinary moose object, so everything else in the package works on
 it:
 
 ```{r}
-key                                          # size of the key
 key$leads[, c("Statement", "Character", "Next", "Taxon")]
+#>    Statement           Character Next      Taxon
+#> 1          1     Lacks zhuprierl    2
+#> 2          1       Has zhuprierl    -      lemon
+#> 3          2   Has treuxraikbluk    3
+#> 4          2 Lacks treuxraikbluk    -  pineapple
+#> 5          3        Has laissloi    -     banana
+#> 6          3      Lacks laissloi    4
+#> 7          4        Has glirreur    5
+#> 8          4      Lacks glirreur    - strawberry
+#> 9          5     Lacks floirbaur    -  blueberry
+#> 10         5       Has floirbaur    -       kiwi
 ```
 
 For a key of sniglets, add example crops so that people can see what each
@@ -222,7 +259,7 @@ snigletNames(key)
 #>         sniglet          name definition  used
 #> 1     gaithiark     gaithiark       <NA> FALSE
 #> 2 treuxraikbluk treuxraikbluk       <NA>  TRUE
-#> 3     zhuprierl     zhuprierl       <NA> FALSE
+#> 3     zhuprierl     zhuprierl       <NA>  TRUE
 #> ...
 ```
 
@@ -230,8 +267,8 @@ Only the sniglets the key uses (`used`) need names. Rename a few directly:
 
 ```{r}
 key <- renameSniglets(key,
-  c(smeinfisshiesk = "an egg-crate grille"),
-  definitions = c(smeinfisshiesk = "A grid of small square openings between the headlights"))
+  c(zhuprierl = "a dimpled yellow peel"),
+  definitions = c(zhuprierl = "Bright yellow skin with fine pits, as on a lemon"))
 ```
 
 or fill in the table in a spreadsheet and read it back:
@@ -243,7 +280,7 @@ key <- renameSniglets(key, "names.csv")
 exportWizard(key, "key.html")
 ```
 
-The leads now read "Has an egg-crate grille", and the glossary shows the new
+The leads now read "Has a dimpled yellow peel", and the glossary shows the new
 name, the definition and the coined word it replaced.
 
 How renaming works:
@@ -273,6 +310,7 @@ evaluateKey(key, scores, images$label)$accuracy
 looKey(images,
   build = function(train) keyFromSniglets(scores[train, ], images[train, ], sniglets, method = "rpart"),
   score = function(key, i) scores[i, , drop = FALSE])$accuracy
+#> [1] 0.7222222
 ```
 
 ## Identifying a new photo
@@ -282,10 +320,15 @@ can follow it. `scoreImages()` embeds new photos and scores them, and
 `classify()` walks the key:
 
 ```{r}
-s <- scoreImages(key, model, "new-specimen.jpg")
-classify(key, s)
-#>             id   result  path
-#> 1 new-specimen cardinal 1a 2b
+new <- list.files(system.file("extdata", "new-photos", package = "moose"), full.names = TRUE)
+classify(key, scoreImages(key, model, new))
+#>         id     result           path
+#> 1 unknown1     banana       1a 2a 3a
+#> 2 unknown2  blueberry 1a 2a 3b 4a 5a
+#> 3 unknown3       kiwi 1a 2a 3b 4a 5b
+#> 4 unknown4      lemon             1b
+#> 5 unknown5  pineapple          1a 2b
+#> 6 unknown6 strawberry    1a 2a 3b 4b
 ```
 
 ## Any model, no Python
