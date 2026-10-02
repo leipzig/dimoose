@@ -23,8 +23,9 @@ data instead. This vignette goes from a pile of photos to a dichotomous key;
 - **A label for each photo** saying which class it shows. A key leads to
   named results, so photos without labels cannot make one. You need at least
   two classes. Several photos per class give a better key than one each.
-- **Python with open_clip**, installed once, to turn photos into numbers
-  (see [Setup](#setup)).
+- **The reticulate package** (1.41 or later). The model that turns photos
+  into numbers runs in Python, which reticulate sets up for you (see
+  [Setup](#setup)).
 
 ## The short version
 
@@ -49,12 +50,26 @@ each step and the choices in it.
 
 ## Setup {#setup}
 
-Install the Python side once. moose uses CLIP through
-[open_clip](https://github.com/mlfoundations/open_clip), reached from R with
-[reticulate](https://rstudio.github.io/reticulate/):
+moose uses CLIP through
+[open_clip](https://github.com/mlfoundations/open_clip), a Python library,
+reached from R with [reticulate](https://rstudio.github.io/reticulate/):
 
-```sh
-pip install -r "$(Rscript -e 'cat(system.file("python/requirements.txt", package="moose"))')"
+```{r}
+install.packages("reticulate")
+```
+
+There is nothing to install in Python by hand. The first time you call
+`visionModel()`, reticulate sets up a private Python with the packages moose
+needs (`torch`, `open_clip_torch`, `pillow`, `numpy`) and keeps it for later
+sessions. That first call downloads several gigabytes, mostly PyTorch, so
+allow it a few minutes.
+
+To use a Python you manage yourself, select it before the first call with
+`visionModel(python = "/path/to/python")`, `reticulate::use_virtualenv()` or
+the `RETICULATE_PYTHON` environment variable, and install the packages there:
+
+```{r}
+reticulate::py_install(c("torch", "open_clip_torch", "pillow", "numpy"))
 ```
 
 Only step 3 (and the example crops in step 5) needs Python. Everything else is
@@ -110,8 +125,7 @@ checkpoint you already have:
 model <- visionModel()                       # or visionModel("ViT-B-32.pt")
 ```
 
-If reticulate picks a Python that lacks the packages you installed, name the
-right one: `visionModel(python = "/usr/bin/python3")`.
+The first call also sets up Python (see [Setup](#setup)).
 
 ## Step 3: embed the photos
 

@@ -25,6 +25,16 @@ An object of class `mooseVisionModel` with `py` (the Python model)
   and `spec` (library, architecture, weights SHA-256, image size, ...).
 }
 \description{
-Uses Python's open_clip through reticulate. Install the Python side with
-`pip install -r $(Rscript -e 'cat(system.file("python/requirements.txt", package="moose"))')`.
+Uses Python's open_clip through reticulate. You do not need to install
+anything in Python yourself: the first call sets up a private Python with
+the packages moose needs (`torch`, `open_clip_torch`, `pillow`, `numpy`)
+and reuses it afterwards. That first call downloads them, which takes a
+few minutes. This needs reticulate 1.41 or later.
+}
+\details{
+To use a Python of your own instead, give its path in `python`, or select
+it with [reticulate::use_python()], [reticulate::use_virtualenv()] or the
+`RETICULATE_PYTHON` environment variable before the first call, and install
+the packages there with
+`reticulate::py_install(c("torch", "open_clip_torch", "pillow", "numpy"))`.
 }

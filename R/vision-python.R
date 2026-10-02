@@ -1,11 +1,33 @@
+# The Python packages the vision layer needs, from inst/python/requirements.txt.
+pythonRequirements <- function() {
+  req <- readLines(system.file("python", "requirements.txt", package = "moose"), warn = FALSE)
+  req <- trimws(sub("#.*$", "", req))
+  req[nzchar(req)]
+}
+
 pyVision <- local({
   mod <- NULL
   function() {
     if (!requireNamespace("reticulate", quietly = TRUE)) {
-      stop("Install the reticulate package (and Python with torch and open_clip_torch) to embed images", call. = FALSE)
+      stop("Install the reticulate package to embed images", call. = FALSE)
     }
     if (is.null(mod)) {
-      mod <<- reticulate::import_from_path("moose_vision", path = system.file("python", package = "moose"), convert = TRUE)
+      # Declare what we need, so that reticulate (>= 1.41) can provide a Python
+      # with these packages when the user has not chosen one. It has no effect
+      # on a Python the user chose (use_python(), RETICULATE_PYTHON, ...).
+      if (utils::packageVersion("reticulate") >= "1.41.0" && !reticulate::py_available(initialize = FALSE)) {
+        reticulate::py_require(pythonRequirements())
+      }
+      mod <<- tryCatch(
+        reticulate::import_from_path("moose_vision", path = system.file("python", package = "moose"), convert = TRUE),
+        error = function(e) {
+          cfg <- tryCatch(reticulate::py_config()$python, error = function(e) "unknown")
+          stop("Could not load moose's Python code with the Python at ", cfg, ":\n", conditionMessage(e),
+               "\nIt needs the Python packages ", paste(pythonRequirements(), collapse = ", "), ". Install them there with\n",
+               "  reticulate::py_install(c(", paste0("\"", pythonRequirements(), "\"", collapse = ", "), "))\n",
+               "or let reticulate provide a Python: restart R without RETICULATE_PYTHON set and without the `python` argument.",
+               call. = FALSE)
+        })
     }
     mod
   }
@@ -13,8 +35,17 @@ pyVision <- local({
 
 #' Load a vision model for embedding images
 #'
-#' Uses Python's open_clip through reticulate. Install the Python side with
-#' `pip install -r $(Rscript -e 'cat(system.file("python/requirements.txt", package="moose"))')`.
+#' Uses Python's open_clip through reticulate. You do not need to install
+#' anything in Python yourself: the first call sets up a private Python with
+#' the packages moose needs (`torch`, `open_clip_torch`, `pillow`, `numpy`)
+#' and reuses it afterwards. That first call downloads them, which takes a
+#' few minutes. This needs reticulate 1.41 or later.
+#'
+#' To use a Python of your own instead, give its path in `python`, or select
+#' it with [reticulate::use_python()], [reticulate::use_virtualenv()] or the
+#' `RETICULATE_PYTHON` environment variable before the first call, and install
+#' the packages there with
+#' `reticulate::py_install(c("torch", "open_clip_torch", "pillow", "numpy"))`.
 #'
 #' @param weights Local checkpoint file (e.g. OpenAI's `ViT-B-32.pt`); if
 #'   `NULL`, open_clip downloads `pretrained` weights for `name`.
@@ -26,7 +57,7 @@ pyVision <- local({
 #' @export
 visionModel <- function(weights = NULL, name = "ViT-B-32", pretrained = "openai", python = NULL) {
   if (!requireNamespace("reticulate", quietly = TRUE)) {
-    stop("Install the reticulate package (and Python with torch and open_clip_torch) to embed images", call. = FALSE)
+    stop("Install the reticulate package to embed images", call. = FALSE)
   }
   if (!is.null(python)) reticulate::use_python(python, required = TRUE)
   mod <- pyVision()

@@ -44,7 +44,7 @@ optional packages, which are only needed if you use that feature:
 | Feature | Also needs |
 |---|---|
 | Keys from a sequence alignment (`keyFromAlignment()`) | `ape`, and `phangorn` for midpoint rooting, UPGMA, parsimony, maximum likelihood and proteins |
-| Keys from photos (`visionModel()`, `embedImages()`) | `reticulate`, and Python with open_clip (see [From a pile of photos](#from-a-pile-of-photos)) |
+| Keys from photos (`visionModel()`, `embedImages()`) | `reticulate` (1.41 or later), which sets up Python and its packages on first use |
 | Mixed-effects conditional inference trees (`mecit()`) | `partykit` and `lme4`, and `glmertree` for `method = "mob"` |
 | Phylogenetics exports (`toTreedata()`, `toIgraph()`, `toAuspiceJSON()`) | `tidytree`, `tibble` and `ape`; `igraph`; `jsonlite` |
 
@@ -128,12 +128,12 @@ See the [alignment vignette](vignettes/alignment-keys.Rmd).
 
 ## From a pile of photos
 
-You need photos, a label for each one saying what it shows, and Python with
-open_clip (CLIP ViT-B/32 by default):
-
-```sh
-pip install -r "$(Rscript -e 'cat(system.file("python/requirements.txt", package="moose"))')"
-```
+You need photos, and a label for each one saying what it shows. The photos
+are embedded with a vision model (CLIP ViT-B/32 by default) that runs in
+Python, but there is nothing to install by hand: the first `visionModel()`
+call sets up a private Python with the packages it needs (through
+`reticulate`, 1.41 or later) and reuses it afterwards. That first call
+downloads several gigabytes, mostly PyTorch.
 
 Then it is five steps:
 
