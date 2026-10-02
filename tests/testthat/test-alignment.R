@@ -182,3 +182,28 @@ test_that("more input checks", {
   expect_equal(classify(k, alignmentScores(k, toyAlignment))$result, names(toyAlignment))
   expect_true("author" %in% k$meta$key)
 })
+
+test_that("the example alignments that ship with moose make keys", {
+  fasta <- system.file("extdata", "aligned.fasta", package = "moose")
+  newick <- system.file("extdata", "aligned.nwk", package = "moose")
+  mtdna <- system.file("extdata", "mtdna.fasta", package = "moose")
+  expect_true(all(nzchar(c(fasta, newick, mtdna))))
+  key <- keyFromAlignment(fasta)
+  expect_equal(nrow(key$taxa), 15)
+  expect_equal(key$leads$Character[1:2], c("106G 35G", "106A 35A"))
+  expect_equal(keyFromAlignment(fasta, tree = newick)$leads, key$leads)
+
+  mt <- keyFromAlignment(mtdna, reference = "H2a2a1", outgroup = "L0a1")
+  expect_equal(nrow(mt$taxa), 14)
+  m <- stats::setNames(mt$meta$value, mt$meta$key)
+  expect_equal(m[["weak_couplets"]], "0")
+  expect_equal(m[["regrouped_couplets"]], "0")
+  # sites are in rCRS coordinates: the split on macrohaplogroup N's markers
+  expect_true("8701A 9540T 10873T" %in% mt$leads$Character)
+  expect_equal(mt$leads$Taxon[2], "L0a1")
+  r <- classify(mt, alignmentScores(mt, mtdna))
+  expect_equal(r$result, r$id)
+  # the two insertions get their own numbered columns
+  labels <- siteLabels(alignmentMatrix(mtdna), "H2a2a1")
+  expect_true(all(c("2156.1", "5899.1", "16569") %in% labels))
+})

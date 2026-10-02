@@ -28,3 +28,17 @@ data/phylotree17.rda, data/phylotree17_mutations.rda
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
+
+inst/extdata/aligned.fasta, inst/extdata/aligned.nwk
+  The "woodmouse" alignment distributed with the R package ape (Paradis E,
+  Schliep K, 2019, Bioinformatics 35:526-528; GPL-2 | GPL-3): 15 cytochrome b
+  sequences of Apodemus sylvaticus from Michaux JR, Magnanou E, Paradis E,
+  Nieberding C, Libois R (2003), Molecular Ecology 12:685-697. aligned.nwk is
+  a neighbour-joining tree of it.
+
+inst/extdata/mtdna.fasta
+  Sequences rebuilt by moose from PhyloTree Build 17 and the RSRS reference
+  sequence (Behar DM et al., 2012, American Journal of Human Genetics
+  90:675-684), both as distributed in the Haplogrep 3 tree
+  "phylotree-rsrs-17" under the MIT License reproduced above. They are not
+  sequences of individuals; see data-raw/alignments/build.R.

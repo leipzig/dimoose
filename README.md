@@ -100,12 +100,10 @@ alignment sites that tell its two sides apart:
 
 ```r
 library(moose)
-key <- keyFromAlignment("aligned.fasta")           # a FASTA file, or an ape/phangorn object
+fasta <- system.file("extdata", "aligned.fasta", package = "moose")   # or the path of your own FASTA file
+key <- keyFromAlignment(fasta)
 exportWizard(key, "key.html")
 
-# a runnable example: 15 wood mouse cytochrome b sequences from ape
-data(woodmouse, package = "ape")
-key <- keyFromAlignment(woodmouse)
 head(key$leads[, c("Statement", "Character", "Next", "Taxon")], 4)
 #>   Statement      Character Next   Taxon
 #> 1         1       106G 35G    2
@@ -114,12 +112,26 @@ head(key$leads[, c("Statement", "Character", "Next", "Taxon")], 4)
 #> 4         2 201C 234T 297A    - No1114S
 ```
 
+`aligned.fasta` is an example that ships with moose: 15 wood mouse cytochrome
+*b* sequences. A second one, `mtdna.fasta`, has whole human mitochondrial
+genomes for 14 haplogroups. Numbered by the sequence of the rCRS's haplogroup
+and rooted on L0, its key asks about the familiar PhyloTree positions:
+
+```r
+mtdna <- system.file("extdata", "mtdna.fasta", package = "moose")
+mt <- keyFromAlignment(mtdna, reference = "H2a2a1", outgroup = "L0a1")
+mt$leads[7:8, c("Statement", "Character", "Next")]
+#>   Statement         Character Next
+#> 7         4 8701A 9540T 10873T    5
+#> 8         4 8701G 9540C 10873C   12
+```
+
 Options:
 
 - **The phylogeny program** is chosen with `tool`: `"nj"` (the default) and `"bionj"` use
   `ape`; `"upgma"`, `"parsimony"` and `"ml"` use `phangorn`; `"fasttree"` and
   `"iqtree"` run the FastTree or IQ-TREE program if it is installed.
-- **A tree from any other program** goes in as `tree = "my.nwk"`.
+- **A tree from any other program** goes in as `tree = "my.nwk"` (a Newick file).
 - **The root** is the `outgroup` you name, or the midpoint.
 - **Site numbers** are alignment columns, or positions in a `reference` sequence.
 - **New sequences** are placed with `classify(key, alignmentScores(key, new))`.
