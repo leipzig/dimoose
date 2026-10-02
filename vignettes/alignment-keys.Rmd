@@ -17,11 +17,22 @@ from a person's judgement. `vignette("vision-keys")` starts from photos. This
 vignette starts from a multiple sequence alignment (MSA) and needs one
 command:
 
-```{r, eval = FALSE}
+```{r}
 library(moose)
-key <- keyFromAlignment("aligned.fasta")
+fasta <- system.file("extdata", "aligned.fasta", package = "moose")   # or the path of your own file
+key <- keyFromAlignment(fasta)
+```
+
+```{r, eval = FALSE}
 exportWizard(key, "key.html")
 ```
+
+moose ships two example alignments, so that every command here runs as
+written:
+
+- `aligned.fasta`: 15 wood mouse cytochrome *b* sequences (the `woodmouse`
+  data of the `ape` package), with a tree of them in `aligned.nwk`;
+- `mtdna.fasta`: whole human mitochondrial genomes for 14 haplogroups.
 
 ## What the command does
 
@@ -40,12 +51,9 @@ such as MAFFT or MUSCLE.
 
 ## An example
 
-`ape` ships an alignment of 15 wood mouse cytochrome *b* sequences:
+The key built above from `aligned.fasta`, the 15 wood mouse sequences:
 
 ```{r}
-library(moose)
-data(woodmouse, package = "ape")
-key <- keyFromAlignment(woodmouse)
 key
 head(key$leads[, c("Statement", "Character", "Next", "Taxon")], 8)
 ```
@@ -89,8 +97,9 @@ model for the tools that take one.
 For any other program, build the tree yourself and hand it over. Its tip
 labels must be the sequence names. Polytomies are resolved by the sites:
 
-```{r, eval = FALSE}
-keyFromAlignment("aligned.fasta", tree = "raxml.bestTree")
+```{r}
+newick <- system.file("extdata", "aligned.nwk", package = "moose")    # e.g. RAxML's bestTree file
+keyFromAlignment(fasta, tree = newick)
 ```
 
 ## Rooting
@@ -109,13 +118,28 @@ Without an outgroup, an unrooted tree is rooted at its midpoint.
 ## Numbering sites
 
 By default a site is its column in the alignment. To use the coordinates of
-one sequence instead (for example the rCRS for human mitochondrial DNA), name
-it as the `reference`. Columns where the reference has a gap are numbered as
-insertions (`315.1`):
+one sequence instead, name it as the `reference`. Columns where the reference
+has a gap are numbered as insertions (`2156.1`).
 
-```{r, eval = FALSE}
-keyFromAlignment("mtdna.fasta", reference = "NC_012920.1")
+`mtdna.fasta` holds whole mitochondrial genomes for 14 human haplogroups.
+One of them, H2a2a1, is the haplogroup of the rCRS, the standard reference
+for human mitochondrial DNA, so numbering by it gives the usual coordinates.
+L0a1 belongs to the earliest branch of the tree, which makes it the outgroup:
+
+```{r}
+mtdna <- system.file("extdata", "mtdna.fasta", package = "moose")
+mt <- keyFromAlignment(mtdna, reference = "H2a2a1", outgroup = "L0a1")
+mt
+mt$leads[1:8, c("Statement", "Character", "Next", "Taxon")]
 ```
+
+Couplet 4 splits on 8701, 9540 and 10873, the sites that define
+macrohaplogroup N, and the other leads are likewise mutations PhyloTree lists
+for those branches.
+
+These 14 sequences are not from individuals. Each is rebuilt from PhyloTree
+Build 17: the root sequence with the mutations on the path to that haplogroup
+applied (see `data-raw/alignments/build.R` in the source).
 
 ## When a fork has no clean difference
 
@@ -142,7 +166,7 @@ the key tests, and `classify()` walks the key. The new sequences must be
 aligned to the same coordinates as the key:
 
 ```{r}
-classify(key, alignmentScores(key, woodmouse))[1:4, ]
+classify(key, alignmentScores(key, fasta))[1:4, ]
 ```
 
 Each couplet is tested on its first listed site. A sequence with a gap or an

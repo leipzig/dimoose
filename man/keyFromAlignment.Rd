@@ -96,8 +96,17 @@ if (requireNamespace("ape", quietly = TRUE)) {
   key$leads[, c("Statement", "Character", "Next", "Taxon")]
   classify(key, alignmentScores(key, aln))
 }
+
+# the example files that ship with moose
+fasta <- system.file("extdata", "aligned.fasta", package = "moose")
+mtdna <- system.file("extdata", "mtdna.fasta", package = "moose")
+if (requireNamespace("ape", quietly = TRUE)) {
+  keyFromAlignment(fasta)
+  keyFromAlignment(fasta, tree = system.file("extdata", "aligned.nwk", package = "moose"))
+  keyFromAlignment(mtdna, reference = "H2a2a1", outgroup = "L0a1")
+}
 \dontrun{
-keyFromAlignment("aligned.fasta", tool = "iqtree", outgroup = "NC_012920")
+keyFromAlignment(mtdna, tool = "iqtree", outgroup = "L0a1")   # needs IQ-TREE installed
 }
 }
 \seealso{
