@@ -33,6 +33,8 @@ imageSet <- function(paths, label = NULL) {
     paths <- sort(list.files(root, pattern = "\\.(png|jpe?g|gif|webp|bmp|tiff?)$", ignore.case = TRUE,
                              recursive = TRUE, full.names = TRUE))
     if (!length(paths)) stop("No image files found in ", root, call. = FALSE)
+  } else if (length(paths) == 1 && !file.exists(paths) && !grepl("\\.[A-Za-z0-9]+$", paths)) {
+    stop("No such folder: ", paths, call. = FALSE)
   }
   name <- sub("\\.[^.]+$", "", basename(paths))
   folder <- basename(dirname(paths))
@@ -41,8 +43,12 @@ imageSet <- function(paths, label = NULL) {
   id[dup] <- paste(folder[dup], name[dup], sep = "_")
   id <- make.unique(id, sep = "_")
   lab <- if (is.null(label)) {
-    inSubfolders <- fromFolder && all(normalizePath(dirname(paths)) != normalizePath(root))
-    if (inSubfolders) folder else name
+    inSubfolder <- if (fromFolder) normalizePath(dirname(paths)) != normalizePath(root) else FALSE
+    if (any(inSubfolder) && !all(inSubfolder)) {
+      warning("Some images are in subfolders of ", root, " and some are not, so each image is labelled by its file name; ",
+              "move the loose images into a class folder, or pass `label`", call. = FALSE)
+    }
+    if (all(inSubfolder)) folder else name
   } else if (is.function(label)) {
     as.character(label(name))
   } else {

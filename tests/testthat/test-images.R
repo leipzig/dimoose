@@ -55,3 +55,12 @@ test_that("imageSet labels a flat folder by file name and rejects an empty one",
   expect_equal(imageSet(root)$label, c("robin_a", "wren_a"))
   expect_equal(imageSet(root, label = function(x) sub("_.*$", "", x))$label, c("robin", "wren"))
 })
+
+test_that("imageSet warns about a mixed layout and rejects a missing folder", {
+  root <- tempfile("mixed"); dir.create(file.path(root, "robin"), recursive = TRUE)
+  img <- array(runif(4 * 4 * 3), c(4, 4, 3))
+  png::writePNG(img, file.path(root, "robin", "1.png")); png::writePNG(img, file.path(root, "loose.png"))
+  expect_warning(s <- imageSet(root), "subfolders")
+  expect_equal(sort(s$label), c("1", "loose"))
+  expect_error(imageSet(file.path(root, "no_such_dir")), "No such folder")
+})

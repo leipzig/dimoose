@@ -87,7 +87,7 @@ is elsewhere, and extra options in `args`. `model` sets the substitution
 model for the tools that take one.
 
 For any other program, build the tree yourself and hand it over. Its tip
-labels must be the sequence names:
+labels must be the sequence names. Polytomies are resolved by the sites:
 
 ```{r, eval = FALSE}
 keyFromAlignment("aligned.fasta", tree = "raxml.bestTree")
@@ -129,8 +129,10 @@ mammals <- keyFromAlignment(Laurasiatherian, outgroup = "Platypus")
 grep("(most)", mammals$leads$Character, fixed = TRUE, value = TRUE)
 ```
 
-Sequences that no site can tell apart share a result (`"A / B"`), as do
-identical sequences. Gaps and ambiguity codes count as missing data and are
+If no site separates the two sides of a fork at all, moose stops following
+the tree there and splits those sequences by their sites alone, with a
+warning. Sequences that no site can tell apart share a result (`"A / B"`), as
+do identical sequences. Gaps and ambiguity codes count as missing data and are
 never used as a state.
 
 ## Identifying a sequence

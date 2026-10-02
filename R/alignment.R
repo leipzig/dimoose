@@ -10,8 +10,9 @@
 #' one side are never seen on the other. Up to `maxSites` diagnostic sites
 #' are listed, those with the least missing data first. If a fork has no diagnostic site, the
 #' best-separating one is used and marked `(most)`. If no site separates the
-#' two sides at all, they share a result (`"A / B"`), as do identical
-#' sequences. Gaps and ambiguity codes are treated as missing data.
+#' two sides, the sequences below it are split by their sites alone,
+#' whatever the tree says. Sequences that no site tells apart share a result
+#' (`"A / B"`), as do identical sequences. Gaps and ambiguity codes are treated as missing data.
 #'
 #' The first site of each couplet is also a machine-readable test, so
 #' [classify()] can place sequences scored with [alignmentScores()].
@@ -29,9 +30,11 @@
 #'     program, which must be installed.
 #' @param tree A tree you built yourself, instead of `tool`: an `ape` `phylo`
 #'   object, a Newick file or a Newick string, with the sequence names as tip
-#'   labels. This is the way to use any other phylogeny program.
+#'   labels. It may cover only some of the sequences, and may have
+#'   polytomies. This is the way to use any other phylogeny program.
 #' @param outgroup Name(s) of the sequence(s) to root on. Without it, a tree
-#'   that is not already rooted is rooted at its midpoint.
+#'   that is not already rooted is rooted at its midpoint. Sequences can be
+#'   named in full or by the first word of their FASTA header.
 #' @param reference Name of a sequence in the alignment to number sites by
 #'   (its ungapped positions; columns where it has a gap are numbered
 #'   `"315.1"`, `"315.2"`). By default sites are alignment columns.
@@ -47,8 +50,9 @@
 #' @param args Extra command-line arguments for FastTree or IQ-TREE.
 #' @param desc,meta Title and extra metadata of the key.
 #' @return A [moose] key. Its `meta` records the tool, the rooting, the tree
-#'   in Newick format (`newick`) and how many couplets lack a diagnostic
-#'   site.
+#'   in Newick format (`newick`, names quoted where Newick needs it), how many couplets lack a diagnostic site
+#'   (`weak_couplets`) and how many do not follow the tree
+#'   (`regrouped_couplets`).
 #' @seealso [alignmentScores()], [phylotreeKey()], [toNewick()]
 #' @examples
 #' aln <- c(human = "ACGTACGTACGA", chimp = "ACGTACGTATGA", mouse = "ACCTACATGCGA",
@@ -69,14 +73,16 @@ keyFromAlignment <- function(alignment, tool = c("nj", "bionj", "upgma", "parsim
   tool <- match.arg(tool)
   type <- match.arg(type)
   if (!requireNamespace("ape", quietly = TRUE)) stop("Install the ape package to build keys from alignments", call. = FALSE)
+  if (!is.numeric(maxSites) || length(maxSites) != 1 || maxSites < 1) stop("`maxSites` must be 1 or more", call. = FALSE)
+  if (!is.null(meta) && !(is.data.frame(meta) && all(c("key", "value") %in% names(meta)))) {
+    stop("`meta` must be a data frame with columns `key` and `value`", call. = FALSE)
+  }
   mat <- alignmentMatrix(alignment)
   if (type == "auto") type <- alignmentType(mat)
   if (type == "DNA") mat[mat == "U"] <- "T"
   if (nrow(mat) < 2) stop("An alignment needs at least two sequences to make a key", call. = FALSE)
-  if (!is.null(reference) && !reference %in% rownames(mat)) stop("`reference` is not a sequence in the alignment: ", reference, call. = FALSE)
-  if (length(setdiff(outgroup, rownames(mat)))) {
-    stop("`outgroup` is not in the alignment: ", paste(setdiff(outgroup, rownames(mat)), collapse = ", "), call. = FALSE)
-  }
+  if (!is.null(reference)) reference <- sequenceNames(reference, rownames(mat), "`reference` is")
+  if (!is.null(outgroup)) outgroup <- sequenceNames(outgroup, rownames(mat), "`outgroup` is")
   pos <- siteLabels(mat, reference)
 
   if (is.null(tree)) {
@@ -93,14 +99,20 @@ keyFromAlignment <- function(alignment, tool = c("nj", "bionj", "upgma", "parsim
     tr <- built$tree
     toolLabel <- built$label; citation <- built$citation
   } else {
-    tr <- if (inherits(tree, "phylo")) tree else if (file.exists(tree)) ape::read.tree(tree) else ape::read.tree(text = tree)
-    if (!inherits(tr, "phylo")) stop("`tree` is not a single tree", call. = FALSE)
-    unknown <- setdiff(tr$tip.label, rownames(mat))
-    if (length(unknown)) {
-      stop("`tree` has tip(s) that are not sequences in the alignment: ", paste(utils::head(unknown, 5), collapse = ", "), call. = FALSE)
+    tr <- if (inherits(tree, "phylo")) {
+      tree
+    } else if (is.character(tree) && length(tree) == 1) {
+      if (file.exists(tree)) ape::read.tree(tree) else ape::read.tree(text = tree)
+    } else {
+      NULL
     }
-    if (anyDuplicated(tr$tip.label)) stop("`tree` has duplicated tip labels", call. = FALSE)
-    tipNames <- tr$tip.label
+    if (!inherits(tr, "phylo")) stop("`tree` must be one tree: a phylo object, a Newick file or a Newick string", call. = FALSE)
+    if (length(tr$tip.label) < 2) stop("`tree` needs at least two tips", call. = FALSE)
+    tipNames <- sequenceNames(tr$tip.label, rownames(mat), "`tree` has tip(s) that are")
+    if (anyDuplicated(tipNames)) stop("`tree` has duplicated tip labels", call. = FALSE)
+    if (length(setdiff(outgroup, tipNames))) {
+      stop("`outgroup` is not in `tree`: ", paste(setdiff(outgroup, tipNames), collapse = ", "), call. = FALSE)
+    }
     tipMat <- mat[tipNames, , drop = FALSE]
     safe <- paste0("t", seq_along(tipNames))
     rownames(tipMat) <- safe
@@ -110,26 +122,34 @@ keyFromAlignment <- function(alignment, tool = c("nj", "bionj", "upgma", "parsim
   }
   names(tipNames) <- safe
 
-  rooted <- rootTree(tr, outSafe)
-  tr <- ape::multi2di(rooted$tree, random = FALSE)
+  tr$node.label <- NULL
+  rooted <- rootTree(ape::collapse.singles(tr), outSafe)
+  tr <- ape::reorder.phylo(rooted$tree, "postorder")
+  ntip <- length(tr$tip.label)
+  tipMat <- tipMat[tr$tip.label, , drop = FALSE]      # row i is tip i
+  tipNames <- unname(tipNames[tr$tip.label])
+  kidsOf <- split(tr$edge[, 2], tr$edge[, 1])
+  under <- vector("list", ntip + tr$Nnode)            # tips below each node
+  under[seq_len(ntip)] <- as.list(seq_len(ntip))
+  for (e in seq_len(nrow(tr$edge))) under[[tr$edge[e, 1]]] <- c(under[[tr$edge[e, 1]]], under[[tr$edge[e, 2]]])
 
   # one logical tips x sites matrix per state, over the variable sites only
   states <- if (type == "DNA") c("A", "C", "G", "T") else strsplit("ACDEFGHIKLMNPQRSTVWY", "")[[1]]
-  known <- matrix(tipMat %in% states, nrow(tipMat), dimnames = dimnames(tipMat))
+  known <- matrix(tipMat %in% states, nrow(tipMat))
   variable <- which(vapply(seq_len(ncol(tipMat)), function(j) length(unique(tipMat[known[, j], j])) > 1, logical(1)))
+  if (!length(variable)) stop("No site in the alignment separates the sequences", call. = FALSE)
   hasState <- lapply(states, function(s) tipMat[, variable, drop = FALSE] == s)
   names(hasState) <- states
+  counts <- function(tips) {
+    m <- vapply(hasState, function(h) colSums(h[tips, , drop = FALSE]), numeric(length(variable)))
+    dim(m) <- c(length(variable), length(states))
+    m
+  }
 
-  ntip <- length(tr$tip.label)
-  kidsOf <- split(tr$edge[, 2], tr$edge[, 1])
-  tipsUnder <- function(node) if (node <= ntip) tr$tip.label[node] else unlist(lapply(kidsOf[[as.character(node)]], tipsUnder))
-
-  # Sites separating tip sets A and B: list(cols, a, b, diagnostic), or NULL
+  # Sites separating tip sets A and B: list(cols, a, b, diagnostic, score), or
+  # NULL when no site does better than chance.
   separate <- function(A, B) {
-    if (!length(variable)) return(NULL)
-    cA <- vapply(hasState, function(m) colSums(m[A, , drop = FALSE]), numeric(length(variable)))
-    cB <- vapply(hasState, function(m) colSums(m[B, , drop = FALSE]), numeric(length(variable)))
-    dim(cA) <- dim(cB) <- c(length(variable), length(states))
+    cA <- counts(A); cB <- counts(B)
     pA <- cA / length(A); pB <- cB / length(B)
     toA <- pA > pB; toB <- pB > pA
     acc <- (rowSums(pA * toA) + rowSums(pB * toB)) / 2
@@ -143,55 +163,107 @@ keyFromAlignment <- function(alignment, tool = c("nj", "bionj", "upgma", "parsim
       return(NULL)
     }
     list(cols = variable[pick], a = lapply(pick, function(i) states[toA[i, ]]),
-         b = lapply(pick, function(i) states[toB[i, ]]), diagnostic = any(diagnostic))
+         b = lapply(pick, function(i) states[toB[i, ]]), diagnostic = any(diagnostic),
+         score = any(diagnostic) + max(acc[pick]))
+  }
+  # Split tips by the data alone, on the site with the least missing data and
+  # then the most even split. Tips with no state there stay with the majority.
+  splitByData <- function(tips) {
+    cnt <- counts(tips)
+    topState <- max.col(cnt, ties.method = "first")
+    top <- cnt[cbind(seq_len(nrow(cnt)), topState)]
+    total <- rowSums(cnt)
+    ok <- which(total - top > 0)
+    if (!length(ok)) return(NULL)
+    j <- ok[order(-total[ok], -pmin(top[ok], total[ok] - top[ok]))][1]
+    inTop <- hasState[[topState[j]]][tips, j]
+    hasAny <- Reduce(`|`, lapply(hasState, function(h) h[tips, j]))
+    A <- tips[inTop | !hasAny]; B <- tips[!inTop & hasAny]
+    list(A = A, B = B, sp = separate(A, B))
   }
 
-  rows <- list(); counter <- 0L; weak <- 0L; features <- list()
+  # Walk the tree with an explicit stack (keys of ladder-like trees are deep).
+  # A task is a group of sibling nodes, or a set of tips to split by the data.
+  rows <- list(); features <- list()
+  counter <- 0L; weak <- 0L; regrouped <- 0L; top <- NULL
   leafOf <- function(tips) paste(tipNames[tips], collapse = " / ")
-  walk <- function(node) {
-    if (node <= ntip) return(list(leaf = leafOf(tr$tip.label[node])))
-    kids <- kidsOf[[as.character(node)]]
-    A <- tipsUnder(kids[1]); B <- tipsUnder(kids[2])
-    sp <- separate(A, B)
-    if (is.null(sp)) return(list(leaf = leafOf(c(A, B))))
-    counter <<- counter + 1L
+  resolve <- function(task, id = NULL, leaf = NULL) {
+    if (is.null(task$parent)) { top <<- if (is.null(id)) "leaf" else id; return(invisible()) }
+    rows[[task$parent]]$Next[task$side] <<- if (is.null(id)) "-" else id
+    rows[[task$parent]]$Taxon[task$side] <<- if (is.null(id)) leaf else ""
+  }
+  stack <- list(list(nodes = ntip + 1L))
+  while (length(stack)) {
+    task <- stack[[length(stack)]]; stack[[length(stack)]] <- NULL
+    nodes <- task$nodes
+    while (length(nodes) == 1 && nodes > ntip) nodes <- kidsOf[[as.character(nodes)]]
+    sp <- NULL
+    if (!is.null(task$tips)) {
+      d <- if (length(task$tips) > 1) splitByData(task$tips) else NULL
+      if (is.null(d)) { resolve(task, leaf = leafOf(task$tips)); next }
+      sp <- d$sp
+      left <- list(tips = d$A, offTree = task$offTree); right <- list(tips = d$B, offTree = task$offTree)
+      if (task$offTree) regrouped <- regrouped + 1L
+    } else if (length(nodes) == 1) {
+      resolve(task, leaf = leafOf(nodes)); next
+    } else {
+      sets <- under[nodes]
+      if (length(nodes) == 2) {
+        i <- 1L; sp <- separate(sets[[1]], sets[[2]])
+      } else {
+        # a polytomy: split off a child that has a diagnostic site against the
+        # rest, if there is one; otherwise let the data group the tips
+        cand <- lapply(seq_along(nodes), function(k) separate(sets[[k]], unlist(sets[-k])))
+        score <- vapply(cand, function(s) if (is.null(s) || !s$diagnostic) -1 else s$score, 0)
+        i <- which.max(score)
+        if (score[i] > 0) sp <- cand[[i]]
+      }
+      if (is.null(sp)) {
+        # the sites do not support a fork here: split the tips by the data instead
+        stack[[length(stack) + 1]] <- list(tips = unlist(sets), offTree = length(nodes) == 2,
+                                           parent = task$parent, side = task$side)
+        next
+      }
+      left <- list(nodes = nodes[i]); right <- list(nodes = nodes[-i])
+    }
+    counter <- counter + 1L
     id <- as.character(counter)
-    if (!sp$diagnostic) weak <<- weak + 1L
+    if (!sp$diagnostic) weak <- weak + 1L
     lead <- function(sets) {
       txt <- paste(paste0(pos[sp$cols], vapply(sets, paste, "", collapse = "/")), collapse = " ")
       if (sp$diagnostic) txt else paste(txt, "(most)")
     }
     fid <- sprintf("site:%s:%s", pos[sp$cols[1]], paste(sp$a[[1]], collapse = ""))
-    features[[fid]] <<- paste0(pos[sp$cols[1]], paste(sp$a[[1]], collapse = "/"))
-    built <- lapply(kids, walk)
-    rows[[id]] <<- data.frame(
-      Statement = id, Choice = c("a", "b"), Character = c(lead(sp$a), lead(sp$b)),
-      Next = vapply(built, function(k) if (is.null(k$leaf)) k$id else "-", ""),
-      Taxon = vapply(built, function(k) if (is.null(k$leaf)) "" else k$leaf, ""),
+    features[[fid]] <- paste0(pos[sp$cols[1]], paste(sp$a[[1]], collapse = "/"))
+    rows[[id]] <- data.frame(
+      Statement = id, Choice = c("a", "b"), Character = c(lead(sp$a), lead(sp$b)), Next = "", Taxon = "",
       Question = paste(if (type == "DNA") "Base at" else "Residue at", pos[sp$cols[1]]),
       Feature = fid, Test = c(">", "<="), Threshold = 0.5, stringsAsFactors = FALSE)
-    list(id = id)
+    resolve(task, id = id)
+    stack[[length(stack) + 1]] <- c(right, list(parent = id, side = 2L))
+    stack[[length(stack) + 1]] <- c(left, list(parent = id, side = 1L))
   }
-  top <- walk(ntip + 1L)
-  if (!is.null(top$leaf)) stop("No site in the alignment separates the sequences", call. = FALSE)
-  leads <- do.call(rbind, rows[order(as.integer(names(rows)))])
+  if (identical(top, "leaf")) stop("No site in the alignment separates the sequences", call. = FALSE)
+  leads <- do.call(rbind, rows)
   rownames(leads) <- NULL
   if (weak > 0) {
     warning(weak, " couplet(s) have no fully diagnostic site; their leads are marked \"(most)\"", call. = FALSE)
   }
+  if (regrouped > 0) {
+    warning(regrouped, " couplet(s) do not follow the tree: no site supported its fork there, so the sequences were split by their sites instead", call. = FALSE)
+  }
 
-  named <- tr; named$tip.label <- unname(tipNames[tr$tip.label])
   info <- data.frame(
-    key = c("node_label", "tool", "rooting", "sequences", "sites", "sequence_type", "weak_couplets", "notation", "newick"),
-    value = c("Couplet", toolLabel, rooted$how, nrow(mat), ncol(mat), type, weak,
+    key = c("node_label", "tool", "rooting", "sequences", "sites", "sequence_type", "weak_couplets", "regrouped_couplets", "notation", "newick"),
+    value = c("Couplet", toolLabel, rooted$how, if (is.null(tree)) nrow(mat) else ntip, ncol(mat), type, weak, regrouped,
       paste0("Leads give a site and its state, e.g. 152C; sites are numbered by ",
              if (is.null(reference)) "alignment column" else paste0("position in ", reference),
              ". Gaps and ambiguity codes are treated as missing."),
-      ape::write.tree(named)),
+      newickWithNames(tr, tipNames)),
     stringsAsFactors = FALSE)
   if (!is.null(reference)) info <- rbind(info, data.frame(key = "reference", value = reference, stringsAsFactors = FALSE))
   if (!is.na(citation)) info <- rbind(info, data.frame(key = "citation", value = citation, stringsAsFactors = FALSE))
-  if (!is.null(meta)) info <- rbind(meta, info[!info$key %in% meta$key, ])
+  if (!is.null(meta)) info <- rbind(info, meta[!meta$key %in% c(info$key, "reference"), c("key", "value")])
   keyFromLeads(leads, desc, info,
     features = featureTable(id = names(features), kind = "external", label = unlist(features, use.names = FALSE)))
 }
@@ -245,6 +317,9 @@ alignmentScores <- function(key, alignment, reference = NULL) {
 # Any supported alignment as an upper-case character matrix, rows = sequences.
 alignmentMatrix <- function(x) {
   mat <- if (inherits(x, "phyDat") || inherits(x, "DNAbin") || inherits(x, "AAbin")) {
+    # as.character() only knows these classes once their package is loaded
+    pkg <- if (inherits(x, "phyDat")) "phangorn" else "ape"
+    if (!requireNamespace(pkg, quietly = TRUE)) stop("Install the ", pkg, " package to read this alignment", call. = FALSE)
     m <- as.character(x)
     if (is.list(m)) {
       if (length(unique(lengths(m))) != 1) stop("The sequences are not all the same length; align them first", call. = FALSE)
@@ -394,17 +469,48 @@ writeFastaAlignment <- function(mat, file) {
 rootTree <- function(tr, outgroup) {
   if (length(outgroup)) {
     if (length(outgroup) == length(tr$tip.label)) stop("`outgroup` cannot be every sequence", call. = FALSE)
-    if (length(outgroup) > 1 && !ape::is.monophyletic(ape::unroot(tr), outgroup)) {
+    rooted <- tryCatch(ape::root(tr, outgroup = outgroup, resolve.root = TRUE), error = function(e) NULL)
+    if (is.null(rooted)) {
       stop("The `outgroup` sequences do not form one group in the tree; name a single outgroup sequence", call. = FALSE)
     }
-    return(list(tree = ape::root(tr, outgroup = outgroup, resolve.root = TRUE), how = "outgroup"))
+    return(list(tree = rooted, how = "outgroup"))
   }
   if (ape::is.rooted(tr)) return(list(tree = tr, how = "as rooted by the tool"))
-  if (length(tr$tip.label) < 3) return(list(tree = tr, how = "none needed"))
-  if (requireNamespace("phangorn", quietly = TRUE) && !is.null(tr$edge.length)) {
-    return(list(tree = phangorn::midpoint(tr), how = "midpoint"))
+  if (length(tr$tip.label) < 3 || tr$Nnode == 1) return(list(tree = tr, how = "none needed"))
+  how <- "midpoint"
+  if (is.null(tr$edge.length)) {
+    tr <- ape::compute.brlen(tr, 1); how <- "midpoint, counting each branch as one step"
   }
+  if (requireNamespace("phangorn", quietly = TRUE)) return(list(tree = phangorn::midpoint(tr), how = how))
   # without phangorn: root on the tip farthest, on average, from the others
-  far <- if (is.null(tr$edge.length)) tr$tip.label[1] else names(which.max(rowMeans(ape::cophenetic.phylo(tr))))
-  list(tree = ape::root(tr, outgroup = far, resolve.root = TRUE), how = paste("on the most distant sequence (install phangorn for midpoint rooting)"))
+  far <- names(which.max(rowMeans(ape::cophenetic.phylo(tr))))
+  list(tree = ape::root(tr, outgroup = far, resolve.root = TRUE), how = "on the most distant sequence (install phangorn for midpoint rooting)")
+}
+
+# Match names the user typed (outgroup, reference, tree tips) to sequence
+# names: exactly, by the first word of a FASTA header, or with underscores
+# standing for spaces, as Newick writes them.
+sequenceNames <- function(x, names, what) {
+  i <- match(x, names)
+  first <- sub("\\s.*$", "", names)
+  first[first %in% first[duplicated(first)]] <- NA
+  for (alt in list(first, gsub(" ", "_", names, fixed = TRUE), gsub(" ", "_", first, fixed = TRUE))) {
+    miss <- is.na(i)
+    if (!any(miss)) break
+    i[miss] <- match(x[miss], alt)
+  }
+  if (anyNA(i)) stop(what, " not in the alignment: ", paste(utils::head(x[is.na(i)], 5), collapse = ", "), call. = FALSE)
+  names[i]
+}
+
+# Newick of a tree whose tips are t1, t2, ... with the real names put back,
+# quoted where Newick needs it.
+newickWithNames <- function(tr, tipNames) {
+  plain <- grepl("^[A-Za-z0-9_.|-]+$", tipNames)
+  quoted <- ifelse(plain, tipNames, paste0("'", gsub("'", "''", tipNames, fixed = TRUE), "'"))
+  names(quoted) <- tr$tip.label
+  s <- ape::write.tree(tr)
+  m <- gregexpr("t[0-9]+", s)
+  regmatches(s, m) <- list(unname(quoted[regmatches(s, m)[[1]]]))
+  s
 }

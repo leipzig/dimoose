@@ -35,10 +35,12 @@ strings.}
 
 \item{tree}{A tree you built yourself, instead of `tool`: an `ape` `phylo`
 object, a Newick file or a Newick string, with the sequence names as tip
-labels. This is the way to use any other phylogeny program.}
+labels. It may cover only some of the sequences, and may have
+polytomies. This is the way to use any other phylogeny program.}
 
 \item{outgroup}{Name(s) of the sequence(s) to root on. Without it, a tree
-that is not already rooted is rooted at its midpoint.}
+that is not already rooted is rooted at its midpoint. Sequences can be
+named in full or by the first word of their FASTA header.}
 
 \item{reference}{Name of a sequence in the alignment to number sites by
 (its ungapped positions; columns where it has a gap are numbered
@@ -63,8 +65,9 @@ for proteins), or IQ-TREE's `-m` (default: IQ-TREE chooses).}
 }
 \value{
 A [moose] key. Its `meta` records the tool, the rooting, the tree
-  in Newick format (`newick`) and how many couplets lack a diagnostic
-  site.
+  in Newick format (`newick`, names quoted where Newick needs it), how many couplets lack a diagnostic site
+  (`weak_couplets`) and how many do not follow the tree
+  (`regrouped_couplets`).
 }
 \description{
 One command from aligned sequences to a dichotomous key. A phylogeny
@@ -78,8 +81,9 @@ Sites are chosen per fork: a site is *diagnostic* when the states seen on
 one side are never seen on the other. Up to `maxSites` diagnostic sites
 are listed, those with the least missing data first. If a fork has no diagnostic site, the
 best-separating one is used and marked `(most)`. If no site separates the
-two sides at all, they share a result (`"A / B"`), as do identical
-sequences. Gaps and ambiguity codes are treated as missing data.
+two sides, the sequences below it are split by their sites alone,
+whatever the tree says. Sequences that no site tells apart share a result
+(`"A / B"`), as do identical sequences. Gaps and ambiguity codes are treated as missing data.
 
 The first site of each couplet is also a machine-readable test, so
 [classify()] can place sequences scored with [alignmentScores()].

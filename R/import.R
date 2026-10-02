@@ -231,23 +231,30 @@ keyPaths <- function(keytable, separateTerms = TRUE) {
   nxt <- as.character(keytable$Next)
   parentsOf <- split(seq_len(n), factor(nxt, levels = unique(stmt)))
 
-  # Every path from the root to lead i, as vectors of lead indices
-  pathsTo <- function(i, visited) {
-    if (stmt[i] %in% visited) {
-      stop("Cycle in key: couplet ", stmt[i], " is reachable from itself", call. = FALSE)
+  # Every path from the root to lead i, as vectors of lead indices. Walks up
+  # with an explicit stack, so deep keys do not exhaust R's call stack.
+  pathsTo <- function(i) {
+    done <- list()
+    stack <- list(i)
+    while (length(stack)) {
+      path <- stack[[length(stack)]]; stack[[length(stack)]] <- NULL
+      parents <- parentsOf[[stmt[path[1]]]]
+      if (length(parents) == 0) { done[[length(done) + 1]] <- path; next }
+      for (p in rev(parents)) {
+        if (stmt[p] %in% stmt[path]) {
+          stop("Cycle in key: couplet ", stmt[p], " is reachable from itself", call. = FALSE)
+        }
+        stack[[length(stack) + 1]] <- c(p, path)
+      }
     }
-    parents <- parentsOf[[stmt[i]]]
-    if (length(parents) == 0) return(list(i))
-    unlist(lapply(parents, function(p) {
-      lapply(pathsTo(p, c(visited, stmt[i])), function(path) c(path, i))
-    }), recursive = FALSE)
+    done
   }
 
   leaves <- which(nxt == "-")
   paths <- list()
   taxa <- character()
   for (leaf in leaves) {
-    found <- pathsTo(leaf, character())
+    found <- pathsTo(leaf)
     paths <- c(paths, found)
     taxa <- c(taxa, rep(keytable$Taxon[leaf], length(found)))
   }

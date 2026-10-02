@@ -121,3 +121,64 @@ test_that("command-line tools are run on the alignment and their tree is read ba
   failing <- tempfile("FastTree"); writeLines(c("#!/bin/sh", "echo 'bad alignment' >&2", "exit 1"), failing); Sys.chmod(failing, "755")
   expect_error(keyFromAlignment(toyAlignment, tool = "fasttree", exe = failing), "bad alignment")
 })
+
+test_that("a fork the sites do not support is split by the data, not merged", {
+  aln <- c(a = "AG", b = "CG", c = "AG", d = "TG", e = "GC")
+  expect_warning(key <- keyFromAlignment(aln, tree = "(((a,b),(c,d)),e);"), "do not follow the tree")
+  res <- key$leads$Taxon[key$leads$Next == "-"]
+  expect_setequal(res, c("a / c", "b", "d", "e"))
+  expect_length(key$validate(), 0)
+  # missing data: z cannot be told from x, but y still gets its own result
+  aln2 <- c(x = "AAAAAAAA", y = "AAAACAAA", z = "AAAANAAA", o = "CCCCACCC", p = "CCCCACCG")
+  key2 <- suppressWarnings(keyFromAlignment(aln2, tree = "(((x,y),z),(o,p));"))
+  expect_setequal(key2$leads$Taxon[key2$leads$Next == "-"], c("x / z", "y", "o", "p"))
+})
+
+test_that("polytomies and unrooted trees without branch lengths are resolved by the data", {
+  star <- keyFromAlignment(toyAlignment, tree = "(human,chimp,mouse,rat,fish);")
+  r <- classify(star, alignmentScores(star, toyAlignment))
+  expect_equal(r$result, r$id)
+  expect_false(any(grepl("(most)", star$leads$Character, fixed = TRUE)))
+  unrooted <- keyFromAlignment(toyAlignment, tree = "((human,chimp),(mouse,rat),fish);")
+  expect_false(any(grepl("(most)", unrooted$leads$Character, fixed = TRUE)))
+  expect_match(unrooted$meta$value[unrooted$meta$key == "rooting"], "midpoint")
+  single <- keyFromAlignment(toyAlignment, tree = "((((human,chimp)),(mouse,rat)),fish);")
+  expect_equal(nrow(single$taxa), 5)
+})
+
+test_that("names with spaces work, and can be given by their first word", {
+  aln <- toyAlignment
+  names(aln) <- c("human Homo sapiens", "chimp Pan (trog)", "mouse Mus", "rat Rattus", "fish (a fish)")
+  key <- keyFromAlignment(aln, outgroup = "fish")
+  expect_true("fish (a fish)" %in% key$leads$Taxon)
+  nwk <- key$meta$value[key$meta$key == "newick"]
+  expect_setequal(gsub("'", "", ape::read.tree(text = nwk)$tip.label), names(aln))   # ape keeps the quotes
+  k2 <- keyFromAlignment(aln, tree = "(((human,chimp),(mouse,rat)),fish);")
+  expect_setequal(k2$taxa$submitted_name, names(aln))
+  k3 <- keyFromAlignment(c("Homo sapiens" = "ACGT", "Pan trog" = "ACGA", "Mus mus" = "TCGA"),
+                         tree = "((Homo_sapiens,Pan_trog),Mus_mus);")
+  expect_equal(nrow(k3$taxa), 3)
+})
+
+test_that("deep, ladder-like trees make deep keys", {
+  n <- 400
+  mat <- matrix("A", n, n, dimnames = list(paste0("s", seq_len(n)), NULL))
+  mat[lower.tri(mat)] <- "C"                      # sequence i has C at sites 1..i-1
+  key <- keyFromAlignment(mat, tree = ape::stree(n, "left", tip.label = rownames(mat)))
+  expect_equal(nrow(key$taxa), n)
+  expect_length(key$validate(), 0)
+  r <- classify(key, alignmentScores(key, mat))
+  expect_equal(r$result, r$id)
+})
+
+test_that("more input checks", {
+  expect_error(keyFromAlignment(toyAlignment, maxSites = 0), "maxSites")
+  expect_error(keyFromAlignment(toyAlignment, meta = data.frame(a = 1)), "key")
+  expect_error(keyFromAlignment(toyAlignment, tree = "(human,chimp);", outgroup = "fish"), "not in `tree`")
+  sub <- keyFromAlignment(toyAlignment, tree = "((human,chimp),mouse);")
+  expect_equal(sub$meta$value[sub$meta$key == "sequences"], "3")
+  # the key's own reference wins over a user meta row of the same name
+  k <- keyFromAlignment(toyAlignment, outgroup = "fish", meta = data.frame(key = c("reference", "author"), value = c("Smith 2020", "me")))
+  expect_equal(classify(k, alignmentScores(k, toyAlignment))$result, names(toyAlignment))
+  expect_true("author" %in% k$meta$key)
+})
