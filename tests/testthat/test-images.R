@@ -30,3 +30,28 @@ test_that("the synthetic fixture has the promised shapes", {
   expect_equal(nrow(v$images), 6)
   expect_equal(unname(round(sqrt(rowSums(v$image^2)), 6)), rep(1, 6))
 })
+
+test_that("imageSet reads a folder and labels by subfolder", {
+  root <- tempfile("pics"); dir.create(file.path(root, "cardinal"), recursive = TRUE); dir.create(file.path(root, "robin"))
+  img <- array(runif(4 * 4 * 3), c(4, 4, 3))
+  png::writePNG(img, file.path(root, "cardinal", "1.png"))
+  jpeg::writeJPEG(img, file.path(root, "cardinal", "2.JPG"))
+  png::writePNG(img, file.path(root, "robin", "1.png"))
+  writeLines("notes", file.path(root, "robin", "notes.txt"))
+  s <- imageSet(root)
+  expect_equal(nrow(s), 3)
+  expect_equal(s$label, c("cardinal", "cardinal", "robin"))
+  # shared file names get their folder in front, so ids stay unique
+  expect_equal(s$id, c("cardinal_1", "2", "robin_1"))
+  expect_true(all(file.exists(s$path)))
+  expect_equal(imageSet(root, label = c("a", "a", "b"))$label, c("a", "a", "b"))
+})
+
+test_that("imageSet labels a flat folder by file name and rejects an empty one", {
+  root <- tempfile("flat"); dir.create(root)
+  expect_error(imageSet(root), "No image files")
+  img <- array(runif(4 * 4 * 3), c(4, 4, 3))
+  png::writePNG(img, file.path(root, "robin_a.png")); png::writePNG(img, file.path(root, "wren_a.png"))
+  expect_equal(imageSet(root)$label, c("robin_a", "wren_a"))
+  expect_equal(imageSet(root, label = function(x) sub("_.*$", "", x))$label, c("robin", "wren"))
+})

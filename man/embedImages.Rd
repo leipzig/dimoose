@@ -9,7 +9,8 @@ embedImages(model, paths, region = NULL, patches = TRUE)
 \arguments{
 \item{model}{A [visionModel()].}
 
-\item{paths}{Image files.}
+\item{paths}{Image files, or an [imageSet()] (its `path` column is
+embedded and its `id` column names the rows).}
 
 \item{region}{Optional crop `c(y0, y1, x0, x1)` as fractions, applied to
 every image before embedding.}
@@ -17,8 +18,8 @@ every image before embedding.}
 \item{patches}{If `TRUE`, also return per-patch embeddings.}
 }
 \value{
-A list: `image` (`images x d` matrix, rows named by file name
-  without extension) and `patches` (`images x patches x d` array, or
+A list: `image` (`images x d` matrix, rows named by image id: the
+  file name without extension, or the `id` of an [imageSet()]) and `patches` (`images x patches x d` array, or
   `NULL`).
 }
 \description{

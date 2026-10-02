@@ -1,0 +1,147 @@
+---
+title: "Automated key generation from a sequence alignment"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Automated key generation from a sequence alignment}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+ok <- requireNamespace("ape", quietly = TRUE) && requireNamespace("phangorn", quietly = TRUE)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = ok)
+```
+
+**Automated key generation** builds a dichotomous key from data instead of
+from a person's judgement. `vignette("vision-keys")` starts from photos. This
+vignette starts from a multiple sequence alignment (MSA) and needs one
+command:
+
+```{r, eval = FALSE}
+library(moose)
+key <- keyFromAlignment("aligned.fasta")
+exportWizard(key, "key.html")
+```
+
+## What the command does
+
+1. **Reads the alignment**: a FASTA file, or an object from `ape` or
+   `phangorn`.
+2. **Builds a tree** with a phylogeny program. The default is neighbour
+   joining in `ape`. `tool =` selects another.
+3. **Roots the tree** on an outgroup you name, or at its midpoint.
+4. **Turns every fork into a couplet.** The two leads of a couplet are the
+   alignment sites that tell the two sides of the fork apart, written as the
+   site and its state: `106G 35G` against `106A 35A`. Each sequence is a
+   result.
+
+The sequences must already be aligned. To align them first, use a program
+such as MAFFT or MUSCLE.
+
+## An example
+
+`ape` ships an alignment of 15 wood mouse cytochrome *b* sequences:
+
+```{r}
+library(moose)
+data(woodmouse, package = "ape")
+key <- keyFromAlignment(woodmouse)
+key
+head(key$leads[, c("Statement", "Character", "Next", "Taxon")], 8)
+```
+
+Read it like any key. At couplet 1, look at sites 106 and 35 of your
+sequence: `G` at both sends you to couplet 2, `A` at both to couplet 3.
+
+The key records how it was made, including the tree itself:
+
+```{r}
+meta <- setNames(key$meta$value, key$meta$key)
+meta[c("tool", "rooting", "sequences", "sites", "weak_couplets")]
+substr(meta[["newick"]], 1, 60)
+```
+
+It is an ordinary moose key, so the wizard and the phylogenetics exports work
+on it:
+
+```{r, eval = FALSE}
+exportWizard(key, "woodmouse.html")
+toTreedata(key)                      # for ggtree
+```
+
+## Choosing the phylogeny program
+
+```{r, eval = FALSE}
+keyFromAlignment(aln, tool = "nj")          # neighbour joining (ape), the default
+keyFromAlignment(aln, tool = "bionj")       # BIONJ (ape)
+keyFromAlignment(aln, tool = "upgma")       # UPGMA (phangorn)
+keyFromAlignment(aln, tool = "parsimony")   # parsimony ratchet (phangorn)
+keyFromAlignment(aln, tool = "ml")          # maximum likelihood (phangorn)
+keyFromAlignment(aln, tool = "fasttree")    # the FastTree program
+keyFromAlignment(aln, tool = "iqtree")      # the IQ-TREE program
+```
+
+`"fasttree"` and `"iqtree"` run the command-line program, which must be
+installed. moose looks for it on the `PATH`; give its location in `exe` if it
+is elsewhere, and extra options in `args`. `model` sets the substitution
+model for the tools that take one.
+
+For any other program, build the tree yourself and hand it over. Its tip
+labels must be the sequence names:
+
+```{r, eval = FALSE}
+keyFromAlignment("aligned.fasta", tree = "raxml.bestTree")
+```
+
+## Rooting
+
+A key starts at the root, so where the tree is rooted decides the first
+question. Name an outgroup when you have one:
+
+```{r}
+data(Laurasiatherian, package = "phangorn")
+mammals <- suppressWarnings(keyFromAlignment(Laurasiatherian, outgroup = "Platypus"))
+mammals$leads[1:2, c("Character", "Next", "Taxon")]
+```
+
+Without an outgroup, an unrooted tree is rooted at its midpoint.
+
+## Numbering sites
+
+By default a site is its column in the alignment. To use the coordinates of
+one sequence instead (for example the rCRS for human mitochondrial DNA), name
+it as the `reference`. Columns where the reference has a gap are numbered as
+insertions (`315.1`):
+
+```{r, eval = FALSE}
+keyFromAlignment("mtdna.fasta", reference = "NC_012920.1")
+```
+
+## When a fork has no clean difference
+
+A site is *diagnostic* for a fork when the states on one side never occur on
+the other. A fork can lack such a site, because of homoplasy or because the
+tree is wrong there. moose then uses the site that separates the two sides
+best, marks the leads `(most)`, and warns:
+
+```{r}
+mammals <- keyFromAlignment(Laurasiatherian, outgroup = "Platypus")
+grep("(most)", mammals$leads$Character, fixed = TRUE, value = TRUE)
+```
+
+Sequences that no site can tell apart share a result (`"A / B"`), as do
+identical sequences. Gaps and ambiguity codes count as missing data and are
+never used as a state.
+
+## Identifying a sequence
+
+The key can be followed by machine. `scoreAlignment()` reads off the sites
+the key tests, and `classify()` walks the key. The new sequences must be
+aligned to the same coordinates as the key:
+
+```{r}
+classify(key, scoreAlignment(key, woodmouse))[1:4, ]
+```
+
+Each couplet is tested on its first listed site. A sequence with a gap or an
+ambiguity code at that site gets no result (`NA`).

@@ -53,16 +53,21 @@ modelMeta <- function(model) {
 #' Embed images
 #'
 #' @param model A [visionModel()].
-#' @param paths Image files.
+#' @param paths Image files, or an [imageSet()] (its `path` column is
+#'   embedded and its `id` column names the rows).
 #' @param region Optional crop `c(y0, y1, x0, x1)` as fractions, applied to
 #'   every image before embedding.
 #' @param patches If `TRUE`, also return per-patch embeddings.
-#' @return A list: `image` (`images x d` matrix, rows named by file name
-#'   without extension) and `patches` (`images x patches x d` array, or
+#' @return A list: `image` (`images x d` matrix, rows named by image id: the
+#'   file name without extension, or the `id` of an [imageSet()]) and `patches` (`images x patches x d` array, or
 #'   `NULL`).
 #' @export
 embedImages <- function(model, paths, region = NULL, patches = TRUE) {
-  ids <- sub("\\.[^.]+$", "", basename(paths))
+  if (is.data.frame(paths)) {
+    ids <- paths$id; paths <- paths$path
+  } else {
+    ids <- sub("\\.[^.]+$", "", basename(paths))
+  }
   out <- model$mod$embed_images(model$py, as.list(as.character(paths)), region = region, patches = patches)
   image <- out$image; rownames(image) <- ids
   pt <- out$patches
@@ -129,8 +134,8 @@ patchExemplars <- function(model, key, images, pad = 48, size = 96) {
 scoreImages <- function(key, model, paths) {
   f <- key$features
   if (is.null(f)) stop("This key has no features table", call. = FALSE)
-  ids <- sub("\\.[^.]+$", "", basename(paths))
-  out <- matrix(NA_real_, length(paths), nrow(f), dimnames = list(ids, f$id))
+  ids <- if (is.data.frame(paths)) paths$id else sub("\\.[^.]+$", "", basename(paths))
+  out <- matrix(NA_real_, length(ids), nrow(f), dimnames = list(ids, f$id))
   needPatches <- any(f$kind == "centroid_patch_max")
   whole <- embedImages(model, paths, patches = needPatches)
   if (needPatches) {
