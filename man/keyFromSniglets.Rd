@@ -46,6 +46,8 @@ Each step asks whether the image has one sniglet. `method =
 above the `quantile` of that sniglet's scores over all images; a label has
 a sniglet if any of its images does; each split uses the unused sniglet
 that divides the remaining labels most evenly (ties to the earlier one).
-`method = "rpart"` grows a classification tree on the scores instead, with
-the split points as thresholds.
+`method = "rpart"` suits several images per label. It first gives each
+sniglet one threshold, the cut of its scores that best separates the
+labels, and then grows a classification tree on has/lacks, so a sniglet
+means the same thing wherever the key asks about it.
 }

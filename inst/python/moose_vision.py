@@ -8,8 +8,22 @@ import hashlib
 import io
 from dataclasses import dataclass, field
 
+import os
+import sys
+
 import numpy as np
-import torch
+
+# When Python runs inside R on Linux, R's reference BLAS is already loaded and
+# its symbols would shadow the fast BLAS that torch ships, making the model
+# tens of times slower. RTLD_DEEPBIND makes torch prefer its own symbols.
+_flags = sys.getdlopenflags() if hasattr(sys, "getdlopenflags") else None
+if _flags is not None and sys.platform.startswith("linux") and "torch" not in sys.modules:
+    sys.setdlopenflags(_flags | os.RTLD_DEEPBIND)
+try:
+    import torch
+finally:
+    if _flags is not None:
+        sys.setdlopenflags(_flags)
 from PIL import Image
 
 import open_clip
@@ -31,17 +45,45 @@ def _sha256(path):
     return h.hexdigest()
 
 
-def load_model(name="ViT-B-32", pretrained="openai", weights=None, device="cpu"):
-    """Load a CLIP model through open_clip.
+def _is_torchscript(path):
+    """OpenAI's original CLIP checkpoints are TorchScript archives."""
+    try:
+        torch.jit.load(path, map_location="cpu")
+        return True
+    except Exception:
+        return False
 
-    `weights` is a local checkpoint (an OpenAI `.pt` file works); without it
-    open_clip downloads `pretrained` for `name`.
+
+def load_model(name="ViT-B-32", pretrained="openai", weights=None, device="cpu"):
+    """Load a CLIP-style model through open_clip.
+
+    Three sources:
+    - `name` is a model repository, "hf-hub:<org>/<model>" on the Hugging Face
+      Hub or "local-dir:<folder>" for a downloaded copy: the repository's own
+      configuration and weights are used (this is how BioCLIP loads);
+    - `weights` is a local checkpoint: an OpenAI `.pt` file, or an open_clip
+      checkpoint for the architecture `name`;
+    - otherwise open_clip downloads the `pretrained` weights for `name`.
     """
-    if weights:
+    repository = name.startswith(("hf-hub:", "local-dir:"))
+    if repository:
+        model, _, preprocess = open_clip.create_model_and_transforms(name, device=device)
+        source = "repository"
+    elif weights and _is_torchscript(weights):
         model = open_clip.load_openai_model(weights, device=device)
         preprocess = open_clip.image_transform(model.visual.image_size, is_train=False)
+        source = "file"
+    elif weights:
+        model, _, preprocess = open_clip.create_model_and_transforms(name, pretrained=weights, device=device)
+        source = "file"
     else:
         model, _, preprocess = open_clip.create_model_and_transforms(name, pretrained=pretrained, device=device)
+        source = pretrained if pretrained else "random"
+    visual = model.visual
+    if not all(hasattr(visual, a) for a in ("conv1", "ln_post", "proj", "output_tokens")):
+        raise ValueError(
+            "moose needs a model whose image tower is an open_clip vision transformer; "
+            "%s has a %s" % (name, type(visual).__name__))
     model.eval()
     model.visual.output_tokens = True
     tokenizer = open_clip.get_tokenizer(name)
@@ -52,8 +94,8 @@ def load_model(name="ViT-B-32", pretrained="openai", weights=None, device="cpu")
     spec = {
         "library": "open_clip " + open_clip.__version__,
         "arch": name,
-        "pretrained": pretrained if not weights else "file",
-        "weights_sha256": _sha256(weights) if weights else None,
+        "pretrained": source,
+        "weights_sha256": _sha256(weights) if weights and not repository else None,
         "image_size": int(image_size),
         "patch_size": int(patch),
         "patch_grid": int(image_size // patch),
@@ -76,23 +118,51 @@ def _unit(a, axis=-1):
     return a / (np.linalg.norm(a, axis=axis, keepdims=True) + 1e-8)
 
 
-def embed_images(vm, paths, region=None, patches=True, batch=16):
-    """Global and (optionally) patch embeddings, unit length, float32.
+def tile_boxes(w, h, tiles):
+    """Pixel boxes (x0, y0, x1, y1) of the tiles of a w x h image.
 
-    Patch tokens are open_clip's output tokens (ln_post applied, class token
-    dropped), projected with ``visual.proj`` so they share the image space,
-    matching fordera's patch extraction.
+    Each entry g of `tiles` adds a g x g grid of windows that overlap their
+    neighbours by half, so a part that straddles one window sits inside the
+    next. g = 1 is the whole image.
+    """
+    boxes = []
+    for g in tiles:
+        g = int(g)
+        sx, sy = w / (g + 1), h / (g + 1)
+        for r in range(g):
+            for c in range(g):
+                boxes.append((int(round(c * sx)), int(round(r * sy)),
+                              int(round((c + 2) * sx)), int(round((r + 2) * sy))))
+    return boxes
+
+
+def embed_images(vm, paths, region=None, patches=True, batch=16, tiles=None, min_detail=8.0):
+    """Global and (optionally) local embeddings, unit length, float32.
+
+    Local embeddings are one of two things.
+
+    With `tiles` (a list of grid sizes, see tile_boxes), each tile is cut out
+    and embedded on its own, as if it were a whole image. The embedding then
+    describes only what is inside the tile. Tiles with almost no detail
+    (greyscale standard deviation below `min_detail`, e.g. plain background)
+    get a zero vector, which matches nothing.
+
+    Without `tiles`, they are the model's own patch tokens (ln_post applied,
+    class token dropped, projected with ``visual.proj``), matching fordera's
+    patch extraction. In the last layer of a CLIP model these tokens carry
+    much of the whole image's content, so they are less local than tiles.
     """
     paths = list(paths)
     visual = vm.model.visual
+    tiles = [int(t) for t in tiles] if tiles else None
     images, patch_out = [], []
     with torch.no_grad():
         for start in range(0, len(paths), batch):
-            chunk = paths[start:start + batch]
-            x = torch.stack([vm.preprocess(_open(p, region)) for p in chunk])
+            chunk = [_open(p, region) for p in paths[start:start + batch]]
+            x = torch.stack([vm.preprocess(im) for im in chunk])
             pooled, tokens = visual(x)
             images.append(_unit(pooled.float().cpu().numpy()))
-            if patches:
+            if patches and not tiles:
                 grid = vm.spec["patch_grid"]
                 if tokens.shape[1] != grid * grid:
                     raise ValueError(
@@ -101,6 +171,17 @@ def embed_images(vm, paths, region=None, patches=True, batch=16):
                 if visual.proj is not None:
                     tokens = tokens @ visual.proj
                 patch_out.append(_unit(tokens.float().cpu().numpy(), axis=2))
+            elif patches:
+                for im in chunk:
+                    crops = [im.crop(box) for box in tile_boxes(im.size[0], im.size[1], tiles)]
+                    detail = np.array([np.asarray(c.convert("L"), dtype=np.float32).std() for c in crops])
+                    emb = []
+                    for t0 in range(0, len(crops), 64):
+                        pooled_t, _ = visual(torch.stack([vm.preprocess(c) for c in crops[t0:t0 + 64]]))
+                        emb.append(_unit(pooled_t.float().cpu().numpy()))
+                    emb = np.concatenate(emb)
+                    emb[detail < float(min_detail)] = 0.0
+                    patch_out.append(emb[None])
     return {
         "image": np.concatenate(images).astype(np.float32),
         "patches": np.concatenate(patch_out).astype(np.float32) if patches else None,
@@ -148,5 +229,16 @@ def crop_png(path, box, pad=48, size=96):
     return base64.b64encode(buf.getvalue()).decode("ascii")
 
 
-def exemplar_pngs(vm, paths, patch_indices, pad=48, size=96):
-    return [crop_png(p, patch_box(vm, p, int(i)), pad=pad, size=size) for p, i in zip(paths, patch_indices)]
+def exemplar_pngs(vm, paths, patch_indices, pad=None, size=96, tiles=None):
+    """PNG crops (base64) of local regions: tiles as they are, patch tokens
+    with `pad` pixels of context (by default half the patch's width)."""
+    out = []
+    for p, i in zip(paths, patch_indices):
+        if tiles:
+            w, h = Image.open(p).size
+            box, margin = tile_boxes(w, h, tiles)[int(i)], 0 if pad is None else pad
+        else:
+            box = patch_box(vm, p, int(i))
+            margin = (box[2] - box[0]) // 2 if pad is None else pad
+        out.append(crop_png(p, box, pad=margin, size=size))
+    return out

@@ -1,2 +1,3 @@
+- bioclip/: runs the photo walkthrough with the real BioCLIP weights (`Rscript analysis/bioclip/check.R`; downloads them from the Hugging Face Hub).
 - fordera/: checks of the vision keys against fordera's outputs (needs a fordera checkout and CLIP weights; see REPORT.md).
 - mecit/: simulation study of mixed-effects conditional inference trees on PhyloTree expression data (`Rscript analysis/mecit/run.R`; see REPORT.md).

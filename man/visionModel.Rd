@@ -12,10 +12,16 @@ visionModel(
 )
 }
 \arguments{
-\item{weights}{Local checkpoint file (e.g. OpenAI's `ViT-B-32.pt`); if
-`NULL`, open_clip downloads `pretrained` weights for `name`.}
+\item{weights}{Local checkpoint file: OpenAI's `ViT-B-32.pt`, or an
+open_clip checkpoint for the architecture `name`. If `NULL`, the weights
+are downloaded.}
 
-\item{name, pretrained}{open_clip model name and pretrained tag.}
+\item{name}{The model: an open_clip architecture name, `"bioclip"`,
+`"bioclip-2"`, `"hf-hub:<organisation>/<model>"` or
+`"local-dir:<folder>"` (see below).}
+
+\item{pretrained}{open_clip's tag for the weights to download for an
+architecture `name`; not used for the other kinds of `name`.}
 
 \item{python}{Optional path to the Python executable to use (passed to
 [reticulate::use_python()]).}
@@ -37,4 +43,33 @@ it with [reticulate::use_python()], [reticulate::use_virtualenv()] or the
 `RETICULATE_PYTHON` environment variable before the first call, and install
 the packages there with
 `reticulate::py_install(c("torch", "open_clip_torch", "pillow", "numpy"))`.
+}
+\section{Other models, including BioCLIP}{
+
+Any open_clip model whose image side is a vision transformer works. The
+key builders only see its embeddings, so nothing else changes.
+
+* `visionModel(name = "bioclip")` loads
+  [BioCLIP](https://imageomics.github.io/bioclip/) and
+  `visionModel(name = "bioclip-2")` BioCLIP 2, models trained on images of
+  organisms, from the Hugging Face Hub. They are downloaded on first use.
+* `name = "hf-hub:<organisation>/<model>"` loads any other open_clip model
+  on the Hub, and `name = "local-dir:<folder>"` a copy you have downloaded
+  (the folder holds the model's `open_clip_config.json` and weights file).
+* `name` and `pretrained` together select one of open_clip's built-in
+  models, e.g. `name = "ViT-B-16", pretrained = "laion2b_s34b_b88k"`.
+
+A key can only be followed with the model it was built with: use the same
+model for [embedImages()] and later for [scoreImages()].
+
+BioCLIP's text side was trained on names of organisms, not on descriptions
+of what they look like. It suits sniglets ([discoverSniglets()]), which use
+images only, better than vocabulary questions ([keyFromClusters()]).
+}
+
+\examples{
+\dontrun{
+model <- visionModel()                    # CLIP ViT-B/32
+model <- visionModel(name = "bioclip")    # BioCLIP, for photos of organisms
+}
 }

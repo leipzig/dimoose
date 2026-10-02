@@ -175,7 +175,7 @@ test_that("Question is the step heading and the glossary lists terms with crops"
   key <- glossaryKey()
   html <- exportWizard(key)
   q <- key$leads$Question[1]
-  expect_match(html, sprintf("<h2 id=\"h-c-1\" tabindex=\"-1\">%s <span class=\"num\">Sniglet 1</span>", q), fixed = TRUE)
+  expect_match(html, sprintf("<h2 id=\"h-c-1\" tabindex=\"-1\">%s <span class=\"num\">Couplet 1</span>", q), fixed = TRUE)
   expect_match(html, "<section class=\"glossary\" id=\"glossary\"", fixed = TRUE)
   expect_match(html, sprintf("id=\"g-%s\"", key$features$label[1]), fixed = TRUE)
   expect_match(html, sprintf("href=\"#g-%s\"", key$features$label[1]), fixed = TRUE)

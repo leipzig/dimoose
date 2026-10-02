@@ -165,11 +165,12 @@ images <- imageSet(pics)
 # 2. A vision model
 model  <- visionModel()                          # or visionModel("ViT-B-32.pt")
 
-# 3. Photos -> embeddings
+# 3. Photos -> embeddings: one for each photo, and one for each of 4 x 4
+#    overlapping tiles of it, so that features are local parts of the photo
 emb    <- embedImages(model, images)
 
-# 4. Generate sniglets (recurring visual features, each given a coined name)
-#    and grow a key on them
+# 4. Generate sniglets (kinds of region that recur across photos, each given a
+#    coined name) and grow a key on them
 sniglets <- discoverSniglets(emb$patches, k = 40)
 scores   <- snigletScores(emb$patches, sniglets$centroids)
 key      <- keyFromSniglets(scores, images, sniglets, method = "rpart")
@@ -188,22 +189,24 @@ With one photo per class, use the default `method = "balanced"` in step 4
 
 ### Sniglets, and renaming them
 
-The features in step 4 are found by the model, by clustering patches of the
-photos, so they have no names. moose coins a pronounceable word for each one
-(`zhuprierl`, `treuxraikbluk`) and calls these **sniglets**. A lead reads
-"Has zhuprierl", and the wizard's glossary shows the image crops that define
-it. Once you have looked at the crops, give the sniglets real names:
+The features in step 4 are found by the model, by clustering the tiles of
+all the photos: each one is a kind of region that several photos have in
+common, such as a rough skin or a stem end. They have no names, so moose
+coins a pronounceable word for each one (`gaithiark`, `treuxraikbluk`) and
+calls these **sniglets**. A lead reads "Has gaithiark", and the wizard's
+glossary shows example tiles, taken from every class that has it. Once you
+have looked at them, give the sniglets real names:
 
 ```r
 snigletNames(key)                 # coined word, current name, definition, used by the key?
 
-key <- renameSniglets(key, c(zhuprierl = "a dimpled yellow peel"),
-                      definitions = c(zhuprierl = "Bright yellow skin with fine pits, as on a lemon"))
+key <- renameSniglets(key, c(gaithiark = "a rough, scaly skin"),
+                      definitions = c(gaithiark = "Coarse brown skin with scales or a scar, as on a pineapple or a kiwi"))
 
 # or name them in a spreadsheet
 write.csv(snigletNames(key), "names.csv", row.names = FALSE)   # fill in name and definition
 key <- renameSniglets(key, "names.csv")
-exportWizard(key, "key.html")     # leads now read "Has a dimpled yellow peel"
+exportWizard(key, "key.html")     # leads now read "Has a rough, scaly skin"
 ```
 
 The coined word stays as the sniglet's permanent identifier: scores, machine
@@ -224,6 +227,22 @@ qkey   <- keyFromClusters(emb$image, images, vocab, txt, template = "a photo of 
 
 The [photo vignette](vignettes/vision-keys.Rmd) explains each step, and how
 to measure a key's accuracy.
+
+### BioCLIP and other models
+
+`visionModel()` loads any open_clip model whose image side is a vision
+transformer. For photos of organisms, use
+[BioCLIP](https://imageomics.github.io/bioclip/); the other steps stay the
+same:
+
+```r
+model <- visionModel(name = "bioclip")           # or "bioclip-2"
+```
+
+The model is downloaded from the Hugging Face Hub on first use.
+`name = "hf-hub:<organisation>/<model>"` loads any other open_clip model
+there, and `name = "local-dir:<folder>"` a copy you have downloaded. Build
+and follow a key with the same model.
 
 The R side works on plain matrices, so embeddings from any other model (for
 example a domain model such as BioCLIP) can be passed to `discoverSniglets()`,

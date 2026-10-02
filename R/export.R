@@ -213,7 +213,8 @@ glossaryHtml <- function(features, leads, coupletId) {
     crops <- if (!is.null(ex) && !is.null(ex$png)) paste0(sprintf(
       "<span class=\"fig\" role=\"img\" aria-label=\"%s in %s\" style=\"background-image:url(&quot;data:image/png;base64,%s&quot;)\"></span>",
       htmlEscape(name), htmlEscape(ex$image), ex$png), collapse = "") else ""
-    where <- if (!is.null(ex)) sprintf("<p class=\"found\">Seen in %s</p>", htmlEscape(paste(unique(ex$image), collapse = ", "))) else ""
+    seen <- if (is.null(ex)) NULL else if (!is.null(ex$label)) unique(ex$label) else unique(ex$image)
+    where <- if (length(seen)) sprintf("<p class=\"found\">Seen in %s</p>", htmlEscape(paste(seen, collapse = ", "))) else ""
     asked <- unique(leads$Statement[leads$Feature == features$id[j]])
     links <- paste(sprintf("<a href=\"#%s\">%s</a>", coupletId(asked), htmlEscape(asked)), collapse = ", ")
     def <- if (!is.null(features$definition) && !is.na(features$definition[j])) sprintf("<p class=\"definition\">%s</p>", htmlEscape(features$definition[j])) else ""

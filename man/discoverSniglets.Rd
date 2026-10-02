@@ -10,9 +10,9 @@ discoverSniglets(patches, k = 40, seed = 1, nstart = 10, exemplars = 4)
 discoverTerms(...)
 }
 \arguments{
-\item{patches}{A numeric array `images x patches x dimensions` (unit length
+\item{patches}{A numeric array `images x regions x dimensions` (unit length
 rows), e.g. `embedImages(...)$patches`; `dimnames(patches)[[1]]` are the
-image ids.}
+image ids. Rows that are all zero are empty regions and are ignored.}
 
 \item{k}{Number of sniglets.}
 
@@ -20,7 +20,8 @@ image ids.}
 
 \item{nstart}{Random starts for [stats::kmeans()].}
 
-\item{exemplars}{Number of best-matching patches to record per sniglet.}
+\item{exemplars}{Number of example regions to record per sniglet, each
+from a different image.}
 
 \item{...}{Passed to [discoverSniglets()].}
 }
@@ -28,8 +29,10 @@ image ids.}
 An object of class `mooseSniglets`: `sniglets` (data frame with
   `id`, `sniglet` (the coined word), `name` (what people see; the coined
   word until renamed) and `definition`), `centroids` (`k x d`, rows named
-  by coined word) and `exemplars` (data frame `sniglet`, `image`, `patch`,
-  `score`).
+  by coined word), `exemplars` (data frame `sniglet`, `image`, `patch`,
+  `score`: the best-matching region of each of the best-matching images),
+  `best` (for every image, the region that matches each sniglet best) and
+  `tiles` (the tiling of the regions, see [embedImages()]).
 }
 \description{
 A sniglet is a visual feature that a model found and that has no name of

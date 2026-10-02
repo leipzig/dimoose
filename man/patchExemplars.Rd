@@ -4,7 +4,7 @@
 \alias{patchExemplars}
 \title{Add example crops to a sniglet key}
 \usage{
-patchExemplars(model, key, images, pad = 48, size = 96)
+patchExemplars(model, key, images, pad = NULL, size = 96)
 }
 \arguments{
 \item{model}{A [visionModel()].}
@@ -13,7 +13,10 @@ patchExemplars(model, key, images, pad = 48, size = 96)
 
 \item{images}{The [imageSet()] the key was built from (for file paths).}
 
-\item{pad, size}{Context around the patch and the crop's output size, px.}
+\item{pad}{Pixels of context to show around the region. By default none
+for tiles, and half a patch's width for patch tokens.}
+
+\item{size}{The crop's output size, px.}
 }
 \value{
 The key, modified in place and returned invisibly.

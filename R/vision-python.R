@@ -47,19 +47,52 @@ pyVision <- local({
 #' the packages there with
 #' `reticulate::py_install(c("torch", "open_clip_torch", "pillow", "numpy"))`.
 #'
-#' @param weights Local checkpoint file (e.g. OpenAI's `ViT-B-32.pt`); if
-#'   `NULL`, open_clip downloads `pretrained` weights for `name`.
-#' @param name,pretrained open_clip model name and pretrained tag.
+#' @section Other models, including BioCLIP:
+#' Any open_clip model whose image side is a vision transformer works. The
+#' key builders only see its embeddings, so nothing else changes.
+#'
+#' * `visionModel(name = "bioclip")` loads
+#'   [BioCLIP](https://imageomics.github.io/bioclip/) and
+#'   `visionModel(name = "bioclip-2")` BioCLIP 2, models trained on images of
+#'   organisms, from the Hugging Face Hub. They are downloaded on first use.
+#' * `name = "hf-hub:<organisation>/<model>"` loads any other open_clip model
+#'   on the Hub, and `name = "local-dir:<folder>"` a copy you have downloaded
+#'   (the folder holds the model's `open_clip_config.json` and weights file).
+#' * `name` and `pretrained` together select one of open_clip's built-in
+#'   models, e.g. `name = "ViT-B-16", pretrained = "laion2b_s34b_b88k"`.
+#'
+#' A key can only be followed with the model it was built with: use the same
+#' model for [embedImages()] and later for [scoreImages()].
+#'
+#' BioCLIP's text side was trained on names of organisms, not on descriptions
+#' of what they look like. It suits sniglets ([discoverSniglets()]), which use
+#' images only, better than vocabulary questions ([keyFromClusters()]).
+#'
+#' @param weights Local checkpoint file: OpenAI's `ViT-B-32.pt`, or an
+#'   open_clip checkpoint for the architecture `name`. If `NULL`, the weights
+#'   are downloaded.
+#' @param name The model: an open_clip architecture name, `"bioclip"`,
+#'   `"bioclip-2"`, `"hf-hub:<organisation>/<model>"` or
+#'   `"local-dir:<folder>"` (see below).
+#' @param pretrained open_clip's tag for the weights to download for an
+#'   architecture `name`; not used for the other kinds of `name`.
 #' @param python Optional path to the Python executable to use (passed to
 #'   [reticulate::use_python()]).
 #' @return An object of class `mooseVisionModel` with `py` (the Python model)
 #'   and `spec` (library, architecture, weights SHA-256, image size, ...).
+#' @examples
+#' \dontrun{
+#' model <- visionModel()                    # CLIP ViT-B/32
+#' model <- visionModel(name = "bioclip")    # BioCLIP, for photos of organisms
+#' }
 #' @export
 visionModel <- function(weights = NULL, name = "ViT-B-32", pretrained = "openai", python = NULL) {
   if (!requireNamespace("reticulate", quietly = TRUE)) {
     stop("Install the reticulate package to embed images", call. = FALSE)
   }
   if (!is.null(python)) reticulate::use_python(python, required = TRUE)
+  known <- c(bioclip = "hf-hub:imageomics/bioclip", "bioclip-2" = "hf-hub:imageomics/bioclip-2")
+  if (tolower(name) %in% names(known)) name <- known[[tolower(name)]]
   mod <- pyVision()
   py <- mod$load_model(name = name, pretrained = pretrained, weights = weights)
   structure(list(py = py, mod = mod, spec = py$spec), class = "mooseVisionModel")
@@ -83,26 +116,50 @@ modelMeta <- function(model) {
 
 #' Embed images
 #'
+#' Returns one embedding per image and, for [discoverSniglets()], embeddings
+#' of local regions of each image.
+#'
+#' By default the regions are **tiles**: overlapping windows cut out of the
+#' image and embedded one by one, as if each were a whole image. A tile's
+#' embedding describes only what is inside it, so tiles find parts and
+#' surfaces that different images have in common (a stem end, a dimpled
+#' peel). `tiles = 0` uses the model's own patch tokens instead, which is
+#' faster (one pass per image) and is what fordera does, but in the last
+#' layer of a CLIP model each token carries much of the whole image, so the
+#' features found are less local.
+#'
 #' @param model A [visionModel()].
 #' @param paths Image files, or an [imageSet()] (its `path` column is
 #'   embedded and its `id` column names the rows).
 #' @param region Optional crop `c(y0, y1, x0, x1)` as fractions, applied to
 #'   every image before embedding.
-#' @param patches If `TRUE`, also return per-patch embeddings.
+#' @param patches If `TRUE`, also return the local embeddings.
+#' @param tiles Size of the grid of tiles: `4` cuts 4 x 4 windows that
+#'   overlap their neighbours by half. Several sizes give several scales
+#'   (`c(2, 4)`). `0` uses the model's patch tokens.
+#' @param minDetail Tiles with less detail than this (standard deviation of
+#'   the grey levels, 0 to 255) are treated as empty background and match
+#'   nothing.
 #' @return A list: `image` (`images x d` matrix, rows named by image id: the
-#'   file name without extension, or the `id` of an [imageSet()]) and `patches` (`images x patches x d` array, or
-#'   `NULL`).
+#'   file name without extension, or the `id` of an [imageSet()]) and
+#'   `patches` (`images x regions x d` array, or `NULL`), which remembers the
+#'   tiling in its `tiles` attribute.
 #' @export
-embedImages <- function(model, paths, region = NULL, patches = TRUE) {
+embedImages <- function(model, paths, region = NULL, patches = TRUE, tiles = 4, minDetail = 8) {
   if (is.data.frame(paths)) {
     ids <- paths$id; paths <- paths$path
   } else {
     ids <- sub("\\.[^.]+$", "", basename(paths))
   }
-  out <- model$mod$embed_images(model$py, as.list(as.character(paths)), region = region, patches = patches)
+  tiles <- as.integer(tiles[!is.na(tiles) & tiles > 0])
+  out <- model$mod$embed_images(model$py, as.list(as.character(paths)), region = region, patches = patches,
+                                tiles = if (length(tiles)) as.list(tiles) else NULL, min_detail = minDetail)
   image <- out$image; rownames(image) <- ids
   pt <- out$patches
-  if (!is.null(pt)) dimnames(pt) <- list(ids, NULL, NULL)
+  if (!is.null(pt)) {
+    dimnames(pt) <- list(ids, NULL, NULL)
+    attr(pt, "tiles") <- tiles
+  }
   list(image = image, patches = pt)
 }
 
@@ -126,10 +183,13 @@ embedTexts <- function(model, texts) {
 #' @inheritParams embedImages
 #' @param key A key from [keyFromSniglets()].
 #' @param images The [imageSet()] the key was built from (for file paths).
-#' @param pad,size Context around the patch and the crop's output size, px.
+#' @param pad Pixels of context to show around the region. By default none
+#'   for tiles, and half a patch's width for patch tokens.
+#' @param size The crop's output size, px.
 #' @return The key, modified in place and returned invisibly.
 #' @export
-patchExemplars <- function(model, key, images, pad = 48, size = 96) {
+patchExemplars <- function(model, key, images, pad = NULL, size = 96) {
+  tiles <- keyTiles(key)
   f <- key$features
   meta <- key$meta
   leads <- key$leads
@@ -138,7 +198,8 @@ patchExemplars <- function(model, key, images, pad = 48, size = 96) {
     ex <- f$exemplars[[j]]
     if (is.null(ex) || nrow(ex) == 0) next
     paths <- images$path[match(ex$image, images$id)]
-    ex$png <- unlist(model$mod$exemplar_pngs(model$py, as.list(paths), as.list(as.integer(ex$patch - 1L)), pad = pad, size = size))
+    ex$png <- unlist(model$mod$exemplar_pngs(model$py, as.list(paths), as.list(as.integer(ex$patch - 1L)), pad = pad, size = size,
+                                             tiles = if (length(tiles)) as.list(tiles) else NULL))
     f$exemplars[[j]] <- ex
     name <- snigletWord(f$id[j])   # the coined word: stays put when the sniglet is renamed
     ids <- paste0(gsub("[^A-Za-z0-9_-]", "_", name), "_", seq_len(nrow(ex)))
@@ -168,7 +229,16 @@ scoreImages <- function(key, model, paths) {
   ids <- if (is.data.frame(paths)) paths$id else sub("\\.[^.]+$", "", basename(paths))
   out <- matrix(NA_real_, length(ids), nrow(f), dimnames = list(ids, f$id))
   needPatches <- any(f$kind == "centroid_patch_max")
-  whole <- embedImages(model, paths, patches = needPatches)
+  dims <- unique(lengths(f$embedding[f$kind == "centroid_patch_max"]))
+  if (length(dims) && !all(dims == model$spec$dim)) {
+    stop("This key was built with a model of ", paste(dims, collapse = "/"), " dimensions, but this model has ",
+         model$spec$dim, "; score images with the model the key was built with", call. = FALSE)
+  }
+  built <- key$meta$value[key$meta$key == "model_arch"]
+  if (length(built) && !identical(built[1], model$spec$arch)) {
+    warning("This key was built with the model ", built[1], ", not ", model$spec$arch, "; its tests may not mean the same thing", call. = FALSE)
+  }
+  whole <- embedImages(model, paths, patches = needPatches, tiles = keyTiles(key))
   if (needPatches) {
     j <- which(f$kind == "centroid_patch_max")
     sub <- key$clone(); sub$features <- f[j, ]
@@ -186,4 +256,12 @@ scoreImages <- function(key, model, paths) {
     }
   }
   out
+}
+
+# The tiling a key's sniglets were found with: integer grid sizes, or
+# integer(0) for the model's patch tokens (also for keys made before tiles).
+keyTiles <- function(key) {
+  v <- key$meta$value[key$meta$key == "sniglet_tiles"]
+  if (!length(v) || !nzchar(v[1])) return(integer(0))
+  as.integer(strsplit(v[1], ",", fixed = TRUE)[[1]])
 }

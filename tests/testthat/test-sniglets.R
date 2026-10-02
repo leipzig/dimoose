@@ -175,3 +175,38 @@ test_that("the earlier names still work", {
                         exemplars = stats::setNames(t$exemplars, c("term", "image", "patch", "score"))), class = "mooseTerms")
   expect_equal(keyFromTerms(s, v$images, old, quantile = 0.5)$leads, k$leads)
 })
+
+test_that("blank regions are ignored and examples come from different images", {
+  v <- syntheticVision(n_labels = 6, per_label = 2, k = 4, p = 9, d = 8)
+  blanked <- v$patches
+  blanked[, 1:2, ] <- 0                              # as embedImages() does for empty background tiles
+  attr(blanked, "tiles") <- 3L
+  s <- discoverSniglets(blanked, k = 4)
+  expect_equal(s$tiles, 3L)
+  expect_equal(dim(s$best), c(12L, 4L))
+  expect_true(all(s$best > 2))                       # a blank region is never the best match
+  ex <- split(s$exemplars$image, s$exemplars$sniglet)
+  expect_true(all(vapply(ex, function(x) !anyDuplicated(x), logical(1))))
+  expect_error(discoverSniglets(blanked[1:2, , ], k = 20), "smaller than the number of regions")
+  sc <- snigletScores(blanked, s$centroids)
+  expect_true(all(is.finite(sc)))
+})
+
+test_that("with rpart each sniglet has one threshold, and its examples pass it across labels", {
+  v <- syntheticVision(n_labels = 6, per_label = 3, k = 4, p = 9, d = 8)
+  s <- discoverSniglets(v$patches, k = 4)
+  sc <- snigletScores(v$patches, s$centroids)
+  key <- keyFromSniglets(sc, v$images, s, method = "rpart")
+  l <- key$leads
+  thr <- tapply(l$Threshold, l$Feature, function(x) length(unique(x)))
+  expect_true(all(thr == 1))
+  expect_equal(evaluateKey(key, sc, v$images$label)$accuracy, 1)
+  expect_equal(key$meta$value[key$meta$key == "sniglet_tiles"], "")
+  for (j in which(key$features$id %in% l$Feature)) {
+    ex <- key$features$exemplars[[j]]
+    t <- l$Threshold[match(key$features$id[j], l$Feature)]
+    expect_true(all(ex$score > t))
+    expect_equal(ex$label, v$images$label[match(ex$image, v$images$id)])
+    expect_false(anyDuplicated(ex$image) > 0)
+  }
+})

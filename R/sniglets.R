@@ -38,18 +38,21 @@ inventNames <- function(n, seed = 1) {
 #' Once you have looked at what a sniglet picks out, give it a real name with
 #' [renameSniglets()].
 #'
-#' @param patches A numeric array `images x patches x dimensions` (unit length
+#' @param patches A numeric array `images x regions x dimensions` (unit length
 #'   rows), e.g. `embedImages(...)$patches`; `dimnames(patches)[[1]]` are the
-#'   image ids.
+#'   image ids. Rows that are all zero are empty regions and are ignored.
 #' @param k Number of sniglets.
 #' @param seed Seed for k-means and for [inventNames()].
 #' @param nstart Random starts for [stats::kmeans()].
-#' @param exemplars Number of best-matching patches to record per sniglet.
+#' @param exemplars Number of example regions to record per sniglet, each
+#'   from a different image.
 #' @return An object of class `mooseSniglets`: `sniglets` (data frame with
 #'   `id`, `sniglet` (the coined word), `name` (what people see; the coined
 #'   word until renamed) and `definition`), `centroids` (`k x d`, rows named
-#'   by coined word) and `exemplars` (data frame `sniglet`, `image`, `patch`,
-#'   `score`).
+#'   by coined word), `exemplars` (data frame `sniglet`, `image`, `patch`,
+#'   `score`: the best-matching region of each of the best-matching images),
+#'   `best` (for every image, the region that matches each sniglet best) and
+#'   `tiles` (the tiling of the regions, see [embedImages()]).
 #' @examples
 #' set.seed(1)
 #' patches <- array(rnorm(5 * 9 * 8), c(5, 9, 8))
@@ -64,21 +67,35 @@ discoverSniglets <- function(patches, k = 40, seed = 1, nstart = 10, exemplars =
   ids <- dimnames(patches)[[1]]
   if (is.null(ids)) ids <- as.character(seq_len(n))
   X <- matrix(aperm(patches, c(2, 1, 3)), n * p, d) # row = patch within image, image-major
+  blank <- rowSums(X != 0) == 0                     # empty background tiles (see embedImages)
+  if (sum(!blank) <= k) stop("`k` must be smaller than the number of regions with any detail (", sum(!blank), ")", call. = FALSE)
   set.seed(seed)
-  km <- stats::kmeans(X, centers = k, nstart = nstart, iter.max = 100)
+  km <- stats::kmeans(X[!blank, , drop = FALSE], centers = k, nstart = nstart, iter.max = 100)
   centroids <- km$centers / sqrt(rowSums(km$centers^2))
   nm <- inventNames(k, seed = seed)
   rownames(centroids) <- nm
   sims <- X %*% t(centroids)
+  sims[blank, ] <- -Inf
+  # for every image, the region that matches each sniglet best, and how well
+  best <- matrix(0L, n, k, dimnames = list(ids, nm)); bestScore <- matrix(0, n, k, dimnames = list(ids, nm))
+  for (i in seq_len(n)) {
+    block <- sims[(i - 1) * p + seq_len(p), , drop = FALSE]
+    best[i, ] <- max.col(t(block), ties.method = "first")
+    bestScore[i, ] <- block[cbind(best[i, ], seq_len(k))]
+  }
+  bestScore[!is.finite(bestScore)] <- 0
+  # exemplars: the best region of each of the best-matching images, so that
+  # they show what different images have in common
   ex <- do.call(rbind, lapply(seq_len(k), function(j) {
-    top <- order(sims[, j], decreasing = TRUE)[seq_len(min(exemplars, nrow(sims)))]
-    data.frame(sniglet = nm[j], image = ids[(top - 1) %/% p + 1], patch = as.integer((top - 1) %% p + 1),
-               score = sims[top, j], stringsAsFactors = FALSE)
+    top <- order(bestScore[, j], decreasing = TRUE)[seq_len(min(exemplars, n))]
+    data.frame(sniglet = nm[j], image = ids[top], patch = best[top, j], score = bestScore[top, j], stringsAsFactors = FALSE)
   }))
   rownames(ex) <- NULL
+  tiles <- attr(patches, "tiles")
   structure(list(sniglets = data.frame(id = seq_len(k), sniglet = nm, name = nm, definition = NA_character_,
                                        stringsAsFactors = FALSE),
-                 centroids = centroids, exemplars = ex), class = "mooseSniglets")
+                 centroids = centroids, exemplars = ex, best = best,
+                 tiles = if (is.null(tiles)) integer(0) else as.integer(tiles)), class = "mooseSniglets")
 }
 
 #' @rdname discoverSniglets
@@ -119,8 +136,10 @@ termScores <- function(patches, centroids) snigletScores(patches, centroids)
 #' above the `quantile` of that sniglet's scores over all images; a label has
 #' a sniglet if any of its images does; each split uses the unused sniglet
 #' that divides the remaining labels most evenly (ties to the earlier one).
-#' `method = "rpart"` grows a classification tree on the scores instead, with
-#' the split points as thresholds.
+#' `method = "rpart"` suits several images per label. It first gives each
+#' sniglet one threshold, the cut of its scores that best separates the
+#' labels, and then grows a classification tree on has/lacks, so a sniglet
+#' means the same thing wherever the key asks about it.
 #'
 #' @param scores `images x sniglets` matrix from [snigletScores()].
 #' @param images [imageSet()] data frame with one row per row of `scores`.
@@ -146,34 +165,71 @@ keyFromSniglets <- function(scores, images, sniglets, method = c("balanced", "rp
   row <- match(nm, sniglets$sniglets$sniglet)
   if (anyNA(row)) stop("`scores` has columns that are not sniglets: ", paste(utils::head(nm[is.na(row)], 5), collapse = ", "), call. = FALSE)
   shown <- sniglets$sniglets$name[row]
+  # One threshold per sniglet says which images "have" it, wherever in the key
+  # it is asked about. "balanced" uses a quantile of the scores (fordera's
+  # rule); "rpart" takes the single cut of the scores that best separates
+  # the labels.
+  thresholds <- apply(scores, 2, stats::quantile, probs = quantile, type = 7, names = FALSE)
+  if (method == "rpart") {
+    bucket <- max(1L, min(table(labels)))
+    for (j in seq_along(nm)) {
+      stump <- rpart::rpart(label ~ x, data = data.frame(label = factor(labels), x = scores[, j]), method = "class",
+        control = rpart::rpart.control(maxdepth = 1, minsplit = 2, minbucket = bucket, cp = 0, xval = 0, maxcompete = 0, maxsurrogate = 0))
+      if (!is.null(stump$splits) && nrow(stump$splits)) thresholds[j] <- stump$splits[1, "index"]
+    }
+  }
+  names(thresholds) <- nm
+  # Example regions for each sniglet: from the images that have it, strongest
+  # first, one per label before any second one, so that the examples show
+  # what the classes share.
+  have <- match(rownames(scores), rownames(sniglets$best))
+  exemplarsFor <- function(x) {
+    if (is.null(sniglets$best) || is.null(rownames(scores)) || anyNA(have)) {
+      ex <- sniglets$exemplars
+      if (is.null(ex)) return(NULL)
+      r <- ex[ex$sniglet == x, c("image", "patch", "score")]; rownames(r) <- NULL
+      return(r)
+    }
+    want <- if (is.null(sniglets$exemplars)) 4L else max(1L, sum(sniglets$exemplars$sniglet == x))
+    sc <- scores[, x]
+    strong <- order(sc, decreasing = TRUE)
+    strong <- strong[sc[strong] > thresholds[[x]]]
+    if (!length(strong)) strong <- which.max(sc)
+    first <- strong[!duplicated(labels[strong])]
+    pick <- utils::head(c(first, setdiff(strong, first)), want)
+    data.frame(image = rownames(scores)[pick], patch = sniglets$best[have[pick], x], score = unname(sc[pick]),
+               label = labels[pick], stringsAsFactors = FALSE)
+  }
   features <- featureTable(
     id = paste0("sniglet:", nm), kind = "centroid_patch_max", label = shown,
     definition = sniglets$sniglets$definition[row],
     embedding = lapply(seq_along(nm), function(j) unname(cent[nm[j], ])),
-    exemplars = lapply(nm, function(x) {
-      ex <- sniglets$exemplars
-      if (is.null(ex)) NULL else { r <- ex[ex$sniglet == x, c("image", "patch", "score")]; rownames(r) <- NULL; r }
-    })
+    exemplars = lapply(nm, exemplarsFor)
   )
+  # the key remembers how its regions were cut, for scoreImages() and patchExemplars()
+  withTiles <- function(meta) {
+    if (is.null(meta)) meta <- data.frame(key = character(), value = character(), stringsAsFactors = FALSE)
+    rbind(meta[meta$key != "sniglet_tiles", ],
+          data.frame(key = "sniglet_tiles", value = paste(sniglets$tiles, collapse = ","), stringsAsFactors = FALSE))
+  }
+  present <- sweep(scores, 2, thresholds, ">")
   if (method == "rpart") {
-    data <- data.frame(label = factor(labels), as.data.frame(scores), check.names = FALSE)
+    # a tree on has/lacks, so a sniglet means the same thing at every couplet
+    data <- data.frame(label = factor(labels), as.data.frame(present + 0), check.names = FALSE)
     fit <- rpart::rpart(stats::reformulate(paste0("`", nm, "`"), "label"), data = data, method = "class", y = TRUE,
       control = rpart::rpart.control(minsplit = 2, minbucket = 1, cp = 0, xval = 0, maxcompete = 0))
     key <- keyFromRpart(fit, desc, meta)
     leads <- key$leads
     # keyFromRpart's Character is labels(fit) with "=" turned into ": ", so an
-    # rpart numeric split "t1>=0.5"/"t1< 0.5" arrives as "t1>: 0.5"/"t1< 0.5".
+    # rpart split "t1>=0.5"/"t1< 0.5" arrives as "t1>: 0.5"/"t1< 0.5".
     m <- regmatches(leads$Character, regexec("^(.+?)(>:|<) ?([-0-9.e]+)$", leads$Character))
     feat <- vapply(m, function(x) if (length(x) == 4) x[2] else "", "")
     op <- vapply(m, function(x) if (length(x) == 4) x[3] else "", "")
-    thr <- as.numeric(vapply(m, function(x) if (length(x) == 4) x[4] else NA_character_, NA_character_))
     leads$Feature <- ifelse(nzchar(feat), paste0("sniglet:", feat), "")
     leads$Test <- ifelse(op == ">:", ">", ifelse(op == "<", "<=", ""))
-    leads$Threshold <- thr - 1e-9  # ">=t" is "> t-eps"; "< t" is "<= t-eps"
-    return(keyFromLeads(snigletLeadText(leads, features), desc, meta, features = features))
+    leads$Threshold <- unname(thresholds[feat])
+    return(keyFromLeads(snigletLeadText(leads, features), desc, withTiles(meta), features = features))
   }
-  thresholds <- apply(scores, 2, stats::quantile, probs = quantile, type = 7, names = FALSE)
-  present <- sweep(scores, 2, thresholds, ">")
   ulab <- sort(unique(labels))
   labPresent <- t(vapply(ulab, function(l) apply(present[labels == l, , drop = FALSE], 2, any), logical(ncol(scores))))
   if (ncol(scores) == 1) labPresent <- matrix(labPresent, length(ulab), 1)
@@ -205,8 +261,7 @@ keyFromSniglets <- function(scores, images, sniglets, method = c("balanced", "rp
   if (!is.null(top$leaf)) stop("No sniglet separates the labels", call. = FALSE)
   leads <- do.call(rbind, rows[order(as.integer(names(rows)))])
   rownames(leads) <- NULL
-  if (is.null(meta)) meta <- data.frame(key = "node_label", value = "Sniglet", stringsAsFactors = FALSE)
-  keyFromLeads(snigletLeadText(leads, features), desc, meta, features = features)
+  keyFromLeads(snigletLeadText(leads, features), desc, withTiles(meta), features = features)
 }
 
 #' @rdname keyFromSniglets
@@ -377,7 +432,7 @@ asSniglets <- function(x) {
     return(structure(list(
       sniglets = data.frame(id = x$terms$id, sniglet = x$terms$name, name = x$terms$name,
                             definition = NA_character_, stringsAsFactors = FALSE),
-      centroids = x$centroids, exemplars = ex), class = "mooseSniglets"))
+      centroids = x$centroids, exemplars = ex, tiles = integer(0)), class = "mooseSniglets"))
   }
   stop("Expected the result of discoverSniglets()", call. = FALSE)
 }

@@ -14,7 +14,7 @@ gens <- c("1948-1950" = 1, "1951" = 1, "1952" = 1, "1953" = 2, "1954" = 2, "1955
           "1957" = 3, "1958" = 3, "1959" = 3, "1960" = 3, "1961" = 4, "1962" = 4, "1963" = 4, "1964" = 4,
           "1965" = 4, "1966" = 4, "1967" = 5, "1968" = 5, "1969" = 5, "1970" = 5, "1971" = 5, "1972" = 5,
           "1973-1975" = 6, "1976-1977" = 6, "1978" = 6, "1979" = 6)
-emb <- embedImages(model, paths)
+emb <- embedImages(model, paths, tiles = 0)   # fordera uses the model's patch tokens
 
 # ---- V1: patch scores against fordera's centroids ----------------------------
 cent <- np$load(file.path(fordera, "outputs/trait_centroids.npy"))
@@ -73,7 +73,7 @@ e4m <- evaluateKey(k4m, scoreImages(k4m, model, paths), images$label, gens)
 cat(sprintf("V4 question key self-walk: year %.1f%% gen %.1f%% (threshold 0); year %.1f%% gen %.1f%% (midpoint); fordera 27%% gen\n",
   100 * e4$accuracy, 100 * e4$groupAccuracy, 100 * e4m$accuracy, 100 * e4m$groupAccuracy))
 
-k3 <- patchExemplars(model, k3, images)
+k3 <- patchExemplars(model, k3, images, pad = 48)
 if (nzchar(Sys.getenv("MOOSE_WRITE_HTML"))) {
   exportWizard(k3, "fordera-sniglets.html")
   exportWizard(k4, "fordera-questions.html")
