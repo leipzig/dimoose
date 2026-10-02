@@ -36,6 +36,7 @@ Imports:
     xml2
 Suggests:
     ape,
+    phangorn,
     gbm,
     igraph,
     jpeg,

@@ -2,7 +2,7 @@ test_that("featureTable builds the standard columns", {
   f <- featureTable(id = c("term:a", "text:b"), kind = c("centroid_patch_max", "clip_text_pair"),
     prompt = c(NA, "a photo with b"), negative_prompt = c(NA, "a photo with not b"),
     embedding = list(c(1, 0), NULL))
-  expect_equal(names(f), c("id", "kind", "label", "prompt", "negative_prompt", "region", "embedding", "exemplars"))
+  expect_equal(names(f), c("id", "kind", "label", "prompt", "negative_prompt", "region", "definition", "embedding", "exemplars"))
   expect_equal(f$label, c("term:a", "text:b"))
   expect_equal(f$embedding[[1]], c(1, 0))
   expect_null(f$exemplars[[2]])
@@ -92,7 +92,7 @@ test_that("featureScores computes term and text features from embeddings", {
   f <- termFixture()
   s <- featureScores(f$key, patches = f$v$patches)
   expect_equal(colnames(s), f$key$features$id)
-  expect_equal(unname(s[, 1]), unname(f$s[, sub("^term:", "", f$key$features$id[1])]))
+  expect_equal(unname(s[, 1]), unname(f$s[, sub("^sniglet:", "", f$key$features$id[1])]))
 
   textFeat <- featureTable("text:q", "clip_text_pair", prompt = "a thing with q", negative_prompt = "a thing with not q")
   leads <- data.frame(Statement = "1", Choice = c("a", "b"), Character = c("Has q", "Lacks q"), Next = "-",

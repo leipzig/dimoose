@@ -200,23 +200,28 @@ imageStyle <- function(images) {
   paste0("<style>:root{", paste0(cssName(names(images)), ":url(\"", images, "\")", collapse = ";"), "}</style>\n")
 }
 
-# Glossary of the key's term features: name, example crops, where found
+# Glossary of the key's sniglets: name, coined word, definition, example
+# crops, where found. Anchors use the coined word, which never changes.
 glossaryHtml <- function(features, leads, coupletId) {
   if (is.null(features)) return("")
   terms <- which(features$kind == "centroid_patch_max")
   if (length(terms) == 0) return("")
   entries <- vapply(terms, function(j) {
+    coined <- snigletWord(features$id[j])
+    name <- features$label[j]
     ex <- features$exemplars[[j]]
     crops <- if (!is.null(ex) && !is.null(ex$png)) paste0(sprintf(
       "<span class=\"fig\" role=\"img\" aria-label=\"%s in %s\" style=\"background-image:url(&quot;data:image/png;base64,%s&quot;)\"></span>",
-      htmlEscape(features$label[j]), htmlEscape(ex$image), ex$png), collapse = "") else ""
+      htmlEscape(name), htmlEscape(ex$image), ex$png), collapse = "") else ""
     where <- if (!is.null(ex)) sprintf("<p class=\"found\">Seen in %s</p>", htmlEscape(paste(unique(ex$image), collapse = ", "))) else ""
     asked <- unique(leads$Statement[leads$Feature == features$id[j]])
     links <- paste(sprintf("<a href=\"#%s\">%s</a>", coupletId(asked), htmlEscape(asked)), collapse = ", ")
-    sprintf("<div class=\"term\" id=\"g-%s\"><h3>%s</h3><div class=\"figs\">%s</div>%s<p class=\"found\">Asked at %s</p></div>",
-      htmlEscape(features$label[j]), htmlEscape(features$label[j]), crops, where, links)
+    def <- if (!is.null(features$definition) && !is.na(features$definition[j])) sprintf("<p class=\"definition\">%s</p>", htmlEscape(features$definition[j])) else ""
+    was <- if (!identical(name, coined)) sprintf("<p class=\"found\">Sniglet <code>%s</code></p>", htmlEscape(coined)) else ""
+    sprintf("<div class=\"term\" id=\"g-%s\"><h3%s>%s</h3>%s<div class=\"figs\">%s</div>%s%s<p class=\"found\">Asked at %s</p></div>",
+      htmlEscape(coined), if (identical(name, coined)) "" else " class=\"named\"", htmlEscape(name), def, crops, where, was, links)
   }, character(1))
-  sprintf("<section class=\"glossary\" id=\"glossary\" aria-labelledby=\"h-glossary\">\n<h2 id=\"h-glossary\" tabindex=\"-1\">Glossary of terms</h2>\n<p>Each term is defined only by the image patches that match it best. \"Has <i>term</i>\" means the specimen has a region that looks like these.</p>\n%s\n</section>",
+  sprintf("<section class=\"glossary\" id=\"glossary\" aria-labelledby=\"h-glossary\">\n<h2 id=\"h-glossary\" tabindex=\"-1\">Glossary of sniglets</h2>\n<p>A sniglet is a visual feature the model found in the images. Each one is defined by the image patches that match it best: \"Has <i>sniglet</i>\" means the specimen has a region that looks like these.</p>\n%s\n</section>",
     paste(entries, collapse = "\n"))
 }
 
@@ -299,8 +304,8 @@ renderWizard <- function(leads, check, title, citation, taxa, images, displayLin
       if (!is.null(features) && nzchar(leads$Feature[i])) {
         fr <- match(leads$Feature[i], features$id)
         if (!is.na(fr) && features$kind[fr] == "centroid_patch_max") {
-          gloss <- sprintf("<a class=\"gloss\" href=\"#g-%s\" title=\"What does this term look like?\">?</a>",
-            htmlEscape(features$label[fr]))
+          gloss <- sprintf("<a class=\"gloss\" href=\"#g-%s\" title=\"What does this look like?\">?</a>",
+            htmlEscape(snigletWord(features$id[fr])))
         }
       }
       sprintf("<li class=\"lead\">%s%s%s</li>", choose, gloss, figs)

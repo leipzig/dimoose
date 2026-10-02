@@ -4,7 +4,7 @@
 #' a `features` table that says how a machine computes the score each lead
 #' tests. [classify()] walks a key over a matrix of such scores.
 #'
-#' @param id Feature ids, e.g. `"term:dulmzil"` or `"text:round_headlights"`.
+#' @param id Feature ids, e.g. `"sniglet:dulmzil"` or `"text:round_headlights"`.
 #' @param kind `"centroid_patch_max"` (highest cosine similarity between any
 #'   image patch embedding and `embedding`), `"clip_text_pair"` (cosine with
 #'   `prompt` minus cosine with `negative_prompt`) or `"external"` (computed
@@ -12,16 +12,18 @@
 #' @param label Name shown to people; defaults to `id`.
 #' @param prompt,negative_prompt Texts for `clip_text_pair` features.
 #' @param region Crop as `"y0,y1,x0,x1"` fractions, or `NA` for the whole image.
+#' @param definition Optional sentence saying what the feature is, shown in
+#'   the wizard's glossary (see [renameSniglets()]).
 #' @param embedding List of numeric vectors (one per feature), or `NULL`.
 #' @param exemplars List of data frames with columns `image`, `patch`,
 #'   `score` and optionally `png` (base64) showing what the feature means.
 #' @return A data frame with the columns above; `embedding` and `exemplars`
 #'   are list columns.
 #' @examples
-#' featureTable("term:x", "centroid_patch_max", embedding = list(c(1, 0, 0)))
+#' featureTable("sniglet:x", "centroid_patch_max", embedding = list(c(1, 0, 0)))
 #' @export
 featureTable <- function(id, kind, label = id, prompt = NA, negative_prompt = NA, region = NA,
-                         embedding = NULL, exemplars = NULL) {
+                         embedding = NULL, exemplars = NULL, definition = NA) {
   n <- length(id)
   if (is.null(embedding)) embedding <- vector("list", n)
   if (is.null(exemplars)) exemplars <- vector("list", n)
@@ -29,7 +31,8 @@ featureTable <- function(id, kind, label = id, prompt = NA, negative_prompt = NA
   out <- data.frame(
     id = as.character(id), kind = as.character(rep_len(kind, n)), label = as.character(rep_len(label, n)),
     prompt = as.character(rep_len(prompt, n)), negative_prompt = as.character(rep_len(negative_prompt, n)),
-    region = as.character(rep_len(region, n)), stringsAsFactors = FALSE
+    region = as.character(rep_len(region, n)), definition = as.character(rep_len(definition, n)),
+    stringsAsFactors = FALSE
   )
   out$embedding <- embedding
   out$exemplars <- exemplars
@@ -91,13 +94,15 @@ classify <- function(key, scores) {
   needed <- unique(leads$Feature[nzchar(leads$Feature)])
   if (length(needed) == 0) stop("This key has no machine-readable tests", call. = FALSE)
   if (is.null(dim(scores))) scores <- matrix(scores, 1, dimnames = list(NULL, names(scores)))
-  # Score columns may be keyed by feature id (featureScores/scoreImages) or by
-  # the bare label (termScores output); map labels to ids so either works.
+  # Score columns may be keyed by feature id (featureScores/scoreImages), by a
+  # sniglet's coined word (snigletScores output) or by the feature's label;
+  # map them to ids so any of these works.
   f <- key$features
   if (!is.null(f)) {
-    byLabel <- stats::setNames(f$id, f$label)
-    hit <- colnames(scores) %in% names(byLabel) & !colnames(scores) %in% f$id
-    colnames(scores)[hit] <- byLabel[colnames(scores)[hit]]
+    alias <- c(stats::setNames(f$id, sub("^[^:]*:", "", f$id)), stats::setNames(f$id, f$label))
+    alias <- alias[!duplicated(names(alias))]
+    hit <- colnames(scores) %in% names(alias) & !colnames(scores) %in% f$id
+    colnames(scores)[hit] <- alias[colnames(scores)[hit]]
   }
   missing <- setdiff(needed, colnames(scores))
   if (length(missing)) stop("`scores` is missing scores for: ", paste(missing, collapse = ", "), call. = FALSE)
@@ -199,7 +204,7 @@ featureScores <- function(key, image = NULL, patches = NULL, textEmb = NULL) {
     kind <- f$kind[j]
     if (kind == "centroid_patch_max") {
       if (is.null(patches)) stop("Feature ", f$id[j], " needs `patches`", call. = FALSE)
-      out[, j] <- termScores(patches, matrix(f$embedding[[j]], 1))[, 1]
+      out[, j] <- snigletScores(patches, matrix(f$embedding[[j]], 1))[, 1]
     } else if (kind == "clip_text_pair") {
       if (is.null(image) || is.null(textEmb)) stop("Feature ", f$id[j], " needs `image` and `textEmb`", call. = FALSE)
       for (p in c(f$prompt[j], f$negative_prompt[j])) if (!p %in% rownames(textEmb)) stop("`textEmb` has no row for the prompt: ", p, call. = FALSE)

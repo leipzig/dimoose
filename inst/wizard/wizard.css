@@ -176,6 +176,8 @@ img.fig { object-fit: contain; }
 .gloss { display: inline-block; min-width: 1.4em; margin-left: .3em; text-align: center; border: 1px solid var(--rule); border-radius: 999px; font-size: .8em; text-decoration: none; }
 .glossary .term { padding: .75rem 0; border-top: 1px solid var(--rule); }
 .glossary .term h3 { margin: 0 0 .25rem; font-family: monospace; }
+.glossary .term h3.named { font-family: inherit; }
+.glossary .term .definition { margin: 0 0 .5rem; }
 .glossary .found { margin: .25rem 0 0; color: var(--muted); font-size: .875rem; }
 .wizard .glossary { display: none; }
 .wizard .glossary.active { display: block; }

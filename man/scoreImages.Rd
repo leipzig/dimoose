@@ -11,7 +11,8 @@ scoreImages(key, model, paths)
 
 \item{model}{A [visionModel()].}
 
-\item{paths}{Image files.}
+\item{paths}{Image files, or an [imageSet()] (its `path` column is
+embedded and its `id` column names the rows).}
 }
 \value{
 An `images x features` matrix for [classify()].

@@ -20,7 +20,7 @@ This package provides tools to:
 - convert from and to popular formats including consensus matrices, `ape` phylo, `data.tree`, data frames, JSON, YAML, and Newick
 - merge and prune dichotomous keys
 - generate interactive dichotomous keys ("wizards") as self-contained, mobile-friendly HTML
-- **build keys directly from labelled images** with a vision model (CLIP, or any model that produces embeddings), and **follow those keys by machine**
+- **generate keys automatically** from a pile of labelled photos with a vision model (CLIP, or any model that produces embeddings) or from a multiple sequence alignment with a phylogeny program, and **follow those keys by machine**
 - produce training data for machine learning using splits
 - interoperate with the phylogenetics ecosystem (`ggtree`/`treeio`, `igraph`, Nextstrain/Auspice, Haplogrep)
 - metadata slots for provenance and supporting guide images
@@ -58,42 +58,132 @@ A key **generated** from a biochemical consensus matrix rather than written by a
 
 PhyloTree Build 17, the human mitochondrial DNA phylogeny (van Oven 2015), as distributed by Haplogrep 3: **5,435 haplogroups** and **13,384 mutations**. `phylotree17` is one row per haplogroup (name, parent, depth, subclade count, mutations); `phylotree17_mutations` is one row per mutation (position, type, ancestral/derived base). `phylotreeKey()` turns the tree, or any subtree, into a key whose "characters" are the defining mutations — for example `phylotreeKey("H2a")`. The full tree is large (2,420 steps), so a subtree or a `maxDepth` is usually more practical for the wizard. This is the "phylogenetic tree as a key" case, where the decisions are mutations rather than visible phenotypes.
 
-# Keys from images
+# Automated key generation
 
-moose can build a key from a folder of labelled images, the way
-[fordera](https://github.com/leipzig/fordera) does for Ford trucks, with any
-model that gives embeddings. The default is CLIP ViT-B/32 through Python's
-open_clip:
+Most keys are written by people. moose can also generate one from data: from
+a multiple sequence alignment, or from a pile of photos. Either way the result
+is an ordinary moose key that works with `exportWizard()`, `classify()` and
+the phylogenetics exports.
+
+## From a multiple sequence alignment
+
+One command takes aligned sequences to a key. A phylogeny program builds the
+tree, moose roots it, and every fork becomes a couplet whose leads are the
+alignment sites that tell its two sides apart:
+
+```r
+library(moose)
+key <- keyFromAlignment("aligned.fasta")           # a FASTA file, or an ape/phangorn object
+exportWizard(key, "key.html")
+
+# a runnable example: 15 wood mouse cytochrome b sequences from ape
+data(woodmouse, package = "ape")
+key <- keyFromAlignment(woodmouse)
+head(key$leads[, c("Statement", "Character", "Next", "Taxon")], 4)
+#>   Statement      Character Next   Taxon
+#> 1         1       106G 35G    2
+#> 2         1       106A 35A    3
+#> 3         2 201T 234C 297G    -   No305
+#> 4         2 201C 234T 297A    - No1114S
+```
+
+Options:
+
+- **The phylogeny program** is chosen with `tool`: `"nj"` (the default) and `"bionj"` use
+  `ape`; `"upgma"`, `"parsimony"` and `"ml"` use `phangorn`; `"fasttree"` and
+  `"iqtree"` run the FastTree or IQ-TREE program if it is installed.
+- **A tree from any other program** goes in as `tree = "my.nwk"`.
+- **The root** is the `outgroup` you name, or the midpoint.
+- **Site numbers** are alignment columns, or positions in a `reference` sequence.
+- **New sequences** are placed with `classify(key, alignmentScores(key, new))`.
+
+See the [alignment vignette](vignettes/alignment-keys.Rmd).
+
+## From a pile of photos
+
+You need photos, a label for each one saying what it shows, and Python with
+open_clip (CLIP ViT-B/32 by default):
 
 ```sh
 pip install -r "$(Rscript -e 'cat(system.file("python/requirements.txt", package="moose"))')"
 ```
 
+Then it is five steps:
+
 ```r
 library(moose)
-model  <- visionModel("ViT-B-32.pt")            # or visionModel() to download
-images <- imageSet(list.files("pics", full.names = TRUE), label = function(x) sub("_.*$", "", x))
-emb    <- embedImages(model, images$path)
 
-# 1. Invented terms: k-means on patch embeddings
-terms  <- discoverTerms(emb$patches, k = 40)
-key    <- keyFromTerms(termScores(emb$patches, terms$centroids), images, terms)
-key    <- patchExemplars(model, key, images)     # example crops for the wizard
-exportWizard(key, "terms.html")
+# 1. Photos and labels. With one folder per class (pics/cardinal/..., pics/robin/...),
+#    each photo is labelled by its folder.
+images <- imageSet("pics")
+#    Class in the file name:  imageSet("pics", label = function(x) sub("_.*$", "", x))
+#    Labels in a table:       imageSet(tab$file, label = tab$species)
 
-# 2. Questions from a vocabulary
+# 2. A vision model
+model  <- visionModel()                          # or visionModel("ViT-B-32.pt")
+
+# 3. Photos -> embeddings
+emb    <- embedImages(model, images)
+
+# 4. Generate sniglets (recurring visual features, each given a coined name)
+#    and grow a key on them
+sniglets <- discoverSniglets(emb$patches, k = 40)
+scores   <- snigletScores(emb$patches, sniglets$centroids)
+key      <- keyFromSniglets(scores, images, sniglets, method = "rpart")
+
+# 5. Add example crops and export an interactive page
+key    <- patchExemplars(model, key, images)
+exportWizard(key, "key.html")
+
+# Identify a new photo with the key
+classify(key, scoreImages(key, model, "new.jpg"))
+```
+
+With one photo per class, use the default `method = "balanced"` in step 4
+(the [fordera](https://github.com/leipzig/fordera) method).
+
+### Sniglets, and renaming them
+
+The features in step 4 are found by the model, by clustering patches of the
+photos, so they have no names. moose coins a pronounceable word for each one
+(`smeinfisshiesk`, `treuxraikbluk`) and calls these **sniglets**. A lead reads
+"Has smeinfisshiesk", and the wizard's glossary shows the image crops that define
+it. Once you have looked at the crops, give the sniglets real names:
+
+```r
+snigletNames(key)                 # coined word, current name, definition, used by the key?
+
+key <- renameSniglets(key, c(smeinfisshiesk = "an egg-crate grille"),
+                      definitions = c(smeinfisshiesk = "A grid of small square openings between the headlights"))
+
+# or name them in a spreadsheet
+write.csv(snigletNames(key), "names.csv", row.names = FALSE)   # fill in name and definition
+key <- renameSniglets(key, "names.csv")
+exportWizard(key, "key.html")     # leads now read "Has an egg-crate grille"
+```
+
+The coined word stays as the sniglet's permanent identifier: scores, machine
+tests and saved name tables keep working after a rename, and a blank name
+puts the coined word back. Only the names of sniglets the key uses matter.
+
+### Questions from a vocabulary
+
+To ask questions in plain words from the start, give a vocabulary of
+contrasting features instead:
+
+```r
 vocab  <- data.frame(feature = c("round headlights", "a flat hood"),
                      opposite = c("square headlights", "a curved hood"))
 txt    <- embedTexts(model, vocabularyPrompts(vocab, "a pickup truck with {x}"))
 qkey   <- keyFromClusters(emb$image, images, vocab, txt, template = "a pickup truck with {x}")
-
-# Follow a key by machine
-classify(key, scoreImages(key, model, "new.png"))
 ```
 
+The [photo vignette](vignettes/vision-keys.Rmd) explains each step, and how
+to measure a key's accuracy.
+
 The R side works on plain matrices, so embeddings from any other model (for
-example a domain model such as BioCLIP) can be passed to `discoverTerms()`,
-`keyFromTerms()`, `keyFromClusters()` and `featureScores()` directly, without
+example a domain model such as BioCLIP) can be passed to `discoverSniglets()`,
+`keyFromSniglets()`, `keyFromClusters()` and `featureScores()` directly, without
 Python.
 
 # Interoperating with phylogenetics tools

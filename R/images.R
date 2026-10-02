@@ -1,22 +1,56 @@
 #' A set of labelled images
 #'
-#' @param paths Image files.
-#' @param label Class of each image: `NULL` (the file name without its
-#'   extension), a character vector as long as `paths`, or a function applied
-#'   to those file names (e.g. `function(x) sub("_.*$", "", x)` so that
-#'   `1967_alt` counts as `1967`).
-#' @return A data frame with `id` (file name without extension), `path` and
-#'   `label`.
+#' The starting point for automated key generation: one row per photo, with
+#' the class (species, model, ...) the photo shows. A key separates the
+#' classes, so there must be at least two.
+#'
+#' @param paths Image files, or a single folder. A folder is searched
+#'   (with its subfolders) for image files: png, jpg/jpeg, gif, webp, bmp and
+#'   tif/tiff.
+#' @param label Class of each image:
+#'   * `NULL`: for a folder whose images are in subfolders, the name of the
+#'     subfolder each image is in (`pics/cardinal/IMG_01.jpg` is a
+#'     `cardinal`); otherwise the file name without its extension;
+#'   * a character vector as long as `paths` (for a folder, as long as the
+#'     files found, which are sorted by path);
+#'   * a function applied to the file names without extensions (e.g.
+#'     `function(x) sub("_.*$", "", x)` so that `1967_alt` counts as `1967`).
+#' @return A data frame with `id`, `path` and `label`. `id` is the file name
+#'   without its extension; when two files share a name, their folder is put
+#'   in front (`cardinal_IMG_01`) so that ids are unique.
 #' @examples
 #' imageSet(c("pics/1967.png", "pics/1967_alt.png"), label = function(x) sub("_.*$", "", x))
+#' imageSet(c("pics/cardinal/1.jpg", "pics/robin/1.jpg"), label = c("cardinal", "robin"))
+#' \dontrun{
+#' imageSet("pics")   # every image under pics/, labelled by subfolder
+#' }
 #' @export
 imageSet <- function(paths, label = NULL) {
   paths <- as.character(paths)
-  id <- sub("\\.[^.]+$", "", basename(paths))
+  fromFolder <- length(paths) == 1 && dir.exists(paths)
+  if (fromFolder) {
+    root <- paths
+    paths <- sort(list.files(root, pattern = "\\.(png|jpe?g|gif|webp|bmp|tiff?)$", ignore.case = TRUE,
+                             recursive = TRUE, full.names = TRUE))
+    if (!length(paths)) stop("No image files found in ", root, call. = FALSE)
+  } else if (length(paths) == 1 && !file.exists(paths) && !grepl("\\.[A-Za-z0-9]+$", paths)) {
+    stop("No such folder: ", paths, call. = FALSE)
+  }
+  name <- sub("\\.[^.]+$", "", basename(paths))
+  folder <- basename(dirname(paths))
+  id <- name
+  dup <- id %in% id[duplicated(id)]
+  id[dup] <- paste(folder[dup], name[dup], sep = "_")
+  id <- make.unique(id, sep = "_")
   lab <- if (is.null(label)) {
-    id
+    inSubfolder <- if (fromFolder) normalizePath(dirname(paths)) != normalizePath(root) else FALSE
+    if (any(inSubfolder) && !all(inSubfolder)) {
+      warning("Some images are in subfolders of ", root, " and some are not, so each image is labelled by its file name; ",
+              "move the loose images into a class folder, or pass `label`", call. = FALSE)
+    }
+    if (all(inSubfolder)) folder else name
   } else if (is.function(label)) {
-    as.character(label(id))
+    as.character(label(name))
   } else {
     if (length(label) != length(paths)) stop("`label` must have one entry per path (length ", length(paths), ")", call. = FALSE)
     as.character(label)

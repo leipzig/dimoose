@@ -37,6 +37,9 @@ test_that("embedImages and embedTexts return named matrices", {
   t <- embedTexts(m, c("a red bar", "a blue bar"))
   expect_equal(rownames(t), c("a red bar", "a blue bar"))
   expect_null(embedImages(m, p, patches = FALSE)$patches)
+  # an imageSet names the rows by its ids, which stay unique across folders
+  set <- imageSet(p); set$id <- paste0("x_", set$id)
+  expect_equal(rownames(embedImages(m, set, patches = FALSE)$image), set$id)
 })
 
 test_that("images to key to classify, with exemplar crops and scores for new images", {

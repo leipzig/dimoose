@@ -175,7 +175,7 @@ test_that("Question is the step heading and the glossary lists terms with crops"
   key <- glossaryKey()
   html <- exportWizard(key)
   q <- key$leads$Question[1]
-  expect_match(html, sprintf("<h2 id=\"h-c-1\" tabindex=\"-1\">%s <span class=\"num\">Term 1</span>", q), fixed = TRUE)
+  expect_match(html, sprintf("<h2 id=\"h-c-1\" tabindex=\"-1\">%s <span class=\"num\">Sniglet 1</span>", q), fixed = TRUE)
   expect_match(html, "<section class=\"glossary\" id=\"glossary\"", fixed = TRUE)
   expect_match(html, sprintf("id=\"g-%s\"", key$features$label[1]), fixed = TRUE)
   expect_match(html, sprintf("href=\"#g-%s\"", key$features$label[1]), fixed = TRUE)
@@ -183,4 +183,17 @@ test_that("Question is the step heading and the glossary lists terms with crops"
 
 test_that("keys without features have no glossary", {
   expect_false(grepl("class=\"glossary\"", exportWizard(arachnidaKey()), fixed = TRUE))
+})
+
+test_that("a renamed sniglet shows its new name, its definition and its coined word", {
+  key <- glossaryKey()
+  coined <- key$leads$Question[1]
+  renamed <- renameSniglets(key, stats::setNames("round headlights", coined),
+                            definitions = stats::setNames("Circular lamps <in> the grille", coined))
+  html <- exportWizard(renamed)
+  expect_match(html, "Has round headlights", fixed = TRUE)
+  expect_match(html, "<h3 class=\"named\">round headlights</h3><p class=\"definition\">Circular lamps &lt;in&gt; the grille</p>", fixed = TRUE)
+  expect_match(html, sprintf("Sniglet <code>%s</code>", coined), fixed = TRUE)
+  expect_match(html, sprintf("id=\"g-%s\"", coined), fixed = TRUE)      # the anchor keeps the coined word
+  expect_false(grepl(paste("Has", coined), html, fixed = TRUE))
 })
