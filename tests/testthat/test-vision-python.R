@@ -75,3 +75,17 @@ test_that("images to key to classify, with exemplar crops and scores for new ima
 test_that("the Python requirements come from the bundled requirements file", {
   expect_setequal(pythonRequirements(), c("torch", "open_clip_torch", "pillow", "numpy"))
 })
+
+test_that("the documented steps identify the held-out example photos", {
+  skipUnlessVision()
+  m <- visionModel(Sys.getenv("MOOSE_CLIP_WEIGHTS"))
+  images <- imageSet(system.file("extdata", "pics", package = "moose"))
+  emb <- embedImages(m, images)
+  sniglets <- discoverSniglets(emb$patches)
+  scores <- snigletScores(emb$patches, sniglets$centroids)
+  key <- keyFromSniglets(scores, images, sniglets, method = "rpart")
+  expect_equal(evaluateKey(key, scores, images$label)$accuracy, 1)
+  new <- list.files(system.file("extdata", "new-photos", package = "moose"), full.names = TRUE)
+  r <- classify(key, scoreImages(key, m, new))
+  expect_equal(r$result, c("banana", "blueberry", "kiwi", "lemon", "pineapple", "strawberry"))
+})

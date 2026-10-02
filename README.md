@@ -147,15 +147,19 @@ call sets up a private Python with the packages it needs (through
 `reticulate`, 1.41 or later) and reuses it afterwards. That first call
 downloads several gigabytes, mostly PyTorch.
 
-Then it is five steps:
+Then it is five steps. They run as written on the example photos that ship
+with moose: 36 small photos of six fruits, from the
+[Fruits-360](https://github.com/fruits-360/fruits-360-100x100) dataset
+(CC BY-SA 4.0). For your own photos, give the path of your folder instead.
 
 ```r
 library(moose)
 
-# 1. Photos and labels. With one folder per class (pics/cardinal/..., pics/robin/...),
+# 1. Photos and labels. With one folder per class (pics/banana/..., pics/kiwi/...),
 #    each photo is labelled by its folder.
-images <- imageSet("pics")
-#    Class in the file name:  imageSet("pics", label = function(x) sub("_.*$", "", x))
+pics   <- system.file("extdata", "pics", package = "moose")
+images <- imageSet(pics)
+#    Class in the file name:  imageSet("my_photos", label = function(x) sub("_.*$", "", x))
 #    Labels in a table:       imageSet(tab$file, label = tab$species)
 
 # 2. A vision model
@@ -175,7 +179,8 @@ key    <- patchExemplars(model, key, images)
 exportWizard(key, "key.html")
 
 # Identify a new photo with the key
-classify(key, scoreImages(key, model, "new.jpg"))
+new <- list.files(system.file("extdata", "new-photos", package = "moose"), full.names = TRUE)
+classify(key, scoreImages(key, model, new))
 ```
 
 With one photo per class, use the default `method = "balanced"` in step 4
@@ -185,20 +190,20 @@ With one photo per class, use the default `method = "balanced"` in step 4
 
 The features in step 4 are found by the model, by clustering patches of the
 photos, so they have no names. moose coins a pronounceable word for each one
-(`smeinfisshiesk`, `treuxraikbluk`) and calls these **sniglets**. A lead reads
-"Has smeinfisshiesk", and the wizard's glossary shows the image crops that define
+(`zhuprierl`, `treuxraikbluk`) and calls these **sniglets**. A lead reads
+"Has zhuprierl", and the wizard's glossary shows the image crops that define
 it. Once you have looked at the crops, give the sniglets real names:
 
 ```r
 snigletNames(key)                 # coined word, current name, definition, used by the key?
 
-key <- renameSniglets(key, c(smeinfisshiesk = "an egg-crate grille"),
-                      definitions = c(smeinfisshiesk = "A grid of small square openings between the headlights"))
+key <- renameSniglets(key, c(zhuprierl = "a dimpled yellow peel"),
+                      definitions = c(zhuprierl = "Bright yellow skin with fine pits, as on a lemon"))
 
 # or name them in a spreadsheet
 write.csv(snigletNames(key), "names.csv", row.names = FALSE)   # fill in name and definition
 key <- renameSniglets(key, "names.csv")
-exportWizard(key, "key.html")     # leads now read "Has an egg-crate grille"
+exportWizard(key, "key.html")     # leads now read "Has a dimpled yellow peel"
 ```
 
 The coined word stays as the sniglet's permanent identifier: scores, machine
@@ -211,10 +216,10 @@ To ask questions in plain words from the start, give a vocabulary of
 contrasting features instead:
 
 ```r
-vocab  <- data.frame(feature = c("round headlights", "a flat hood"),
-                     opposite = c("square headlights", "a curved hood"))
-txt    <- embedTexts(model, vocabularyPrompts(vocab, "a pickup truck with {x}"))
-qkey   <- keyFromClusters(emb$image, images, vocab, txt, template = "a pickup truck with {x}")
+vocab  <- data.frame(feature  = c("a smooth skin", "a round shape", "a yellow colour", "green leaves on top"),
+                     opposite = c("a rough skin", "a long shape", "a dark colour", "no leaves"))
+txt    <- embedTexts(model, vocabularyPrompts(vocab, "a photo of a fruit with {x}"))
+qkey   <- keyFromClusters(emb$image, images, vocab, txt, template = "a photo of a fruit with {x}")
 ```
 
 The [photo vignette](vignettes/vision-keys.Rmd) explains each step, and how

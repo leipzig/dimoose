@@ -33,7 +33,7 @@ classes, so there must be at least two.
 \examples{
 imageSet(c("pics/1967.png", "pics/1967_alt.png"), label = function(x) sub("_.*$", "", x))
 imageSet(c("pics/cardinal/1.jpg", "pics/robin/1.jpg"), label = c("cardinal", "robin"))
-\dontrun{
-imageSet("pics")   # every image under pics/, labelled by subfolder
-}
+# the example photos that ship with moose: one folder per fruit
+pics <- imageSet(system.file("extdata", "pics", package = "moose"))
+table(pics$label)
 }
