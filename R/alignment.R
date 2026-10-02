@@ -14,7 +14,7 @@
 #' sequences. Gaps and ambiguity codes are treated as missing data.
 #'
 #' The first site of each couplet is also a machine-readable test, so
-#' [classify()] can place sequences scored with [scoreAlignment()].
+#' [classify()] can place sequences scored with [alignmentScores()].
 #'
 #' @param alignment The alignment: a FASTA file, an `ape` `DNAbin`/`AAbin`
 #'   object (e.g. from [ape::read.dna()] for Clustal or PHYLIP files), a
@@ -49,14 +49,14 @@
 #' @return A [moose] key. Its `meta` records the tool, the rooting, the tree
 #'   in Newick format (`newick`) and how many couplets lack a diagnostic
 #'   site.
-#' @seealso [scoreAlignment()], [phylotreeKey()], [toNewick()]
+#' @seealso [alignmentScores()], [phylotreeKey()], [toNewick()]
 #' @examples
 #' aln <- c(human = "ACGTACGTACGA", chimp = "ACGTACGTATGA", mouse = "ACCTACATGCGA",
 #'          rat   = "ACCTACATGCGT", fish  = "TCCTTCGTACCA")
 #' if (requireNamespace("ape", quietly = TRUE)) {
 #'   key <- keyFromAlignment(aln, outgroup = "fish")
 #'   key$leads[, c("Statement", "Character", "Next", "Taxon")]
-#'   classify(key, scoreAlignment(key, aln))
+#'   classify(key, alignmentScores(key, aln))
 #' }
 #' \dontrun{
 #' keyFromAlignment("aligned.fasta", tool = "iqtree", outgroup = "NC_012920")
@@ -211,7 +211,7 @@ keyFromAlignment <- function(alignment, tool = c("nj", "bionj", "upgma", "parsim
 #'   the first lead of a couplet asks for, 0 if it has another state, and
 #'   `NA` if it has a gap or an ambiguity code there.
 #' @export
-scoreAlignment <- function(key, alignment, reference = NULL) {
+alignmentScores <- function(key, alignment, reference = NULL) {
   f <- key$features
   site <- !is.null(f) & grepl("^site:", f$id)
   if (is.null(f) || !any(site)) stop("This key has no sequence-site tests", call. = FALSE)

@@ -135,12 +135,12 @@ never used as a state.
 
 ## Identifying a sequence
 
-The key can be followed by machine. `scoreAlignment()` reads off the sites
+The key can be followed by machine. `alignmentScores()` reads off the sites
 the key tests, and `classify()` walks the key. The new sequences must be
 aligned to the same coordinates as the key:
 
 ```{r}
-classify(key, scoreAlignment(key, woodmouse))[1:4, ]
+classify(key, alignmentScores(key, woodmouse))[1:4, ]
 ```
 
 Each couplet is tested on its first listed site. A sequence with a gap or an

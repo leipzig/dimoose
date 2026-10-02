@@ -95,7 +95,7 @@ Options:
 - **A tree from any other program** goes in as `tree = "my.nwk"`.
 - **The root** is the `outgroup` you name, or the midpoint.
 - **Site numbers** are alignment columns, or positions in a `reference` sequence.
-- **New sequences** are placed with `classify(key, scoreAlignment(key, new))`.
+- **New sequences** are placed with `classify(key, alignmentScores(key, new))`.
 
 See the [alignment vignette](vignettes/alignment-keys.Rmd).
 

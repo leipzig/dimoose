@@ -82,7 +82,7 @@ two sides at all, they share a result (`"A / B"`), as do identical
 sequences. Gaps and ambiguity codes are treated as missing data.
 
 The first site of each couplet is also a machine-readable test, so
-[classify()] can place sequences scored with [scoreAlignment()].
+[classify()] can place sequences scored with [alignmentScores()].
 }
 \examples{
 aln <- c(human = "ACGTACGTACGA", chimp = "ACGTACGTATGA", mouse = "ACCTACATGCGA",
@@ -90,12 +90,12 @@ aln <- c(human = "ACGTACGTACGA", chimp = "ACGTACGTATGA", mouse = "ACCTACATGCGA",
 if (requireNamespace("ape", quietly = TRUE)) {
   key <- keyFromAlignment(aln, outgroup = "fish")
   key$leads[, c("Statement", "Character", "Next", "Taxon")]
-  classify(key, scoreAlignment(key, aln))
+  classify(key, alignmentScores(key, aln))
 }
 \dontrun{
 keyFromAlignment("aligned.fasta", tool = "iqtree", outgroup = "NC_012920")
 }
 }
 \seealso{
-[scoreAlignment()], [phylotreeKey()], [toNewick()]
+[alignmentScores()], [phylotreeKey()], [toNewick()]
 }

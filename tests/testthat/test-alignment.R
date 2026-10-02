@@ -23,12 +23,12 @@ test_that("keyFromAlignment turns an alignment into a key of diagnostic sites", 
 
 test_that("a machine can follow the key, and gaps give no answer", {
   key <- keyFromAlignment(toyAlignment, outgroup = "fish")
-  s <- scoreAlignment(key, toyAlignment)
+  s <- alignmentScores(key, toyAlignment)
   expect_true(all(s %in% c(0, 1)))
   r <- classify(key, s)
   expect_equal(r$result, r$id)
   new <- c(unknown = "ACCTACATGCGT", gappy = "-CCTACATGCGT")
-  r2 <- classify(key, scoreAlignment(key, new))
+  r2 <- classify(key, alignmentScores(key, new))
   expect_equal(r2$result[1], "rat")
   expect_true(is.na(r2$result[2]))
   expect_match(exportWizard(key), "1T 5T 11C", fixed = TRUE)
@@ -62,15 +62,15 @@ test_that("sites can be numbered by a reference sequence", {
   aln <- c(ref = "GC-GTAC", a = "ACTGTAC", b = "ACTGAAC", c = "AC-GAAT")
   key <- keyFromAlignment(aln, reference = "ref", outgroup = "ref")
   expect_true(any(grepl("^site:6:", key$features$id)))    # column 7 is position 6 in ref
-  expect_equal(classify(key, scoreAlignment(key, aln))$result, names(aln))
-  expect_error(scoreAlignment(key, aln[-1]), "not in this alignment")
+  expect_equal(classify(key, alignmentScores(key, aln))$result, names(aln))
+  expect_error(alignmentScores(key, aln[-1]), "not in this alignment")
   expect_error(keyFromAlignment(aln, reference = "zz"), "reference")
 })
 
 test_that("a tree from any other program can be supplied", {
   key <- keyFromAlignment(toyAlignment, tree = "(((human,chimp),(mouse,rat)),fish);")
   expect_equal(key$meta$value[key$meta$key == "tool"], "user-supplied tree")
-  r <- classify(key, scoreAlignment(key, toyAlignment))
+  r <- classify(key, alignmentScores(key, toyAlignment))
   expect_equal(r$result, r$id)
   expect_error(keyFromAlignment(toyAlignment, tree = "((human,chimp),(mouse,gerbil));"), "gerbil")
   # a tree the sequences do not support gets leads marked "(most)"
