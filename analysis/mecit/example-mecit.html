@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f3eb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131a1b" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="generator" content="moose 0.1.0">
+<title>MECIT for simulated gene1 (true effect sites: 150)</title>
+<style>
+:root {
+  --paper: #f6f3eb;
+  --card: #fffdf8;
+  --ink: #1e2a2c;
+  --muted: #5e6a68;
+  --rule: #d9d3c4;
+  --accent: #1d6b58;
+  --accent-ink: #ffffff;
+  --accent-soft: #e2efe9;
+  --warn: #9a3b1b;
+  --focus: #c98a1b;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #131a1b;
+    --card: #1b2324;
+    --ink: #e7e3d9;
+    --muted: #9ea9a6;
+    --rule: #2f3a3b;
+    --accent: #6cc4a6;
+    --accent-ink: #0f1a17;
+    --accent-soft: #1f3530;
+    --warn: #f0a07f;
+    --focus: #e6b54a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #131a1b;
+  --card: #1b2324;
+  --ink: #e7e3d9;
+  --muted: #9ea9a6;
+  --rule: #2f3a3b;
+  --accent: #6cc4a6;
+  --accent-ink: #0f1a17;
+  --accent-soft: #1f3530;
+  --warn: #f0a07f;
+  --focus: #e6b54a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.masthead, main, footer { max-width: 46rem; margin: 0 auto; padding: 0 1rem; }
+.masthead { padding-top: 2rem; }
+.eyebrow {
+  margin: 0 0 .25rem;
+  font: 600 .75rem/1.2 var(--sans);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+h1 { margin: 0; font-size: clamp(1.6rem, 4.5vw, 2.3rem); line-height: 1.15; font-weight: 600; }
+.cite { margin: .5rem 0 0; color: var(--muted); font-size: .9rem; }
+
+.toolbar { display: none; gap: .5rem; flex-wrap: wrap; margin: 1.25rem 0 .75rem; font-family: var(--sans); }
+.js .toolbar { display: flex; }
+.toolbar button, .toolbar a {
+  font: 500 .875rem/1 var(--sans);
+  padding: .55rem .9rem;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  background: var(--card);
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  touch-action: manipulation;
+}
+.toolbar button:disabled { opacity: .45; cursor: default; }
+.toolbar .spacer { flex: 1; }
+.toolbar .short { display: none; }
+
+.trail {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: none;
+  flex-wrap: wrap;
+  gap: .35rem;
+  font: .8125rem/1.3 var(--sans);
+}
+.js .trail { display: flex; }
+.trail li { max-width: 100%; }
+.trail a {
+  display: inline-block;
+  max-width: 22rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+  padding: .25rem .6rem;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--ink);
+  text-decoration: none;
+}
+.trail b { color: var(--accent); margin-right: .3rem; }
+
+main { padding-bottom: 2rem; }
+.couplet, .taxon {
+  margin: 0 0 1.5rem;
+  padding: 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+}
+.couplet h2, .taxon h2 { margin: 0 0 .9rem; font-size: 1.35rem; font-weight: 600; outline: none; }
+.couplet h2 .num { color: var(--accent); }
+.couplet h2 .from { margin-left: .5rem; font: 400 .8125rem var(--sans); color: var(--muted); }
+.couplet h2 .from a { color: var(--muted); }
+
+.leads { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
+.lead {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid var(--rule);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .12s;
+}
+.lead:has(.broken) { border-style: dashed; }
+.choose {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 2.1rem 1fr;
+  gap: .25rem .75rem;
+  align-items: start;
+  padding: .9rem 1rem;
+  color: var(--ink);
+  text-decoration: none;
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .12s;
+}
+@media (hover: hover) {
+  .lead:hover { border-color: var(--accent); }
+  a.choose:hover { background: var(--accent-soft); }
+}
+a.choose:active { background: var(--accent-soft); }
+.choose .letter {
+  width: 2.1rem; height: 2.1rem;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: 700 .95rem/1 var(--sans);
+}
+.choose .text { align-self: center; }
+.choose .dest { grid-column: 2; font: 600 .8125rem/1.3 var(--sans); color: var(--accent); }
+.choose.broken .dest { color: var(--warn); }
+.nolinks .choose .dest, .nolinks .couplet h2 .from { display: none; }
+
+.figs { margin: 0; padding: .6rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+.figs a { display: block; }
+.fig { display: block; width: 6rem; height: 6rem; border: 1px solid var(--rule); border-radius: 8px; background: #fff center / contain no-repeat; cursor: zoom-in; }
+.fig.big { width: 100%; height: 18rem; cursor: zoom-out; }
+img.fig { object-fit: contain; }
+.gloss { display: inline-block; min-width: 1.4em; margin-left: .3em; text-align: center; border: 1px solid var(--rule); border-radius: 999px; font-size: .8em; text-decoration: none; }
+.glossary .term { padding: .75rem 0; border-top: 1px solid var(--rule); }
+.glossary .term h3 { margin: 0 0 .25rem; font-family: monospace; }
+.glossary .found { margin: .25rem 0 0; color: var(--muted); font-size: .875rem; }
+.wizard .glossary { display: none; }
+.wizard .glossary.active { display: block; }
+
+.group { font: 600 .75rem var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 2rem 0 .75rem; }
+.taxon { border-left: 6px solid var(--accent); }
+.taxon h2 { font-size: 1.75rem; }
+.taxon .verified { margin: -.5rem 0 .75rem; color: var(--muted); font-size: .9rem; }
+.taxon h3 { margin: 1rem 0 .4rem; font: 600 .75rem var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.diagnosis { margin: 0; padding-left: 0; list-style: none; }
+.diagnosis li { padding: .35rem 0; border-top: 1px solid var(--rule); }
+.diagnosis li:first-child { border-top: 0; }
+.diagnosis .step { font: 600 .8125rem var(--sans); margin-right: .5rem; }
+.diagnosis .pending { color: var(--muted); font-size: .9rem; }
+.taxon .actions { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; margin-top: 1rem; font: 500 .9rem var(--sans); }
+
+.warnings { margin: 0 0 1.5rem; padding: .75rem 1rem; border: 1px dashed var(--warn); border-radius: 10px; color: var(--warn); font: .875rem/1.4 var(--sans); }
+.warnings ul { margin: .25rem 0 0; padding-left: 1.2rem; }
+
+footer { padding-bottom: 2.5rem; color: var(--muted); font: .8125rem/1.5 var(--sans); }
+.hint { display: none; }
+@media (hover: hover) and (pointer: fine) { .js.wizard .hint { display: inline; } }
+
+
+/* Map of the key */
+.map { max-width: 46rem; margin: 0 auto 1.25rem; padding: 0 1rem; font-family: var(--sans); }
+.js .map { display: none; }
+.js.map-open .map { display: block; }
+.map-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .4rem; }
+.map-head .eyebrow { margin: 0; }
+.map-count { font: 600 .8125rem/1.2 var(--sans); color: var(--accent); }
+.map-scroll {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  max-height: 38vh;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+}
+.keymap { display: block; font-family: var(--sans); }
+.medge { fill: none; stroke: var(--muted); stroke-width: 1.4; opacity: .6; }
+.medge.cross { stroke-dasharray: 3 3; }
+.mnode { cursor: pointer; }
+.mnode circle { fill: var(--card); stroke: var(--muted); stroke-width: 1.4; }
+.mnode.mcouplet text { font-size: 8.5px; font-weight: 700; text-anchor: middle; fill: var(--ink); pointer-events: none; }
+.mnode.mleaf circle { fill: var(--muted); stroke: none; }
+/* named nodes (e.g. haplogroups): names only on the path and current node */
+.keymap.named .mnode.mcouplet text { display: none; text-anchor: start; font-size: 9.5px; paint-order: stroke; stroke: var(--card); stroke-width: 3px; stroke-linejoin: round; }
+.keymap.named .mnode.mcouplet.done text, .keymap.named .mnode.mcouplet.here text { display: inline; fill: var(--accent); }
+.keymap.named .mnode.mcouplet:hover text, .keymap.named .mnode.mcouplet:focus text { display: inline; }
+.mnode.mleaf text { font-size: 10.5px; fill: var(--ink); }
+.mnode:focus-visible circle { stroke: var(--focus); stroke-width: 3; }
+@media (hover: hover) { .mnode:hover circle { stroke: var(--accent); stroke-width: 2.2; } }
+/* states set by the page script */
+.keymap.live .mnode, .keymap.live .medge { opacity: .22; transition: opacity .15s; }
+.keymap.live .mnode.ahead, .keymap.live .mnode.done { opacity: 1; }
+.keymap.live .medge.ahead { opacity: .75; }
+.keymap.live .medge.done { opacity: 1; stroke: var(--accent); stroke-width: 3; }
+.mnode.done circle { fill: var(--accent); stroke: var(--accent); }
+.mnode.done.couplet text { fill: var(--accent-ink); }
+.mnode.here circle { fill: var(--accent); stroke: var(--focus); stroke-width: 3.5; }
+.mnode.here.mcouplet text { fill: var(--accent-ink); }
+.mnode.mleaf.here circle { stroke: var(--focus); stroke-width: 3; }
+.mnode.mleaf.here text, .mnode.mleaf.done text { font-weight: 700; fill: var(--accent); }
+.map-legend { margin: .45rem 0 0; font-size: .75rem; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: .3rem 1.2rem; }
+.map-legend .k { display: inline-block; width: .8rem; height: .8rem; border-radius: 50%; margin-right: -.55rem; vertical-align: middle; }
+.map-legend .k.here { background: var(--accent); box-shadow: 0 0 0 2px var(--focus); }
+.map-legend .k.done { height: 3px; border-radius: 2px; background: var(--accent); }
+.map-legend .k.ahead { background: var(--card); border: 1.5px solid var(--muted); }
+
+/* Wide screens: map beside the key, always visible */
+@media (min-width: 76rem) {
+  body:has(.has-map) .masthead, body:has(.has-map) footer { max-width: 76rem; }
+  .masthead h1, .masthead .cite { max-width: 46rem; }
+  .columns.has-map {
+    display: grid;
+    grid-template-columns: minmax(0, 46rem) minmax(18rem, 1fr);
+    gap: 2rem;
+    align-items: start;
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  .columns.has-map main { grid-column: 1; grid-row: 1; max-width: none; margin: 0; padding: 0 0 2rem; }
+  .columns.has-map .map { grid-column: 2; grid-row: 1; position: sticky; top: 1rem; margin: 0; padding: 0; display: block; }
+  .columns.has-map .map-scroll { max-height: calc(100vh - 6rem); }
+  #mk-maptoggle { display: none; }
+}
+
+/* Step-by-step mode: one section at a time */
+.wizard .couplet, .wizard .taxon, .wizard .group { display: none; }
+.wizard .couplet.active, .wizard .taxon.active { display: block; }
+
+/* Phones: toolbar pinned to the bottom within thumb reach, one-line trail */
+@media (max-width: 34rem) {
+  body { font-size: 1rem; }
+  .masthead { padding-top: 1.25rem; }
+  .cite { font-size: .8125rem; }
+  body.js { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)); }
+  .js .toolbar {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 10;
+    margin: 0;
+    padding: .6rem max(1rem, env(safe-area-inset-right)) calc(.6rem + env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, .08);
+    flex-wrap: nowrap;
+  }
+  .toolbar button, .toolbar a { flex: 1; justify-content: center; padding: .6rem .5rem; }
+  .toolbar .spacer { display: none; }
+  .toolbar .long { display: none; }
+  .toolbar .short { display: inline; }
+  .toolbar button, .toolbar a { font-size: .8125rem; }
+  .map-scroll { max-height: 34vh; }
+  .js .trail {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: .75rem -1rem 1rem;
+    padding: 0 1rem;
+  }
+  .trail::-webkit-scrollbar { display: none; }
+  .trail li { flex: 0 0 auto; }
+  .trail a { max-width: 14rem; padding: .45rem .7rem; }
+  .couplet, .taxon { padding: 1rem; border-radius: 12px; }
+  .couplet h2 { font-size: 1.2rem; }
+  .taxon h2 { font-size: 1.5rem; }
+  .lead { flex-direction: column; }
+  .figs { padding: 0 .9rem .9rem 3.55rem; }
+  .stepping .masthead { padding-top: .75rem; }
+  .stepping h1 { font-size: 1.05rem; line-height: 1.3; }
+  .stepping .masthead .eyebrow, .stepping .cite { display: none; }
+  .choose { padding: .85rem .9rem; grid-template-columns: 2rem 1fr; gap: .2rem .65rem; }
+  .choose .letter { width: 2rem; height: 2rem; }
+  .fig { width: 5rem; height: 5rem; }
+  .taxon .actions a { min-height: 44px; display: inline-flex; align-items: center; }
+  .hint { display: none !important; }
+}
+@media print {
+  body { background: #fff; }
+  .toolbar, .trail, .hint, .map { display: none !important; }
+  .wizard .couplet, .wizard .taxon, .wizard .group { display: block; }
+  .couplet, .taxon { break-inside: avoid; }
+}
+@media (prefers-reduced-motion: reduce) { .choose, .lead { transition: none; } }
+</style>
+</head>
+<body data-root="c-1">
+<header class="masthead">
+<p class="eyebrow">Dichotomous key</p>
+<h1>MECIT for simulated gene1 (true effect sites: 150)</h1>
+<p class="cite">Fu &amp; Simonoff (2015), RE-EM with conditional inference trees</p>
+<nav class="toolbar" aria-label="Key navigation"><button type="button" id="mk-back" disabled>&larr; Back</button><a href="#c-1" id="mk-restart">Start over</a><span class="spacer"></span><button type="button" id="mk-maptoggle" aria-controls="mk-map" aria-expanded="false">Map</button><button type="button" id="mk-mode" aria-pressed="false"><span class="long">Show full key</span><span class="short">Full key</span></button></nav>
+<ol class="trail" id="mk-trail" aria-label="Choices so far" aria-live="polite"></ol>
+</header>
+<div class="columns has-map">
+<aside class="map" id="mk-map" aria-label="Map of the key">
+<div class="map-head"><span class="eyebrow">Map of the key</span><span class="map-count" id="mk-left" aria-live="polite">2 taxa</span></div>
+<div class="map-scroll" id="mk-map-scroll">
+<svg class="keymap" width="247" height="48" viewBox="0 0 247 48" xmlns="http://www.w3.org/2000/svg">
+<g class="edges"><path class="medge" data-from="c-1" data-to="t-1" d="M22.5 24.0V14.0H49.0"><title>1a Carries 150</title></path><path class="medge" data-from="c-1" data-to="t-2" d="M22.5 24.0V34.0H49.0"><title>1b Does not carry 150</title></path></g>
+<g class="nodes"><a class="mnode mleaf" href="#t-1" data-id="t-1" data-p="c-1" data-x="52" data-y="14" aria-label="Stratum 3: 1.06 (n = 110)"><circle cx="52.5" cy="14.0" r="3.5"/><text x="60.5" y="17.5">Stratum 3: 1.06 (n = 110)</text></a><a class="mnode mleaf" href="#t-2" data-id="t-2" data-p="c-1" data-x="52" data-y="34" aria-label="Stratum 2: -0.04 (n = 890)"><circle cx="52.5" cy="34.0" r="3.5"/><text x="60.5" y="37.5">Stratum 2: -0.04 (n = 890)</text></a><a class="mnode mcouplet" href="#c-1" data-id="c-1" data-p="" data-x="22" data-y="24" aria-label="Split 1"><circle cx="22.5" cy="24.0" r="8.5"/><text x="22.5" y="27.2">1</text></a></g>
+</svg>
+</div>
+<p class="map-legend"><span class="k here"></span>You are here <span class="k done"></span>Your path <span class="k ahead"></span>Still possible</p>
+</aside>
+<main>
+
+<section class="couplet" id="c-1" aria-labelledby="h-c-1">
+<h2 id="h-c-1" tabindex="-1">150 <span class="num">Split 1</span></h2>
+<ul class="leads">
+<li class="lead"><a class="choose" href="#t-1" data-lead="1a"><span class="letter" aria-hidden="true">a</span><span class="text">Carries 150</span><span class="dest">&rarr; Stratum 3: 1.06 (n = 110)</span></a></li>
+<li class="lead"><a class="choose" href="#t-2" data-lead="1b"><span class="letter" aria-hidden="true">b</span><span class="text">Does not carry 150</span><span class="dest">&rarr; Stratum 2: -0.04 (n = 890)</span></a></li>
+</ul>
+</section>
+<h2 class="group">Taxa</h2>
+<section class="taxon" id="t-1" aria-labelledby="h-t-1">
+<p class="eyebrow">Identified as</p>
+<h2 id="h-t-1" tabindex="-1">Stratum 3: 1.06 (n = 110)</h2>
+<h3>Path through the key</h3>
+<ol class="diagnosis">
+<li><a class="step" href="#c-1">1a</a>Carries 150</li>
+</ol>
+<p class="actions"><a href="#c-1">Identify another specimen</a></p>
+</section>
+<section class="taxon" id="t-2" aria-labelledby="h-t-2">
+<p class="eyebrow">Identified as</p>
+<h2 id="h-t-2" tabindex="-1">Stratum 2: -0.04 (n = 890)</h2>
+<h3>Path through the key</h3>
+<ol class="diagnosis">
+<li><a class="step" href="#c-1">1b</a>Does not carry 150</li>
+</ol>
+<p class="actions"><a href="#c-1">Identify another specimen</a></p>
+</section>
+
+</main>
+</div>
+<footer><p>1 steps, 2 possible results. <span class="hint">Press a, b (or 1, 2) to choose a lead. </span>Generated by the moose R package.</p></footer>
+<script>
+(function () {
+  var doc = document;
+  var body = doc.body;
+  var root = body.getAttribute("data-root");
+  var sections = Array.prototype.slice.call(doc.querySelectorAll("main .couplet, main .taxon, main .glossary"));
+  var byId = {};
+  sections.forEach(function (s) { byId[s.id] = s; });
+  if (!root || !byId[root]) return;
+
+  body.classList.add("js", "wizard");
+  var trail = []; // [{ id, via }] from the first couplet shown to the current one
+  var trailEl = doc.getElementById("mk-trail");
+  var backBtn = doc.getElementById("mk-back");
+  var modeBtn = doc.getElementById("mk-mode");
+
+  // Map of the key (optional)
+  var mapEl = doc.getElementById("mk-map");
+  var mapSvg = mapEl ? mapEl.querySelector("svg.keymap") : null;
+  var mapScroll = doc.getElementById("mk-map-scroll");
+  var mapLeft = doc.getElementById("mk-left");
+  var mapBtn = doc.getElementById("mk-maptoggle");
+  var mapNodes = mapSvg ? Array.prototype.slice.call(mapSvg.querySelectorAll(".mnode")) : [];
+  var mapEdges = mapSvg ? Array.prototype.slice.call(mapSvg.querySelectorAll(".medge")) : [];
+  var totalTaxa = {};
+  var mapKids = {}; // parent couplet id -> map nodes directly below it
+  mapNodes.forEach(function (n) {
+    if (n.classList.contains("mleaf")) totalTaxa[n.getAttribute("data-id")] = true;
+    var p = n.getAttribute("data-p");
+    if (p) (mapKids[p] = mapKids[p] || []).push(n);
+  });
+  totalTaxa = Object.keys(totalTaxa).length;
+  var smooth = !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  function currentId() {
+    var id = decodeURIComponent(location.hash.slice(1));
+    if (byId[id]) return id;
+    var el = id && doc.getElementById(id);
+    if (el && el.closest && el.closest(".glossary")) return "glossary";
+    return root;
+  }
+
+  // The lead in section `fromId` that points at `toId`, as "1a Text of lead".
+  function via(fromId, toId) {
+    var from = byId[fromId];
+    if (!from) return null;
+    var links = from.querySelectorAll("a.choose");
+    for (var i = 0; i < links.length; i++) {
+      if (links[i].getAttribute("href") === "#" + toId) {
+        return {
+          lead: links[i].getAttribute("data-lead"),
+          text: links[i].querySelector(".text").textContent
+        };
+      }
+    }
+    return null;
+  }
+
+  function renderTrail() {
+    trailEl.innerHTML = "";
+    for (var k = 1; k < trail.length; k++) {
+      var v = trail[k].via;
+      if (!v) continue;
+      var li = doc.createElement("li");
+      var a = doc.createElement("a");
+      a.href = "#" + trail[k - 1].id;
+      a.title = "Go back to this choice: " + v.lead + " " + v.text;
+      var b = doc.createElement("b");
+      b.textContent = v.lead;
+      a.appendChild(b);
+      a.appendChild(doc.createTextNode(v.text));
+      li.appendChild(a);
+      trailEl.appendChild(li);
+    }
+    trailEl.scrollLeft = trailEl.scrollWidth; // keep the latest choice in view on narrow screens
+  }
+
+  function mark(el, cls, on) { el.classList[on ? "add" : "remove"](cls); }
+
+  function centerMap(id) {
+    if (!mapScroll || !mapScroll.clientHeight) return; // hidden
+    var n = mapSvg.querySelector('.mnode[data-id="' + id + '"]');
+    if (!n) return;
+    var x = +n.getAttribute("data-x"), y = +n.getAttribute("data-y");
+    var opts = { left: x - mapScroll.clientWidth / 2, top: y - mapScroll.clientHeight / 2 };
+    if (smooth) opts.behavior = "smooth";
+    mapScroll.scrollTo(opts);
+  }
+
+  function renderMap(id) {
+    if (!mapSvg) return;
+    mapSvg.classList.add("live");
+    var onTrail = {}, steps = {};
+    for (var k = 0; k < trail.length; k++) {
+      onTrail[trail[k].id] = true;
+      if (k > 0) steps[trail[k - 1].id + ">" + trail[k].id] = true;
+    }
+    // everything below the current position is still possible
+    var ahead = {}, aheadCouplets = {}, left = {};
+    ahead[id] = true;
+    aheadCouplets[id] = true;
+    var queue = [id];
+    while (queue.length) {
+      (mapKids[queue.pop()] || []).forEach(function (n) {
+        var nid = n.getAttribute("data-id");
+        ahead[nid] = true;
+        if (n.classList.contains("mleaf")) {
+          left[nid] = true;
+        } else if (!aheadCouplets[nid]) {
+          aheadCouplets[nid] = true;
+          queue.push(nid);
+        }
+      });
+    }
+    if (byId[id] && byId[id].classList.contains("taxon")) left[id] = true;
+    mapNodes.forEach(function (n) {
+      var nid = n.getAttribute("data-id");
+      var here = nid === id;
+      mark(n, "here", here);
+      mark(n, "done", !here && !!onTrail[nid]);
+      mark(n, "ahead", !!ahead[nid]);
+    });
+    mapEdges.forEach(function (e) {
+      var from = e.getAttribute("data-from");
+      mark(e, "done", !!steps[from + ">" + e.getAttribute("data-to")]);
+      mark(e, "ahead", !!aheadCouplets[from]);
+    });
+    var n = Object.keys(left).length;
+    if (mapLeft) {
+      mapLeft.textContent = byId[id].classList.contains("taxon")
+        ? "Identified \u00b7 1 of " + totalTaxa + " taxa"
+        : n + " of " + totalTaxa + " taxa still possible";
+    }
+    centerMap(id);
+  }
+
+  // For large keys the path to each result is built here, when it is shown
+  var leadTo = null;
+  function fillDiagnosis(section) {
+    var ol = section.querySelector("ol.diagnosis[data-auto]");
+    if (!ol || ol.getAttribute("data-done")) return;
+    if (!leadTo) {
+      leadTo = {};
+      Array.prototype.forEach.call(doc.querySelectorAll("main a.choose"), function (a) {
+        var t = a.getAttribute("href").slice(1);
+        if (!leadTo[t]) leadTo[t] = a;
+      });
+    }
+    var path = [], target = section.id, guard = 0;
+    while (leadTo[target] && guard++ < 1000) {
+      var a = leadTo[target];
+      var from = a.closest("section");
+      path.unshift({ from: from.id, lead: a.getAttribute("data-lead"), text: a.querySelector(".text").textContent });
+      if (from.id === root) break;
+      target = from.id;
+    }
+    ol.innerHTML = "";
+    path.forEach(function (st) {
+      var li = doc.createElement("li");
+      var link = doc.createElement("a");
+      link.className = "step";
+      link.href = "#" + st.from;
+      link.textContent = st.lead;
+      li.appendChild(link);
+      li.appendChild(doc.createTextNode(st.text));
+      ol.appendChild(li);
+    });
+    ol.setAttribute("data-done", "1");
+  }
+
+  function update(moveFocus) {
+    var id = currentId();
+    var seen = -1;
+    for (var k = 0; k < trail.length; k++) if (trail[k].id === id) seen = k;
+    if (seen >= 0) {
+      trail = trail.slice(0, seen + 1);
+    } else {
+      var last = trail.length ? trail[trail.length - 1].id : null;
+      var step = last ? via(last, id) : null;
+      if (last && !step && id !== "glossary") trail = []; // jumped somewhere unrelated: start a new trail
+      trail.push({ id: id, via: step });
+    }
+    if (byId[id].classList.contains("taxon")) fillDiagnosis(byId[id]);
+    sections.forEach(function (s) { s.classList.toggle("active", s.id === id); });
+    body.classList.toggle("stepping", id !== root);
+    renderTrail();
+    if (id !== "glossary") renderMap(id);
+    backBtn.disabled = trail.length < 2;
+    if (moveFocus && body.classList.contains("wizard")) {
+      window.scrollTo(0, 0);
+      var h = byId[id].querySelector("h2");
+      if (h) h.focus({ preventScroll: true });
+    }
+    if (id === "glossary") {
+      var target = doc.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (target && target !== byId[id]) target.scrollIntoView();
+    }
+  }
+
+  backBtn.addEventListener("click", function () {
+    if (trail.length > 1) location.hash = "#" + trail[trail.length - 2].id;
+  });
+
+  modeBtn.addEventListener("click", function () {
+    var stepping = body.classList.toggle("wizard");
+    modeBtn.innerHTML = stepping
+      ? '<span class="long">Show full key</span><span class="short">Full key</span>'
+      : '<span class="long">Step through</span><span class="short">Steps</span>';
+    modeBtn.setAttribute("aria-pressed", stepping ? "false" : "true");
+    if (!stepping) sections.forEach(function (sec) { if (sec.classList.contains("taxon")) fillDiagnosis(sec); });
+    var active = byId[currentId()];
+    if (!stepping && active) active.scrollIntoView();
+    if (stepping) window.scrollTo(0, 0);
+  });
+
+  if (mapBtn && mapEl) {
+    var setMap = function (open) {
+      body.classList.toggle("map-open", open);
+      mapBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      mapBtn.textContent = open ? "Hide map" : "Map";
+      try { localStorage.setItem("moose-map-open", open ? "1" : "0"); } catch (e) { /* storage unavailable */ }
+      if (open) centerMap(currentId());
+    };
+    var saved = null;
+    try { saved = localStorage.getItem("moose-map-open"); } catch (e) { /* storage unavailable */ }
+    mapBtn.addEventListener("click", function () { setMap(!body.classList.contains("map-open")); });
+    if (saved === "1") setMap(true);
+  }
+
+  // Keyboard: a/b/c... or 1/2/3... picks a lead of the current couplet.
+  doc.addEventListener("keydown", function (e) {
+    if (!body.classList.contains("wizard") || e.altKey || e.ctrlKey || e.metaKey) return;
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea" || tag === "select") return;
+    var active = byId[currentId()];
+    if (!active || !active.classList.contains("couplet")) return;
+    var links = active.querySelectorAll("a.choose");
+    var key = e.key.toLowerCase();
+    var n = /^[1-9]$/.test(key) ? parseInt(key, 10) - 1 : "abcdefghi".indexOf(key);
+    if (n >= 0 && n < links.length) {
+      e.preventDefault();
+      links[n].click();
+    }
+  });
+
+  // Figures come from the web; drop any that fail to load (e.g. offline in the field)
+  function dropImage(img) {
+    var item = img.closest(".figs > a, .figs > span") || img;
+    var fig = img.closest(".figs");
+    if (item.parentNode) item.parentNode.removeChild(item);
+    if (fig && !fig.children.length && fig.parentNode) fig.parentNode.removeChild(fig);
+  }
+  doc.addEventListener("error", function (e) {
+    var t = e.target;
+    if (t && t.tagName === "IMG" && t.closest(".figs")) dropImage(t);
+  }, true);
+  Array.prototype.forEach.call(doc.querySelectorAll(".figs img"), function (img) {
+    if (img.complete && img.naturalWidth === 0) dropImage(img);
+  });
+
+  window.addEventListener("hashchange", function () { update(true); });
+
+  doc.addEventListener("click", function (ev) {
+    var fig = ev.target.closest && ev.target.closest(".fig");
+    if (fig && !fig.closest("a")) fig.classList.toggle("big");
+  });
+
+  update(false);
+})();
+</script>
+</body>
+</html>

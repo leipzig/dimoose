@@ -1,0 +1,2161 @@
+"effect","macroSD","slopeSD","seed","gene","method","geneType","power","falseSplits","markerSplits","anyFalse"
+0.5,0.5,0,1,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,0.5,0,1,1,"MECIT (mob)","mutation",1,0,0,FALSE
+0.5,0.5,0,1,1,"ctree","mutation",1,8,3,TRUE
+0.5,0.5,0,1,1,"rpart","mutation",1,6,3,TRUE
+0.5,0.5,0,1,1,"LM + macro","mutation",1,0,0,FALSE
+0.5,0.5,0,1,1,"LM","mutation",1,3,1,TRUE
+0.5,0.5,0,1,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,0.5,0,1,2,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,0.5,0,1,2,"ctree","mutation",0,6,4,TRUE
+0.5,0.5,0,1,2,"rpart","mutation",0,6,4,TRUE
+0.5,0.5,0,1,2,"LM + macro","mutation",1,0,0,FALSE
+0.5,0.5,0,1,2,"LM","mutation",0,3,3,TRUE
+0.5,0.5,0,1,3,"MECIT (ctree)","mutation",0.5,0,0,FALSE
+0.5,0.5,0,1,3,"MECIT (mob)","mutation",0.5,0,0,FALSE
+0.5,0.5,0,1,3,"ctree","mutation",1,3,1,TRUE
+0.5,0.5,0,1,3,"rpart","mutation",1,3,1,TRUE
+0.5,0.5,0,1,3,"LM + macro","mutation",1,0,0,FALSE
+0.5,0.5,0,1,3,"LM","mutation",1,1,0,TRUE
+0.5,0.5,0,1,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,0.5,0,1,4,"MECIT (mob)","mutation",1,0,0,FALSE
+0.5,0.5,0,1,4,"ctree","mutation",0,4,2,TRUE
+0.5,0.5,0,1,4,"rpart","mutation",0,6,3,TRUE
+0.5,0.5,0,1,4,"LM + macro","mutation",1,0,0,FALSE
+0.5,0.5,0,1,4,"LM","mutation",0,1,0,TRUE
+0.5,0.5,0,1,5,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,0.5,0,1,5,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,0.5,0,1,5,"ctree","mutation",0,3,1,TRUE
+0.5,0.5,0,1,5,"rpart","mutation",0,2,1,TRUE
+0.5,0.5,0,1,5,"LM + macro","mutation",0,0,0,FALSE
+0.5,0.5,0,1,5,"LM","mutation",0,2,1,TRUE
+0.5,0.5,0,1,6,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,0.5,0,1,6,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,0.5,0,1,6,"ctree","mutation",1,6,4,TRUE
+0.5,0.5,0,1,6,"rpart","mutation",1,5,4,TRUE
+0.5,0.5,0,1,6,"LM + macro","mutation",0,0,0,FALSE
+0.5,0.5,0,1,6,"LM","mutation",1,4,1,TRUE
+0.5,0.5,0,1,7,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,0.5,0,1,7,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,0.5,0,1,7,"ctree","mutation",0,2,1,TRUE
+0.5,0.5,0,1,7,"rpart","mutation",0,4,1,TRUE
+0.5,0.5,0,1,7,"LM + macro","mutation",0,0,0,FALSE
+0.5,0.5,0,1,7,"LM","mutation",0,1,1,TRUE
+0.5,0.5,0,1,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,0.5,0,1,8,"MECIT (mob)","mutation",1,0,0,FALSE
+0.5,0.5,0,1,8,"ctree","mutation",1,7,4,TRUE
+0.5,0.5,0,1,8,"rpart","mutation",1,5,2,TRUE
+0.5,0.5,0,1,8,"LM + macro","mutation",1,0,0,FALSE
+0.5,0.5,0,1,8,"LM","mutation",1,3,2,TRUE
+0.5,0.5,0,1,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,9,"ctree","baseline",NA,5,2,TRUE
+0.5,0.5,0,1,9,"rpart","baseline",NA,3,1,TRUE
+0.5,0.5,0,1,9,"LM + macro","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,9,"LM","baseline",NA,3,1,TRUE
+0.5,0.5,0,1,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,10,"ctree","baseline",NA,3,2,TRUE
+0.5,0.5,0,1,10,"rpart","baseline",NA,6,4,TRUE
+0.5,0.5,0,1,10,"LM + macro","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,10,"LM","baseline",NA,4,2,TRUE
+0.5,0.5,0,1,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,11,"ctree","baseline",NA,5,2,TRUE
+0.5,0.5,0,1,11,"rpart","baseline",NA,4,2,TRUE
+0.5,0.5,0,1,11,"LM + macro","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,11,"LM","baseline",NA,3,1,TRUE
+0.5,0.5,0,1,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,12,"ctree","baseline",NA,1,1,TRUE
+0.5,0.5,0,1,12,"rpart","baseline",NA,1,1,TRUE
+0.5,0.5,0,1,12,"LM + macro","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,12,"LM","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,13,"ctree","baseline",NA,3,1,TRUE
+0.5,0.5,0,1,13,"rpart","baseline",NA,3,1,TRUE
+0.5,0.5,0,1,13,"LM + macro","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,13,"LM","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,14,"ctree","baseline",NA,5,2,TRUE
+0.5,0.5,0,1,14,"rpart","baseline",NA,4,2,TRUE
+0.5,0.5,0,1,14,"LM + macro","baseline",NA,0,0,FALSE
+0.5,0.5,0,1,14,"LM","baseline",NA,1,1,TRUE
+0.5,0.5,0,1,15,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,0.5,0,1,15,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,0.5,0,1,15,"ctree","null",NA,0,0,FALSE
+0.5,0.5,0,1,15,"rpart","null",NA,0,0,FALSE
+0.5,0.5,0,1,15,"LM + macro","null",NA,0,0,FALSE
+0.5,0.5,0,1,15,"LM","null",NA,0,0,FALSE
+0.5,0.5,0,1,16,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,0.5,0,1,16,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,0.5,0,1,16,"ctree","null",NA,0,0,FALSE
+0.5,0.5,0,1,16,"rpart","null",NA,0,0,FALSE
+0.5,0.5,0,1,16,"LM + macro","null",NA,0,0,FALSE
+0.5,0.5,0,1,16,"LM","null",NA,0,0,FALSE
+0.5,0.5,0,1,17,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,0.5,0,1,17,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,0.5,0,1,17,"ctree","null",NA,0,0,FALSE
+0.5,0.5,0,1,17,"rpart","null",NA,0,0,FALSE
+0.5,0.5,0,1,17,"LM + macro","null",NA,0,0,FALSE
+0.5,0.5,0,1,17,"LM","null",NA,0,0,FALSE
+0.5,0.5,0,1,18,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,0.5,0,1,18,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,0.5,0,1,18,"ctree","null",NA,0,0,FALSE
+0.5,0.5,0,1,18,"rpart","null",NA,0,0,FALSE
+0.5,0.5,0,1,18,"LM + macro","null",NA,0,0,FALSE
+0.5,0.5,0,1,18,"LM","null",NA,0,0,FALSE
+0.5,0.5,0,1,19,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,0.5,0,1,19,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,0.5,0,1,19,"ctree","null",NA,0,0,FALSE
+0.5,0.5,0,1,19,"rpart","null",NA,0,0,FALSE
+0.5,0.5,0,1,19,"LM + macro","null",NA,0,0,FALSE
+0.5,0.5,0,1,19,"LM","null",NA,0,0,FALSE
+0.5,0.5,0,1,20,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,0.5,0,1,20,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,0.5,0,1,20,"ctree","null",NA,0,0,FALSE
+0.5,0.5,0,1,20,"rpart","null",NA,0,0,FALSE
+0.5,0.5,0,1,20,"LM + macro","null",NA,0,0,FALSE
+0.5,0.5,0,1,20,"LM","null",NA,0,0,FALSE
+1,0.5,0,1,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,1,1,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,1,1,"ctree","mutation",1,9,3,TRUE
+1,0.5,0,1,1,"rpart","mutation",1,7,3,TRUE
+1,0.5,0,1,1,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,1,1,"LM","mutation",1,3,1,TRUE
+1,0.5,0,1,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,1,2,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,1,2,"ctree","mutation",1,6,4,TRUE
+1,0.5,0,1,2,"rpart","mutation",1,5,4,TRUE
+1,0.5,0,1,2,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,1,2,"LM","mutation",1,3,3,TRUE
+1,0.5,0,1,3,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,1,3,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,1,3,"ctree","mutation",1,3,1,TRUE
+1,0.5,0,1,3,"rpart","mutation",1,3,1,TRUE
+1,0.5,0,1,3,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,1,3,"LM","mutation",1,1,0,TRUE
+1,0.5,0,1,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,1,4,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,1,4,"ctree","mutation",1,4,2,TRUE
+1,0.5,0,1,4,"rpart","mutation",1,4,2,TRUE
+1,0.5,0,1,4,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,1,4,"LM","mutation",1,1,0,TRUE
+1,0.5,0,1,5,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,1,5,"MECIT (mob)","mutation",0,0,0,FALSE
+1,0.5,0,1,5,"ctree","mutation",0,4,2,TRUE
+1,0.5,0,1,5,"rpart","mutation",0,4,2,TRUE
+1,0.5,0,1,5,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,1,5,"LM","mutation",0,2,1,TRUE
+1,0.5,0,1,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,1,6,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,1,6,"ctree","mutation",1,6,4,TRUE
+1,0.5,0,1,6,"rpart","mutation",1,5,4,TRUE
+1,0.5,0,1,6,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,1,6,"LM","mutation",1,4,1,TRUE
+1,0.5,0,1,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,1,7,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,1,7,"ctree","mutation",1,2,1,TRUE
+1,0.5,0,1,7,"rpart","mutation",1,2,1,TRUE
+1,0.5,0,1,7,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,1,7,"LM","mutation",1,1,1,TRUE
+1,0.5,0,1,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,1,8,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,1,8,"ctree","mutation",1,7,4,TRUE
+1,0.5,0,1,8,"rpart","mutation",1,5,2,TRUE
+1,0.5,0,1,8,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,1,8,"LM","mutation",1,3,2,TRUE
+1,0.5,0,1,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,0.5,0,1,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,0.5,0,1,9,"ctree","baseline",NA,5,2,TRUE
+1,0.5,0,1,9,"rpart","baseline",NA,3,1,TRUE
+1,0.5,0,1,9,"LM + macro","baseline",NA,0,0,FALSE
+1,0.5,0,1,9,"LM","baseline",NA,3,1,TRUE
+1,0.5,0,1,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,0.5,0,1,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,0.5,0,1,10,"ctree","baseline",NA,3,2,TRUE
+1,0.5,0,1,10,"rpart","baseline",NA,6,4,TRUE
+1,0.5,0,1,10,"LM + macro","baseline",NA,0,0,FALSE
+1,0.5,0,1,10,"LM","baseline",NA,4,2,TRUE
+1,0.5,0,1,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,0.5,0,1,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,0.5,0,1,11,"ctree","baseline",NA,5,2,TRUE
+1,0.5,0,1,11,"rpart","baseline",NA,4,2,TRUE
+1,0.5,0,1,11,"LM + macro","baseline",NA,0,0,FALSE
+1,0.5,0,1,11,"LM","baseline",NA,3,1,TRUE
+1,0.5,0,1,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,0.5,0,1,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,0.5,0,1,12,"ctree","baseline",NA,1,1,TRUE
+1,0.5,0,1,12,"rpart","baseline",NA,1,1,TRUE
+1,0.5,0,1,12,"LM + macro","baseline",NA,0,0,FALSE
+1,0.5,0,1,12,"LM","baseline",NA,0,0,FALSE
+1,0.5,0,1,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,0.5,0,1,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,0.5,0,1,13,"ctree","baseline",NA,3,1,TRUE
+1,0.5,0,1,13,"rpart","baseline",NA,3,1,TRUE
+1,0.5,0,1,13,"LM + macro","baseline",NA,0,0,FALSE
+1,0.5,0,1,13,"LM","baseline",NA,0,0,FALSE
+1,0.5,0,1,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,0.5,0,1,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,0.5,0,1,14,"ctree","baseline",NA,5,2,TRUE
+1,0.5,0,1,14,"rpart","baseline",NA,4,2,TRUE
+1,0.5,0,1,14,"LM + macro","baseline",NA,0,0,FALSE
+1,0.5,0,1,14,"LM","baseline",NA,1,1,TRUE
+1,0.5,0,1,15,"MECIT (ctree)","null",NA,0,0,FALSE
+1,0.5,0,1,15,"MECIT (mob)","null",NA,0,0,FALSE
+1,0.5,0,1,15,"ctree","null",NA,0,0,FALSE
+1,0.5,0,1,15,"rpart","null",NA,0,0,FALSE
+1,0.5,0,1,15,"LM + macro","null",NA,0,0,FALSE
+1,0.5,0,1,15,"LM","null",NA,0,0,FALSE
+1,0.5,0,1,16,"MECIT (ctree)","null",NA,0,0,FALSE
+1,0.5,0,1,16,"MECIT (mob)","null",NA,0,0,FALSE
+1,0.5,0,1,16,"ctree","null",NA,0,0,FALSE
+1,0.5,0,1,16,"rpart","null",NA,0,0,FALSE
+1,0.5,0,1,16,"LM + macro","null",NA,0,0,FALSE
+1,0.5,0,1,16,"LM","null",NA,0,0,FALSE
+1,0.5,0,1,17,"MECIT (ctree)","null",NA,0,0,FALSE
+1,0.5,0,1,17,"MECIT (mob)","null",NA,0,0,FALSE
+1,0.5,0,1,17,"ctree","null",NA,0,0,FALSE
+1,0.5,0,1,17,"rpart","null",NA,0,0,FALSE
+1,0.5,0,1,17,"LM + macro","null",NA,0,0,FALSE
+1,0.5,0,1,17,"LM","null",NA,0,0,FALSE
+1,0.5,0,1,18,"MECIT (ctree)","null",NA,0,0,FALSE
+1,0.5,0,1,18,"MECIT (mob)","null",NA,0,0,FALSE
+1,0.5,0,1,18,"ctree","null",NA,0,0,FALSE
+1,0.5,0,1,18,"rpart","null",NA,0,0,FALSE
+1,0.5,0,1,18,"LM + macro","null",NA,0,0,FALSE
+1,0.5,0,1,18,"LM","null",NA,0,0,FALSE
+1,0.5,0,1,19,"MECIT (ctree)","null",NA,0,0,FALSE
+1,0.5,0,1,19,"MECIT (mob)","null",NA,0,0,FALSE
+1,0.5,0,1,19,"ctree","null",NA,0,0,FALSE
+1,0.5,0,1,19,"rpart","null",NA,0,0,FALSE
+1,0.5,0,1,19,"LM + macro","null",NA,0,0,FALSE
+1,0.5,0,1,19,"LM","null",NA,0,0,FALSE
+1,0.5,0,1,20,"MECIT (ctree)","null",NA,0,0,FALSE
+1,0.5,0,1,20,"MECIT (mob)","null",NA,0,0,FALSE
+1,0.5,0,1,20,"ctree","null",NA,0,0,FALSE
+1,0.5,0,1,20,"rpart","null",NA,0,0,FALSE
+1,0.5,0,1,20,"LM + macro","null",NA,0,0,FALSE
+1,0.5,0,1,20,"LM","null",NA,0,0,FALSE
+2,0.5,0,1,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,1,1,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,1,1,"ctree","mutation",1,9,3,TRUE
+2,0.5,0,1,1,"rpart","mutation",1,6,3,TRUE
+2,0.5,0,1,1,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,1,1,"LM","mutation",1,3,1,TRUE
+2,0.5,0,1,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,1,2,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,1,2,"ctree","mutation",1,6,4,TRUE
+2,0.5,0,1,2,"rpart","mutation",1,5,4,TRUE
+2,0.5,0,1,2,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,1,2,"LM","mutation",1,3,3,TRUE
+2,0.5,0,1,3,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,1,3,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,1,3,"ctree","mutation",1,3,1,TRUE
+2,0.5,0,1,3,"rpart","mutation",1,1,1,TRUE
+2,0.5,0,1,3,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,1,3,"LM","mutation",1,1,0,TRUE
+2,0.5,0,1,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,1,4,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,1,4,"ctree","mutation",1,4,2,TRUE
+2,0.5,0,1,4,"rpart","mutation",1,2,2,TRUE
+2,0.5,0,1,4,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,1,4,"LM","mutation",1,1,0,TRUE
+2,0.5,0,1,5,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,1,5,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,1,5,"ctree","mutation",1,2,1,TRUE
+2,0.5,0,1,5,"rpart","mutation",1,1,1,TRUE
+2,0.5,0,1,5,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,1,5,"LM","mutation",1,2,1,TRUE
+2,0.5,0,1,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,1,6,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,1,6,"ctree","mutation",1,6,4,TRUE
+2,0.5,0,1,6,"rpart","mutation",1,5,4,TRUE
+2,0.5,0,1,6,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,1,6,"LM","mutation",1,4,1,TRUE
+2,0.5,0,1,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,1,7,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,1,7,"ctree","mutation",1,2,1,TRUE
+2,0.5,0,1,7,"rpart","mutation",1,2,1,TRUE
+2,0.5,0,1,7,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,1,7,"LM","mutation",1,1,1,TRUE
+2,0.5,0,1,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,1,8,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,1,8,"ctree","mutation",1,7,4,TRUE
+2,0.5,0,1,8,"rpart","mutation",1,5,2,TRUE
+2,0.5,0,1,8,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,1,8,"LM","mutation",1,3,2,TRUE
+2,0.5,0,1,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,0.5,0,1,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,0.5,0,1,9,"ctree","baseline",NA,5,2,TRUE
+2,0.5,0,1,9,"rpart","baseline",NA,3,1,TRUE
+2,0.5,0,1,9,"LM + macro","baseline",NA,0,0,FALSE
+2,0.5,0,1,9,"LM","baseline",NA,3,1,TRUE
+2,0.5,0,1,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,0.5,0,1,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,0.5,0,1,10,"ctree","baseline",NA,3,2,TRUE
+2,0.5,0,1,10,"rpart","baseline",NA,6,4,TRUE
+2,0.5,0,1,10,"LM + macro","baseline",NA,0,0,FALSE
+2,0.5,0,1,10,"LM","baseline",NA,4,2,TRUE
+2,0.5,0,1,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,0.5,0,1,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,0.5,0,1,11,"ctree","baseline",NA,5,2,TRUE
+2,0.5,0,1,11,"rpart","baseline",NA,4,2,TRUE
+2,0.5,0,1,11,"LM + macro","baseline",NA,0,0,FALSE
+2,0.5,0,1,11,"LM","baseline",NA,3,1,TRUE
+2,0.5,0,1,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,0.5,0,1,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,0.5,0,1,12,"ctree","baseline",NA,1,1,TRUE
+2,0.5,0,1,12,"rpart","baseline",NA,1,1,TRUE
+2,0.5,0,1,12,"LM + macro","baseline",NA,0,0,FALSE
+2,0.5,0,1,12,"LM","baseline",NA,0,0,FALSE
+2,0.5,0,1,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,0.5,0,1,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,0.5,0,1,13,"ctree","baseline",NA,3,1,TRUE
+2,0.5,0,1,13,"rpart","baseline",NA,3,1,TRUE
+2,0.5,0,1,13,"LM + macro","baseline",NA,0,0,FALSE
+2,0.5,0,1,13,"LM","baseline",NA,0,0,FALSE
+2,0.5,0,1,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,0.5,0,1,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,0.5,0,1,14,"ctree","baseline",NA,5,2,TRUE
+2,0.5,0,1,14,"rpart","baseline",NA,4,2,TRUE
+2,0.5,0,1,14,"LM + macro","baseline",NA,0,0,FALSE
+2,0.5,0,1,14,"LM","baseline",NA,1,1,TRUE
+2,0.5,0,1,15,"MECIT (ctree)","null",NA,0,0,FALSE
+2,0.5,0,1,15,"MECIT (mob)","null",NA,0,0,FALSE
+2,0.5,0,1,15,"ctree","null",NA,0,0,FALSE
+2,0.5,0,1,15,"rpart","null",NA,0,0,FALSE
+2,0.5,0,1,15,"LM + macro","null",NA,0,0,FALSE
+2,0.5,0,1,15,"LM","null",NA,0,0,FALSE
+2,0.5,0,1,16,"MECIT (ctree)","null",NA,0,0,FALSE
+2,0.5,0,1,16,"MECIT (mob)","null",NA,0,0,FALSE
+2,0.5,0,1,16,"ctree","null",NA,0,0,FALSE
+2,0.5,0,1,16,"rpart","null",NA,0,0,FALSE
+2,0.5,0,1,16,"LM + macro","null",NA,0,0,FALSE
+2,0.5,0,1,16,"LM","null",NA,0,0,FALSE
+2,0.5,0,1,17,"MECIT (ctree)","null",NA,0,0,FALSE
+2,0.5,0,1,17,"MECIT (mob)","null",NA,0,0,FALSE
+2,0.5,0,1,17,"ctree","null",NA,0,0,FALSE
+2,0.5,0,1,17,"rpart","null",NA,0,0,FALSE
+2,0.5,0,1,17,"LM + macro","null",NA,0,0,FALSE
+2,0.5,0,1,17,"LM","null",NA,0,0,FALSE
+2,0.5,0,1,18,"MECIT (ctree)","null",NA,0,0,FALSE
+2,0.5,0,1,18,"MECIT (mob)","null",NA,0,0,FALSE
+2,0.5,0,1,18,"ctree","null",NA,0,0,FALSE
+2,0.5,0,1,18,"rpart","null",NA,0,0,FALSE
+2,0.5,0,1,18,"LM + macro","null",NA,0,0,FALSE
+2,0.5,0,1,18,"LM","null",NA,0,0,FALSE
+2,0.5,0,1,19,"MECIT (ctree)","null",NA,0,0,FALSE
+2,0.5,0,1,19,"MECIT (mob)","null",NA,0,0,FALSE
+2,0.5,0,1,19,"ctree","null",NA,0,0,FALSE
+2,0.5,0,1,19,"rpart","null",NA,0,0,FALSE
+2,0.5,0,1,19,"LM + macro","null",NA,0,0,FALSE
+2,0.5,0,1,19,"LM","null",NA,0,0,FALSE
+2,0.5,0,1,20,"MECIT (ctree)","null",NA,0,0,FALSE
+2,0.5,0,1,20,"MECIT (mob)","null",NA,0,0,FALSE
+2,0.5,0,1,20,"ctree","null",NA,0,0,FALSE
+2,0.5,0,1,20,"rpart","null",NA,0,0,FALSE
+2,0.5,0,1,20,"LM + macro","null",NA,0,0,FALSE
+2,0.5,0,1,20,"LM","null",NA,0,0,FALSE
+0.5,1,0,1,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,1,0,1,1,"MECIT (mob)","mutation",1,0,0,FALSE
+0.5,1,0,1,1,"ctree","mutation",0,9,3,TRUE
+0.5,1,0,1,1,"rpart","mutation",0,8,3,TRUE
+0.5,1,0,1,1,"LM + macro","mutation",1,0,0,FALSE
+0.5,1,0,1,1,"LM","mutation",1,4,2,TRUE
+0.5,1,0,1,2,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,1,0,1,2,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,1,0,1,2,"ctree","mutation",1,8,4,TRUE
+0.5,1,0,1,2,"rpart","mutation",1,7,4,TRUE
+0.5,1,0,1,2,"LM + macro","mutation",1,0,0,FALSE
+0.5,1,0,1,2,"LM","mutation",0,6,3,TRUE
+0.5,1,0,1,3,"MECIT (ctree)","mutation",0.5,0,0,FALSE
+0.5,1,0,1,3,"MECIT (mob)","mutation",0.5,0,0,FALSE
+0.5,1,0,1,3,"ctree","mutation",1,5,2,TRUE
+0.5,1,0,1,3,"rpart","mutation",1,4,2,TRUE
+0.5,1,0,1,3,"LM + macro","mutation",1,0,0,FALSE
+0.5,1,0,1,3,"LM","mutation",1,1,0,TRUE
+0.5,1,0,1,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,1,0,1,4,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,1,0,1,4,"ctree","mutation",1,8,4,TRUE
+0.5,1,0,1,4,"rpart","mutation",1,7,4,TRUE
+0.5,1,0,1,4,"LM + macro","mutation",1,0,0,FALSE
+0.5,1,0,1,4,"LM","mutation",0,3,1,TRUE
+0.5,1,0,1,5,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,1,0,1,5,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,1,0,1,5,"ctree","mutation",0,6,2,TRUE
+0.5,1,0,1,5,"rpart","mutation",0,6,2,TRUE
+0.5,1,0,1,5,"LM + macro","mutation",0,0,0,FALSE
+0.5,1,0,1,5,"LM","mutation",0,5,3,TRUE
+0.5,1,0,1,6,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,1,0,1,6,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,1,0,1,6,"ctree","mutation",1,9,4,TRUE
+0.5,1,0,1,6,"rpart","mutation",1,8,4,TRUE
+0.5,1,0,1,6,"LM + macro","mutation",0,0,0,FALSE
+0.5,1,0,1,6,"LM","mutation",1,6,1,TRUE
+0.5,1,0,1,7,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,1,0,1,7,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,1,0,1,7,"ctree","mutation",1,6,2,TRUE
+0.5,1,0,1,7,"rpart","mutation",0,5,1,TRUE
+0.5,1,0,1,7,"LM + macro","mutation",0,0,0,FALSE
+0.5,1,0,1,7,"LM","mutation",0,6,4,TRUE
+0.5,1,0,1,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,1,0,1,8,"MECIT (mob)","mutation",1,0,0,FALSE
+0.5,1,0,1,8,"ctree","mutation",1,11,4,TRUE
+0.5,1,0,1,8,"rpart","mutation",0,9,4,TRUE
+0.5,1,0,1,8,"LM + macro","mutation",1,0,0,FALSE
+0.5,1,0,1,8,"LM","mutation",1,4,2,TRUE
+0.5,1,0,1,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,1,0,1,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,1,0,1,9,"ctree","baseline",NA,8,3,TRUE
+0.5,1,0,1,9,"rpart","baseline",NA,7,3,TRUE
+0.5,1,0,1,9,"LM + macro","baseline",NA,0,0,FALSE
+0.5,1,0,1,9,"LM","baseline",NA,3,1,TRUE
+0.5,1,0,1,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,1,0,1,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,1,0,1,10,"ctree","baseline",NA,9,4,TRUE
+0.5,1,0,1,10,"rpart","baseline",NA,8,4,TRUE
+0.5,1,0,1,10,"LM + macro","baseline",NA,0,0,FALSE
+0.5,1,0,1,10,"LM","baseline",NA,6,3,TRUE
+0.5,1,0,1,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,1,0,1,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,1,0,1,11,"ctree","baseline",NA,8,3,TRUE
+0.5,1,0,1,11,"rpart","baseline",NA,6,2,TRUE
+0.5,1,0,1,11,"LM + macro","baseline",NA,0,0,FALSE
+0.5,1,0,1,11,"LM","baseline",NA,5,2,TRUE
+0.5,1,0,1,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,1,0,1,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,1,0,1,12,"ctree","baseline",NA,4,2,TRUE
+0.5,1,0,1,12,"rpart","baseline",NA,4,2,TRUE
+0.5,1,0,1,12,"LM + macro","baseline",NA,0,0,FALSE
+0.5,1,0,1,12,"LM","baseline",NA,2,1,TRUE
+0.5,1,0,1,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,1,0,1,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,1,0,1,13,"ctree","baseline",NA,5,1,TRUE
+0.5,1,0,1,13,"rpart","baseline",NA,5,1,TRUE
+0.5,1,0,1,13,"LM + macro","baseline",NA,0,0,FALSE
+0.5,1,0,1,13,"LM","baseline",NA,4,2,TRUE
+0.5,1,0,1,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,1,0,1,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,1,0,1,14,"ctree","baseline",NA,7,2,TRUE
+0.5,1,0,1,14,"rpart","baseline",NA,6,2,TRUE
+0.5,1,0,1,14,"LM + macro","baseline",NA,0,0,FALSE
+0.5,1,0,1,14,"LM","baseline",NA,4,2,TRUE
+0.5,1,0,1,15,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,1,0,1,15,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,1,0,1,15,"ctree","null",NA,0,0,FALSE
+0.5,1,0,1,15,"rpart","null",NA,0,0,FALSE
+0.5,1,0,1,15,"LM + macro","null",NA,0,0,FALSE
+0.5,1,0,1,15,"LM","null",NA,0,0,FALSE
+0.5,1,0,1,16,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,1,0,1,16,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,1,0,1,16,"ctree","null",NA,0,0,FALSE
+0.5,1,0,1,16,"rpart","null",NA,0,0,FALSE
+0.5,1,0,1,16,"LM + macro","null",NA,0,0,FALSE
+0.5,1,0,1,16,"LM","null",NA,0,0,FALSE
+0.5,1,0,1,17,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,1,0,1,17,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,1,0,1,17,"ctree","null",NA,0,0,FALSE
+0.5,1,0,1,17,"rpart","null",NA,0,0,FALSE
+0.5,1,0,1,17,"LM + macro","null",NA,0,0,FALSE
+0.5,1,0,1,17,"LM","null",NA,0,0,FALSE
+0.5,1,0,1,18,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,1,0,1,18,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,1,0,1,18,"ctree","null",NA,0,0,FALSE
+0.5,1,0,1,18,"rpart","null",NA,0,0,FALSE
+0.5,1,0,1,18,"LM + macro","null",NA,0,0,FALSE
+0.5,1,0,1,18,"LM","null",NA,0,0,FALSE
+0.5,1,0,1,19,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,1,0,1,19,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,1,0,1,19,"ctree","null",NA,0,0,FALSE
+0.5,1,0,1,19,"rpart","null",NA,0,0,FALSE
+0.5,1,0,1,19,"LM + macro","null",NA,0,0,FALSE
+0.5,1,0,1,19,"LM","null",NA,0,0,FALSE
+0.5,1,0,1,20,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,1,0,1,20,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,1,0,1,20,"ctree","null",NA,0,0,FALSE
+0.5,1,0,1,20,"rpart","null",NA,0,0,FALSE
+0.5,1,0,1,20,"LM + macro","null",NA,0,0,FALSE
+0.5,1,0,1,20,"LM","null",NA,0,0,FALSE
+1,1,0,1,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,1,1,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,1,1,"ctree","mutation",1,10,4,TRUE
+1,1,0,1,1,"rpart","mutation",1,8,3,TRUE
+1,1,0,1,1,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,1,1,"LM","mutation",1,4,2,TRUE
+1,1,0,1,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,1,2,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,1,2,"ctree","mutation",0,8,4,TRUE
+1,1,0,1,2,"rpart","mutation",0,6,4,TRUE
+1,1,0,1,2,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,1,2,"LM","mutation",0,6,3,TRUE
+1,1,0,1,3,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,1,3,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,1,3,"ctree","mutation",1,5,2,TRUE
+1,1,0,1,3,"rpart","mutation",1,4,2,TRUE
+1,1,0,1,3,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,1,3,"LM","mutation",1,1,0,TRUE
+1,1,0,1,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,1,4,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,1,4,"ctree","mutation",1,7,4,TRUE
+1,1,0,1,4,"rpart","mutation",1,7,4,TRUE
+1,1,0,1,4,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,1,4,"LM","mutation",1,3,1,TRUE
+1,1,0,1,5,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,1,5,"MECIT (mob)","mutation",0,0,0,FALSE
+1,1,0,1,5,"ctree","mutation",0,5,2,TRUE
+1,1,0,1,5,"rpart","mutation",0,5,2,TRUE
+1,1,0,1,5,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,1,5,"LM","mutation",0,5,3,TRUE
+1,1,0,1,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,1,6,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,1,6,"ctree","mutation",1,9,4,TRUE
+1,1,0,1,6,"rpart","mutation",1,8,4,TRUE
+1,1,0,1,6,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,1,6,"LM","mutation",1,6,1,TRUE
+1,1,0,1,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,1,7,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,1,7,"ctree","mutation",1,6,2,TRUE
+1,1,0,1,7,"rpart","mutation",1,5,1,TRUE
+1,1,0,1,7,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,1,7,"LM","mutation",1,6,4,TRUE
+1,1,0,1,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,1,8,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,1,8,"ctree","mutation",1,11,4,TRUE
+1,1,0,1,8,"rpart","mutation",1,9,4,TRUE
+1,1,0,1,8,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,1,8,"LM","mutation",1,4,2,TRUE
+1,1,0,1,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,1,0,1,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,1,0,1,9,"ctree","baseline",NA,8,3,TRUE
+1,1,0,1,9,"rpart","baseline",NA,7,3,TRUE
+1,1,0,1,9,"LM + macro","baseline",NA,0,0,FALSE
+1,1,0,1,9,"LM","baseline",NA,3,1,TRUE
+1,1,0,1,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,1,0,1,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,1,0,1,10,"ctree","baseline",NA,9,4,TRUE
+1,1,0,1,10,"rpart","baseline",NA,8,4,TRUE
+1,1,0,1,10,"LM + macro","baseline",NA,0,0,FALSE
+1,1,0,1,10,"LM","baseline",NA,6,3,TRUE
+1,1,0,1,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,1,0,1,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,1,0,1,11,"ctree","baseline",NA,8,3,TRUE
+1,1,0,1,11,"rpart","baseline",NA,6,2,TRUE
+1,1,0,1,11,"LM + macro","baseline",NA,0,0,FALSE
+1,1,0,1,11,"LM","baseline",NA,5,2,TRUE
+1,1,0,1,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,1,0,1,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,1,0,1,12,"ctree","baseline",NA,4,2,TRUE
+1,1,0,1,12,"rpart","baseline",NA,4,2,TRUE
+1,1,0,1,12,"LM + macro","baseline",NA,0,0,FALSE
+1,1,0,1,12,"LM","baseline",NA,2,1,TRUE
+1,1,0,1,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,1,0,1,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,1,0,1,13,"ctree","baseline",NA,5,1,TRUE
+1,1,0,1,13,"rpart","baseline",NA,5,1,TRUE
+1,1,0,1,13,"LM + macro","baseline",NA,0,0,FALSE
+1,1,0,1,13,"LM","baseline",NA,4,2,TRUE
+1,1,0,1,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,1,0,1,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,1,0,1,14,"ctree","baseline",NA,7,2,TRUE
+1,1,0,1,14,"rpart","baseline",NA,6,2,TRUE
+1,1,0,1,14,"LM + macro","baseline",NA,0,0,FALSE
+1,1,0,1,14,"LM","baseline",NA,4,2,TRUE
+1,1,0,1,15,"MECIT (ctree)","null",NA,0,0,FALSE
+1,1,0,1,15,"MECIT (mob)","null",NA,0,0,FALSE
+1,1,0,1,15,"ctree","null",NA,0,0,FALSE
+1,1,0,1,15,"rpart","null",NA,0,0,FALSE
+1,1,0,1,15,"LM + macro","null",NA,0,0,FALSE
+1,1,0,1,15,"LM","null",NA,0,0,FALSE
+1,1,0,1,16,"MECIT (ctree)","null",NA,0,0,FALSE
+1,1,0,1,16,"MECIT (mob)","null",NA,0,0,FALSE
+1,1,0,1,16,"ctree","null",NA,0,0,FALSE
+1,1,0,1,16,"rpart","null",NA,0,0,FALSE
+1,1,0,1,16,"LM + macro","null",NA,0,0,FALSE
+1,1,0,1,16,"LM","null",NA,0,0,FALSE
+1,1,0,1,17,"MECIT (ctree)","null",NA,0,0,FALSE
+1,1,0,1,17,"MECIT (mob)","null",NA,0,0,FALSE
+1,1,0,1,17,"ctree","null",NA,0,0,FALSE
+1,1,0,1,17,"rpart","null",NA,0,0,FALSE
+1,1,0,1,17,"LM + macro","null",NA,0,0,FALSE
+1,1,0,1,17,"LM","null",NA,0,0,FALSE
+1,1,0,1,18,"MECIT (ctree)","null",NA,0,0,FALSE
+1,1,0,1,18,"MECIT (mob)","null",NA,0,0,FALSE
+1,1,0,1,18,"ctree","null",NA,0,0,FALSE
+1,1,0,1,18,"rpart","null",NA,0,0,FALSE
+1,1,0,1,18,"LM + macro","null",NA,0,0,FALSE
+1,1,0,1,18,"LM","null",NA,0,0,FALSE
+1,1,0,1,19,"MECIT (ctree)","null",NA,0,0,FALSE
+1,1,0,1,19,"MECIT (mob)","null",NA,0,0,FALSE
+1,1,0,1,19,"ctree","null",NA,0,0,FALSE
+1,1,0,1,19,"rpart","null",NA,0,0,FALSE
+1,1,0,1,19,"LM + macro","null",NA,0,0,FALSE
+1,1,0,1,19,"LM","null",NA,0,0,FALSE
+1,1,0,1,20,"MECIT (ctree)","null",NA,0,0,FALSE
+1,1,0,1,20,"MECIT (mob)","null",NA,0,0,FALSE
+1,1,0,1,20,"ctree","null",NA,0,0,FALSE
+1,1,0,1,20,"rpart","null",NA,0,0,FALSE
+1,1,0,1,20,"LM + macro","null",NA,0,0,FALSE
+1,1,0,1,20,"LM","null",NA,0,0,FALSE
+2,1,0,1,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,1,1,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,1,1,"ctree","mutation",1,10,4,TRUE
+2,1,0,1,1,"rpart","mutation",1,8,3,TRUE
+2,1,0,1,1,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,1,1,"LM","mutation",1,4,2,TRUE
+2,1,0,1,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,1,2,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,1,2,"ctree","mutation",1,6,4,TRUE
+2,1,0,1,2,"rpart","mutation",1,6,4,TRUE
+2,1,0,1,2,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,1,2,"LM","mutation",1,6,3,TRUE
+2,1,0,1,3,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,1,3,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,1,3,"ctree","mutation",1,5,2,TRUE
+2,1,0,1,3,"rpart","mutation",1,3,1,TRUE
+2,1,0,1,3,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,1,3,"LM","mutation",1,1,0,TRUE
+2,1,0,1,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,1,4,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,1,4,"ctree","mutation",1,8,4,TRUE
+2,1,0,1,4,"rpart","mutation",1,6,4,TRUE
+2,1,0,1,4,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,1,4,"LM","mutation",1,3,1,TRUE
+2,1,0,1,5,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,1,5,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,1,5,"ctree","mutation",1,6,2,TRUE
+2,1,0,1,5,"rpart","mutation",1,5,2,TRUE
+2,1,0,1,5,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,1,5,"LM","mutation",1,5,3,TRUE
+2,1,0,1,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,1,6,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,1,6,"ctree","mutation",1,9,4,TRUE
+2,1,0,1,6,"rpart","mutation",1,8,4,TRUE
+2,1,0,1,6,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,1,6,"LM","mutation",1,6,1,TRUE
+2,1,0,1,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,1,7,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,1,7,"ctree","mutation",1,6,2,TRUE
+2,1,0,1,7,"rpart","mutation",1,5,1,TRUE
+2,1,0,1,7,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,1,7,"LM","mutation",1,6,4,TRUE
+2,1,0,1,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,1,8,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,1,8,"ctree","mutation",1,11,4,TRUE
+2,1,0,1,8,"rpart","mutation",1,5,3,TRUE
+2,1,0,1,8,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,1,8,"LM","mutation",1,4,2,TRUE
+2,1,0,1,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,1,0,1,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,1,0,1,9,"ctree","baseline",NA,8,3,TRUE
+2,1,0,1,9,"rpart","baseline",NA,7,3,TRUE
+2,1,0,1,9,"LM + macro","baseline",NA,0,0,FALSE
+2,1,0,1,9,"LM","baseline",NA,3,1,TRUE
+2,1,0,1,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,1,0,1,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,1,0,1,10,"ctree","baseline",NA,9,4,TRUE
+2,1,0,1,10,"rpart","baseline",NA,8,4,TRUE
+2,1,0,1,10,"LM + macro","baseline",NA,0,0,FALSE
+2,1,0,1,10,"LM","baseline",NA,6,3,TRUE
+2,1,0,1,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,1,0,1,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,1,0,1,11,"ctree","baseline",NA,8,3,TRUE
+2,1,0,1,11,"rpart","baseline",NA,6,2,TRUE
+2,1,0,1,11,"LM + macro","baseline",NA,0,0,FALSE
+2,1,0,1,11,"LM","baseline",NA,5,2,TRUE
+2,1,0,1,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,1,0,1,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,1,0,1,12,"ctree","baseline",NA,4,2,TRUE
+2,1,0,1,12,"rpart","baseline",NA,4,2,TRUE
+2,1,0,1,12,"LM + macro","baseline",NA,0,0,FALSE
+2,1,0,1,12,"LM","baseline",NA,2,1,TRUE
+2,1,0,1,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,1,0,1,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,1,0,1,13,"ctree","baseline",NA,5,1,TRUE
+2,1,0,1,13,"rpart","baseline",NA,5,1,TRUE
+2,1,0,1,13,"LM + macro","baseline",NA,0,0,FALSE
+2,1,0,1,13,"LM","baseline",NA,4,2,TRUE
+2,1,0,1,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,1,0,1,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,1,0,1,14,"ctree","baseline",NA,7,2,TRUE
+2,1,0,1,14,"rpart","baseline",NA,6,2,TRUE
+2,1,0,1,14,"LM + macro","baseline",NA,0,0,FALSE
+2,1,0,1,14,"LM","baseline",NA,4,2,TRUE
+2,1,0,1,15,"MECIT (ctree)","null",NA,0,0,FALSE
+2,1,0,1,15,"MECIT (mob)","null",NA,0,0,FALSE
+2,1,0,1,15,"ctree","null",NA,0,0,FALSE
+2,1,0,1,15,"rpart","null",NA,0,0,FALSE
+2,1,0,1,15,"LM + macro","null",NA,0,0,FALSE
+2,1,0,1,15,"LM","null",NA,0,0,FALSE
+2,1,0,1,16,"MECIT (ctree)","null",NA,0,0,FALSE
+2,1,0,1,16,"MECIT (mob)","null",NA,0,0,FALSE
+2,1,0,1,16,"ctree","null",NA,0,0,FALSE
+2,1,0,1,16,"rpart","null",NA,0,0,FALSE
+2,1,0,1,16,"LM + macro","null",NA,0,0,FALSE
+2,1,0,1,16,"LM","null",NA,0,0,FALSE
+2,1,0,1,17,"MECIT (ctree)","null",NA,0,0,FALSE
+2,1,0,1,17,"MECIT (mob)","null",NA,0,0,FALSE
+2,1,0,1,17,"ctree","null",NA,0,0,FALSE
+2,1,0,1,17,"rpart","null",NA,0,0,FALSE
+2,1,0,1,17,"LM + macro","null",NA,0,0,FALSE
+2,1,0,1,17,"LM","null",NA,0,0,FALSE
+2,1,0,1,18,"MECIT (ctree)","null",NA,0,0,FALSE
+2,1,0,1,18,"MECIT (mob)","null",NA,0,0,FALSE
+2,1,0,1,18,"ctree","null",NA,0,0,FALSE
+2,1,0,1,18,"rpart","null",NA,0,0,FALSE
+2,1,0,1,18,"LM + macro","null",NA,0,0,FALSE
+2,1,0,1,18,"LM","null",NA,0,0,FALSE
+2,1,0,1,19,"MECIT (ctree)","null",NA,0,0,FALSE
+2,1,0,1,19,"MECIT (mob)","null",NA,0,0,FALSE
+2,1,0,1,19,"ctree","null",NA,0,0,FALSE
+2,1,0,1,19,"rpart","null",NA,0,0,FALSE
+2,1,0,1,19,"LM + macro","null",NA,0,0,FALSE
+2,1,0,1,19,"LM","null",NA,0,0,FALSE
+2,1,0,1,20,"MECIT (ctree)","null",NA,0,0,FALSE
+2,1,0,1,20,"MECIT (mob)","null",NA,0,0,FALSE
+2,1,0,1,20,"ctree","null",NA,0,0,FALSE
+2,1,0,1,20,"rpart","null",NA,0,0,FALSE
+2,1,0,1,20,"LM + macro","null",NA,0,0,FALSE
+2,1,0,1,20,"LM","null",NA,0,0,FALSE
+0.5,2,0,1,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,2,0,1,1,"MECIT (mob)","mutation",1,0,0,FALSE
+0.5,2,0,1,1,"ctree","mutation",1,10,4,TRUE
+0.5,2,0,1,1,"rpart","mutation",0,8,3,TRUE
+0.5,2,0,1,1,"LM + macro","mutation",1,0,0,FALSE
+0.5,2,0,1,1,"LM","mutation",0,7,3,TRUE
+0.5,2,0,1,2,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,2,0,1,2,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,2,0,1,2,"ctree","mutation",1,9,4,TRUE
+0.5,2,0,1,2,"rpart","mutation",1,7,4,TRUE
+0.5,2,0,1,2,"LM + macro","mutation",1,0,0,FALSE
+0.5,2,0,1,2,"LM","mutation",0,8,5,TRUE
+0.5,2,0,1,3,"MECIT (ctree)","mutation",0.5,0,0,FALSE
+0.5,2,0,1,3,"MECIT (mob)","mutation",0.5,0,0,FALSE
+0.5,2,0,1,3,"ctree","mutation",1,7,3,TRUE
+0.5,2,0,1,3,"rpart","mutation",1,5,2,TRUE
+0.5,2,0,1,3,"LM + macro","mutation",1,0,0,FALSE
+0.5,2,0,1,3,"LM","mutation",1,3,0,TRUE
+0.5,2,0,1,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,2,0,1,4,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,2,0,1,4,"ctree","mutation",1,10,5,TRUE
+0.5,2,0,1,4,"rpart","mutation",1,7,4,TRUE
+0.5,2,0,1,4,"LM + macro","mutation",1,0,0,FALSE
+0.5,2,0,1,4,"LM","mutation",1,6,3,TRUE
+0.5,2,0,1,5,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,2,0,1,5,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,2,0,1,5,"ctree","mutation",0,8,3,TRUE
+0.5,2,0,1,5,"rpart","mutation",0,8,3,TRUE
+0.5,2,0,1,5,"LM + macro","mutation",0,0,0,FALSE
+0.5,2,0,1,5,"LM","mutation",1,7,4,TRUE
+0.5,2,0,1,6,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,2,0,1,6,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,2,0,1,6,"ctree","mutation",1,12,5,TRUE
+0.5,2,0,1,6,"rpart","mutation",1,9,4,TRUE
+0.5,2,0,1,6,"LM + macro","mutation",0,0,0,FALSE
+0.5,2,0,1,6,"LM","mutation",0,9,3,TRUE
+0.5,2,0,1,7,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,2,0,1,7,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,2,0,1,7,"ctree","mutation",1,7,2,TRUE
+0.5,2,0,1,7,"rpart","mutation",1,6,2,TRUE
+0.5,2,0,1,7,"LM + macro","mutation",0,0,0,FALSE
+0.5,2,0,1,7,"LM","mutation",0,10,5,TRUE
+0.5,2,0,1,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,2,0,1,8,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,2,0,1,8,"ctree","mutation",1,11,4,TRUE
+0.5,2,0,1,8,"rpart","mutation",1,7,3,TRUE
+0.5,2,0,1,8,"LM + macro","mutation",1,0,0,FALSE
+0.5,2,0,1,8,"LM","mutation",1,6,2,TRUE
+0.5,2,0,1,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,2,0,1,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,2,0,1,9,"ctree","baseline",NA,9,3,TRUE
+0.5,2,0,1,9,"rpart","baseline",NA,8,3,TRUE
+0.5,2,0,1,9,"LM + macro","baseline",NA,0,0,FALSE
+0.5,2,0,1,9,"LM","baseline",NA,10,5,TRUE
+0.5,2,0,1,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,2,0,1,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,2,0,1,10,"ctree","baseline",NA,11,4,TRUE
+0.5,2,0,1,10,"rpart","baseline",NA,9,4,TRUE
+0.5,2,0,1,10,"LM + macro","baseline",NA,0,0,FALSE
+0.5,2,0,1,10,"LM","baseline",NA,8,3,TRUE
+0.5,2,0,1,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,2,0,1,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,2,0,1,11,"ctree","baseline",NA,10,3,TRUE
+0.5,2,0,1,11,"rpart","baseline",NA,7,2,TRUE
+0.5,2,0,1,11,"LM + macro","baseline",NA,0,0,FALSE
+0.5,2,0,1,11,"LM","baseline",NA,7,2,TRUE
+0.5,2,0,1,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,2,0,1,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,2,0,1,12,"ctree","baseline",NA,9,3,TRUE
+0.5,2,0,1,12,"rpart","baseline",NA,6,2,TRUE
+0.5,2,0,1,12,"LM + macro","baseline",NA,0,0,FALSE
+0.5,2,0,1,12,"LM","baseline",NA,5,3,TRUE
+0.5,2,0,1,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,2,0,1,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,2,0,1,13,"ctree","baseline",NA,9,4,TRUE
+0.5,2,0,1,13,"rpart","baseline",NA,5,1,TRUE
+0.5,2,0,1,13,"LM + macro","baseline",NA,0,0,FALSE
+0.5,2,0,1,13,"LM","baseline",NA,7,2,TRUE
+0.5,2,0,1,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,2,0,1,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,2,0,1,14,"ctree","baseline",NA,7,2,TRUE
+0.5,2,0,1,14,"rpart","baseline",NA,6,2,TRUE
+0.5,2,0,1,14,"LM + macro","baseline",NA,0,0,FALSE
+0.5,2,0,1,14,"LM","baseline",NA,7,2,TRUE
+0.5,2,0,1,15,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,2,0,1,15,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,2,0,1,15,"ctree","null",NA,0,0,FALSE
+0.5,2,0,1,15,"rpart","null",NA,0,0,FALSE
+0.5,2,0,1,15,"LM + macro","null",NA,0,0,FALSE
+0.5,2,0,1,15,"LM","null",NA,0,0,FALSE
+0.5,2,0,1,16,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,2,0,1,16,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,2,0,1,16,"ctree","null",NA,0,0,FALSE
+0.5,2,0,1,16,"rpart","null",NA,0,0,FALSE
+0.5,2,0,1,16,"LM + macro","null",NA,0,0,FALSE
+0.5,2,0,1,16,"LM","null",NA,0,0,FALSE
+0.5,2,0,1,17,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,2,0,1,17,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,2,0,1,17,"ctree","null",NA,0,0,FALSE
+0.5,2,0,1,17,"rpart","null",NA,0,0,FALSE
+0.5,2,0,1,17,"LM + macro","null",NA,0,0,FALSE
+0.5,2,0,1,17,"LM","null",NA,0,0,FALSE
+0.5,2,0,1,18,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,2,0,1,18,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,2,0,1,18,"ctree","null",NA,0,0,FALSE
+0.5,2,0,1,18,"rpart","null",NA,0,0,FALSE
+0.5,2,0,1,18,"LM + macro","null",NA,0,0,FALSE
+0.5,2,0,1,18,"LM","null",NA,0,0,FALSE
+0.5,2,0,1,19,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,2,0,1,19,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,2,0,1,19,"ctree","null",NA,0,0,FALSE
+0.5,2,0,1,19,"rpart","null",NA,0,0,FALSE
+0.5,2,0,1,19,"LM + macro","null",NA,0,0,FALSE
+0.5,2,0,1,19,"LM","null",NA,0,0,FALSE
+0.5,2,0,1,20,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,2,0,1,20,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,2,0,1,20,"ctree","null",NA,0,0,FALSE
+0.5,2,0,1,20,"rpart","null",NA,0,0,FALSE
+0.5,2,0,1,20,"LM + macro","null",NA,0,0,FALSE
+0.5,2,0,1,20,"LM","null",NA,0,0,FALSE
+1,2,0,1,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,1,1,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,1,1,"ctree","mutation",1,9,3,TRUE
+1,2,0,1,1,"rpart","mutation",0,8,3,TRUE
+1,2,0,1,1,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,1,1,"LM","mutation",1,7,3,TRUE
+1,2,0,1,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,1,2,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,1,2,"ctree","mutation",1,9,4,TRUE
+1,2,0,1,2,"rpart","mutation",1,7,4,TRUE
+1,2,0,1,2,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,1,2,"LM","mutation",0,8,5,TRUE
+1,2,0,1,3,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,1,3,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,1,3,"ctree","mutation",1,6,3,TRUE
+1,2,0,1,3,"rpart","mutation",1,5,2,TRUE
+1,2,0,1,3,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,1,3,"LM","mutation",1,3,0,TRUE
+1,2,0,1,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,1,4,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,1,4,"ctree","mutation",1,9,5,TRUE
+1,2,0,1,4,"rpart","mutation",1,7,4,TRUE
+1,2,0,1,4,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,1,4,"LM","mutation",0,6,3,TRUE
+1,2,0,1,5,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,1,5,"MECIT (mob)","mutation",0,0,0,FALSE
+1,2,0,1,5,"ctree","mutation",0,8,4,TRUE
+1,2,0,1,5,"rpart","mutation",0,8,4,TRUE
+1,2,0,1,5,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,1,5,"LM","mutation",1,7,4,TRUE
+1,2,0,1,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,1,6,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,1,6,"ctree","mutation",1,12,5,TRUE
+1,2,0,1,6,"rpart","mutation",1,9,4,TRUE
+1,2,0,1,6,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,1,6,"LM","mutation",1,9,3,TRUE
+1,2,0,1,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,1,7,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,1,7,"ctree","mutation",1,7,2,TRUE
+1,2,0,1,7,"rpart","mutation",0,6,2,TRUE
+1,2,0,1,7,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,1,7,"LM","mutation",1,10,5,TRUE
+1,2,0,1,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,1,8,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,1,8,"ctree","mutation",1,11,4,TRUE
+1,2,0,1,8,"rpart","mutation",1,7,3,TRUE
+1,2,0,1,8,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,1,8,"LM","mutation",1,6,2,TRUE
+1,2,0,1,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,2,0,1,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,2,0,1,9,"ctree","baseline",NA,9,3,TRUE
+1,2,0,1,9,"rpart","baseline",NA,8,3,TRUE
+1,2,0,1,9,"LM + macro","baseline",NA,0,0,FALSE
+1,2,0,1,9,"LM","baseline",NA,10,5,TRUE
+1,2,0,1,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,2,0,1,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,2,0,1,10,"ctree","baseline",NA,11,4,TRUE
+1,2,0,1,10,"rpart","baseline",NA,9,4,TRUE
+1,2,0,1,10,"LM + macro","baseline",NA,0,0,FALSE
+1,2,0,1,10,"LM","baseline",NA,8,3,TRUE
+1,2,0,1,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,2,0,1,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,2,0,1,11,"ctree","baseline",NA,10,3,TRUE
+1,2,0,1,11,"rpart","baseline",NA,7,2,TRUE
+1,2,0,1,11,"LM + macro","baseline",NA,0,0,FALSE
+1,2,0,1,11,"LM","baseline",NA,7,2,TRUE
+1,2,0,1,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,2,0,1,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,2,0,1,12,"ctree","baseline",NA,9,3,TRUE
+1,2,0,1,12,"rpart","baseline",NA,6,2,TRUE
+1,2,0,1,12,"LM + macro","baseline",NA,0,0,FALSE
+1,2,0,1,12,"LM","baseline",NA,5,3,TRUE
+1,2,0,1,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,2,0,1,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,2,0,1,13,"ctree","baseline",NA,9,4,TRUE
+1,2,0,1,13,"rpart","baseline",NA,5,1,TRUE
+1,2,0,1,13,"LM + macro","baseline",NA,0,0,FALSE
+1,2,0,1,13,"LM","baseline",NA,7,2,TRUE
+1,2,0,1,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,2,0,1,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,2,0,1,14,"ctree","baseline",NA,7,2,TRUE
+1,2,0,1,14,"rpart","baseline",NA,6,2,TRUE
+1,2,0,1,14,"LM + macro","baseline",NA,0,0,FALSE
+1,2,0,1,14,"LM","baseline",NA,7,2,TRUE
+1,2,0,1,15,"MECIT (ctree)","null",NA,0,0,FALSE
+1,2,0,1,15,"MECIT (mob)","null",NA,0,0,FALSE
+1,2,0,1,15,"ctree","null",NA,0,0,FALSE
+1,2,0,1,15,"rpart","null",NA,0,0,FALSE
+1,2,0,1,15,"LM + macro","null",NA,0,0,FALSE
+1,2,0,1,15,"LM","null",NA,0,0,FALSE
+1,2,0,1,16,"MECIT (ctree)","null",NA,0,0,FALSE
+1,2,0,1,16,"MECIT (mob)","null",NA,0,0,FALSE
+1,2,0,1,16,"ctree","null",NA,0,0,FALSE
+1,2,0,1,16,"rpart","null",NA,0,0,FALSE
+1,2,0,1,16,"LM + macro","null",NA,0,0,FALSE
+1,2,0,1,16,"LM","null",NA,0,0,FALSE
+1,2,0,1,17,"MECIT (ctree)","null",NA,0,0,FALSE
+1,2,0,1,17,"MECIT (mob)","null",NA,0,0,FALSE
+1,2,0,1,17,"ctree","null",NA,0,0,FALSE
+1,2,0,1,17,"rpart","null",NA,0,0,FALSE
+1,2,0,1,17,"LM + macro","null",NA,0,0,FALSE
+1,2,0,1,17,"LM","null",NA,0,0,FALSE
+1,2,0,1,18,"MECIT (ctree)","null",NA,0,0,FALSE
+1,2,0,1,18,"MECIT (mob)","null",NA,0,0,FALSE
+1,2,0,1,18,"ctree","null",NA,0,0,FALSE
+1,2,0,1,18,"rpart","null",NA,0,0,FALSE
+1,2,0,1,18,"LM + macro","null",NA,0,0,FALSE
+1,2,0,1,18,"LM","null",NA,0,0,FALSE
+1,2,0,1,19,"MECIT (ctree)","null",NA,0,0,FALSE
+1,2,0,1,19,"MECIT (mob)","null",NA,0,0,FALSE
+1,2,0,1,19,"ctree","null",NA,0,0,FALSE
+1,2,0,1,19,"rpart","null",NA,0,0,FALSE
+1,2,0,1,19,"LM + macro","null",NA,0,0,FALSE
+1,2,0,1,19,"LM","null",NA,0,0,FALSE
+1,2,0,1,20,"MECIT (ctree)","null",NA,0,0,FALSE
+1,2,0,1,20,"MECIT (mob)","null",NA,0,0,FALSE
+1,2,0,1,20,"ctree","null",NA,0,0,FALSE
+1,2,0,1,20,"rpart","null",NA,0,0,FALSE
+1,2,0,1,20,"LM + macro","null",NA,0,0,FALSE
+1,2,0,1,20,"LM","null",NA,0,0,FALSE
+2,2,0,1,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,1,1,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,1,1,"ctree","mutation",1,10,4,TRUE
+2,2,0,1,1,"rpart","mutation",1,8,3,TRUE
+2,2,0,1,1,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,1,1,"LM","mutation",1,7,3,TRUE
+2,2,0,1,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,1,2,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,1,2,"ctree","mutation",0,8,4,TRUE
+2,2,0,1,2,"rpart","mutation",0,7,4,TRUE
+2,2,0,1,2,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,1,2,"LM","mutation",0,8,5,TRUE
+2,2,0,1,3,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,1,3,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,1,3,"ctree","mutation",1,6,3,TRUE
+2,2,0,1,3,"rpart","mutation",1,5,2,TRUE
+2,2,0,1,3,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,1,3,"LM","mutation",1,3,0,TRUE
+2,2,0,1,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,1,4,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,1,4,"ctree","mutation",1,10,5,TRUE
+2,2,0,1,4,"rpart","mutation",1,7,4,TRUE
+2,2,0,1,4,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,1,4,"LM","mutation",1,6,3,TRUE
+2,2,0,1,5,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,1,5,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,1,5,"ctree","mutation",0,8,4,TRUE
+2,2,0,1,5,"rpart","mutation",0,8,4,TRUE
+2,2,0,1,5,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,1,5,"LM","mutation",0,7,4,TRUE
+2,2,0,1,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,1,6,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,1,6,"ctree","mutation",1,12,5,TRUE
+2,2,0,1,6,"rpart","mutation",1,8,4,TRUE
+2,2,0,1,6,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,1,6,"LM","mutation",1,9,3,TRUE
+2,2,0,1,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,1,7,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,1,7,"ctree","mutation",1,8,2,TRUE
+2,2,0,1,7,"rpart","mutation",1,6,2,TRUE
+2,2,0,1,7,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,1,7,"LM","mutation",1,10,5,TRUE
+2,2,0,1,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,1,8,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,1,8,"ctree","mutation",1,12,4,TRUE
+2,2,0,1,8,"rpart","mutation",1,7,3,TRUE
+2,2,0,1,8,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,1,8,"LM","mutation",1,6,2,TRUE
+2,2,0,1,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,2,0,1,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,2,0,1,9,"ctree","baseline",NA,9,3,TRUE
+2,2,0,1,9,"rpart","baseline",NA,8,3,TRUE
+2,2,0,1,9,"LM + macro","baseline",NA,0,0,FALSE
+2,2,0,1,9,"LM","baseline",NA,10,5,TRUE
+2,2,0,1,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,2,0,1,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,2,0,1,10,"ctree","baseline",NA,11,4,TRUE
+2,2,0,1,10,"rpart","baseline",NA,9,4,TRUE
+2,2,0,1,10,"LM + macro","baseline",NA,0,0,FALSE
+2,2,0,1,10,"LM","baseline",NA,8,3,TRUE
+2,2,0,1,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,2,0,1,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,2,0,1,11,"ctree","baseline",NA,10,3,TRUE
+2,2,0,1,11,"rpart","baseline",NA,7,2,TRUE
+2,2,0,1,11,"LM + macro","baseline",NA,0,0,FALSE
+2,2,0,1,11,"LM","baseline",NA,7,2,TRUE
+2,2,0,1,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,2,0,1,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,2,0,1,12,"ctree","baseline",NA,9,3,TRUE
+2,2,0,1,12,"rpart","baseline",NA,6,2,TRUE
+2,2,0,1,12,"LM + macro","baseline",NA,0,0,FALSE
+2,2,0,1,12,"LM","baseline",NA,5,3,TRUE
+2,2,0,1,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,2,0,1,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,2,0,1,13,"ctree","baseline",NA,9,4,TRUE
+2,2,0,1,13,"rpart","baseline",NA,5,1,TRUE
+2,2,0,1,13,"LM + macro","baseline",NA,0,0,FALSE
+2,2,0,1,13,"LM","baseline",NA,7,2,TRUE
+2,2,0,1,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,2,0,1,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,2,0,1,14,"ctree","baseline",NA,7,2,TRUE
+2,2,0,1,14,"rpart","baseline",NA,6,2,TRUE
+2,2,0,1,14,"LM + macro","baseline",NA,0,0,FALSE
+2,2,0,1,14,"LM","baseline",NA,7,2,TRUE
+2,2,0,1,15,"MECIT (ctree)","null",NA,0,0,FALSE
+2,2,0,1,15,"MECIT (mob)","null",NA,0,0,FALSE
+2,2,0,1,15,"ctree","null",NA,0,0,FALSE
+2,2,0,1,15,"rpart","null",NA,0,0,FALSE
+2,2,0,1,15,"LM + macro","null",NA,0,0,FALSE
+2,2,0,1,15,"LM","null",NA,0,0,FALSE
+2,2,0,1,16,"MECIT (ctree)","null",NA,0,0,FALSE
+2,2,0,1,16,"MECIT (mob)","null",NA,0,0,FALSE
+2,2,0,1,16,"ctree","null",NA,0,0,FALSE
+2,2,0,1,16,"rpart","null",NA,0,0,FALSE
+2,2,0,1,16,"LM + macro","null",NA,0,0,FALSE
+2,2,0,1,16,"LM","null",NA,0,0,FALSE
+2,2,0,1,17,"MECIT (ctree)","null",NA,0,0,FALSE
+2,2,0,1,17,"MECIT (mob)","null",NA,0,0,FALSE
+2,2,0,1,17,"ctree","null",NA,0,0,FALSE
+2,2,0,1,17,"rpart","null",NA,0,0,FALSE
+2,2,0,1,17,"LM + macro","null",NA,0,0,FALSE
+2,2,0,1,17,"LM","null",NA,0,0,FALSE
+2,2,0,1,18,"MECIT (ctree)","null",NA,0,0,FALSE
+2,2,0,1,18,"MECIT (mob)","null",NA,0,0,FALSE
+2,2,0,1,18,"ctree","null",NA,0,0,FALSE
+2,2,0,1,18,"rpart","null",NA,0,0,FALSE
+2,2,0,1,18,"LM + macro","null",NA,0,0,FALSE
+2,2,0,1,18,"LM","null",NA,0,0,FALSE
+2,2,0,1,19,"MECIT (ctree)","null",NA,0,0,FALSE
+2,2,0,1,19,"MECIT (mob)","null",NA,0,0,FALSE
+2,2,0,1,19,"ctree","null",NA,0,0,FALSE
+2,2,0,1,19,"rpart","null",NA,0,0,FALSE
+2,2,0,1,19,"LM + macro","null",NA,0,0,FALSE
+2,2,0,1,19,"LM","null",NA,0,0,FALSE
+2,2,0,1,20,"MECIT (ctree)","null",NA,0,0,FALSE
+2,2,0,1,20,"MECIT (mob)","null",NA,0,0,FALSE
+2,2,0,1,20,"ctree","null",NA,0,0,FALSE
+2,2,0,1,20,"rpart","null",NA,0,0,FALSE
+2,2,0,1,20,"LM + macro","null",NA,0,0,FALSE
+2,2,0,1,20,"LM","null",NA,0,0,FALSE
+0.5,0.5,0,2,1,"MECIT (ctree)","mutation",0.5,0,0,FALSE
+0.5,0.5,0,2,1,"MECIT (mob)","mutation",0.5,0,0,FALSE
+0.5,0.5,0,2,1,"ctree","mutation",0.5,2,2,TRUE
+0.5,0.5,0,2,1,"rpart","mutation",0.5,2,2,TRUE
+0.5,0.5,0,2,1,"LM + macro","mutation",1,0,0,FALSE
+0.5,0.5,0,2,1,"LM","mutation",0.5,0,0,FALSE
+0.5,0.5,0,2,2,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,0.5,0,2,2,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,0.5,0,2,2,"ctree","mutation",1,6,3,TRUE
+0.5,0.5,0,2,2,"rpart","mutation",1,4,2,TRUE
+0.5,0.5,0,2,2,"LM + macro","mutation",1,0,0,FALSE
+0.5,0.5,0,2,2,"LM","mutation",1,3,1,TRUE
+0.5,0.5,0,2,3,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,0.5,0,2,3,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,0.5,0,2,3,"ctree","mutation",1,3,3,TRUE
+0.5,0.5,0,2,3,"rpart","mutation",1,3,3,TRUE
+0.5,0.5,0,2,3,"LM + macro","mutation",1,1,1,TRUE
+0.5,0.5,0,2,3,"LM","mutation",1,4,4,TRUE
+0.5,0.5,0,2,4,"MECIT (ctree)","mutation",0.5,0,0,FALSE
+0.5,0.5,0,2,4,"MECIT (mob)","mutation",0.5,0,0,FALSE
+0.5,0.5,0,2,4,"ctree","mutation",0.5,2,1,TRUE
+0.5,0.5,0,2,4,"rpart","mutation",0.5,2,1,TRUE
+0.5,0.5,0,2,4,"LM + macro","mutation",0.5,0,0,FALSE
+0.5,0.5,0,2,4,"LM","mutation",0.5,0,0,FALSE
+0.5,0.5,0,2,5,"MECIT (ctree)","mutation",0.5,0,0,FALSE
+0.5,0.5,0,2,5,"MECIT (mob)","mutation",1,0,0,FALSE
+0.5,0.5,0,2,5,"ctree","mutation",1,3,2,TRUE
+0.5,0.5,0,2,5,"rpart","mutation",1,5,4,TRUE
+0.5,0.5,0,2,5,"LM + macro","mutation",1,0,0,FALSE
+0.5,0.5,0,2,5,"LM","mutation",1,3,2,TRUE
+0.5,0.5,0,2,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,0.5,0,2,6,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,0.5,0,2,6,"ctree","mutation",1,2,2,TRUE
+0.5,0.5,0,2,6,"rpart","mutation",1,1,1,TRUE
+0.5,0.5,0,2,6,"LM + macro","mutation",1,0,0,FALSE
+0.5,0.5,0,2,6,"LM","mutation",1,0,0,FALSE
+0.5,0.5,0,2,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,0.5,0,2,7,"MECIT (mob)","mutation",0,3,0,TRUE
+0.5,0.5,0,2,7,"ctree","mutation",1,4,3,TRUE
+0.5,0.5,0,2,7,"rpart","mutation",1,4,3,TRUE
+0.5,0.5,0,2,7,"LM + macro","mutation",1,0,0,FALSE
+0.5,0.5,0,2,7,"LM","mutation",1,2,1,TRUE
+0.5,0.5,0,2,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,0.5,0,2,8,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,0.5,0,2,8,"ctree","mutation",1,0,0,FALSE
+0.5,0.5,0,2,8,"rpart","mutation",1,0,0,FALSE
+0.5,0.5,0,2,8,"LM + macro","mutation",1,0,0,FALSE
+0.5,0.5,0,2,8,"LM","mutation",1,0,0,FALSE
+0.5,0.5,0,2,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,9,"ctree","baseline",NA,1,1,TRUE
+0.5,0.5,0,2,9,"rpart","baseline",NA,1,1,TRUE
+0.5,0.5,0,2,9,"LM + macro","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,9,"LM","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,10,"ctree","baseline",NA,6,4,TRUE
+0.5,0.5,0,2,10,"rpart","baseline",NA,6,4,TRUE
+0.5,0.5,0,2,10,"LM + macro","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,10,"LM","baseline",NA,3,2,TRUE
+0.5,0.5,0,2,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,11,"ctree","baseline",NA,3,2,TRUE
+0.5,0.5,0,2,11,"rpart","baseline",NA,3,2,TRUE
+0.5,0.5,0,2,11,"LM + macro","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,11,"LM","baseline",NA,3,1,TRUE
+0.5,0.5,0,2,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,12,"ctree","baseline",NA,5,3,TRUE
+0.5,0.5,0,2,12,"rpart","baseline",NA,4,2,TRUE
+0.5,0.5,0,2,12,"LM + macro","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,12,"LM","baseline",NA,1,1,TRUE
+0.5,0.5,0,2,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,13,"ctree","baseline",NA,4,1,TRUE
+0.5,0.5,0,2,13,"rpart","baseline",NA,2,1,TRUE
+0.5,0.5,0,2,13,"LM + macro","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,13,"LM","baseline",NA,1,1,TRUE
+0.5,0.5,0,2,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,14,"ctree","baseline",NA,5,4,TRUE
+0.5,0.5,0,2,14,"rpart","baseline",NA,4,4,TRUE
+0.5,0.5,0,2,14,"LM + macro","baseline",NA,0,0,FALSE
+0.5,0.5,0,2,14,"LM","baseline",NA,1,1,TRUE
+0.5,0.5,0,2,15,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,0.5,0,2,15,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,0.5,0,2,15,"ctree","null",NA,0,0,FALSE
+0.5,0.5,0,2,15,"rpart","null",NA,0,0,FALSE
+0.5,0.5,0,2,15,"LM + macro","null",NA,0,0,FALSE
+0.5,0.5,0,2,15,"LM","null",NA,0,0,FALSE
+0.5,0.5,0,2,16,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,0.5,0,2,16,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,0.5,0,2,16,"ctree","null",NA,0,0,FALSE
+0.5,0.5,0,2,16,"rpart","null",NA,0,0,FALSE
+0.5,0.5,0,2,16,"LM + macro","null",NA,0,0,FALSE
+0.5,0.5,0,2,16,"LM","null",NA,0,0,FALSE
+0.5,0.5,0,2,17,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,0.5,0,2,17,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,0.5,0,2,17,"ctree","null",NA,0,0,FALSE
+0.5,0.5,0,2,17,"rpart","null",NA,0,0,FALSE
+0.5,0.5,0,2,17,"LM + macro","null",NA,0,0,FALSE
+0.5,0.5,0,2,17,"LM","null",NA,0,0,FALSE
+0.5,0.5,0,2,18,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,0.5,0,2,18,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,0.5,0,2,18,"ctree","null",NA,0,0,FALSE
+0.5,0.5,0,2,18,"rpart","null",NA,0,0,FALSE
+0.5,0.5,0,2,18,"LM + macro","null",NA,0,0,FALSE
+0.5,0.5,0,2,18,"LM","null",NA,0,0,FALSE
+0.5,0.5,0,2,19,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,0.5,0,2,19,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,0.5,0,2,19,"ctree","null",NA,0,0,FALSE
+0.5,0.5,0,2,19,"rpart","null",NA,0,0,FALSE
+0.5,0.5,0,2,19,"LM + macro","null",NA,0,0,FALSE
+0.5,0.5,0,2,19,"LM","null",NA,1,0,TRUE
+0.5,0.5,0,2,20,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,0.5,0,2,20,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,0.5,0,2,20,"ctree","null",NA,0,0,FALSE
+0.5,0.5,0,2,20,"rpart","null",NA,0,0,FALSE
+0.5,0.5,0,2,20,"LM + macro","null",NA,0,0,FALSE
+0.5,0.5,0,2,20,"LM","null",NA,0,0,FALSE
+1,0.5,0,2,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,2,1,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,2,1,"ctree","mutation",1,2,2,TRUE
+1,0.5,0,2,1,"rpart","mutation",1,2,2,TRUE
+1,0.5,0,2,1,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,2,1,"LM","mutation",1,0,0,FALSE
+1,0.5,0,2,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,2,2,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,2,2,"ctree","mutation",1,6,3,TRUE
+1,0.5,0,2,2,"rpart","mutation",1,4,2,TRUE
+1,0.5,0,2,2,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,2,2,"LM","mutation",1,3,1,TRUE
+1,0.5,0,2,3,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,2,3,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,2,3,"ctree","mutation",1,3,3,TRUE
+1,0.5,0,2,3,"rpart","mutation",1,3,3,TRUE
+1,0.5,0,2,3,"LM + macro","mutation",1,1,1,TRUE
+1,0.5,0,2,3,"LM","mutation",1,4,4,TRUE
+1,0.5,0,2,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,2,4,"MECIT (mob)","mutation",0.5,0,0,FALSE
+1,0.5,0,2,4,"ctree","mutation",1,2,1,TRUE
+1,0.5,0,2,4,"rpart","mutation",1,2,1,TRUE
+1,0.5,0,2,4,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,2,4,"LM","mutation",1,0,0,FALSE
+1,0.5,0,2,5,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,2,5,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,2,5,"ctree","mutation",1,3,2,TRUE
+1,0.5,0,2,5,"rpart","mutation",1,5,4,TRUE
+1,0.5,0,2,5,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,2,5,"LM","mutation",1,3,2,TRUE
+1,0.5,0,2,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,2,6,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,2,6,"ctree","mutation",1,1,1,TRUE
+1,0.5,0,2,6,"rpart","mutation",1,1,1,TRUE
+1,0.5,0,2,6,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,2,6,"LM","mutation",1,0,0,FALSE
+1,0.5,0,2,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,2,7,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,2,7,"ctree","mutation",1,4,3,TRUE
+1,0.5,0,2,7,"rpart","mutation",1,4,3,TRUE
+1,0.5,0,2,7,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,2,7,"LM","mutation",1,2,1,TRUE
+1,0.5,0,2,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,0.5,0,2,8,"MECIT (mob)","mutation",1,0,0,FALSE
+1,0.5,0,2,8,"ctree","mutation",1,0,0,FALSE
+1,0.5,0,2,8,"rpart","mutation",1,0,0,FALSE
+1,0.5,0,2,8,"LM + macro","mutation",1,0,0,FALSE
+1,0.5,0,2,8,"LM","mutation",1,0,0,FALSE
+1,0.5,0,2,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,0.5,0,2,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,0.5,0,2,9,"ctree","baseline",NA,1,1,TRUE
+1,0.5,0,2,9,"rpart","baseline",NA,1,1,TRUE
+1,0.5,0,2,9,"LM + macro","baseline",NA,0,0,FALSE
+1,0.5,0,2,9,"LM","baseline",NA,0,0,FALSE
+1,0.5,0,2,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,0.5,0,2,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,0.5,0,2,10,"ctree","baseline",NA,6,4,TRUE
+1,0.5,0,2,10,"rpart","baseline",NA,6,4,TRUE
+1,0.5,0,2,10,"LM + macro","baseline",NA,0,0,FALSE
+1,0.5,0,2,10,"LM","baseline",NA,3,2,TRUE
+1,0.5,0,2,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,0.5,0,2,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,0.5,0,2,11,"ctree","baseline",NA,3,2,TRUE
+1,0.5,0,2,11,"rpart","baseline",NA,3,2,TRUE
+1,0.5,0,2,11,"LM + macro","baseline",NA,0,0,FALSE
+1,0.5,0,2,11,"LM","baseline",NA,3,1,TRUE
+1,0.5,0,2,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,0.5,0,2,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,0.5,0,2,12,"ctree","baseline",NA,5,3,TRUE
+1,0.5,0,2,12,"rpart","baseline",NA,4,2,TRUE
+1,0.5,0,2,12,"LM + macro","baseline",NA,0,0,FALSE
+1,0.5,0,2,12,"LM","baseline",NA,1,1,TRUE
+1,0.5,0,2,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,0.5,0,2,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,0.5,0,2,13,"ctree","baseline",NA,4,1,TRUE
+1,0.5,0,2,13,"rpart","baseline",NA,2,1,TRUE
+1,0.5,0,2,13,"LM + macro","baseline",NA,0,0,FALSE
+1,0.5,0,2,13,"LM","baseline",NA,1,1,TRUE
+1,0.5,0,2,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,0.5,0,2,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,0.5,0,2,14,"ctree","baseline",NA,5,4,TRUE
+1,0.5,0,2,14,"rpart","baseline",NA,4,4,TRUE
+1,0.5,0,2,14,"LM + macro","baseline",NA,0,0,FALSE
+1,0.5,0,2,14,"LM","baseline",NA,1,1,TRUE
+1,0.5,0,2,15,"MECIT (ctree)","null",NA,0,0,FALSE
+1,0.5,0,2,15,"MECIT (mob)","null",NA,0,0,FALSE
+1,0.5,0,2,15,"ctree","null",NA,0,0,FALSE
+1,0.5,0,2,15,"rpart","null",NA,0,0,FALSE
+1,0.5,0,2,15,"LM + macro","null",NA,0,0,FALSE
+1,0.5,0,2,15,"LM","null",NA,0,0,FALSE
+1,0.5,0,2,16,"MECIT (ctree)","null",NA,0,0,FALSE
+1,0.5,0,2,16,"MECIT (mob)","null",NA,0,0,FALSE
+1,0.5,0,2,16,"ctree","null",NA,0,0,FALSE
+1,0.5,0,2,16,"rpart","null",NA,0,0,FALSE
+1,0.5,0,2,16,"LM + macro","null",NA,0,0,FALSE
+1,0.5,0,2,16,"LM","null",NA,0,0,FALSE
+1,0.5,0,2,17,"MECIT (ctree)","null",NA,0,0,FALSE
+1,0.5,0,2,17,"MECIT (mob)","null",NA,0,0,FALSE
+1,0.5,0,2,17,"ctree","null",NA,0,0,FALSE
+1,0.5,0,2,17,"rpart","null",NA,0,0,FALSE
+1,0.5,0,2,17,"LM + macro","null",NA,0,0,FALSE
+1,0.5,0,2,17,"LM","null",NA,0,0,FALSE
+1,0.5,0,2,18,"MECIT (ctree)","null",NA,0,0,FALSE
+1,0.5,0,2,18,"MECIT (mob)","null",NA,0,0,FALSE
+1,0.5,0,2,18,"ctree","null",NA,0,0,FALSE
+1,0.5,0,2,18,"rpart","null",NA,0,0,FALSE
+1,0.5,0,2,18,"LM + macro","null",NA,0,0,FALSE
+1,0.5,0,2,18,"LM","null",NA,0,0,FALSE
+1,0.5,0,2,19,"MECIT (ctree)","null",NA,0,0,FALSE
+1,0.5,0,2,19,"MECIT (mob)","null",NA,0,0,FALSE
+1,0.5,0,2,19,"ctree","null",NA,0,0,FALSE
+1,0.5,0,2,19,"rpart","null",NA,0,0,FALSE
+1,0.5,0,2,19,"LM + macro","null",NA,0,0,FALSE
+1,0.5,0,2,19,"LM","null",NA,1,0,TRUE
+1,0.5,0,2,20,"MECIT (ctree)","null",NA,0,0,FALSE
+1,0.5,0,2,20,"MECIT (mob)","null",NA,0,0,FALSE
+1,0.5,0,2,20,"ctree","null",NA,0,0,FALSE
+1,0.5,0,2,20,"rpart","null",NA,0,0,FALSE
+1,0.5,0,2,20,"LM + macro","null",NA,0,0,FALSE
+1,0.5,0,2,20,"LM","null",NA,0,0,FALSE
+2,0.5,0,2,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,2,1,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,2,1,"ctree","mutation",1,2,2,TRUE
+2,0.5,0,2,1,"rpart","mutation",1,1,1,TRUE
+2,0.5,0,2,1,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,2,1,"LM","mutation",1,0,0,FALSE
+2,0.5,0,2,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,2,2,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,2,2,"ctree","mutation",1,6,4,TRUE
+2,0.5,0,2,2,"rpart","mutation",1,4,3,TRUE
+2,0.5,0,2,2,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,2,2,"LM","mutation",1,3,1,TRUE
+2,0.5,0,2,3,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,2,3,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,2,3,"ctree","mutation",1,3,3,TRUE
+2,0.5,0,2,3,"rpart","mutation",1,3,3,TRUE
+2,0.5,0,2,3,"LM + macro","mutation",1,1,1,TRUE
+2,0.5,0,2,3,"LM","mutation",1,4,4,TRUE
+2,0.5,0,2,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,2,4,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,2,4,"ctree","mutation",1,2,1,TRUE
+2,0.5,0,2,4,"rpart","mutation",1,1,1,TRUE
+2,0.5,0,2,4,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,2,4,"LM","mutation",1,0,0,FALSE
+2,0.5,0,2,5,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,2,5,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,2,5,"ctree","mutation",1,3,2,TRUE
+2,0.5,0,2,5,"rpart","mutation",1,2,2,TRUE
+2,0.5,0,2,5,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,2,5,"LM","mutation",1,3,2,TRUE
+2,0.5,0,2,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,2,6,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,2,6,"ctree","mutation",1,1,1,TRUE
+2,0.5,0,2,6,"rpart","mutation",1,1,1,TRUE
+2,0.5,0,2,6,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,2,6,"LM","mutation",1,0,0,FALSE
+2,0.5,0,2,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,2,7,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,2,7,"ctree","mutation",1,4,3,TRUE
+2,0.5,0,2,7,"rpart","mutation",1,3,3,TRUE
+2,0.5,0,2,7,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,2,7,"LM","mutation",1,2,1,TRUE
+2,0.5,0,2,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,0.5,0,2,8,"MECIT (mob)","mutation",1,0,0,FALSE
+2,0.5,0,2,8,"ctree","mutation",1,0,0,FALSE
+2,0.5,0,2,8,"rpart","mutation",1,0,0,FALSE
+2,0.5,0,2,8,"LM + macro","mutation",1,0,0,FALSE
+2,0.5,0,2,8,"LM","mutation",1,0,0,FALSE
+2,0.5,0,2,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,0.5,0,2,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,0.5,0,2,9,"ctree","baseline",NA,1,1,TRUE
+2,0.5,0,2,9,"rpart","baseline",NA,1,1,TRUE
+2,0.5,0,2,9,"LM + macro","baseline",NA,0,0,FALSE
+2,0.5,0,2,9,"LM","baseline",NA,0,0,FALSE
+2,0.5,0,2,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,0.5,0,2,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,0.5,0,2,10,"ctree","baseline",NA,6,4,TRUE
+2,0.5,0,2,10,"rpart","baseline",NA,6,4,TRUE
+2,0.5,0,2,10,"LM + macro","baseline",NA,0,0,FALSE
+2,0.5,0,2,10,"LM","baseline",NA,3,2,TRUE
+2,0.5,0,2,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,0.5,0,2,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,0.5,0,2,11,"ctree","baseline",NA,3,2,TRUE
+2,0.5,0,2,11,"rpart","baseline",NA,3,2,TRUE
+2,0.5,0,2,11,"LM + macro","baseline",NA,0,0,FALSE
+2,0.5,0,2,11,"LM","baseline",NA,3,1,TRUE
+2,0.5,0,2,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,0.5,0,2,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,0.5,0,2,12,"ctree","baseline",NA,5,3,TRUE
+2,0.5,0,2,12,"rpart","baseline",NA,4,2,TRUE
+2,0.5,0,2,12,"LM + macro","baseline",NA,0,0,FALSE
+2,0.5,0,2,12,"LM","baseline",NA,1,1,TRUE
+2,0.5,0,2,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,0.5,0,2,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,0.5,0,2,13,"ctree","baseline",NA,4,1,TRUE
+2,0.5,0,2,13,"rpart","baseline",NA,2,1,TRUE
+2,0.5,0,2,13,"LM + macro","baseline",NA,0,0,FALSE
+2,0.5,0,2,13,"LM","baseline",NA,1,1,TRUE
+2,0.5,0,2,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,0.5,0,2,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,0.5,0,2,14,"ctree","baseline",NA,5,4,TRUE
+2,0.5,0,2,14,"rpart","baseline",NA,4,4,TRUE
+2,0.5,0,2,14,"LM + macro","baseline",NA,0,0,FALSE
+2,0.5,0,2,14,"LM","baseline",NA,1,1,TRUE
+2,0.5,0,2,15,"MECIT (ctree)","null",NA,0,0,FALSE
+2,0.5,0,2,15,"MECIT (mob)","null",NA,0,0,FALSE
+2,0.5,0,2,15,"ctree","null",NA,0,0,FALSE
+2,0.5,0,2,15,"rpart","null",NA,0,0,FALSE
+2,0.5,0,2,15,"LM + macro","null",NA,0,0,FALSE
+2,0.5,0,2,15,"LM","null",NA,0,0,FALSE
+2,0.5,0,2,16,"MECIT (ctree)","null",NA,0,0,FALSE
+2,0.5,0,2,16,"MECIT (mob)","null",NA,0,0,FALSE
+2,0.5,0,2,16,"ctree","null",NA,0,0,FALSE
+2,0.5,0,2,16,"rpart","null",NA,0,0,FALSE
+2,0.5,0,2,16,"LM + macro","null",NA,0,0,FALSE
+2,0.5,0,2,16,"LM","null",NA,0,0,FALSE
+2,0.5,0,2,17,"MECIT (ctree)","null",NA,0,0,FALSE
+2,0.5,0,2,17,"MECIT (mob)","null",NA,0,0,FALSE
+2,0.5,0,2,17,"ctree","null",NA,0,0,FALSE
+2,0.5,0,2,17,"rpart","null",NA,0,0,FALSE
+2,0.5,0,2,17,"LM + macro","null",NA,0,0,FALSE
+2,0.5,0,2,17,"LM","null",NA,0,0,FALSE
+2,0.5,0,2,18,"MECIT (ctree)","null",NA,0,0,FALSE
+2,0.5,0,2,18,"MECIT (mob)","null",NA,0,0,FALSE
+2,0.5,0,2,18,"ctree","null",NA,0,0,FALSE
+2,0.5,0,2,18,"rpart","null",NA,0,0,FALSE
+2,0.5,0,2,18,"LM + macro","null",NA,0,0,FALSE
+2,0.5,0,2,18,"LM","null",NA,0,0,FALSE
+2,0.5,0,2,19,"MECIT (ctree)","null",NA,0,0,FALSE
+2,0.5,0,2,19,"MECIT (mob)","null",NA,0,0,FALSE
+2,0.5,0,2,19,"ctree","null",NA,0,0,FALSE
+2,0.5,0,2,19,"rpart","null",NA,0,0,FALSE
+2,0.5,0,2,19,"LM + macro","null",NA,0,0,FALSE
+2,0.5,0,2,19,"LM","null",NA,1,0,TRUE
+2,0.5,0,2,20,"MECIT (ctree)","null",NA,0,0,FALSE
+2,0.5,0,2,20,"MECIT (mob)","null",NA,0,0,FALSE
+2,0.5,0,2,20,"ctree","null",NA,0,0,FALSE
+2,0.5,0,2,20,"rpart","null",NA,0,0,FALSE
+2,0.5,0,2,20,"LM + macro","null",NA,0,0,FALSE
+2,0.5,0,2,20,"LM","null",NA,0,0,FALSE
+0.5,1,0,2,1,"MECIT (ctree)","mutation",0.5,0,0,FALSE
+0.5,1,0,2,1,"MECIT (mob)","mutation",0.5,0,0,FALSE
+0.5,1,0,2,1,"ctree","mutation",0.5,5,4,TRUE
+0.5,1,0,2,1,"rpart","mutation",0.5,8,4,TRUE
+0.5,1,0,2,1,"LM + macro","mutation",1,0,0,FALSE
+0.5,1,0,2,1,"LM","mutation",0.5,2,1,TRUE
+0.5,1,0,2,2,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,1,0,2,2,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,1,0,2,2,"ctree","mutation",1,6,4,TRUE
+0.5,1,0,2,2,"rpart","mutation",1,6,4,TRUE
+0.5,1,0,2,2,"LM + macro","mutation",1,0,0,FALSE
+0.5,1,0,2,2,"LM","mutation",1,7,2,TRUE
+0.5,1,0,2,3,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,1,0,2,3,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,1,0,2,3,"ctree","mutation",1,9,5,TRUE
+0.5,1,0,2,3,"rpart","mutation",0,5,4,TRUE
+0.5,1,0,2,3,"LM + macro","mutation",1,1,1,TRUE
+0.5,1,0,2,3,"LM","mutation",1,6,5,TRUE
+0.5,1,0,2,4,"MECIT (ctree)","mutation",0.5,0,0,FALSE
+0.5,1,0,2,4,"MECIT (mob)","mutation",0.5,0,0,FALSE
+0.5,1,0,2,4,"ctree","mutation",0.5,7,2,TRUE
+0.5,1,0,2,4,"rpart","mutation",0.5,7,2,TRUE
+0.5,1,0,2,4,"LM + macro","mutation",0.5,0,0,FALSE
+0.5,1,0,2,4,"LM","mutation",0.5,4,1,TRUE
+0.5,1,0,2,5,"MECIT (ctree)","mutation",0.5,0,0,FALSE
+0.5,1,0,2,5,"MECIT (mob)","mutation",1,0,0,FALSE
+0.5,1,0,2,5,"ctree","mutation",0,9,5,TRUE
+0.5,1,0,2,5,"rpart","mutation",0,7,4,TRUE
+0.5,1,0,2,5,"LM + macro","mutation",1,0,0,FALSE
+0.5,1,0,2,5,"LM","mutation",1,6,3,TRUE
+0.5,1,0,2,6,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,1,0,2,6,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,1,0,2,6,"ctree","mutation",1,6,3,TRUE
+0.5,1,0,2,6,"rpart","mutation",1,4,2,TRUE
+0.5,1,0,2,6,"LM + macro","mutation",1,0,0,FALSE
+0.5,1,0,2,6,"LM","mutation",1,5,3,TRUE
+0.5,1,0,2,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,1,0,2,7,"MECIT (mob)","mutation",0,3,0,TRUE
+0.5,1,0,2,7,"ctree","mutation",1,7,4,TRUE
+0.5,1,0,2,7,"rpart","mutation",1,5,4,TRUE
+0.5,1,0,2,7,"LM + macro","mutation",1,0,0,FALSE
+0.5,1,0,2,7,"LM","mutation",1,3,2,TRUE
+0.5,1,0,2,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,1,0,2,8,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,1,0,2,8,"ctree","mutation",1,4,2,TRUE
+0.5,1,0,2,8,"rpart","mutation",1,4,2,TRUE
+0.5,1,0,2,8,"LM + macro","mutation",1,0,0,FALSE
+0.5,1,0,2,8,"LM","mutation",1,3,2,TRUE
+0.5,1,0,2,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,1,0,2,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,1,0,2,9,"ctree","baseline",NA,7,4,TRUE
+0.5,1,0,2,9,"rpart","baseline",NA,7,4,TRUE
+0.5,1,0,2,9,"LM + macro","baseline",NA,0,0,FALSE
+0.5,1,0,2,9,"LM","baseline",NA,2,2,TRUE
+0.5,1,0,2,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,1,0,2,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,1,0,2,10,"ctree","baseline",NA,9,5,TRUE
+0.5,1,0,2,10,"rpart","baseline",NA,8,5,TRUE
+0.5,1,0,2,10,"LM + macro","baseline",NA,0,0,FALSE
+0.5,1,0,2,10,"LM","baseline",NA,4,2,TRUE
+0.5,1,0,2,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,1,0,2,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,1,0,2,11,"ctree","baseline",NA,7,4,TRUE
+0.5,1,0,2,11,"rpart","baseline",NA,5,3,TRUE
+0.5,1,0,2,11,"LM + macro","baseline",NA,0,0,FALSE
+0.5,1,0,2,11,"LM","baseline",NA,5,1,TRUE
+0.5,1,0,2,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,1,0,2,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,1,0,2,12,"ctree","baseline",NA,8,3,TRUE
+0.5,1,0,2,12,"rpart","baseline",NA,6,3,TRUE
+0.5,1,0,2,12,"LM + macro","baseline",NA,0,0,FALSE
+0.5,1,0,2,12,"LM","baseline",NA,5,2,TRUE
+0.5,1,0,2,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,1,0,2,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,1,0,2,13,"ctree","baseline",NA,6,3,TRUE
+0.5,1,0,2,13,"rpart","baseline",NA,6,3,TRUE
+0.5,1,0,2,13,"LM + macro","baseline",NA,0,0,FALSE
+0.5,1,0,2,13,"LM","baseline",NA,5,4,TRUE
+0.5,1,0,2,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,1,0,2,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,1,0,2,14,"ctree","baseline",NA,7,4,TRUE
+0.5,1,0,2,14,"rpart","baseline",NA,5,4,TRUE
+0.5,1,0,2,14,"LM + macro","baseline",NA,0,0,FALSE
+0.5,1,0,2,14,"LM","baseline",NA,3,3,TRUE
+0.5,1,0,2,15,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,1,0,2,15,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,1,0,2,15,"ctree","null",NA,0,0,FALSE
+0.5,1,0,2,15,"rpart","null",NA,0,0,FALSE
+0.5,1,0,2,15,"LM + macro","null",NA,0,0,FALSE
+0.5,1,0,2,15,"LM","null",NA,0,0,FALSE
+0.5,1,0,2,16,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,1,0,2,16,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,1,0,2,16,"ctree","null",NA,0,0,FALSE
+0.5,1,0,2,16,"rpart","null",NA,0,0,FALSE
+0.5,1,0,2,16,"LM + macro","null",NA,0,0,FALSE
+0.5,1,0,2,16,"LM","null",NA,0,0,FALSE
+0.5,1,0,2,17,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,1,0,2,17,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,1,0,2,17,"ctree","null",NA,0,0,FALSE
+0.5,1,0,2,17,"rpart","null",NA,0,0,FALSE
+0.5,1,0,2,17,"LM + macro","null",NA,0,0,FALSE
+0.5,1,0,2,17,"LM","null",NA,0,0,FALSE
+0.5,1,0,2,18,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,1,0,2,18,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,1,0,2,18,"ctree","null",NA,0,0,FALSE
+0.5,1,0,2,18,"rpart","null",NA,0,0,FALSE
+0.5,1,0,2,18,"LM + macro","null",NA,0,0,FALSE
+0.5,1,0,2,18,"LM","null",NA,0,0,FALSE
+0.5,1,0,2,19,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,1,0,2,19,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,1,0,2,19,"ctree","null",NA,0,0,FALSE
+0.5,1,0,2,19,"rpart","null",NA,0,0,FALSE
+0.5,1,0,2,19,"LM + macro","null",NA,0,0,FALSE
+0.5,1,0,2,19,"LM","null",NA,1,0,TRUE
+0.5,1,0,2,20,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,1,0,2,20,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,1,0,2,20,"ctree","null",NA,0,0,FALSE
+0.5,1,0,2,20,"rpart","null",NA,0,0,FALSE
+0.5,1,0,2,20,"LM + macro","null",NA,0,0,FALSE
+0.5,1,0,2,20,"LM","null",NA,0,0,FALSE
+1,1,0,2,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,2,1,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,2,1,"ctree","mutation",0.5,5,4,TRUE
+1,1,0,2,1,"rpart","mutation",0.5,3,2,TRUE
+1,1,0,2,1,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,2,1,"LM","mutation",1,2,1,TRUE
+1,1,0,2,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,2,2,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,2,2,"ctree","mutation",1,8,4,TRUE
+1,1,0,2,2,"rpart","mutation",1,5,4,TRUE
+1,1,0,2,2,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,2,2,"LM","mutation",1,7,2,TRUE
+1,1,0,2,3,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,2,3,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,2,3,"ctree","mutation",1,8,5,TRUE
+1,1,0,2,3,"rpart","mutation",1,5,4,TRUE
+1,1,0,2,3,"LM + macro","mutation",1,1,1,TRUE
+1,1,0,2,3,"LM","mutation",1,6,5,TRUE
+1,1,0,2,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,2,4,"MECIT (mob)","mutation",0.5,0,0,FALSE
+1,1,0,2,4,"ctree","mutation",0.5,6,1,TRUE
+1,1,0,2,4,"rpart","mutation",0.5,5,1,TRUE
+1,1,0,2,4,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,2,4,"LM","mutation",1,4,1,TRUE
+1,1,0,2,5,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,2,5,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,2,5,"ctree","mutation",1,12,6,TRUE
+1,1,0,2,5,"rpart","mutation",1,6,3,TRUE
+1,1,0,2,5,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,2,5,"LM","mutation",1,6,3,TRUE
+1,1,0,2,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,2,6,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,2,6,"ctree","mutation",1,6,2,TRUE
+1,1,0,2,6,"rpart","mutation",1,4,2,TRUE
+1,1,0,2,6,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,2,6,"LM","mutation",1,5,3,TRUE
+1,1,0,2,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,2,7,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,2,7,"ctree","mutation",1,5,4,TRUE
+1,1,0,2,7,"rpart","mutation",1,5,4,TRUE
+1,1,0,2,7,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,2,7,"LM","mutation",1,3,2,TRUE
+1,1,0,2,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,1,0,2,8,"MECIT (mob)","mutation",1,0,0,FALSE
+1,1,0,2,8,"ctree","mutation",1,4,2,TRUE
+1,1,0,2,8,"rpart","mutation",1,4,2,TRUE
+1,1,0,2,8,"LM + macro","mutation",1,0,0,FALSE
+1,1,0,2,8,"LM","mutation",1,3,2,TRUE
+1,1,0,2,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,1,0,2,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,1,0,2,9,"ctree","baseline",NA,7,4,TRUE
+1,1,0,2,9,"rpart","baseline",NA,7,4,TRUE
+1,1,0,2,9,"LM + macro","baseline",NA,0,0,FALSE
+1,1,0,2,9,"LM","baseline",NA,2,2,TRUE
+1,1,0,2,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,1,0,2,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,1,0,2,10,"ctree","baseline",NA,9,5,TRUE
+1,1,0,2,10,"rpart","baseline",NA,8,5,TRUE
+1,1,0,2,10,"LM + macro","baseline",NA,0,0,FALSE
+1,1,0,2,10,"LM","baseline",NA,4,2,TRUE
+1,1,0,2,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,1,0,2,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,1,0,2,11,"ctree","baseline",NA,7,4,TRUE
+1,1,0,2,11,"rpart","baseline",NA,5,3,TRUE
+1,1,0,2,11,"LM + macro","baseline",NA,0,0,FALSE
+1,1,0,2,11,"LM","baseline",NA,5,1,TRUE
+1,1,0,2,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,1,0,2,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,1,0,2,12,"ctree","baseline",NA,8,3,TRUE
+1,1,0,2,12,"rpart","baseline",NA,6,3,TRUE
+1,1,0,2,12,"LM + macro","baseline",NA,0,0,FALSE
+1,1,0,2,12,"LM","baseline",NA,5,2,TRUE
+1,1,0,2,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,1,0,2,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,1,0,2,13,"ctree","baseline",NA,6,3,TRUE
+1,1,0,2,13,"rpart","baseline",NA,6,3,TRUE
+1,1,0,2,13,"LM + macro","baseline",NA,0,0,FALSE
+1,1,0,2,13,"LM","baseline",NA,5,4,TRUE
+1,1,0,2,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,1,0,2,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,1,0,2,14,"ctree","baseline",NA,7,4,TRUE
+1,1,0,2,14,"rpart","baseline",NA,5,4,TRUE
+1,1,0,2,14,"LM + macro","baseline",NA,0,0,FALSE
+1,1,0,2,14,"LM","baseline",NA,3,3,TRUE
+1,1,0,2,15,"MECIT (ctree)","null",NA,0,0,FALSE
+1,1,0,2,15,"MECIT (mob)","null",NA,0,0,FALSE
+1,1,0,2,15,"ctree","null",NA,0,0,FALSE
+1,1,0,2,15,"rpart","null",NA,0,0,FALSE
+1,1,0,2,15,"LM + macro","null",NA,0,0,FALSE
+1,1,0,2,15,"LM","null",NA,0,0,FALSE
+1,1,0,2,16,"MECIT (ctree)","null",NA,0,0,FALSE
+1,1,0,2,16,"MECIT (mob)","null",NA,0,0,FALSE
+1,1,0,2,16,"ctree","null",NA,0,0,FALSE
+1,1,0,2,16,"rpart","null",NA,0,0,FALSE
+1,1,0,2,16,"LM + macro","null",NA,0,0,FALSE
+1,1,0,2,16,"LM","null",NA,0,0,FALSE
+1,1,0,2,17,"MECIT (ctree)","null",NA,0,0,FALSE
+1,1,0,2,17,"MECIT (mob)","null",NA,0,0,FALSE
+1,1,0,2,17,"ctree","null",NA,0,0,FALSE
+1,1,0,2,17,"rpart","null",NA,0,0,FALSE
+1,1,0,2,17,"LM + macro","null",NA,0,0,FALSE
+1,1,0,2,17,"LM","null",NA,0,0,FALSE
+1,1,0,2,18,"MECIT (ctree)","null",NA,0,0,FALSE
+1,1,0,2,18,"MECIT (mob)","null",NA,0,0,FALSE
+1,1,0,2,18,"ctree","null",NA,0,0,FALSE
+1,1,0,2,18,"rpart","null",NA,0,0,FALSE
+1,1,0,2,18,"LM + macro","null",NA,0,0,FALSE
+1,1,0,2,18,"LM","null",NA,0,0,FALSE
+1,1,0,2,19,"MECIT (ctree)","null",NA,0,0,FALSE
+1,1,0,2,19,"MECIT (mob)","null",NA,0,0,FALSE
+1,1,0,2,19,"ctree","null",NA,0,0,FALSE
+1,1,0,2,19,"rpart","null",NA,0,0,FALSE
+1,1,0,2,19,"LM + macro","null",NA,0,0,FALSE
+1,1,0,2,19,"LM","null",NA,1,0,TRUE
+1,1,0,2,20,"MECIT (ctree)","null",NA,0,0,FALSE
+1,1,0,2,20,"MECIT (mob)","null",NA,0,0,FALSE
+1,1,0,2,20,"ctree","null",NA,0,0,FALSE
+1,1,0,2,20,"rpart","null",NA,0,0,FALSE
+1,1,0,2,20,"LM + macro","null",NA,0,0,FALSE
+1,1,0,2,20,"LM","null",NA,0,0,FALSE
+2,1,0,2,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,2,1,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,2,1,"ctree","mutation",1,5,3,TRUE
+2,1,0,2,1,"rpart","mutation",1,3,2,TRUE
+2,1,0,2,1,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,2,1,"LM","mutation",1,2,1,TRUE
+2,1,0,2,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,2,2,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,2,2,"ctree","mutation",1,7,4,TRUE
+2,1,0,2,2,"rpart","mutation",1,6,3,TRUE
+2,1,0,2,2,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,2,2,"LM","mutation",1,7,2,TRUE
+2,1,0,2,3,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,2,3,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,2,3,"ctree","mutation",1,8,5,TRUE
+2,1,0,2,3,"rpart","mutation",1,5,4,TRUE
+2,1,0,2,3,"LM + macro","mutation",1,1,1,TRUE
+2,1,0,2,3,"LM","mutation",1,6,5,TRUE
+2,1,0,2,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,2,4,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,2,4,"ctree","mutation",1,9,3,TRUE
+2,1,0,2,4,"rpart","mutation",1,8,2,TRUE
+2,1,0,2,4,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,2,4,"LM","mutation",1,4,1,TRUE
+2,1,0,2,5,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,2,5,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,2,5,"ctree","mutation",1,12,6,TRUE
+2,1,0,2,5,"rpart","mutation",1,6,4,TRUE
+2,1,0,2,5,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,2,5,"LM","mutation",1,6,3,TRUE
+2,1,0,2,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,2,6,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,2,6,"ctree","mutation",1,6,2,TRUE
+2,1,0,2,6,"rpart","mutation",1,4,2,TRUE
+2,1,0,2,6,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,2,6,"LM","mutation",1,5,3,TRUE
+2,1,0,2,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,2,7,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,2,7,"ctree","mutation",1,5,4,TRUE
+2,1,0,2,7,"rpart","mutation",1,5,4,TRUE
+2,1,0,2,7,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,2,7,"LM","mutation",1,3,2,TRUE
+2,1,0,2,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,1,0,2,8,"MECIT (mob)","mutation",1,0,0,FALSE
+2,1,0,2,8,"ctree","mutation",1,4,2,TRUE
+2,1,0,2,8,"rpart","mutation",1,4,2,TRUE
+2,1,0,2,8,"LM + macro","mutation",1,0,0,FALSE
+2,1,0,2,8,"LM","mutation",1,3,2,TRUE
+2,1,0,2,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,1,0,2,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,1,0,2,9,"ctree","baseline",NA,7,4,TRUE
+2,1,0,2,9,"rpart","baseline",NA,7,4,TRUE
+2,1,0,2,9,"LM + macro","baseline",NA,0,0,FALSE
+2,1,0,2,9,"LM","baseline",NA,2,2,TRUE
+2,1,0,2,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,1,0,2,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,1,0,2,10,"ctree","baseline",NA,9,5,TRUE
+2,1,0,2,10,"rpart","baseline",NA,8,5,TRUE
+2,1,0,2,10,"LM + macro","baseline",NA,0,0,FALSE
+2,1,0,2,10,"LM","baseline",NA,4,2,TRUE
+2,1,0,2,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,1,0,2,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,1,0,2,11,"ctree","baseline",NA,7,4,TRUE
+2,1,0,2,11,"rpart","baseline",NA,5,3,TRUE
+2,1,0,2,11,"LM + macro","baseline",NA,0,0,FALSE
+2,1,0,2,11,"LM","baseline",NA,5,1,TRUE
+2,1,0,2,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,1,0,2,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,1,0,2,12,"ctree","baseline",NA,8,3,TRUE
+2,1,0,2,12,"rpart","baseline",NA,6,3,TRUE
+2,1,0,2,12,"LM + macro","baseline",NA,0,0,FALSE
+2,1,0,2,12,"LM","baseline",NA,5,2,TRUE
+2,1,0,2,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,1,0,2,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,1,0,2,13,"ctree","baseline",NA,6,3,TRUE
+2,1,0,2,13,"rpart","baseline",NA,6,3,TRUE
+2,1,0,2,13,"LM + macro","baseline",NA,0,0,FALSE
+2,1,0,2,13,"LM","baseline",NA,5,4,TRUE
+2,1,0,2,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,1,0,2,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,1,0,2,14,"ctree","baseline",NA,7,4,TRUE
+2,1,0,2,14,"rpart","baseline",NA,5,4,TRUE
+2,1,0,2,14,"LM + macro","baseline",NA,0,0,FALSE
+2,1,0,2,14,"LM","baseline",NA,3,3,TRUE
+2,1,0,2,15,"MECIT (ctree)","null",NA,0,0,FALSE
+2,1,0,2,15,"MECIT (mob)","null",NA,0,0,FALSE
+2,1,0,2,15,"ctree","null",NA,0,0,FALSE
+2,1,0,2,15,"rpart","null",NA,0,0,FALSE
+2,1,0,2,15,"LM + macro","null",NA,0,0,FALSE
+2,1,0,2,15,"LM","null",NA,0,0,FALSE
+2,1,0,2,16,"MECIT (ctree)","null",NA,0,0,FALSE
+2,1,0,2,16,"MECIT (mob)","null",NA,0,0,FALSE
+2,1,0,2,16,"ctree","null",NA,0,0,FALSE
+2,1,0,2,16,"rpart","null",NA,0,0,FALSE
+2,1,0,2,16,"LM + macro","null",NA,0,0,FALSE
+2,1,0,2,16,"LM","null",NA,0,0,FALSE
+2,1,0,2,17,"MECIT (ctree)","null",NA,0,0,FALSE
+2,1,0,2,17,"MECIT (mob)","null",NA,0,0,FALSE
+2,1,0,2,17,"ctree","null",NA,0,0,FALSE
+2,1,0,2,17,"rpart","null",NA,0,0,FALSE
+2,1,0,2,17,"LM + macro","null",NA,0,0,FALSE
+2,1,0,2,17,"LM","null",NA,0,0,FALSE
+2,1,0,2,18,"MECIT (ctree)","null",NA,0,0,FALSE
+2,1,0,2,18,"MECIT (mob)","null",NA,0,0,FALSE
+2,1,0,2,18,"ctree","null",NA,0,0,FALSE
+2,1,0,2,18,"rpart","null",NA,0,0,FALSE
+2,1,0,2,18,"LM + macro","null",NA,0,0,FALSE
+2,1,0,2,18,"LM","null",NA,0,0,FALSE
+2,1,0,2,19,"MECIT (ctree)","null",NA,0,0,FALSE
+2,1,0,2,19,"MECIT (mob)","null",NA,0,0,FALSE
+2,1,0,2,19,"ctree","null",NA,0,0,FALSE
+2,1,0,2,19,"rpart","null",NA,0,0,FALSE
+2,1,0,2,19,"LM + macro","null",NA,0,0,FALSE
+2,1,0,2,19,"LM","null",NA,1,0,TRUE
+2,1,0,2,20,"MECIT (ctree)","null",NA,0,0,FALSE
+2,1,0,2,20,"MECIT (mob)","null",NA,0,0,FALSE
+2,1,0,2,20,"ctree","null",NA,0,0,FALSE
+2,1,0,2,20,"rpart","null",NA,0,0,FALSE
+2,1,0,2,20,"LM + macro","null",NA,0,0,FALSE
+2,1,0,2,20,"LM","null",NA,0,0,FALSE
+0.5,2,0,2,1,"MECIT (ctree)","mutation",0.5,0,0,FALSE
+0.5,2,0,2,1,"MECIT (mob)","mutation",0.5,0,0,FALSE
+0.5,2,0,2,1,"ctree","mutation",0.5,9,4,TRUE
+0.5,2,0,2,1,"rpart","mutation",0,8,3,TRUE
+0.5,2,0,2,1,"LM + macro","mutation",1,0,0,FALSE
+0.5,2,0,2,1,"LM","mutation",1,4,2,TRUE
+0.5,2,0,2,2,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,2,0,2,2,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,2,0,2,2,"ctree","mutation",1,8,4,TRUE
+0.5,2,0,2,2,"rpart","mutation",1,6,4,TRUE
+0.5,2,0,2,2,"LM + macro","mutation",1,0,0,FALSE
+0.5,2,0,2,2,"LM","mutation",1,9,4,TRUE
+0.5,2,0,2,3,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,2,0,2,3,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,2,0,2,3,"ctree","mutation",1,10,5,TRUE
+0.5,2,0,2,3,"rpart","mutation",0,5,4,TRUE
+0.5,2,0,2,3,"LM + macro","mutation",1,1,1,TRUE
+0.5,2,0,2,3,"LM","mutation",1,8,6,TRUE
+0.5,2,0,2,4,"MECIT (ctree)","mutation",0.5,0,0,FALSE
+0.5,2,0,2,4,"MECIT (mob)","mutation",0.5,0,0,FALSE
+0.5,2,0,2,4,"ctree","mutation",1,11,5,TRUE
+0.5,2,0,2,4,"rpart","mutation",0,11,5,TRUE
+0.5,2,0,2,4,"LM + macro","mutation",0.5,0,0,FALSE
+0.5,2,0,2,4,"LM","mutation",0,7,3,TRUE
+0.5,2,0,2,5,"MECIT (ctree)","mutation",0.5,0,0,FALSE
+0.5,2,0,2,5,"MECIT (mob)","mutation",1,0,0,FALSE
+0.5,2,0,2,5,"ctree","mutation",0,9,5,TRUE
+0.5,2,0,2,5,"rpart","mutation",0,8,5,TRUE
+0.5,2,0,2,5,"LM + macro","mutation",1,0,0,FALSE
+0.5,2,0,2,5,"LM","mutation",0,6,3,TRUE
+0.5,2,0,2,6,"MECIT (ctree)","mutation",0,0,0,FALSE
+0.5,2,0,2,6,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,2,0,2,6,"ctree","mutation",1,10,4,TRUE
+0.5,2,0,2,6,"rpart","mutation",1,8,2,TRUE
+0.5,2,0,2,6,"LM + macro","mutation",1,0,0,FALSE
+0.5,2,0,2,6,"LM","mutation",1,7,4,TRUE
+0.5,2,0,2,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,2,0,2,7,"MECIT (mob)","mutation",0,3,0,TRUE
+0.5,2,0,2,7,"ctree","mutation",1,10,5,TRUE
+0.5,2,0,2,7,"rpart","mutation",1,9,5,TRUE
+0.5,2,0,2,7,"LM + macro","mutation",1,0,0,FALSE
+0.5,2,0,2,7,"LM","mutation",1,7,3,TRUE
+0.5,2,0,2,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+0.5,2,0,2,8,"MECIT (mob)","mutation",0,0,0,FALSE
+0.5,2,0,2,8,"ctree","mutation",1,9,4,TRUE
+0.5,2,0,2,8,"rpart","mutation",1,5,2,TRUE
+0.5,2,0,2,8,"LM + macro","mutation",1,0,0,FALSE
+0.5,2,0,2,8,"LM","mutation",1,7,3,TRUE
+0.5,2,0,2,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,2,0,2,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,2,0,2,9,"ctree","baseline",NA,9,4,TRUE
+0.5,2,0,2,9,"rpart","baseline",NA,8,4,TRUE
+0.5,2,0,2,9,"LM + macro","baseline",NA,0,0,FALSE
+0.5,2,0,2,9,"LM","baseline",NA,7,3,TRUE
+0.5,2,0,2,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,2,0,2,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,2,0,2,10,"ctree","baseline",NA,11,6,TRUE
+0.5,2,0,2,10,"rpart","baseline",NA,9,5,TRUE
+0.5,2,0,2,10,"LM + macro","baseline",NA,0,0,FALSE
+0.5,2,0,2,10,"LM","baseline",NA,7,4,TRUE
+0.5,2,0,2,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,2,0,2,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,2,0,2,11,"ctree","baseline",NA,8,4,TRUE
+0.5,2,0,2,11,"rpart","baseline",NA,6,3,TRUE
+0.5,2,0,2,11,"LM + macro","baseline",NA,0,0,FALSE
+0.5,2,0,2,11,"LM","baseline",NA,9,4,TRUE
+0.5,2,0,2,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,2,0,2,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,2,0,2,12,"ctree","baseline",NA,9,4,TRUE
+0.5,2,0,2,12,"rpart","baseline",NA,11,3,TRUE
+0.5,2,0,2,12,"LM + macro","baseline",NA,0,0,FALSE
+0.5,2,0,2,12,"LM","baseline",NA,8,3,TRUE
+0.5,2,0,2,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,2,0,2,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,2,0,2,13,"ctree","baseline",NA,8,4,TRUE
+0.5,2,0,2,13,"rpart","baseline",NA,8,3,TRUE
+0.5,2,0,2,13,"LM + macro","baseline",NA,0,0,FALSE
+0.5,2,0,2,13,"LM","baseline",NA,9,5,TRUE
+0.5,2,0,2,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+0.5,2,0,2,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+0.5,2,0,2,14,"ctree","baseline",NA,10,4,TRUE
+0.5,2,0,2,14,"rpart","baseline",NA,6,4,TRUE
+0.5,2,0,2,14,"LM + macro","baseline",NA,0,0,FALSE
+0.5,2,0,2,14,"LM","baseline",NA,8,5,TRUE
+0.5,2,0,2,15,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,2,0,2,15,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,2,0,2,15,"ctree","null",NA,0,0,FALSE
+0.5,2,0,2,15,"rpart","null",NA,0,0,FALSE
+0.5,2,0,2,15,"LM + macro","null",NA,0,0,FALSE
+0.5,2,0,2,15,"LM","null",NA,0,0,FALSE
+0.5,2,0,2,16,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,2,0,2,16,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,2,0,2,16,"ctree","null",NA,0,0,FALSE
+0.5,2,0,2,16,"rpart","null",NA,0,0,FALSE
+0.5,2,0,2,16,"LM + macro","null",NA,0,0,FALSE
+0.5,2,0,2,16,"LM","null",NA,0,0,FALSE
+0.5,2,0,2,17,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,2,0,2,17,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,2,0,2,17,"ctree","null",NA,0,0,FALSE
+0.5,2,0,2,17,"rpart","null",NA,0,0,FALSE
+0.5,2,0,2,17,"LM + macro","null",NA,0,0,FALSE
+0.5,2,0,2,17,"LM","null",NA,0,0,FALSE
+0.5,2,0,2,18,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,2,0,2,18,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,2,0,2,18,"ctree","null",NA,0,0,FALSE
+0.5,2,0,2,18,"rpart","null",NA,0,0,FALSE
+0.5,2,0,2,18,"LM + macro","null",NA,0,0,FALSE
+0.5,2,0,2,18,"LM","null",NA,0,0,FALSE
+0.5,2,0,2,19,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,2,0,2,19,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,2,0,2,19,"ctree","null",NA,0,0,FALSE
+0.5,2,0,2,19,"rpart","null",NA,0,0,FALSE
+0.5,2,0,2,19,"LM + macro","null",NA,0,0,FALSE
+0.5,2,0,2,19,"LM","null",NA,1,0,TRUE
+0.5,2,0,2,20,"MECIT (ctree)","null",NA,0,0,FALSE
+0.5,2,0,2,20,"MECIT (mob)","null",NA,0,0,FALSE
+0.5,2,0,2,20,"ctree","null",NA,0,0,FALSE
+0.5,2,0,2,20,"rpart","null",NA,0,0,FALSE
+0.5,2,0,2,20,"LM + macro","null",NA,0,0,FALSE
+0.5,2,0,2,20,"LM","null",NA,0,0,FALSE
+1,2,0,2,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,2,1,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,2,1,"ctree","mutation",0.5,9,5,TRUE
+1,2,0,2,1,"rpart","mutation",0.5,8,5,TRUE
+1,2,0,2,1,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,2,1,"LM","mutation",0.5,4,2,TRUE
+1,2,0,2,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,2,2,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,2,2,"ctree","mutation",1,8,4,TRUE
+1,2,0,2,2,"rpart","mutation",1,6,4,TRUE
+1,2,0,2,2,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,2,2,"LM","mutation",1,9,4,TRUE
+1,2,0,2,3,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,2,3,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,2,3,"ctree","mutation",1,10,5,TRUE
+1,2,0,2,3,"rpart","mutation",1,8,5,TRUE
+1,2,0,2,3,"LM + macro","mutation",1,1,1,TRUE
+1,2,0,2,3,"LM","mutation",1,8,6,TRUE
+1,2,0,2,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,2,4,"MECIT (mob)","mutation",0.5,0,0,FALSE
+1,2,0,2,4,"ctree","mutation",0.5,9,3,TRUE
+1,2,0,2,4,"rpart","mutation",0.5,10,4,TRUE
+1,2,0,2,4,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,2,4,"LM","mutation",0.5,7,3,TRUE
+1,2,0,2,5,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,2,5,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,2,5,"ctree","mutation",0.5,9,5,TRUE
+1,2,0,2,5,"rpart","mutation",0,8,5,TRUE
+1,2,0,2,5,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,2,5,"LM","mutation",1,6,3,TRUE
+1,2,0,2,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,2,6,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,2,6,"ctree","mutation",1,10,4,TRUE
+1,2,0,2,6,"rpart","mutation",1,8,2,TRUE
+1,2,0,2,6,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,2,6,"LM","mutation",1,7,4,TRUE
+1,2,0,2,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,2,7,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,2,7,"ctree","mutation",1,10,5,TRUE
+1,2,0,2,7,"rpart","mutation",1,9,5,TRUE
+1,2,0,2,7,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,2,7,"LM","mutation",1,7,3,TRUE
+1,2,0,2,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+1,2,0,2,8,"MECIT (mob)","mutation",1,0,0,FALSE
+1,2,0,2,8,"ctree","mutation",1,9,4,TRUE
+1,2,0,2,8,"rpart","mutation",1,5,2,TRUE
+1,2,0,2,8,"LM + macro","mutation",1,0,0,FALSE
+1,2,0,2,8,"LM","mutation",1,7,3,TRUE
+1,2,0,2,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,2,0,2,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,2,0,2,9,"ctree","baseline",NA,9,4,TRUE
+1,2,0,2,9,"rpart","baseline",NA,8,4,TRUE
+1,2,0,2,9,"LM + macro","baseline",NA,0,0,FALSE
+1,2,0,2,9,"LM","baseline",NA,7,3,TRUE
+1,2,0,2,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,2,0,2,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,2,0,2,10,"ctree","baseline",NA,11,6,TRUE
+1,2,0,2,10,"rpart","baseline",NA,9,5,TRUE
+1,2,0,2,10,"LM + macro","baseline",NA,0,0,FALSE
+1,2,0,2,10,"LM","baseline",NA,7,4,TRUE
+1,2,0,2,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,2,0,2,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,2,0,2,11,"ctree","baseline",NA,8,4,TRUE
+1,2,0,2,11,"rpart","baseline",NA,6,3,TRUE
+1,2,0,2,11,"LM + macro","baseline",NA,0,0,FALSE
+1,2,0,2,11,"LM","baseline",NA,9,4,TRUE
+1,2,0,2,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,2,0,2,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,2,0,2,12,"ctree","baseline",NA,9,4,TRUE
+1,2,0,2,12,"rpart","baseline",NA,11,3,TRUE
+1,2,0,2,12,"LM + macro","baseline",NA,0,0,FALSE
+1,2,0,2,12,"LM","baseline",NA,8,3,TRUE
+1,2,0,2,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,2,0,2,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,2,0,2,13,"ctree","baseline",NA,8,4,TRUE
+1,2,0,2,13,"rpart","baseline",NA,8,3,TRUE
+1,2,0,2,13,"LM + macro","baseline",NA,0,0,FALSE
+1,2,0,2,13,"LM","baseline",NA,9,5,TRUE
+1,2,0,2,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+1,2,0,2,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+1,2,0,2,14,"ctree","baseline",NA,10,4,TRUE
+1,2,0,2,14,"rpart","baseline",NA,6,4,TRUE
+1,2,0,2,14,"LM + macro","baseline",NA,0,0,FALSE
+1,2,0,2,14,"LM","baseline",NA,8,5,TRUE
+1,2,0,2,15,"MECIT (ctree)","null",NA,0,0,FALSE
+1,2,0,2,15,"MECIT (mob)","null",NA,0,0,FALSE
+1,2,0,2,15,"ctree","null",NA,0,0,FALSE
+1,2,0,2,15,"rpart","null",NA,0,0,FALSE
+1,2,0,2,15,"LM + macro","null",NA,0,0,FALSE
+1,2,0,2,15,"LM","null",NA,0,0,FALSE
+1,2,0,2,16,"MECIT (ctree)","null",NA,0,0,FALSE
+1,2,0,2,16,"MECIT (mob)","null",NA,0,0,FALSE
+1,2,0,2,16,"ctree","null",NA,0,0,FALSE
+1,2,0,2,16,"rpart","null",NA,0,0,FALSE
+1,2,0,2,16,"LM + macro","null",NA,0,0,FALSE
+1,2,0,2,16,"LM","null",NA,0,0,FALSE
+1,2,0,2,17,"MECIT (ctree)","null",NA,0,0,FALSE
+1,2,0,2,17,"MECIT (mob)","null",NA,0,0,FALSE
+1,2,0,2,17,"ctree","null",NA,0,0,FALSE
+1,2,0,2,17,"rpart","null",NA,0,0,FALSE
+1,2,0,2,17,"LM + macro","null",NA,0,0,FALSE
+1,2,0,2,17,"LM","null",NA,0,0,FALSE
+1,2,0,2,18,"MECIT (ctree)","null",NA,0,0,FALSE
+1,2,0,2,18,"MECIT (mob)","null",NA,0,0,FALSE
+1,2,0,2,18,"ctree","null",NA,0,0,FALSE
+1,2,0,2,18,"rpart","null",NA,0,0,FALSE
+1,2,0,2,18,"LM + macro","null",NA,0,0,FALSE
+1,2,0,2,18,"LM","null",NA,0,0,FALSE
+1,2,0,2,19,"MECIT (ctree)","null",NA,0,0,FALSE
+1,2,0,2,19,"MECIT (mob)","null",NA,0,0,FALSE
+1,2,0,2,19,"ctree","null",NA,0,0,FALSE
+1,2,0,2,19,"rpart","null",NA,0,0,FALSE
+1,2,0,2,19,"LM + macro","null",NA,0,0,FALSE
+1,2,0,2,19,"LM","null",NA,1,0,TRUE
+1,2,0,2,20,"MECIT (ctree)","null",NA,0,0,FALSE
+1,2,0,2,20,"MECIT (mob)","null",NA,0,0,FALSE
+1,2,0,2,20,"ctree","null",NA,0,0,FALSE
+1,2,0,2,20,"rpart","null",NA,0,0,FALSE
+1,2,0,2,20,"LM + macro","null",NA,0,0,FALSE
+1,2,0,2,20,"LM","null",NA,0,0,FALSE
+2,2,0,2,1,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,2,1,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,2,1,"ctree","mutation",1,11,5,TRUE
+2,2,0,2,1,"rpart","mutation",0.5,9,4,TRUE
+2,2,0,2,1,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,2,1,"LM","mutation",1,4,2,TRUE
+2,2,0,2,2,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,2,2,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,2,2,"ctree","mutation",1,9,4,TRUE
+2,2,0,2,2,"rpart","mutation",1,6,4,TRUE
+2,2,0,2,2,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,2,2,"LM","mutation",1,9,4,TRUE
+2,2,0,2,3,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,2,3,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,2,3,"ctree","mutation",1,10,5,TRUE
+2,2,0,2,3,"rpart","mutation",1,7,5,TRUE
+2,2,0,2,3,"LM + macro","mutation",1,1,1,TRUE
+2,2,0,2,3,"LM","mutation",1,8,6,TRUE
+2,2,0,2,4,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,2,4,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,2,4,"ctree","mutation",0.5,8,3,TRUE
+2,2,0,2,4,"rpart","mutation",0.5,6,1,TRUE
+2,2,0,2,4,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,2,4,"LM","mutation",1,7,3,TRUE
+2,2,0,2,5,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,2,5,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,2,5,"ctree","mutation",1,10,6,TRUE
+2,2,0,2,5,"rpart","mutation",1,9,6,TRUE
+2,2,0,2,5,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,2,5,"LM","mutation",1,6,3,TRUE
+2,2,0,2,6,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,2,6,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,2,6,"ctree","mutation",1,11,2,TRUE
+2,2,0,2,6,"rpart","mutation",1,7,2,TRUE
+2,2,0,2,6,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,2,6,"LM","mutation",1,7,4,TRUE
+2,2,0,2,7,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,2,7,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,2,7,"ctree","mutation",1,10,5,TRUE
+2,2,0,2,7,"rpart","mutation",1,9,5,TRUE
+2,2,0,2,7,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,2,7,"LM","mutation",1,7,3,TRUE
+2,2,0,2,8,"MECIT (ctree)","mutation",1,0,0,FALSE
+2,2,0,2,8,"MECIT (mob)","mutation",1,0,0,FALSE
+2,2,0,2,8,"ctree","mutation",1,9,4,TRUE
+2,2,0,2,8,"rpart","mutation",1,5,2,TRUE
+2,2,0,2,8,"LM + macro","mutation",1,0,0,FALSE
+2,2,0,2,8,"LM","mutation",1,7,3,TRUE
+2,2,0,2,9,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,2,0,2,9,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,2,0,2,9,"ctree","baseline",NA,9,4,TRUE
+2,2,0,2,9,"rpart","baseline",NA,8,4,TRUE
+2,2,0,2,9,"LM + macro","baseline",NA,0,0,FALSE
+2,2,0,2,9,"LM","baseline",NA,7,3,TRUE
+2,2,0,2,10,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,2,0,2,10,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,2,0,2,10,"ctree","baseline",NA,11,6,TRUE
+2,2,0,2,10,"rpart","baseline",NA,9,5,TRUE
+2,2,0,2,10,"LM + macro","baseline",NA,0,0,FALSE
+2,2,0,2,10,"LM","baseline",NA,7,4,TRUE
+2,2,0,2,11,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,2,0,2,11,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,2,0,2,11,"ctree","baseline",NA,8,4,TRUE
+2,2,0,2,11,"rpart","baseline",NA,6,3,TRUE
+2,2,0,2,11,"LM + macro","baseline",NA,0,0,FALSE
+2,2,0,2,11,"LM","baseline",NA,9,4,TRUE
+2,2,0,2,12,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,2,0,2,12,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,2,0,2,12,"ctree","baseline",NA,9,4,TRUE
+2,2,0,2,12,"rpart","baseline",NA,11,3,TRUE
+2,2,0,2,12,"LM + macro","baseline",NA,0,0,FALSE
+2,2,0,2,12,"LM","baseline",NA,8,3,TRUE
+2,2,0,2,13,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,2,0,2,13,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,2,0,2,13,"ctree","baseline",NA,8,4,TRUE
+2,2,0,2,13,"rpart","baseline",NA,8,3,TRUE
+2,2,0,2,13,"LM + macro","baseline",NA,0,0,FALSE
+2,2,0,2,13,"LM","baseline",NA,9,5,TRUE
+2,2,0,2,14,"MECIT (ctree)","baseline",NA,0,0,FALSE
+2,2,0,2,14,"MECIT (mob)","baseline",NA,0,0,FALSE
+2,2,0,2,14,"ctree","baseline",NA,10,4,TRUE
+2,2,0,2,14,"rpart","baseline",NA,6,4,TRUE
+2,2,0,2,14,"LM + macro","baseline",NA,0,0,FALSE
+2,2,0,2,14,"LM","baseline",NA,8,5,TRUE
+2,2,0,2,15,"MECIT (ctree)","null",NA,0,0,FALSE
+2,2,0,2,15,"MECIT (mob)","null",NA,0,0,FALSE
+2,2,0,2,15,"ctree","null",NA,0,0,FALSE
+2,2,0,2,15,"rpart","null",NA,0,0,FALSE
+2,2,0,2,15,"LM + macro","null",NA,0,0,FALSE
+2,2,0,2,15,"LM","null",NA,0,0,FALSE
+2,2,0,2,16,"MECIT (ctree)","null",NA,0,0,FALSE
+2,2,0,2,16,"MECIT (mob)","null",NA,0,0,FALSE
+2,2,0,2,16,"ctree","null",NA,0,0,FALSE
+2,2,0,2,16,"rpart","null",NA,0,0,FALSE
+2,2,0,2,16,"LM + macro","null",NA,0,0,FALSE
+2,2,0,2,16,"LM","null",NA,0,0,FALSE
+2,2,0,2,17,"MECIT (ctree)","null",NA,0,0,FALSE
+2,2,0,2,17,"MECIT (mob)","null",NA,0,0,FALSE
+2,2,0,2,17,"ctree","null",NA,0,0,FALSE
+2,2,0,2,17,"rpart","null",NA,0,0,FALSE
+2,2,0,2,17,"LM + macro","null",NA,0,0,FALSE
+2,2,0,2,17,"LM","null",NA,0,0,FALSE
+2,2,0,2,18,"MECIT (ctree)","null",NA,0,0,FALSE
+2,2,0,2,18,"MECIT (mob)","null",NA,0,0,FALSE
+2,2,0,2,18,"ctree","null",NA,0,0,FALSE
+2,2,0,2,18,"rpart","null",NA,0,0,FALSE
+2,2,0,2,18,"LM + macro","null",NA,0,0,FALSE
+2,2,0,2,18,"LM","null",NA,0,0,FALSE
+2,2,0,2,19,"MECIT (ctree)","null",NA,0,0,FALSE
+2,2,0,2,19,"MECIT (mob)","null",NA,0,0,FALSE
+2,2,0,2,19,"ctree","null",NA,0,0,FALSE
+2,2,0,2,19,"rpart","null",NA,0,0,FALSE
+2,2,0,2,19,"LM + macro","null",NA,0,0,FALSE
+2,2,0,2,19,"LM","null",NA,1,0,TRUE
+2,2,0,2,20,"MECIT (ctree)","null",NA,0,0,FALSE
+2,2,0,2,20,"MECIT (mob)","null",NA,0,0,FALSE
+2,2,0,2,20,"ctree","null",NA,0,0,FALSE
+2,2,0,2,20,"rpart","null",NA,0,0,FALSE
+2,2,0,2,20,"LM + macro","null",NA,0,0,FALSE
+2,2,0,2,20,"LM","null",NA,0,0,FALSE

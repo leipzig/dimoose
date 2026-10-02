@@ -45,6 +45,7 @@ optional packages, which are only needed if you use that feature:
 |---|---|
 | Keys from a sequence alignment (`keyFromAlignment()`) | `ape`, and `phangorn` for midpoint rooting, UPGMA, parsimony, maximum likelihood and proteins |
 | Keys from photos (`visionModel()`, `embedImages()`) | `reticulate`, and Python with open_clip (see [From a pile of photos](#from-a-pile-of-photos)) |
+| Mixed-effects conditional inference trees (`mecit()`) | `partykit` and `lme4`, and `glmertree` for `method = "mob"` |
 | Phylogenetics exports (`toTreedata()`, `toIgraph()`, `toAuspiceJSON()`) | `tidytree`, `tibble` and `ape`; `igraph`; `jsonlite` |
 
 To install all of the optional R packages at once, and build the vignettes:
@@ -62,7 +63,7 @@ summary(sharks)
 exportWizard(sharks, "sharks.html")   # an interactive, self-contained wizard
 ```
 
-There are vignettes on the package basics, example applications, and [building keys from images](vignettes/vision-keys.Rmd).
+There are vignettes on automated key generation [from photos](vignettes/vision-keys.Rmd) and [from a sequence alignment](vignettes/alignment-keys.Rmd), and on [mixed-effects conditional inference trees](vignettes/mecit.Rmd).
 
 ## Included datasets
 
@@ -211,6 +212,33 @@ The R side works on plain matrices, so embeddings from any other model (for
 example a domain model such as BioCLIP) can be passed to `discoverSniglets()`,
 `keyFromSniglets()`, `keyFromClusters()` and `featureScores()` directly, without
 Python.
+
+# Mixed-effects conditional inference trees
+
+A mixed-effects conditional inference tree (MECIT) is a decision tree for
+clustered data. A random effect absorbs the differences between clusters, so
+the tree only splits on variables that matter within them. In mtDNA, this means
+a recurrent mutation can be found even though each large haplogroup has its
+own background, and the tree does not split on clade markers that merely
+track the haplogroup. `mecit()` implements RE-EM trees with conditional
+inference trees (Fu & Simonoff 2015). `method = "mob"` uses `glmertree`
+instead (Fokkema et al. 2018). A fitted tree is a key:
+
+```r
+sim <- simulateExpression(n = 1000, genes = 20, seed = 1)   # PhyloTree haplotypes + expression
+fit <- mecit(sim$expr[, 1], sim$X, cluster = sim$samples$macro)
+splitVariables(fit)
+key <- keyFromMecit(fit)          # couplets: "Carries 150" / "Does not carry 150"
+classify(key, sim$X)              # place samples in expression strata
+```
+
+`haplotypeMatrix()`, `recurrentPositions()` and `macroHaplogroup()` turn
+PhyloTree haplogroups into the 0/1 site matrix these trees split on. In a
+simulation study (`analysis/mecit/`), plain `ctree` and `rpart` split on clade
+markers for every gene that had only a haplogroup baseline. The MECIT made no
+false splits in 360 genes, and found every true site at effects of 1 SD or more.
+See the [MECIT vignette](vignettes/mecit.Rmd). These functions need the
+suggested packages `partykit` and `lme4`, plus `glmertree` for `method = "mob"`.
 
 # Interoperating with phylogenetics tools
 

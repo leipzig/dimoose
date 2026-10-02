@@ -38,18 +38,21 @@ Suggests:
     ape,
     phangorn,
     gbm,
+    glmertree,
     igraph,
     jpeg,
     jsonlite,
     knitr,
+    lme4,
+    partykit,
     png,
     randomForest,
     reticulate,
     rmarkdown,
-    tidytree,
     taxize (>= 0.9.100),
     testthat (>= 3.0.0),
     tibble,
+    tidytree,
     withr
 Config/testthat/edition: 3
 RoxygenNote: 7.3.1
