@@ -47,7 +47,7 @@ Suggests:
     partykit,
     png,
     randomForest,
-    reticulate,
+    reticulate (>= 1.41.0),
     rmarkdown,
     taxize (>= 0.9.100),
     testthat (>= 3.0.0),

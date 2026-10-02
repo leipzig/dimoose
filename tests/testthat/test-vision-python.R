@@ -2,6 +2,9 @@ skipUnlessVision <- function() {
   skip_if_not_installed("reticulate")
   w <- Sys.getenv("MOOSE_CLIP_WEIGHTS")
   skip_if(!nzchar(w) || !file.exists(w), "MOOSE_CLIP_WEIGHTS not set")
+  # declare the requirements first, as visionModel() does, so that a Python
+  # provided by reticulate has them
+  if (!reticulate::py_available(initialize = FALSE)) reticulate::py_require(pythonRequirements())
   skip_if_not(reticulate::py_module_available("open_clip"), "open_clip not installed")
 }
 
@@ -67,4 +70,8 @@ test_that("images to key to classify, with exemplar crops and scores for new ima
   s2 <- scoreImages(qkey, m, p)
   expect_equal(colnames(s2), qkey$features$id)
   expect_length(qkey$validate(), 0)
+})
+
+test_that("the Python requirements come from the bundled requirements file", {
+  expect_setequal(pythonRequirements(), c("torch", "open_clip_torch", "pillow", "numpy"))
 })
