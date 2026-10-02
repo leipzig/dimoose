@@ -29,6 +29,32 @@ This package provides tools to:
 
 # Getting started
 
+## Installation
+
+moose is installed from GitHub:
+
+```r
+install.packages("remotes")
+remotes::install_github("leipzig/moose")
+```
+
+That is enough to read, build, check and export keys. Some features use
+optional packages, which are only needed if you use that feature:
+
+| Feature | Also needs |
+|---|---|
+| Keys from a sequence alignment (`keyFromAlignment()`) | `ape`, and `phangorn` for midpoint rooting, UPGMA, parsimony, maximum likelihood and proteins |
+| Keys from photos (`visionModel()`, `embedImages()`) | `reticulate`, and Python with open_clip (see [From a pile of photos](#from-a-pile-of-photos)) |
+| Phylogenetics exports (`toTreedata()`, `toIgraph()`, `toAuspiceJSON()`) | `tidytree`, `tibble` and `ape`; `igraph`; `jsonlite` |
+
+To install all of the optional R packages at once, and build the vignettes:
+
+```r
+remotes::install_github("leipzig/moose", dependencies = TRUE, build_vignettes = TRUE)
+```
+
+## A first key
+
 ```r
 library(moose)
 sharks <- sharkKey()
