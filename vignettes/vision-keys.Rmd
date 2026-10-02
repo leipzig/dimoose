@@ -34,11 +34,13 @@ library(moose)
 images <- imageSet("pics")                   # 1. photos and their labels
 model  <- visionModel()                      # 2. a vision model
 emb    <- embedImages(model, images)         # 3. photos -> embeddings
-terms  <- discoverTerms(emb$patches)         # 4. recurring visual features...
-scores <- termScores(emb$patches, terms$centroids)
-key    <- keyFromTerms(scores, images, terms, method = "rpart")   # ...and a key on them
+sniglets <- discoverSniglets(emb$patches)    # 4. sniglets: recurring visual features...
+scores   <- snigletScores(emb$patches, sniglets$centroids)
+key      <- keyFromSniglets(scores, images, sniglets, method = "rpart")   # ...and a key on them
 key    <- patchExemplars(model, key, images) # 5. example crops, then a web page
 exportWizard(key, "key.html")
+
+key <- renameSniglets(key, c(smeinfisshiesk = "an egg-crate grille"))   # 6. name what you see
 ```
 
 `key.html` is a self-contained page that walks a person through the key,
@@ -130,28 +132,29 @@ This is the slow step; the later ones take seconds.
 There are two ways to build the key. They differ in what the questions look
 like.
 
-### Invented visual terms
+### Sniglets
 
-`discoverTerms()` clusters all the patches. Each cluster is a recurring
-visual feature. It has no English name, so moose gives it an invented,
-pronounceable one, and defines it by the patches that match it best.
-`termScores()` scores each photo for each term, and `keyFromTerms()` grows a
-key in which each step asks whether the specimen has one term:
+`discoverSniglets()` clusters all the patches. Each cluster is a recurring
+visual feature. It has no name, so moose coins a pronounceable word for it
+(`smeinfisshiesk`) and defines it by the patches that match it best. These are
+**sniglets**. `snigletScores()` scores each photo for each sniglet, and
+`keyFromSniglets()` grows a key in which each step asks whether the specimen
+has one sniglet:
 
 ```{r}
-terms  <- discoverTerms(emb$patches, k = 40)
-scores <- termScores(emb$patches, terms$centroids)
-key    <- keyFromTerms(scores, images, terms, method = "rpart")
+sniglets <- discoverSniglets(emb$patches, k = 40)
+scores   <- snigletScores(emb$patches, sniglets$centroids)
+key      <- keyFromSniglets(scores, images, sniglets, method = "rpart")
 key
 ```
 
-`keyFromTerms()` has two tree builders:
+`keyFromSniglets()` has two tree builders:
 
 - `method = "rpart"` fits a classification tree. **Use it when you have
   several photos per class.**
 - `method = "balanced"` (the default, and the method of the
   [fordera](https://github.com/leipzig/fordera) project) picks at each step
-  the term that splits the remaining classes most evenly. It is meant for
+  the sniglet that splits the remaining classes most evenly. It is meant for
   **one photo per class**.
 
 On 32 photos of pickup trucks in three classes (about ten photos each),
@@ -186,13 +189,63 @@ key                                          # size of the key
 key$leads[, c("Statement", "Character", "Next", "Taxon")]
 ```
 
-For a key of invented terms, add example crops so that people can see what
-each term means, then export the wizard:
+For a key of sniglets, add example crops so that people can see what each
+sniglet means, then export the wizard:
 
 ```{r}
 key <- patchExemplars(model, key, images)
 exportWizard(key, "key.html")
 ```
+
+## Step 6: rename the sniglets
+
+A coined word tells a reader nothing until they have looked at the crops.
+Once you have looked, you can say what each sniglet is. `snigletNames()`
+lists them:
+
+```{r}
+snigletNames(key)
+#>         sniglet          name definition  used
+#> 1     gaithiark     gaithiark       <NA> FALSE
+#> 2 treuxraikbluk treuxraikbluk       <NA>  TRUE
+#> 3     zhuprierl     zhuprierl       <NA> FALSE
+#> ...
+```
+
+Only the sniglets the key uses (`used`) need names. Rename a few directly:
+
+```{r}
+key <- renameSniglets(key,
+  c(smeinfisshiesk = "an egg-crate grille"),
+  definitions = c(smeinfisshiesk = "A grid of small square openings between the headlights"))
+```
+
+or fill in the table in a spreadsheet and read it back:
+
+```{r}
+write.csv(snigletNames(key), "names.csv", row.names = FALSE)
+# ... edit the name and definition columns ...
+key <- renameSniglets(key, "names.csv")
+exportWizard(key, "key.html")
+```
+
+The leads now read "Has an egg-crate grille", and the glossary shows the new
+name, the definition and the coined word it replaced.
+
+How renaming works:
+
+- **The coined word is the sniglet's identifier and never changes.** The name
+  is only what people read. Scores, machine tests (`classify()`) and name
+  tables saved earlier keep working after a rename.
+- **A names table** has the columns `sniglet` (the coined word), `name` and,
+  optionally, `definition`. It can be a data frame or a CSV file.
+- **A blank name** puts the coined word back.
+- **Names must be distinct**, and a name cannot be another sniglet's coined
+  word.
+- **Write names as noun phrases.** Leads are "Has *name*" and "Lacks *name*".
+- **To name sniglets before building keys**, rename the `discoverSniglets()`
+  result. Every key built from it then uses the names:
+  `sniglets <- renameSniglets(sniglets, "names.csv")`.
 
 ## How good is the key?
 
@@ -204,7 +257,7 @@ key without each photo in turn and then tries that photo.
 evaluateKey(key, scores, images$label)$accuracy
 
 looKey(images,
-  build = function(train) keyFromTerms(scores[train, ], images[train, ], terms, method = "rpart"),
+  build = function(train) keyFromSniglets(scores[train, ], images[train, ], sniglets, method = "rpart"),
   score = function(key, i) scores[i, , drop = FALSE])$accuracy
 ```
 
@@ -229,8 +282,8 @@ directly. If you have a `photos x dimensions` matrix `X` and a
 the order of `images`, skip steps 2 and 3:
 
 ```{r}
-terms <- discoverTerms(P, k = 40)
-key   <- keyFromTerms(termScores(P, terms$centroids), images, terms)
+sniglets <- discoverSniglets(P, k = 40)
+key      <- keyFromSniglets(snigletScores(P, sniglets$centroids), images, sniglets)
 ```
 
 This is how a domain model such as BioCLIP can drive moose for biological

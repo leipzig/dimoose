@@ -2,14 +2,14 @@
 % Please edit documentation in R/vision-python.R
 \name{patchExemplars}
 \alias{patchExemplars}
-\title{Add example crops to a term key}
+\title{Add example crops to a sniglet key}
 \usage{
 patchExemplars(model, key, images, pad = 48, size = 96)
 }
 \arguments{
 \item{model}{A [visionModel()].}
 
-\item{key}{A key from [keyFromTerms()].}
+\item{key}{A key from [keyFromSniglets()].}
 
 \item{images}{The [imageSet()] the key was built from (for file paths).}
 
@@ -19,7 +19,7 @@ patchExemplars(model, key, images, pad = 48, size = 96)
 The key, modified in place and returned invisibly.
 }
 \description{
-Cuts out the best-matching patch (with some context) for each term's
+Cuts out the best-matching patch (with some context) for each sniglet's
 exemplars, stores them as PNGs in the key's `features` and `meta`, and
-points each "Has term" lead at them so [exportWizard()] shows them.
+points each "Has ..." lead at them so [exportWizard()] shows them.
 }

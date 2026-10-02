@@ -12,11 +12,12 @@ featureTable(
   negative_prompt = NA,
   region = NA,
   embedding = NULL,
-  exemplars = NULL
+  exemplars = NULL,
+  definition = NA
 )
 }
 \arguments{
-\item{id}{Feature ids, e.g. `"term:dulmzil"` or `"text:round_headlights"`.}
+\item{id}{Feature ids, e.g. `"sniglet:dulmzil"` or `"text:round_headlights"`.}
 
 \item{kind}{`"centroid_patch_max"` (highest cosine similarity between any
 image patch embedding and `embedding`), `"clip_text_pair"` (cosine with
@@ -33,6 +34,9 @@ by the user).}
 
 \item{exemplars}{List of data frames with columns `image`, `patch`,
 `score` and optionally `png` (base64) showing what the feature means.}
+
+\item{definition}{Optional sentence saying what the feature is, shown in
+the wizard's glossary (see [renameSniglets()]).}
 }
 \value{
 A data frame with the columns above; `embedding` and `exemplars`
@@ -44,5 +48,5 @@ a `features` table that says how a machine computes the score each lead
 tests. [classify()] walks a key over a matrix of such scores.
 }
 \examples{
-featureTable("term:x", "centroid_patch_max", embedding = list(c(1, 0, 0)))
+featureTable("sniglet:x", "centroid_patch_max", embedding = list(c(1, 0, 0)))
 }

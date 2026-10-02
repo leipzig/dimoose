@@ -20,15 +20,15 @@ emb <- embedImages(model, paths)
 cent <- np$load(file.path(fordera, "outputs/trait_centroids.npy"))
 ts <- fromJSON(file.path(fordera, "outputs/trait_summary.json"), simplifyVector = FALSE)
 rownames(cent) <- unlist(ts$names)
-ours <- termScores(emb$patches, cent)
+ours <- snigletScores(emb$patches, cent)
 theirs <- t(vapply(man, function(e) unlist(ts$per_image_presence[[e$processed_path]]), numeric(nrow(cent))))
 colnames(theirs) <- rownames(cent); rownames(theirs) <- images$id
 v1 <- max(abs(ours - theirs))
 cat(sprintf("V1 max |moose - fordera| patch score: %.2e  (%s)\n", v1, if (v1 < 1e-3) "PASS" else "FAIL"))
 
 # ---- V2: balanced tree from fordera's scores equals trait_tree.json ----------
-fterms <- structure(list(terms = data.frame(id = seq_len(nrow(cent)), name = rownames(cent)), centroids = cent, exemplars = NULL), class = "mooseTerms")
-k2 <- keyFromTerms(theirs, images, fterms, quantile = 0.6)
+fterms <- structure(list(sniglets = data.frame(id = seq_len(nrow(cent)), sniglet = rownames(cent), name = rownames(cent), definition = NA_character_), centroids = cent, exemplars = NULL), class = "mooseSniglets")
+k2 <- keyFromSniglets(theirs, images, fterms, quantile = 0.6)
 tt <- fromJSON(file.path(fordera, "outputs/trait_tree.json"), simplifyVector = FALSE)
 rows <- list(); counter <- 0
 conv <- function(n) {
@@ -36,7 +36,7 @@ conv <- function(n) {
   kids <- list(n$yes, n$no)
   nx <- vapply(kids, function(k) if (k$type == "leaf") "-" else conv(k), "")
   rows[[id]] <<- data.frame(Statement = id, Choice = c("a", "b"), Next = nx,
-    Taxon = vapply(kids, function(k) if (k$type == "leaf") k$label else "", ""), Feature = paste0("term:", n$trait_name))
+    Taxon = vapply(kids, function(k) if (k$type == "leaf") k$label else "", ""), Feature = paste0("sniglet:", n$trait_name))
   id
 }
 conv(tt)
@@ -47,13 +47,13 @@ cat(sprintf("V2 tree identical: %s; year %d/33, generation %d/33 (%s)\n", same, 
   if (same && sum(e2$results$correct) == 26 && sum(e2$results$groupCorrect) == 28) "PASS" else "CHECK"))
 
 # ---- V3: from scratch ---------------------------------------------------------
-terms <- discoverTerms(emb$patches, k = 40, seed = 1)
-scores <- termScores(emb$patches, terms$centroids)
-k3 <- keyFromTerms(scores, images, terms)
+terms <- discoverSniglets(emb$patches, k = 40, seed = 1)
+scores <- snigletScores(emb$patches, terms$centroids)
+k3 <- keyFromSniglets(scores, images, terms)
 e3 <- evaluateKey(k3, scores, images$label, gens)
-loo <- looKey(images, build = function(tr) keyFromTerms(scores[tr, ], images[tr, ], terms), score = function(key, i) scores[i, , drop = FALSE], groups = gens)
+loo <- looKey(images, build = function(tr) keyFromSniglets(scores[tr, ], images[tr, ], terms), score = function(key, i) scores[i, , drop = FALSE], groups = gens)
 looRefit <- looKey(images,
-  build = function(tr) { t <- discoverTerms(emb$patches[tr, , , drop = FALSE], k = 40, seed = 1); keyFromTerms(termScores(emb$patches[tr, , , drop = FALSE], t$centroids), images[tr, ], t) },
+  build = function(tr) { t <- discoverSniglets(emb$patches[tr, , , drop = FALSE], k = 40, seed = 1); keyFromSniglets(snigletScores(emb$patches[tr, , , drop = FALSE], t$centroids), images[tr, ], t) },
   score = function(key, i) featureScores(key, patches = emb$patches[i, , , drop = FALSE]), groups = gens)
 cat(sprintf("V3 from scratch: train year %.1f%% gen %.1f%%; LOO (shared terms) year %.1f%% gen %.1f%%; LOO (refit terms) year %.1f%% gen %.1f%%\n",
   100 * e3$accuracy, 100 * e3$groupAccuracy, 100 * loo$accuracy, 100 * loo$groupAccuracy, 100 * looRefit$accuracy, 100 * looRefit$groupAccuracy))
@@ -75,7 +75,7 @@ cat(sprintf("V4 question key self-walk: year %.1f%% gen %.1f%% (threshold 0); ye
 
 k3 <- patchExemplars(model, k3, images)
 if (nzchar(Sys.getenv("MOOSE_WRITE_HTML"))) {
-  exportWizard(k3, "fordera-terms.html")
+  exportWizard(k3, "fordera-sniglets.html")
   exportWizard(k4, "fordera-questions.html")
 }
 saveRDS(list(v1 = v1, v2_same = same, v2 = e2, v3 = e3, loo = loo, looRefit = looRefit, v4 = e4, v4m = e4m,

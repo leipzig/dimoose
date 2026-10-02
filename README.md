@@ -125,10 +125,11 @@ model  <- visionModel()                          # or visionModel("ViT-B-32.pt")
 # 3. Photos -> embeddings
 emb    <- embedImages(model, images)
 
-# 4. Find recurring visual features ("terms") and grow a key on them
-terms  <- discoverTerms(emb$patches, k = 40)
-scores <- termScores(emb$patches, terms$centroids)
-key    <- keyFromTerms(scores, images, terms, method = "rpart")
+# 4. Generate sniglets (recurring visual features, each given a coined name)
+#    and grow a key on them
+sniglets <- discoverSniglets(emb$patches, k = 40)
+scores   <- snigletScores(emb$patches, sniglets$centroids)
+key      <- keyFromSniglets(scores, images, sniglets, method = "rpart")
 
 # 5. Add example crops and export an interactive page
 key    <- patchExemplars(model, key, images)
@@ -139,9 +140,36 @@ classify(key, scoreImages(key, model, "new.jpg"))
 ```
 
 With one photo per class, use the default `method = "balanced"` in step 4
-(the [fordera](https://github.com/leipzig/fordera) method). To ask questions
-in plain words instead of invented terms, give a vocabulary of contrasting
-features:
+(the [fordera](https://github.com/leipzig/fordera) method).
+
+### Sniglets, and renaming them
+
+The features in step 4 are found by the model, by clustering patches of the
+photos, so they have no names. moose coins a pronounceable word for each one
+(`smeinfisshiesk`, `treuxraikbluk`) and calls these **sniglets**. A lead reads
+"Has smeinfisshiesk", and the wizard's glossary shows the image crops that define
+it. Once you have looked at the crops, give the sniglets real names:
+
+```r
+snigletNames(key)                 # coined word, current name, definition, used by the key?
+
+key <- renameSniglets(key, c(smeinfisshiesk = "an egg-crate grille"),
+                      definitions = c(smeinfisshiesk = "A grid of small square openings between the headlights"))
+
+# or name them in a spreadsheet
+write.csv(snigletNames(key), "names.csv", row.names = FALSE)   # fill in name and definition
+key <- renameSniglets(key, "names.csv")
+exportWizard(key, "key.html")     # leads now read "Has an egg-crate grille"
+```
+
+The coined word stays as the sniglet's permanent identifier: scores, machine
+tests and saved name tables keep working after a rename, and a blank name
+puts the coined word back. Only the names of sniglets the key uses matter.
+
+### Questions from a vocabulary
+
+To ask questions in plain words from the start, give a vocabulary of
+contrasting features instead:
 
 ```r
 vocab  <- data.frame(feature = c("round headlights", "a flat hood"),
@@ -154,8 +182,8 @@ The [photo vignette](vignettes/vision-keys.Rmd) explains each step, and how
 to measure a key's accuracy.
 
 The R side works on plain matrices, so embeddings from any other model (for
-example a domain model such as BioCLIP) can be passed to `discoverTerms()`,
-`keyFromTerms()`, `keyFromClusters()` and `featureScores()` directly, without
+example a domain model such as BioCLIP) can be passed to `discoverSniglets()`,
+`keyFromSniglets()`, `keyFromClusters()` and `featureScores()` directly, without
 Python.
 
 # Interoperating with phylogenetics tools

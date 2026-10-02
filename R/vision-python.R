@@ -86,14 +86,14 @@ embedTexts <- function(model, texts) {
   m
 }
 
-#' Add example crops to a term key
+#' Add example crops to a sniglet key
 #'
-#' Cuts out the best-matching patch (with some context) for each term's
+#' Cuts out the best-matching patch (with some context) for each sniglet's
 #' exemplars, stores them as PNGs in the key's `features` and `meta`, and
-#' points each "Has term" lead at them so [exportWizard()] shows them.
+#' points each "Has ..." lead at them so [exportWizard()] shows them.
 #'
 #' @inheritParams embedImages
-#' @param key A key from [keyFromTerms()].
+#' @param key A key from [keyFromSniglets()].
 #' @param images The [imageSet()] the key was built from (for file paths).
 #' @param pad,size Context around the patch and the crop's output size, px.
 #' @return The key, modified in place and returned invisibly.
@@ -109,7 +109,7 @@ patchExemplars <- function(model, key, images, pad = 48, size = 96) {
     paths <- images$path[match(ex$image, images$id)]
     ex$png <- unlist(model$mod$exemplar_pngs(model$py, as.list(paths), as.list(as.integer(ex$patch - 1L)), pad = pad, size = size))
     f$exemplars[[j]] <- ex
-    name <- f$label[j]
+    name <- snigletWord(f$id[j])   # the coined word: stays put when the sniglet is renamed
     ids <- paste0(gsub("[^A-Za-z0-9_-]", "_", name), "_", seq_len(nrow(ex)))
     meta <- rbind(meta, data.frame(key = paste0("image_", ids), value = paste0("data:image/png;base64,", ex$png), stringsAsFactors = FALSE))
     on <- which(leads$Feature == f$id[j] & leads$Test == ">")

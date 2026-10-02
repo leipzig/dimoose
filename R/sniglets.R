@@ -1,0 +1,383 @@
+#' Invent pronounceable names
+#'
+#' Random words made of consonant onsets, vowels and codas. They name
+#' sniglets: visual features that have no English name (as fordera does).
+#'
+#' @param n Number of names.
+#' @param seed Random seed, so the same call gives the same names.
+#' @return A character vector of `n` distinct lower-case words.
+#' @examples
+#' inventNames(5)
+#' @export
+inventNames <- function(n, seed = 1) {
+  onsets <- c("b", "d", "f", "g", "k", "l", "m", "n", "p", "r", "s", "t", "v", "z",
+              "bl", "br", "dr", "fl", "fr", "gl", "gr", "kl", "kr", "pl", "pr", "sk", "sl", "sm",
+              "sn", "sp", "st", "str", "tr", "th", "sh", "ch", "zh")
+  vowels <- c("a", "e", "i", "o", "u", "ae", "ai", "au", "ei", "eu", "ia", "ie", "oa", "oi", "ou", "ua", "y")
+  codas <- c("", "", "l", "m", "n", "r", "s", "t", "k", "lm", "ld", "nd", "nt", "rk", "rl", "rn",
+             "sk", "st", "ss", "ff", "ps", "x", "ng")
+  set.seed(seed)
+  out <- character()
+  while (length(out) < n) {
+    syl <- sample(2:3, 1)
+    w <- paste0(vapply(seq_len(syl), function(i) {
+      paste0(sample(onsets, 1), sample(vowels, 1), sample(codas, 1))
+    }, character(1)), collapse = "")
+    if (nchar(w) <= 14 && !w %in% out) out <- c(out, w)
+  }
+  out
+}
+
+#' Discover sniglets by clustering patch embeddings
+#'
+#' A sniglet is a visual feature that a model found and that has no name of
+#' its own, so moose coins one for it (`"dulmzil"`). This function runs
+#' k-means on every patch embedding of every image and keeps the unit length
+#' centroids as the definitions of `k` sniglets. An image "has" a sniglet
+#' when one of its patches is close to that centroid (see [snigletScores()]).
+#' Once you have looked at what a sniglet picks out, give it a real name with
+#' [renameSniglets()].
+#'
+#' @param patches A numeric array `images x patches x dimensions` (unit length
+#'   rows), e.g. `embedImages(...)$patches`; `dimnames(patches)[[1]]` are the
+#'   image ids.
+#' @param k Number of sniglets.
+#' @param seed Seed for k-means and for [inventNames()].
+#' @param nstart Random starts for [stats::kmeans()].
+#' @param exemplars Number of best-matching patches to record per sniglet.
+#' @return An object of class `mooseSniglets`: `sniglets` (data frame with
+#'   `id`, `sniglet` (the coined word), `name` (what people see; the coined
+#'   word until renamed) and `definition`), `centroids` (`k x d`, rows named
+#'   by coined word) and `exemplars` (data frame `sniglet`, `image`, `patch`,
+#'   `score`).
+#' @examples
+#' set.seed(1)
+#' patches <- array(rnorm(5 * 9 * 8), c(5, 9, 8))
+#' norms <- sqrt(apply(patches^2, c(1, 2), sum))
+#' patches <- sweep(patches, c(1, 2), norms, "/")
+#' dimnames(patches) <- list(letters[1:5], NULL, NULL)
+#' discoverSniglets(patches, k = 3)$sniglets
+#' @export
+discoverSniglets <- function(patches, k = 40, seed = 1, nstart = 10, exemplars = 4) {
+  stopifnot(is.array(patches), length(dim(patches)) == 3)
+  n <- dim(patches)[1]; p <- dim(patches)[2]; d <- dim(patches)[3]
+  ids <- dimnames(patches)[[1]]
+  if (is.null(ids)) ids <- as.character(seq_len(n))
+  X <- matrix(aperm(patches, c(2, 1, 3)), n * p, d) # row = patch within image, image-major
+  set.seed(seed)
+  km <- stats::kmeans(X, centers = k, nstart = nstart, iter.max = 100)
+  centroids <- km$centers / sqrt(rowSums(km$centers^2))
+  nm <- inventNames(k, seed = seed)
+  rownames(centroids) <- nm
+  sims <- X %*% t(centroids)
+  ex <- do.call(rbind, lapply(seq_len(k), function(j) {
+    top <- order(sims[, j], decreasing = TRUE)[seq_len(min(exemplars, nrow(sims)))]
+    data.frame(sniglet = nm[j], image = ids[(top - 1) %/% p + 1], patch = as.integer((top - 1) %% p + 1),
+               score = sims[top, j], stringsAsFactors = FALSE)
+  }))
+  rownames(ex) <- NULL
+  structure(list(sniglets = data.frame(id = seq_len(k), sniglet = nm, name = nm, definition = NA_character_,
+                                       stringsAsFactors = FALSE),
+                 centroids = centroids, exemplars = ex), class = "mooseSniglets")
+}
+
+#' @rdname discoverSniglets
+#' @param ... Passed to [discoverSniglets()].
+#' @details `discoverTerms()`, `termScores()` and `keyFromTerms()` are the
+#'   earlier names of [discoverSniglets()], [snigletScores()] and
+#'   [keyFromSniglets()], and still work.
+#' @export
+discoverTerms <- function(...) discoverSniglets(...)
+
+#' Score images against sniglets
+#'
+#' @param patches As in [discoverSniglets()].
+#' @param centroids A `k x d` matrix of sniglet centroids (unit rows), e.g.
+#'   `discoverSniglets(...)$centroids`.
+#' @return An `images x sniglets` matrix: for each sniglet, the highest cosine
+#'   similarity between the centroid and any patch of the image. Columns are
+#'   named by the coined words, whatever the sniglets have been renamed to.
+#' @export
+snigletScores <- function(patches, centroids) {
+  n <- dim(patches)[1]; p <- dim(patches)[2]; d <- dim(patches)[3]
+  X <- matrix(aperm(patches, c(2, 1, 3)), n * p, d)
+  sims <- X %*% t(centroids)
+  out <- t(vapply(seq_len(n), function(i) apply(sims[(i - 1) * p + seq_len(p), , drop = FALSE], 2, max), numeric(nrow(centroids))))
+  if (nrow(centroids) == 1) out <- matrix(out, n, 1)
+  dimnames(out) <- list(dimnames(patches)[[1]], rownames(centroids))
+  out
+}
+
+#' @rdname snigletScores
+#' @export
+termScores <- function(patches, centroids) snigletScores(patches, centroids)
+
+#' Build a key from sniglet scores
+#'
+#' Each step asks whether the image has one sniglet. `method =
+#' "balanced"` is fordera's algorithm: a sniglet is present when its score is
+#' above the `quantile` of that sniglet's scores over all images; a label has
+#' a sniglet if any of its images does; each split uses the unused sniglet
+#' that divides the remaining labels most evenly (ties to the earlier one).
+#' `method = "rpart"` grows a classification tree on the scores instead, with
+#' the split points as thresholds.
+#'
+#' @param scores `images x sniglets` matrix from [snigletScores()].
+#' @param images [imageSet()] data frame with one row per row of `scores`.
+#' @param sniglets The [discoverSniglets()] object the scores were computed
+#'   with. Names given with [renameSniglets()] are used in the key.
+#' @param method `"balanced"` or `"rpart"`.
+#' @param quantile Presence threshold quantile for `"balanced"`.
+#' @param desc,meta Title and metadata of the key.
+#' @return A [moose] key whose leads carry `Feature`, `Test`, `Threshold` and
+#'   `Question`, and whose `features` table holds the centroids. Feature ids
+#'   are `"sniglet:<coined word>"` and never change; `label` is the name
+#'   shown, which [renameSniglets()] changes.
+#' @export
+keyFromSniglets <- function(scores, images, sniglets, method = c("balanced", "rpart"), quantile = 0.6,
+                            desc = "Key generated from sniglets", meta = NULL) {
+  method <- match.arg(method)
+  sniglets <- asSniglets(sniglets)
+  stopifnot(nrow(scores) == nrow(images))
+  nm <- colnames(scores)
+  labels <- images$label
+  cent <- sniglets$centroids
+  if (is.null(rownames(cent))) rownames(cent) <- sniglets$sniglets$sniglet
+  row <- match(nm, sniglets$sniglets$sniglet)
+  if (anyNA(row)) stop("`scores` has columns that are not sniglets: ", paste(utils::head(nm[is.na(row)], 5), collapse = ", "), call. = FALSE)
+  shown <- sniglets$sniglets$name[row]
+  features <- featureTable(
+    id = paste0("sniglet:", nm), kind = "centroid_patch_max", label = shown,
+    definition = sniglets$sniglets$definition[row],
+    embedding = lapply(seq_along(nm), function(j) unname(cent[nm[j], ])),
+    exemplars = lapply(nm, function(x) {
+      ex <- sniglets$exemplars
+      if (is.null(ex)) NULL else { r <- ex[ex$sniglet == x, c("image", "patch", "score")]; rownames(r) <- NULL; r }
+    })
+  )
+  if (method == "rpart") {
+    data <- data.frame(label = factor(labels), as.data.frame(scores), check.names = FALSE)
+    fit <- rpart::rpart(stats::reformulate(paste0("`", nm, "`"), "label"), data = data, method = "class", y = TRUE,
+      control = rpart::rpart.control(minsplit = 2, minbucket = 1, cp = 0, xval = 0, maxcompete = 0))
+    key <- keyFromRpart(fit, desc, meta)
+    leads <- key$leads
+    # keyFromRpart's Character is labels(fit) with "=" turned into ": ", so an
+    # rpart numeric split "t1>=0.5"/"t1< 0.5" arrives as "t1>: 0.5"/"t1< 0.5".
+    m <- regmatches(leads$Character, regexec("^(.+?)(>:|<) ?([-0-9.e]+)$", leads$Character))
+    feat <- vapply(m, function(x) if (length(x) == 4) x[2] else "", "")
+    op <- vapply(m, function(x) if (length(x) == 4) x[3] else "", "")
+    thr <- as.numeric(vapply(m, function(x) if (length(x) == 4) x[4] else NA_character_, NA_character_))
+    leads$Feature <- ifelse(nzchar(feat), paste0("sniglet:", feat), "")
+    leads$Test <- ifelse(op == ">:", ">", ifelse(op == "<", "<=", ""))
+    leads$Threshold <- thr - 1e-9  # ">=t" is "> t-eps"; "< t" is "<= t-eps"
+    return(keyFromLeads(snigletLeadText(leads, features), desc, meta, features = features))
+  }
+  thresholds <- apply(scores, 2, stats::quantile, probs = quantile, type = 7, names = FALSE)
+  present <- sweep(scores, 2, thresholds, ">")
+  ulab <- sort(unique(labels))
+  labPresent <- t(vapply(ulab, function(l) apply(present[labels == l, , drop = FALSE], 2, any), logical(ncol(scores))))
+  if (ncol(scores) == 1) labPresent <- matrix(labPresent, length(ulab), 1)
+  rows <- list(); counter <- 0L
+  build <- function(idx, used, depth) {
+    if (length(idx) == 1 || depth > 20) return(list(leaf = paste(ulab[idx], collapse = " / ")))
+    best <- NULL; bestScore <- -1
+    for (j in seq_along(nm)) {
+      if (j %in% used) next
+      yes <- idx[labPresent[idx, j]]; no <- idx[!labPresent[idx, j]]
+      if (!length(yes) || !length(no)) next
+      bal <- min(length(yes), length(no)) / max(length(yes), length(no))
+      if (bal > bestScore) { bestScore <- bal; best <- list(j = j, yes = yes, no = no) }
+    }
+    if (is.null(best)) return(list(leaf = paste(ulab[idx], collapse = " / ")))
+    counter <<- counter + 1L
+    id <- as.character(counter)
+    kids <- list(build(best$yes, c(used, best$j), depth + 1), build(best$no, c(used, best$j), depth + 1))
+    x <- nm[best$j]
+    rows[[id]] <<- data.frame(
+      Statement = id, Choice = c("a", "b"), Character = "",
+      Next = vapply(kids, function(k) if (is.null(k$leaf)) k$id else "-", ""),
+      Taxon = vapply(kids, function(k) if (is.null(k$leaf)) "" else k$leaf, ""),
+      Question = "", Feature = paste0("sniglet:", x), Test = c(">", "<="), Threshold = thresholds[[best$j]],
+      stringsAsFactors = FALSE)
+    list(id = id)
+  }
+  top <- build(seq_along(ulab), integer(), 0)
+  if (!is.null(top$leaf)) stop("No sniglet separates the labels", call. = FALSE)
+  leads <- do.call(rbind, rows[order(as.integer(names(rows)))])
+  rownames(leads) <- NULL
+  if (is.null(meta)) meta <- data.frame(key = "node_label", value = "Sniglet", stringsAsFactors = FALSE)
+  keyFromLeads(snigletLeadText(leads, features), desc, meta, features = features)
+}
+
+#' @rdname keyFromSniglets
+#' @param terms,... `keyFromTerms()` is the earlier name of
+#'   `keyFromSniglets()`; its third argument was called `terms`.
+#' @export
+keyFromTerms <- function(scores, images, terms, ...) keyFromSniglets(scores, images, terms, ...)
+
+
+#' Names of a key's sniglets
+#'
+#' Lists the sniglets of a key (or of a [discoverSniglets()] result) with the
+#' names they currently go by. This is the table [renameSniglets()] takes:
+#' write it to a CSV file, fill in the `name` and `definition` columns, and
+#' read it back.
+#'
+#' @param x A key from [keyFromSniglets()], or a [discoverSniglets()] result.
+#' @return A data frame with one row per sniglet:
+#'   * `sniglet`: the coined word. It identifies the sniglet and never changes.
+#'   * `name`: the name people see. It is the coined word until you rename it.
+#'   * `definition`: an optional sentence saying what the sniglet is.
+#'   * `used` (keys only): whether the key asks about this sniglet. Only these
+#'     need names.
+#' @seealso [renameSniglets()]
+#' @export
+snigletNames <- function(x) {
+  if (inherits(x, "moose")) {
+    f <- x$features
+    rows <- if (is.null(f)) integer() else which(f$kind == "centroid_patch_max")
+    if (!length(rows)) stop("This key has no sniglets", call. = FALSE)
+    return(data.frame(sniglet = snigletWord(f$id[rows]), name = f$label[rows],
+                      definition = if (is.null(f$definition)) NA_character_ else f$definition[rows],
+                      used = f$id[rows] %in% x$leads$Feature, stringsAsFactors = FALSE))
+  }
+  s <- asSniglets(x)$sniglets[, c("sniglet", "name", "definition")]
+  rownames(s) <- NULL
+  s
+}
+
+#' Rename sniglets
+#'
+#' Sniglets start with coined names (`"dulmzil"`) because nobody has looked at
+#' them yet. After looking at what a sniglet picks out (the example crops in
+#' the wizard's glossary), give it a real name. The coined word stays as the
+#' sniglet's permanent identifier, so scores, machine tests and saved name
+#' tables keep working; only the text people read changes: the leads
+#' (`"Has round headlights"`), the questions and the glossary.
+#'
+#' The names table has one row per sniglet you want to rename, with columns
+#' `sniglet` (the coined word, or the sniglet's current name), `name` and
+#' optionally `definition`. Rules:
+#'
+#' * a blank `name` puts the coined word back;
+#' * no two sniglets may share a name, and a name may not be another
+#'   sniglet's coined word;
+#' * a `definition` column replaces the definitions of the rows listed
+#'   (blank removes one); without the column, definitions are left alone;
+#' * a `used` column, as [snigletNames()] returns, is ignored.
+#'
+#' Names read best as noun phrases (`"an egg-crate grille"`), since leads are
+#' written "Has *name*" and "Lacks *name*".
+#'
+#' @param x A key from [keyFromSniglets()], or a [discoverSniglets()] result
+#'   (so that every key built from it afterwards uses the names).
+#' @param names The new names: a named character vector
+#'   (`c(dulmzil = "an egg-crate grille")`), a names table as described above,
+#'   or the path of a CSV file holding one.
+#' @param definitions Optional named character vector of definitions, named
+#'   like `names`. `names` may be `NULL` to change definitions only.
+#' @return A renamed copy of `x`; `x` itself is not changed.
+#' @seealso [snigletNames()]
+#' @examples
+#' set.seed(1)
+#' patches <- array(rnorm(5 * 9 * 8), c(5, 9, 8))
+#' patches <- sweep(patches, c(1, 2), sqrt(apply(patches^2, c(1, 2), sum)), "/")
+#' s <- discoverSniglets(patches, k = 3)
+#' first <- s$sniglets$sniglet[1]
+#' s <- renameSniglets(s, stats::setNames("round headlights", first),
+#'                     definitions = stats::setNames("Circular lamps in the grille", first))
+#' snigletNames(s)
+#' @export
+renameSniglets <- function(x, names = NULL, definitions = NULL) {
+  current <- snigletNames(x)
+  what <- if (inherits(x, "moose")) "key" else "set"
+  # rows of `current` that the given coined words (or current names) refer to
+  find <- function(words) {
+    row <- match(words, current$sniglet)
+    row[is.na(row)] <- match(words[is.na(row)], current$name)
+    if (anyNA(row)) stop("Not a sniglet of this ", what, ": ", paste(utils::head(words[is.na(row)], 5), collapse = ", "), call. = FALSE)
+    if (anyDuplicated(row)) stop("A sniglet is listed more than once: ", paste(unique(current$sniglet[row[duplicated(row)]]), collapse = ", "), call. = FALSE)
+    row
+  }
+  blankToNA <- function(v) { v <- trimws(as.character(v)); v[!is.na(v) & !nzchar(v)] <- NA; v }
+  tab <- snigletNamesTable(names)
+  row <- find(tab$sniglet)
+  new <- blankToNA(tab$name)
+  new[is.na(new)] <- current$sniglet[row[is.na(new)]]
+  name <- current$name; name[row] <- new
+  taken <- match(tolower(name), tolower(current$sniglet))
+  wrong <- !is.na(taken) & taken != seq_along(name)
+  if (any(wrong)) stop("A name cannot be another sniglet's coined word: ", paste(name[wrong], collapse = ", "), call. = FALSE)
+  clash <- tolower(name) %in% tolower(name)[duplicated(tolower(name))]
+  if (any(clash)) stop("Sniglets cannot share a name: ", paste(unique(name[clash]), collapse = ", "), call. = FALSE)
+  definition <- current$definition
+  if (!is.null(tab$definition)) definition[row] <- blankToNA(tab$definition)
+  if (!is.null(definitions)) {
+    if (is.null(names(definitions))) stop("`definitions` must be a named character vector", call. = FALSE)
+    definition[find(names(definitions))] <- blankToNA(definitions)
+  }
+
+  if (!inherits(x, "moose")) {
+    x <- asSniglets(x)
+    x$sniglets$name <- name
+    x$sniglets$definition <- definition
+    return(x)
+  }
+  f <- x$features
+  rows <- which(f$kind == "centroid_patch_max")
+  f$label[rows] <- name
+  if (is.null(f$definition)) f$definition <- NA_character_
+  f$definition[rows] <- definition
+  keyFromLeads(snigletLeadText(x$leads, f), x$desc, x$meta, x$taxa, features = f)
+}
+
+# ---- internals ---------------------------------------------------------------
+
+# The coined word inside a sniglet feature id ("sniglet:dulmzil"; keys made
+# before the rename used "term:dulmzil").
+snigletWord <- function(id) sub("^[^:]*:", "", id)
+
+# Write the text of every lead that tests a sniglet from the sniglet's name.
+snigletLeadText <- function(leads, features) {
+  j <- match(leads$Feature, features$id[features$kind == "centroid_patch_max"])
+  name <- features$label[features$kind == "centroid_patch_max"][j]
+  on <- !is.na(j) & leads$Test %in% c(">", "<=")
+  leads$Question[on] <- name[on]
+  leads$Character[on] <- paste(ifelse(leads$Test[on] == ">", "Has", "Lacks"), name[on])
+  leads
+}
+
+# A names table (sniglet, name[, definition]) from any accepted input.
+snigletNamesTable <- function(names) {
+  if (is.character(names) && length(names) == 1 && is.null(names(names)) &&
+      (file.exists(names) || grepl("\\.[A-Za-z]+$", names))) {
+    if (!file.exists(names)) stop("Names file not found: ", names, call. = FALSE)
+    names <- utils::read.csv(names, stringsAsFactors = FALSE, colClasses = "character", na.strings = "NA")
+  }
+  tab <- if (is.data.frame(names)) {
+    if (!all(c("sniglet", "name") %in% names(names))) stop("A names table needs columns `sniglet` and `name`", call. = FALSE)
+    names[, intersect(c("sniglet", "name", "definition"), names(names)), drop = FALSE]
+  } else if (is.character(names) && !is.null(names(names))) {
+    data.frame(sniglet = names(names), name = unname(names), stringsAsFactors = FALSE)
+  } else if (is.null(names)) {
+    data.frame(sniglet = character(), name = character(), stringsAsFactors = FALSE)
+  } else {
+    stop("`names` must be a named character vector, a names table or a CSV file", call. = FALSE)
+  }
+  tab$sniglet <- trimws(as.character(tab$sniglet))
+  tab
+}
+
+# Accept the object discoverTerms() used to return.
+asSniglets <- function(x) {
+  if (inherits(x, "mooseSniglets")) return(x)
+  if (inherits(x, "mooseTerms") && !is.null(x$terms)) {
+    ex <- x$exemplars
+    if (!is.null(ex) && "term" %in% names(ex)) names(ex)[names(ex) == "term"] <- "sniglet"
+    return(structure(list(
+      sniglets = data.frame(id = x$terms$id, sniglet = x$terms$name, name = x$terms$name,
+                            definition = NA_character_, stringsAsFactors = FALSE),
+      centroids = x$centroids, exemplars = ex), class = "mooseSniglets"))
+  }
+  stop("Expected the result of discoverSniglets()", call. = FALSE)
+}
