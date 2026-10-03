@@ -140,6 +140,12 @@ See the [alignment vignette](vignettes/alignment-keys.Rmd).
 
 ## From a pile of photos
 
+<a href="media/sniglets.mp4"><img src="media/sniglets.gif" width="560" alt="Stepping through a key built from photos of six fruits: each lead shows example crops of a sniglet, and the map shows which fruits are still possible"></a>
+
+*A key built from the example photos, followed in the wizard that
+`exportWizard()` writes. Each choice asks about one sniglet and shows
+crops of it. ([Full-quality video](media/sniglets.mp4))*
+
 You need photos, and a label for each one saying what it shows. The photos
 are embedded with a vision model (CLIP ViT-B/32 by default) that runs in
 Python, but there is nothing to install by hand: the first `visionModel()`

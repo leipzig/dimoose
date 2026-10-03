@@ -20,3 +20,4 @@
 ^tests/python$
 ^tests/python/\.pytest_cache$
 \.pytest_cache
+^media$
