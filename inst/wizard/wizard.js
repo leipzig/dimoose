@@ -31,12 +31,39 @@
   totalTaxa = Object.keys(totalTaxa).length;
   var smooth = !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
-  function currentId() {
-    var id = decodeURIComponent(location.hash.slice(1));
-    if (byId[id]) return id;
-    var el = id && doc.getElementById(id);
+  // Where the reader is. The page keeps this itself and does not depend on
+  // the address bar: in a preview pane or an embedded frame a "#..." link
+  // often goes nowhere, and the key must still work there.
+  var here = "";
+
+  function readHash() {
+    try { return decodeURIComponent(location.hash.slice(1)); } catch (e) { return ""; }
+  }
+
+  // The section an anchor belongs to: itself, the glossary for a glossary
+  // entry, or null when the page has no such anchor.
+  function sectionOf(anchor) {
+    if (byId[anchor]) return anchor;
+    var el = anchor && doc.getElementById(anchor);
     if (el && el.closest && el.closest(".glossary")) return "glossary";
-    return root;
+    return null;
+  }
+
+  function currentId() { return sectionOf(here) || root; }
+
+  // Go to an anchor of this page. Returns false if it is not one of ours.
+  function go(anchor) {
+    if (!sectionOf(anchor)) return false;
+    here = anchor;
+    try {
+      if (readHash() !== anchor) history.pushState({ moose: anchor }, "", "#" + encodeURIComponent(anchor));
+    } catch (e) { /* no history here (sandboxed frame): the page still moves */ }
+    update(true);
+    if (!body.classList.contains("wizard")) {   // the full key: jump to the place
+      var el = doc.getElementById(anchor);
+      if (el) el.scrollIntoView();
+    }
+    return true;
   }
 
   // The lead in section `fromId` that points at `toId`, as "1a Text of lead".
@@ -191,13 +218,13 @@
       if (h) h.focus({ preventScroll: true });
     }
     if (id === "glossary") {
-      var target = doc.getElementById(decodeURIComponent(location.hash.slice(1)));
+      var target = doc.getElementById(here);
       if (target && target !== byId[id]) target.scrollIntoView();
     }
   }
 
   backBtn.addEventListener("click", function () {
-    if (trail.length > 1) location.hash = "#" + trail[trail.length - 2].id;
+    if (trail.length > 1) go(trail[trail.length - 2].id);
   });
 
   modeBtn.addEventListener("click", function () {
@@ -257,12 +284,37 @@
     if (img.complete && img.naturalWidth === 0) dropImage(img);
   });
 
-  window.addEventListener("hashchange", function () { update(true); });
+  // Links within the page are followed here; see `here` above.
+  doc.addEventListener("click", function (ev) {
+    if (ev.defaultPrevented || ev.button || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    var a = ev.target.closest && ev.target.closest("a");
+    var href = a && (a.getAttribute("href") || a.getAttribute("xlink:href"));
+    if (!href || href.charAt(0) !== "#") return;
+    var anchor;
+    try { anchor = decodeURIComponent(href.slice(1)); } catch (e) { return; }
+    if (!sectionOf(anchor)) return;
+    ev.preventDefault();
+    go(anchor);
+  });
+
+  // Back and forward buttons, and an address typed by hand
+  function fromAddress(ev) {
+    var anchor = ev && ev.state && ev.state.moose ? ev.state.moose : readHash();
+    here = sectionOf(anchor) ? anchor : "";
+    update(true);
+    // the browser may still jump to the anchor after this; a step starts at the top
+    if (body.classList.contains("wizard") && currentId() !== "glossary" && window.requestAnimationFrame) {
+      window.requestAnimationFrame(function () { window.scrollTo(0, 0); });
+    }
+  }
+  window.addEventListener("popstate", fromAddress);
+  window.addEventListener("hashchange", function () { if (readHash() !== here) fromAddress(); });
 
   doc.addEventListener("click", function (ev) {
     var fig = ev.target.closest && ev.target.closest(".fig");
     if (fig && !fig.closest("a")) fig.classList.toggle("big");
   });
 
+  here = sectionOf(readHash()) ? readHash() : "";
   update(false);
 })();

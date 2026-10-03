@@ -226,3 +226,11 @@ test_that("a glossary crop the key already stores is embedded once", {
   key$features <- f
   expect_match(exportWizard(key), "background-image:url(&quot;data:image/png;base64,b3RoZXI=", fixed = TRUE)
 })
+
+test_that("the wizard script follows in-page links itself", {
+  # Preview panes and sandboxed frames ignore "#..." navigation, so the page
+  # must not depend on location.hash changing to move between couplets.
+  js <- paste(readLines(system.file("wizard", "wizard.js", package = "moose"), warn = FALSE), collapse = "\n")
+  expect_false(grepl("location.hash\\s*=", js))
+  expect_match(js, "ev.preventDefault();\n    go(anchor);", fixed = TRUE)
+})
