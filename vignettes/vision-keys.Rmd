@@ -139,6 +139,9 @@ checkpoint you already have:
 model <- visionModel()                       # or visionModel("ViT-B-32.pt")
 ```
 
+For photos of organisms, use BioCLIP instead:
+`visionModel(name = "bioclip")`. See [Choosing a model](#models).
+
 The first call also sets up Python (see [Setup](#setup)).
 
 ## Step 3: embed the photos
@@ -381,25 +384,34 @@ sniglets <- discoverSniglets(P, k = 40)
 key      <- keyFromSniglets(snigletScores(P, sniglets$centroids), images, sniglets)
 ```
 
-## BioCLIP and other models
+## Choosing a model: CLIP or BioCLIP {#models}
 
-`visionModel()` loads any open_clip model whose image side is a vision
-transformer. For photos of organisms, [BioCLIP](https://imageomics.github.io/bioclip/)
-is trained on images across the tree of life:
+The model is chosen in step 2, by the `name` you give `visionModel()`:
+
+| Your photos | Model | Call | First download |
+|---|---|---|---|
+| Anything: objects, products, vehicles, mixed subjects | CLIP ViT-B/32 (OpenAI), the default | `visionModel()` | about 350 MB |
+| Organisms: plants, animals, fungi, specimens | [BioCLIP](https://imageomics.github.io/bioclip/) | `visionModel(name = "bioclip")` | about 600 MB |
+| Organisms, when accuracy matters more than speed | [BioCLIP 2](https://huggingface.co/imageomics/bioclip-2) | `visionModel(name = "bioclip-2")` | about 1.7 GB |
 
 ```{r}
-model <- visionModel(name = "bioclip")       # or "bioclip-2"
+model <- visionModel()                    # regular CLIP
+model <- visionModel(name = "bioclip")    # BioCLIP
+model <- visionModel(name = "bioclip-2")  # BioCLIP 2
 ```
 
-Everything else in this vignette is unchanged. The model is downloaded from
-the Hugging Face Hub on first use. `name = "hf-hub:<organisation>/<model>"`
-loads any other open_clip model there, and `name = "local-dir:<folder>"` a
-copy you have already downloaded.
+- **Only that one line changes.** `embedImages()`, `discoverSniglets()`,
+  `keyFromSniglets()`, `patchExemplars()` and `exportWizard()` are called the
+  same way with every model.
+- **Build and follow a key with the same model.** The key records which
+  model made it, and `scoreImages()` warns, or stops, if you give it a
+  different one.
+- **With BioCLIP, use sniglets.** Its text side was trained on names of
+  organisms, not on descriptions of what they look like, so vocabulary
+  questions (`keyFromClusters()`) work better with regular CLIP.
+- **BioCLIP 2 is a larger model**, so embedding takes several times longer.
 
-Two things to keep in mind:
-
-- A key can only be followed with the model it was built with. Use the same
-  model for `embedImages()` and, later, for `scoreImages()`.
-- BioCLIP's text side was trained on names of organisms, not on descriptions
-  of what they look like. Sniglets, which use images only, suit it better
-  than vocabulary questions.
+BioCLIP is downloaded from the Hugging Face Hub on first use.
+`name = "hf-hub:<organisation>/<model>"` loads any other open_clip model
+there whose image side is a vision transformer, and
+`name = "local-dir:<folder>"` a copy you have already downloaded.

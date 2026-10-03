@@ -169,7 +169,7 @@ images <- imageSet(pics)
 #    Labels in a table:       imageSet(tab$file, label = tab$species)
 
 # 2. A vision model
-model  <- visionModel()                          # or visionModel("ViT-B-32.pt")
+model  <- visionModel()                          # regular CLIP; for organisms, visionModel(name = "bioclip")
 
 # 3. Photos -> embeddings: one for each photo, and one for each of 4 x 4
 #    overlapping tiles of it, so that features are local parts of the photo
@@ -236,26 +236,41 @@ qkey   <- keyFromClusters(emb$image, images, vocab, txt, template = "a photo of 
 The [photo vignette](vignettes/vision-keys.Rmd) explains each step, and how
 to measure a key's accuracy.
 
-### BioCLIP and other models
+### Choosing a model: CLIP or BioCLIP
 
-`visionModel()` loads any open_clip model whose image side is a vision
-transformer. For photos of organisms, use
-[BioCLIP](https://imageomics.github.io/bioclip/); the other steps stay the
-same:
+The model is chosen in step 2, by the `name` you give `visionModel()`:
+
+| Your photos | Model | Call | First download |
+|---|---|---|---|
+| Anything: objects, products, vehicles, mixed subjects | CLIP ViT-B/32 (OpenAI), the default | `visionModel()` | about 350 MB |
+| Organisms: plants, animals, fungi, specimens | [BioCLIP](https://imageomics.github.io/bioclip/) | `visionModel(name = "bioclip")` | about 600 MB |
+| Organisms, when accuracy matters more than speed | [BioCLIP 2](https://huggingface.co/imageomics/bioclip-2) | `visionModel(name = "bioclip-2")` | about 1.7 GB |
+
+For example, to build the key above with BioCLIP, replace step 2 with:
 
 ```r
-model <- visionModel(name = "bioclip")           # or "bioclip-2"
+model <- visionModel(name = "bioclip")
 ```
 
-The model is downloaded from the Hugging Face Hub on first use.
-`name = "hf-hub:<organisation>/<model>"` loads any other open_clip model
-there, and `name = "local-dir:<folder>"` a copy you have downloaded. Build
-and follow a key with the same model.
+- **Only that one line changes.** `embedImages()`, `discoverSniglets()`,
+  `keyFromSniglets()`, `patchExemplars()` and `exportWizard()` are called the
+  same way with every model.
+- **Build and follow a key with the same model.** The key records which
+  model made it, and `scoreImages()` warns, or stops, if you give it a
+  different one.
+- **With BioCLIP, use sniglets.** Its text side was trained on names of
+  organisms, not on descriptions of what they look like, so vocabulary
+  questions (`keyFromClusters()`) work better with regular CLIP.
+- **BioCLIP 2 is a larger model**, so embedding takes several times longer.
 
-The R side works on plain matrices, so embeddings from any other model (for
-example a domain model such as BioCLIP) can be passed to `discoverSniglets()`,
-`keyFromSniglets()`, `keyFromClusters()` and `featureScores()` directly, without
-Python.
+Other models: `name = "hf-hub:<organisation>/<model>"` loads any open_clip
+model on the Hugging Face Hub whose image side is a vision transformer, and
+`name = "local-dir:<folder>"` loads a copy you have downloaded.
+
+No Python at all: the R side works on plain matrices, so if you already have
+embeddings from some other encoder, pass them straight to
+`discoverSniglets()`, `keyFromSniglets()`, `keyFromClusters()` and
+`featureScores()`.
 
 # Mixed-effects conditional inference trees
 
