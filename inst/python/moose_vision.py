@@ -136,16 +136,33 @@ def tile_boxes(w, h, tiles):
     return boxes
 
 
-def embed_images(vm, paths, region=None, patches=True, batch=16, tiles=None, min_detail=8.0):
+def _background(im, tolerance=24, agree=0.7):
+    """The colour of a plain background, or None if the image has none.
+
+    A plain background (a studio backdrop, a white page) shows as one colour
+    around most of the image's border.
+    """
+    a = np.asarray(im, dtype=np.int16)
+    ring = np.concatenate([a[:2].reshape(-1, 3), a[-2:].reshape(-1, 3), a[:, :2].reshape(-1, 3), a[:, -2:].reshape(-1, 3)])
+    colours, counts = np.unique(ring // 16, axis=0, return_counts=True)
+    mode = colours[counts.argmax()] * 16 + 8
+    near = (np.abs(ring - mode) <= tolerance).all(axis=1)
+    if near.mean() < agree:
+        return None
+    return ring[near].mean(axis=0)
+
+
+def embed_images(vm, paths, region=None, patches=True, batch=16, tiles=None, min_detail=8.0, min_fill=0.5):
     """Global and (optionally) local embeddings, unit length, float32.
 
     Local embeddings are one of two things.
 
     With `tiles` (a list of grid sizes, see tile_boxes), each tile is cut out
     and embedded on its own, as if it were a whole image. The embedding then
-    describes only what is inside the tile. Tiles with almost no detail
-    (greyscale standard deviation below `min_detail`, e.g. plain background)
-    get a zero vector, which matches nothing.
+    describes only what is inside the tile. Empty tiles get a zero vector,
+    which matches nothing: tiles with almost no detail (greyscale standard
+    deviation below `min_detail`) and, in an image with a plain background,
+    tiles that are less than `min_fill` subject.
 
     Without `tiles`, they are the model's own patch tokens (ln_post applied,
     class token dropped, projected with ``visual.proj``), matching fordera's
@@ -175,12 +192,15 @@ def embed_images(vm, paths, region=None, patches=True, batch=16, tiles=None, min
                 for im in chunk:
                     crops = [im.crop(box) for box in tile_boxes(im.size[0], im.size[1], tiles)]
                     detail = np.array([np.asarray(c.convert("L"), dtype=np.float32).std() for c in crops])
+                    bg = _background(im)
+                    fill = np.ones(len(crops)) if bg is None else np.array(
+                        [(np.abs(np.asarray(c, dtype=np.int16) - bg) > 24).any(axis=2).mean() for c in crops])
                     emb = []
                     for t0 in range(0, len(crops), 64):
                         pooled_t, _ = visual(torch.stack([vm.preprocess(c) for c in crops[t0:t0 + 64]]))
                         emb.append(_unit(pooled_t.float().cpu().numpy()))
                     emb = np.concatenate(emb)
-                    emb[detail < float(min_detail)] = 0.0
+                    emb[(detail < float(min_detail)) | (fill < float(min_fill))] = 0.0
                     patch_out.append(emb[None])
     return {
         "image": np.concatenate(images).astype(np.float32),

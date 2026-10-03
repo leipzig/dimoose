@@ -173,7 +173,9 @@ test_that("the earlier names still work", {
   expect_s3_class(k, "moose")
   old <- structure(list(terms = data.frame(id = 1:4, name = colnames(s)), centroids = t$centroids,
                         exemplars = stats::setNames(t$exemplars, c("term", "image", "patch", "score"))), class = "mooseTerms")
-  expect_equal(keyFromTerms(s, v$images, old, quantile = 0.5)$leads, k$leads)
+  # the same key; only the per-lead examples are missing, which the old object cannot supply
+  same <- setdiff(names(k$leads), c("Examples", "Counter", "Character"))
+  expect_equal(keyFromTerms(s, v$images, old, quantile = 0.5)$leads[, same], k$leads[, same])
 })
 
 test_that("blank regions are ignored and examples come from different images", {
@@ -209,4 +211,54 @@ test_that("with rpart each sniglet has one threshold, and its examples pass it a
     expect_equal(ex$label, v$images$label[match(ex$image, v$images$id)])
     expect_false(anyDuplicated(ex$image) > 0)
   }
+})
+
+test_that("both leads of a couplet get example regions, and Lacks names what its images have instead", {
+  # four labels, three images each; sniglets a..d. A and B have `a`; C and D
+  # lack it and both have `c`, which A and B never do.
+  mk <- function(a, b, c, d) c(a = a, b = b, c = c, d = d)
+  per <- list(A = mk(1, 1, 0, 0), B = mk(1, 0, 0, 0), C = mk(0, 0, 1, 1), D = mk(0, 0, 1, 0))
+  scores <- do.call(rbind, rep(per, each = 3)); rownames(scores) <- paste0(rep(names(per), each = 3), 1:3)
+  images <- data.frame(id = rownames(scores), path = "", label = rep(names(per), each = 3), stringsAsFactors = FALSE)
+  best <- matrix(seq_len(length(scores)) %% 5L + 1L, nrow(scores), 4, dimnames = dimnames(scores))
+  s <- structure(list(sniglets = data.frame(id = 1:4, sniglet = letters[1:4], name = letters[1:4], definition = NA_character_),
+                      centroids = diag(4), exemplars = NULL, best = best, tiles = 4L), class = "mooseSniglets")
+  rownames(s$centroids) <- letters[1:4]
+  key <- keyFromSniglets(scores, images, s, method = "rpart")
+  l <- key$leads
+  expect_length(key$validate(), 0)
+  top <- l[l$Statement == l$Statement[1], ]
+  expect_equal(top$Character[top$Test == ">"], "Has a")
+  expect_equal(top$Character[top$Test == "<="], "Lacks a; has c")
+  expect_equal(top$Counter[top$Test == "<="], "sniglet:c")
+  expect_true(all(nzchar(l$Examples)))
+  # the examples of a lead come from images that take that lead, one label each first
+  ex <- strsplit(strsplit(top$Examples[top$Test == "<="], ";", fixed = TRUE)[[1]], "|", fixed = TRUE)
+  ids <- vapply(ex, `[`, "", 1)
+  expect_true(all(substr(ids, 1, 1) %in% c("C", "D")))
+  expect_setequal(substr(ids[1:2], 1, 1), c("C", "D"))
+  expect_equal(as.integer(vapply(ex, `[`, "", 2)), unname(best[ids, "c"]))
+  # the machine test is unchanged by the second sniglet
+  expect_equal(classify(key, scores)$result, images$label)
+  # renaming either sniglet rewrites the lead
+  k2 <- renameSniglets(key, c(a = "stripes", c = "spots"))
+  t2 <- k2$leads[k2$leads$Statement == l$Statement[1], ]
+  expect_setequal(t2$Character, c("Has stripes", "Lacks stripes; has spots"))
+  expect_equal(k2$leads$Examples, l$Examples)
+})
+
+test_that("a Lacks lead without a clean second sniglet shows its nearest misses, and old inputs still work", {
+  f <- snigletFixture()                                   # no `best`: nothing to take examples from
+  expect_true(all(f$key$leads$Examples == ""))
+  expect_false(any(grepl("; has ", f$key$leads$Character)))
+  v <- syntheticVision(n_labels = 6, per_label = 3, k = 4, p = 9, d = 8)
+  s <- discoverSniglets(v$patches, k = 4)
+  key <- keyFromSniglets(snigletScores(v$patches, s$centroids), v$images, s, method = "rpart")
+  l <- key$leads
+  plain <- l$Test == "<=" & l$Counter == "" & nzchar(l$Examples)
+  for (r in which(plain)) {                               # examples are of the sniglet the lead says is missing
+    ids <- vapply(strsplit(strsplit(l$Examples[r], ";", fixed = TRUE)[[1]], "|", fixed = TRUE), `[`, "", 1)
+    expect_true(all(ids %in% v$images$id))
+  }
+  expect_equal(key$meta$value[key$meta$key == "sniglet_empty"], "")
 })

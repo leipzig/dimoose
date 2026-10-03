@@ -51,3 +51,15 @@ sniglet one threshold, the cut of its scores that best separates the
 labels, and then grows a classification tree on has/lacks, so a sniglet
 means the same thing wherever the key asks about it.
 }
+\section{Both leads describe something}{
+
+A lead that only says a specimen lacks something gives the reader nothing
+to look for. Where it can, the "Lacks" lead therefore also names what its
+images have instead: another sniglet that at least 90% of them have and at
+most 10% of the other side do (`"Lacks gaithiark; has blienvaurk"`). The
+machine still tests only the first sniglet. Every lead also records example
+regions from the images that take it (`Examples`), which
+[patchExemplars()] turns into crops: for a "Lacks" lead with no such second
+sniglet, they are the regions that come closest to the missing one.
+}
+

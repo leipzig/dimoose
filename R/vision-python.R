@@ -123,7 +123,7 @@ modelMeta <- function(model) {
 #' image and embedded one by one, as if each were a whole image. A tile's
 #' embedding describes only what is inside it, so tiles find parts and
 #' surfaces that different images have in common (a stem end, a dimpled
-#' peel). `tiles = 0` uses the model's own patch tokens instead, which is
+#' peel). Tiles that are mostly plain background are left out. `tiles = 0` uses the model's own patch tokens instead, which is
 #' faster (one pass per image) and is what fordera does, but in the last
 #' layer of a CLIP model each token carries much of the whole image, so the
 #' features found are less local.
@@ -140,12 +140,17 @@ modelMeta <- function(model) {
 #' @param minDetail Tiles with less detail than this (standard deviation of
 #'   the grey levels, 0 to 255) are treated as empty background and match
 #'   nothing.
+#' @param minFill In a photo with a plain background (one colour around most
+#'   of its border), tiles in which the subject covers less than this share
+#'   are treated as empty too, so that features are about the subject and not
+#'   about its backdrop. It has no effect on photos without a plain
+#'   background.
 #' @return A list: `image` (`images x d` matrix, rows named by image id: the
 #'   file name without extension, or the `id` of an [imageSet()]) and
 #'   `patches` (`images x regions x d` array, or `NULL`), which remembers the
 #'   tiling in its `tiles` attribute.
 #' @export
-embedImages <- function(model, paths, region = NULL, patches = TRUE, tiles = 4, minDetail = 8) {
+embedImages <- function(model, paths, region = NULL, patches = TRUE, tiles = 4, minDetail = 8, minFill = 0.5) {
   if (is.data.frame(paths)) {
     ids <- paths$id; paths <- paths$path
   } else {
@@ -153,12 +158,14 @@ embedImages <- function(model, paths, region = NULL, patches = TRUE, tiles = 4, 
   }
   tiles <- as.integer(tiles[!is.na(tiles) & tiles > 0])
   out <- model$mod$embed_images(model$py, as.list(as.character(paths)), region = region, patches = patches,
-                                tiles = if (length(tiles)) as.list(tiles) else NULL, min_detail = minDetail)
+                                tiles = if (length(tiles)) as.list(tiles) else NULL, min_detail = minDetail,
+                                min_fill = minFill)
   image <- out$image; rownames(image) <- ids
   pt <- out$patches
   if (!is.null(pt)) {
     dimnames(pt) <- list(ids, NULL, NULL)
     attr(pt, "tiles") <- tiles
+    attr(pt, "empty") <- c(minDetail = minDetail, minFill = minFill)
   }
   list(image = image, patches = pt)
 }
@@ -176,9 +183,12 @@ embedTexts <- function(model, texts) {
 
 #' Add example crops to a sniglet key
 #'
-#' Cuts out the best-matching patch (with some context) for each sniglet's
-#' exemplars, stores them as PNGs in the key's `features` and `meta`, and
-#' points each "Has ..." lead at them so [exportWizard()] shows them.
+#' Cuts out the example regions of each sniglet and of each lead, stores them
+#' as PNGs in the key's `features` and `meta`, and points the leads at them
+#' so [exportWizard()] shows them. A "Has" lead shows the sniglet in the
+#' images that take that lead; a "Lacks" lead shows what its images have
+#' instead (see [keyFromSniglets()]). The glossary shows each sniglet's
+#' examples across all the images.
 #'
 #' @inheritParams embedImages
 #' @param key A key from [keyFromSniglets()].
@@ -206,6 +216,18 @@ patchExemplars <- function(model, key, images, pad = NULL, size = 96) {
     meta <- rbind(meta, data.frame(key = paste0("image_", ids), value = paste0("data:image/png;base64,", ex$png), stringsAsFactors = FALSE))
     on <- which(leads$Feature == f$id[j] & leads$Test == ">")
     leads$Image[on] <- paste(ids, collapse = ";")
+  }
+  # leads with their own example regions (both the "Has" and the "Lacks" side)
+  for (r in which(!is.null(leads$Examples) & nzchar(if (is.null(leads$Examples)) "" else leads$Examples))) {
+    ex <- do.call(rbind, strsplit(strsplit(leads$Examples[r], ";", fixed = TRUE)[[1]], "|", fixed = TRUE))
+    paths <- images$path[match(ex[, 1], images$id)]
+    if (anyNA(paths)) next
+    png <- unlist(model$mod$exemplar_pngs(model$py, as.list(paths), as.list(as.integer(ex[, 2]) - 1L), pad = pad, size = size,
+                                          tiles = if (length(tiles)) as.list(tiles) else NULL))
+    ids <- paste0("lead_", gsub("[^A-Za-z0-9_-]", "_", paste0(leads$Statement[r], leads$Choice[r])), "_", seq_along(png))
+    meta <- rbind(meta[!meta$key %in% paste0("image_", ids), ],
+                  data.frame(key = paste0("image_", ids), value = paste0("data:image/png;base64,", png), stringsAsFactors = FALSE))
+    leads$Image[r] <- paste(ids, collapse = ";")
   }
   key$features <- f
   mm <- modelMeta(model)
@@ -238,7 +260,9 @@ scoreImages <- function(key, model, paths) {
   if (length(built) && !identical(built[1], model$spec$arch)) {
     warning("This key was built with the model ", built[1], ", not ", model$spec$arch, "; its tests may not mean the same thing", call. = FALSE)
   }
-  whole <- embedImages(model, paths, patches = needPatches, tiles = keyTiles(key))
+  empty <- keyEmpty(key)
+  whole <- embedImages(model, paths, patches = needPatches, tiles = keyTiles(key),
+                       minDetail = empty[["minDetail"]], minFill = empty[["minFill"]])
   if (needPatches) {
     j <- which(f$kind == "centroid_patch_max")
     sub <- key$clone(); sub$features <- f[j, ]
@@ -264,4 +288,12 @@ keyTiles <- function(key) {
   v <- key$meta$value[key$meta$key == "sniglet_tiles"]
   if (!length(v) || !nzchar(v[1])) return(integer(0))
   as.integer(strsplit(v[1], ",", fixed = TRUE)[[1]])
+}
+
+# The rule for empty tiles a key's sniglets were found with (see embedImages).
+keyEmpty <- function(key) {
+  v <- key$meta$value[key$meta$key == "sniglet_empty"]
+  out <- c(minDetail = 8, minFill = 0.5)
+  if (length(v) && nzchar(v[1])) out[] <- as.numeric(strsplit(v[1], ",", fixed = TRUE)[[1]])
+  out
 }

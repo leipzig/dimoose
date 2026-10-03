@@ -92,10 +92,11 @@ discoverSniglets <- function(patches, k = 40, seed = 1, nstart = 10, exemplars =
   }))
   rownames(ex) <- NULL
   tiles <- attr(patches, "tiles")
+  empty <- attr(patches, "empty")
   structure(list(sniglets = data.frame(id = seq_len(k), sniglet = nm, name = nm, definition = NA_character_,
                                        stringsAsFactors = FALSE),
                  centroids = centroids, exemplars = ex, best = best,
-                 tiles = if (is.null(tiles)) integer(0) else as.integer(tiles)), class = "mooseSniglets")
+                 tiles = if (is.null(tiles)) integer(0) else as.integer(tiles), empty = empty), class = "mooseSniglets")
 }
 
 #' @rdname discoverSniglets
@@ -148,6 +149,16 @@ termScores <- function(patches, centroids) snigletScores(patches, centroids)
 #' @param method `"balanced"` or `"rpart"`.
 #' @param quantile Presence threshold quantile for `"balanced"`.
 #' @param desc,meta Title and metadata of the key.
+#' @section Both leads describe something:
+#' A lead that only says a specimen lacks something gives the reader nothing
+#' to look for. Where it can, the "Lacks" lead therefore also names what its
+#' images have instead: another sniglet that at least 90% of them have and at
+#' most 10% of the other side do (`"Lacks gaithiark; has blienvaurk"`). The
+#' machine still tests only the first sniglet. Every lead also records example
+#' regions from the images that take it (`Examples`), which
+#' [patchExemplars()] turns into crops: for a "Lacks" lead with no such second
+#' sniglet, they are the regions that come closest to the missing one.
+#'
 #' @return A [moose] key whose leads carry `Feature`, `Test`, `Threshold` and
 #'   `Question`, and whose `features` table holds the centroids. Feature ids
 #'   are `"sniglet:<coined word>"` and never change; `label` is the name
@@ -209,10 +220,57 @@ keyFromSniglets <- function(scores, images, sniglets, method = c("balanced", "rp
   # the key remembers how its regions were cut, for scoreImages() and patchExemplars()
   withTiles <- function(meta) {
     if (is.null(meta)) meta <- data.frame(key = character(), value = character(), stringsAsFactors = FALSE)
-    rbind(meta[meta$key != "sniglet_tiles", ],
-          data.frame(key = "sniglet_tiles", value = paste(sniglets$tiles, collapse = ","), stringsAsFactors = FALSE))
+    rbind(meta[!meta$key %in% c("sniglet_tiles", "sniglet_empty"), ],
+          data.frame(key = c("sniglet_tiles", "sniglet_empty"),
+                     value = c(paste(sniglets$tiles, collapse = ","), paste(sniglets$empty, collapse = ",")), stringsAsFactors = FALSE))
   }
   present <- sweep(scores, 2, thresholds, ">")
+  # Both leads of a couplet get example regions from the images that take them.
+  # A "Has" lead shows the sniglet in those images. A "Lacks" lead shows what
+  # its images have instead: another sniglet that (nearly) all of them have and
+  # (nearly) none of the other side does, named in the lead ("Lacks X; has Y"),
+  # or, when there is no such sniglet, the regions that come closest to X.
+  withExamples <- function(leads) {
+    leads$Counter <- ""; leads$Examples <- ""
+    if (is.null(sniglets$best) || is.null(rownames(scores)) || anyNA(have)) return(leads)
+    want <- if (is.null(sniglets$exemplars)) 4L else max(1L, max(table(sniglets$exemplars$sniglet)))
+    examples <- function(group, x) {
+      group <- group[order(scores[group, x], decreasing = TRUE)]
+      first <- group[!duplicated(labels[group])]
+      pick <- utils::head(c(first, setdiff(group, first)), want)
+      paste(paste(rownames(scores)[pick], sniglets$best[have[pick], x], sep = "|"), collapse = ";")
+    }
+    reach <- vector("list", nrow(leads))                 # images that take each lead
+    root <- setdiff(leads$Statement, leads$Next)[1]
+    queue <- list(list(couplet = root, images = seq_len(nrow(scores))))
+    while (length(queue)) {
+      now <- queue[[1]]; queue <- queue[-1]
+      for (r in which(leads$Statement == now$couplet)) {
+        x <- snigletWord(leads$Feature[r])
+        if (!x %in% nm) next
+        has <- scores[now$images, x] > leads$Threshold[r]
+        reach[[r]] <- now$images[if (leads$Test[r] == ">") has else !has]
+        if (leads$Next[r] != "-") queue[[length(queue) + 1]] <- list(couplet = leads$Next[r], images = reach[[r]])
+      }
+    }
+    for (couplet in unique(leads$Statement)) {
+      rows <- which(leads$Statement == couplet)
+      yes <- rows[leads$Test[rows] == ">"]; no <- rows[leads$Test[rows] == "<="]
+      if (length(yes) != 1 || length(no) != 1 || !length(reach[[yes]]) || !length(reach[[no]])) next
+      x <- snigletWord(leads$Feature[yes])
+      leads$Examples[yes] <- examples(reach[[yes]], x)
+      gain <- colMeans(present[reach[[no]], , drop = FALSE]) - colMeans(present[reach[[yes]], , drop = FALSE])
+      clean <- colMeans(present[reach[[no]], , drop = FALSE]) >= 0.9 & colMeans(present[reach[[yes]], , drop = FALSE]) <= 0.1 & nm != x
+      if (any(clean)) {
+        y <- nm[clean][which.max(gain[clean])]
+        leads$Counter[no] <- paste0("sniglet:", y)
+        leads$Examples[no] <- examples(reach[[no]], y)
+      } else {
+        leads$Examples[no] <- examples(reach[[no]], x)
+      }
+    }
+    leads
+  }
   if (method == "rpart") {
     # a tree on has/lacks, so a sniglet means the same thing at every couplet
     data <- data.frame(label = factor(labels), as.data.frame(present + 0), check.names = FALSE)
@@ -228,7 +286,7 @@ keyFromSniglets <- function(scores, images, sniglets, method = c("balanced", "rp
     leads$Feature <- ifelse(nzchar(feat), paste0("sniglet:", feat), "")
     leads$Test <- ifelse(op == ">:", ">", ifelse(op == "<", "<=", ""))
     leads$Threshold <- unname(thresholds[feat])
-    return(keyFromLeads(snigletLeadText(leads, features), desc, withTiles(meta), features = features))
+    return(keyFromLeads(snigletLeadText(withExamples(leads), features), desc, withTiles(meta), features = features))
   }
   ulab <- sort(unique(labels))
   labPresent <- t(vapply(ulab, function(l) apply(present[labels == l, , drop = FALSE], 2, any), logical(ncol(scores))))
@@ -261,7 +319,7 @@ keyFromSniglets <- function(scores, images, sniglets, method = c("balanced", "rp
   if (!is.null(top$leaf)) stop("No sniglet separates the labels", call. = FALSE)
   leads <- do.call(rbind, rows[order(as.integer(names(rows)))])
   rownames(leads) <- NULL
-  keyFromLeads(snigletLeadText(leads, features), desc, withTiles(meta), features = features)
+  keyFromLeads(snigletLeadText(withExamples(leads), features), desc, withTiles(meta), features = features)
 }
 
 #' @rdname keyFromSniglets
@@ -392,13 +450,21 @@ renameSniglets <- function(x, names = NULL, definitions = NULL) {
 # before the rename used "term:dulmzil").
 snigletWord <- function(id) sub("^[^:]*:", "", id)
 
-# Write the text of every lead that tests a sniglet from the sniglet's name.
+# Write the text of every lead that tests a sniglet from the sniglets' names:
+# "Has X", "Lacks X", or "Lacks X; has Y" when the lead names what its images
+# have instead (its Counter).
 snigletLeadText <- function(leads, features) {
-  j <- match(leads$Feature, features$id[features$kind == "centroid_patch_max"])
-  name <- features$label[features$kind == "centroid_patch_max"][j]
-  on <- !is.na(j) & leads$Test %in% c(">", "<=")
+  sn <- features$kind == "centroid_patch_max"
+  nameOf <- function(id) features$label[sn][match(id, features$id[sn])]
+  name <- nameOf(leads$Feature)
+  on <- !is.na(name) & leads$Test %in% c(">", "<=")
   leads$Question[on] <- name[on]
   leads$Character[on] <- paste(ifelse(leads$Test[on] == ">", "Has", "Lacks"), name[on])
+  if (!is.null(leads$Counter)) {
+    other <- nameOf(leads$Counter)
+    both <- on & !is.na(other)
+    leads$Character[both] <- paste0(leads$Character[both], "; has ", other[both])
+  }
   leads
 }
 

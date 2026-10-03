@@ -192,21 +192,23 @@ With one photo per class, use the default `method = "balanced"` in step 4
 The features in step 4 are found by the model, by clustering the tiles of
 all the photos: each one is a kind of region that several photos have in
 common, such as a rough skin or a stem end. They have no names, so moose
-coins a pronounceable word for each one (`gaithiark`, `treuxraikbluk`) and
-calls these **sniglets**. A lead reads "Has gaithiark", and the wizard's
-glossary shows example tiles, taken from every class that has it. Once you
+coins a pronounceable word for each one (`gaithiark`, `glienglaund`) and
+calls these **sniglets**. Both leads of a couplet describe something: one
+reads "Has glienglaund" and the other, where it can, says what those photos
+have instead ("Lacks glienglaund; has laussym"). The wizard shows example
+tiles on both leads, taken from every class that follows that lead. Once you
 have looked at them, give the sniglets real names:
 
 ```r
 snigletNames(key)                 # coined word, current name, definition, used by the key?
 
-key <- renameSniglets(key, c(gaithiark = "a rough, scaly skin"),
-                      definitions = c(gaithiark = "Coarse brown skin with scales or a scar, as on a pineapple or a kiwi"))
+key <- renameSniglets(key, c(gaithiark = "a dull, finely textured skin"),
+                      definitions = c(gaithiark = "Matt skin with a fine grain, as on a kiwi or a lemon"))
 
 # or name them in a spreadsheet
 write.csv(snigletNames(key), "names.csv", row.names = FALSE)   # fill in name and definition
 key <- renameSniglets(key, "names.csv")
-exportWizard(key, "key.html")     # leads now read "Has a rough, scaly skin"
+exportWizard(key, "key.html")     # leads now read "Has a dull, finely textured skin"
 ```
 
 The coined word stays as the sniglet's permanent identifier: scores, machine

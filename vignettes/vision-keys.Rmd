@@ -42,7 +42,7 @@ key      <- keyFromSniglets(scores, images, sniglets, method = "rpart")   # ...a
 key    <- patchExemplars(model, key, images) # 5. example crops, then a web page
 exportWizard(key, "key.html")
 
-key <- renameSniglets(key, c(gaithiark = "a rough, scaly skin"))   # 6. name what you see
+key <- renameSniglets(key, c(gaithiark = "a dull, finely textured skin"))   # 6. name what you see
 ```
 
 The example photos ship with moose, so this runs as written: 36 small photos
@@ -157,8 +157,9 @@ dim(emb$patches)   # photos x tiles x dimensions
 
 Tiles are what make the features local. A tile's embedding describes only
 what is inside it (a patch of skin, a stem end, an edge), so the same kind of
-region can be recognised in photos of different things. Tiles of plain
-background are dropped.
+region can be recognised in photos of different things. In photos with a
+plain background, tiles that are mostly background are left out, so the
+features are about the subject.
 
 - `tiles = c(2, 4)` adds a coarser grid, for features at two scales.
 - `tiles = 0` uses the model's own patch tokens instead. That is quicker, one
@@ -202,8 +203,8 @@ key
   the sniglet that splits the remaining classes most evenly. It is meant for
   **one photo per class**.
 
-On the example photos (six per class), `"rpart"` puts 86% of held-out photos
-in the right class and `"balanced"` 44%.
+On the example photos (six per class), `"rpart"` puts 81% of held-out photos
+in the right class and `"balanced"` 58%.
 
 ### Questions in words
 
@@ -242,24 +243,39 @@ it:
 
 ```{r}
 key$leads[, c("Statement", "Character", "Next", "Taxon")]
-#>    Statement           Character Next      Taxon
-#> 1          1     Lacks gaithiark    2
-#> 2          1       Has gaithiark    5
-#> 3          2 Lacks treuxraikbluk    3
-#> 4          2   Has treuxraikbluk    -      lemon
-#> 5          3   Lacks glienglaund    -  blueberry
-#> 6          3     Has glienglaund    4
-#> 7          4   Lacks krualdspeus    -     banana
-#> 8          4     Has krualdspeus    - strawberry
-#> 9          5       Has zhuprierl    -       kiwi
-#> 10         5     Lacks zhuprierl    -  pineapple
+#>    Statement                           Character Next      Taxon
+#> 1          1                       Has gaithiark    2
+#> 2          1                     Lacks gaithiark    3
+#> 3          2      Lacks glienglaund; has laussym    -       kiwi
+#> 4          2                     Has glienglaund    -      lemon
+#> 5          3                      Lacks glirreur    4
+#> 6          3                        Has glirreur    -  pineapple
+#> 7          4                      Lacks laissloi    5
+#> 8          4                        Has laissloi    - strawberry
+#> 9          5 Lacks pruangglaint; has krualdspeus    -     banana
+#> 10         5                    Has pruangglaint    -  blueberry
 ```
 
+Both leads of a couplet describe something. A lead that only said "Lacks
+glienglaund" would give the reader nothing to look for, so where it can the
+key adds what those photos have instead: a second sniglet that nearly all of
+them have and nearly none of the other side does ("Lacks glienglaund; has
+laussym"). The machine still tests only the first one.
+
+
 For a key of sniglets, add example crops so that people can see what each
-sniglet means, then export the wizard. The examples are tiles from photos
-that have the sniglet, taken from as many different classes as have it, so
-they show what those classes share. For `gaithiark` they are pineapple scales
-and the rough end of a kiwi; the glossary says "Seen in pineapple, kiwi".
+sniglet means, then export the wizard. Every lead gets examples from the
+photos that take it, from as many different classes as do, so they show what
+those classes share:
+
+- a "Has" lead shows the sniglet in those photos. For `gaithiark` they are
+  the matt skins of kiwis and a lemon;
+- a "Lacks" lead shows what its photos have instead: the second sniglet when
+  the lead names one, otherwise the regions that come closest to the missing
+  one.
+
+The glossary shows each sniglet across all the photos and lists the classes
+it is seen in.
 
 ```{r}
 key <- patchExemplars(model, key, images)
@@ -276,8 +292,8 @@ lists them:
 snigletNames(key)
 #>         sniglet          name definition  used
 #> 1     gaithiark     gaithiark       <NA>  TRUE
-#> 2 treuxraikbluk treuxraikbluk       <NA>  TRUE
-#> 3     zhuprierl     zhuprierl       <NA>  TRUE
+#> 2 treuxraikbluk treuxraikbluk       <NA> FALSE
+#> 3     zhuprierl     zhuprierl       <NA> FALSE
 #> ...
 ```
 
@@ -285,8 +301,8 @@ Only the sniglets the key uses (`used`) need names. Rename a few directly:
 
 ```{r}
 key <- renameSniglets(key,
-  c(gaithiark = "a rough, scaly skin"),
-  definitions = c(gaithiark = "Coarse brown skin with scales or a scar, as on a pineapple or a kiwi"))
+  c(gaithiark = "a dull, finely textured skin"),
+  definitions = c(gaithiark = "Matt skin with a fine grain, as on a kiwi or a lemon"))
 ```
 
 or fill in the table in a spreadsheet and read it back:
@@ -298,7 +314,7 @@ key <- renameSniglets(key, "names.csv")
 exportWizard(key, "key.html")
 ```
 
-The leads now read "Has a rough, scaly skin", and the glossary shows the new
+The leads now read "Has a dull, finely textured skin", and the glossary shows the new
 name, the definition and the coined word it replaced.
 
 How renaming works:
@@ -328,7 +344,7 @@ evaluateKey(key, scores, images$label)$accuracy
 looKey(images,
   build = function(train) keyFromSniglets(scores[train, ], images[train, ], sniglets, method = "rpart"),
   score = function(key, i) scores[i, , drop = FALSE])$accuracy
-#> [1] 0.8611111
+#> [1] 0.8055556
 ```
 
 ## Identifying a new photo
@@ -341,16 +357,16 @@ can follow it. `scoreImages()` embeds new photos and scores them, and
 new <- list.files(system.file("extdata", "new-photos", package = "moose"), full.names = TRUE)
 classify(key, scoreImages(key, model, new))
 #>         id     result        path
-#> 1 unknown1     banana 1a 2a 3b 4a
-#> 2 unknown2  blueberry    1a 2a 3a
-#> 3 unknown3       kiwi       1b 5a
-#> 4 unknown4     banana 1a 2a 3b 4a
-#> 5 unknown5  pineapple       1b 5b
-#> 6 unknown6 strawberry 1a 2a 3b 4b
+#> 1 unknown1     banana 1b 3a 4a 5a
+#> 2 unknown2  blueberry 1b 3a 4a 5b
+#> 3 unknown3       kiwi       1a 2a
+#> 4 unknown4  pineapple       1b 3b
+#> 5 unknown5  pineapple       1b 3b
+#> 6 unknown6 strawberry    1b 3a 4b
 ```
 
 Five of the six held-out photos are placed correctly. The fourth is a lemon
-that the key files as a banana.
+that the key files as a pineapple.
 
 
 ## Any model, no Python

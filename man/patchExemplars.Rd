@@ -22,7 +22,10 @@ for tiles, and half a patch's width for patch tokens.}
 The key, modified in place and returned invisibly.
 }
 \description{
-Cuts out the best-matching patch (with some context) for each sniglet's
-exemplars, stores them as PNGs in the key's `features` and `meta`, and
-points each "Has ..." lead at them so [exportWizard()] shows them.
+Cuts out the example regions of each sniglet and of each lead, stores them
+as PNGs in the key's `features` and `meta`, and points the leads at them
+so [exportWizard()] shows them. A "Has" lead shows the sniglet in the
+images that take that lead; a "Lacks" lead shows what its images have
+instead (see [keyFromSniglets()]). The glossary shows each sniglet's
+examples across all the images.
 }

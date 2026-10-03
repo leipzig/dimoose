@@ -114,6 +114,11 @@ test_that("the documented steps identify the held-out example photos", {
   expect_false(any(duplicated(key$leads$Feature[key$leads$Test == ">"])))
   shared <- vapply(key$features$exemplars[snigletNames(key)$used], function(ex) length(unique(ex$label)), 0L)
   expect_true(any(shared > 1))                     # some sniglets are common to several fruits
+  # every lead, "Lacks" ones included, gets example crops
+  shown <- patchExemplars(m, key$clone(), images)
+  expect_true(all(nzchar(shown$leads$Image)))
+  expect_true(all(unlist(strsplit(shown$leads$Image, ";")) %in% sub("^image_", "", shown$meta$key)))
+  expect_match(exportWizard(shown), "lead_1b_1", fixed = TRUE)
   new <- list.files(system.file("extdata", "new-photos", package = "moose"), full.names = TRUE)
   r <- classify(key, scoreImages(key, m, new))
   expect_gte(sum(r$result == c("banana", "blueberry", "kiwi", "lemon", "pineapple", "strawberry")), 5)

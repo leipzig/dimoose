@@ -10,7 +10,8 @@ embedImages(
   region = NULL,
   patches = TRUE,
   tiles = 4,
-  minDetail = 8
+  minDetail = 8,
+  minFill = 0.5
 )
 }
 \arguments{
@@ -31,6 +32,12 @@ overlap their neighbours by half. Several sizes give several scales
 \item{minDetail}{Tiles with less detail than this (standard deviation of
 the grey levels, 0 to 255) are treated as empty background and match
 nothing.}
+
+\item{minFill}{In a photo with a plain background (one colour around most
+of its border), tiles in which the subject covers less than this share
+are treated as empty too, so that features are about the subject and not
+about its backdrop. It has no effect on photos without a plain
+background.}
 }
 \value{
 A list: `image` (`images x d` matrix, rows named by image id: the
@@ -47,7 +54,7 @@ By default the regions are **tiles**: overlapping windows cut out of the
 image and embedded one by one, as if each were a whole image. A tile's
 embedding describes only what is inside it, so tiles find parts and
 surfaces that different images have in common (a stem end, a dimpled
-peel). `tiles = 0` uses the model's own patch tokens instead, which is
+peel). Tiles that are mostly plain background are left out. `tiles = 0` uses the model's own patch tokens instead, which is
 faster (one pass per image) and is what fordera does, but in the last
 layer of a CLIP model each token carries much of the whole image, so the
 features found are less local.
