@@ -14,7 +14,7 @@ Description: Transforms between dichotomous identification keys and a
     (van Oven 2015, <doi:10.1016/j.fsigss.2015.09.155>), as distributed by
     'Haplogrep' 3.
 License: GPL
-Copyright: See inst/COPYRIGHTS for the PhyloTree data.
+Copyright: See inst/COPYRIGHTS for third-party data and example pages.
 URL: https://github.com/leipzig/moose
 BugReports: https://github.com/leipzig/moose/issues
 Encoding: UTF-8

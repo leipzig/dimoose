@@ -28,3 +28,40 @@ data/phylotree17.rda, data/phylotree17_mutations.rda
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
+
+The following third-party material is included under fair use (17 U.S.C.
+§ 107). Each item is a small, attributed excerpt of a larger scientific
+work, reproduced for non-commercial research and teaching: to test and
+demonstrate software that converts identification keys into other formats.
+Factual content (characters, taxa and test results) is not itself subject
+to copyright; the excerpts are included for their structure, which moose
+transforms rather than republishes as reading material. None of them
+substitutes for the original work, and each is credited in the package
+documentation with a pointer to the source.
+
+inst/extdata/fishbase/key1-description.html,
+inst/extdata/fishbase/key1-questions.html
+  Saved FishBase pages (https://www.fishbase.se) for FishBase key 1, "Key to
+  the families of sharks in the Western Central Pacific", entered by Rainer
+  Froese (2001) from Compagno LJV (1998), General remarks, pp. 1196-1207 in
+  Carpenter KE, Niem VH (eds.), FAO Identification Guide for Fishery
+  Purposes. The Living Marine Resources of the Western Central Pacific. FAO,
+  Rome. One key of the several thousand in FishBase; used offline by
+  sharkKey() and the tests. The pages link to FishBase's morphology images
+  but do not include them.
+
+data/arachnida.rda (source: data-raw/arachnida/arachnida_key.txt)
+  The 11-couplet "Key to the Orders of Arachnida" transcribed from
+  Triplehorn CA, Johnson NF (2005), Borror and DeLong's Introduction to the
+  Study of Insects, 7th ed., chapter 5. Thomson Brooks/Cole. A single key of
+  22 leads from a textbook of more than 800 pages.
+
+data/vibrio.rda (source: data-raw/vibrio/vibrio.tsv)
+  The consensus identification matrix (74 taxa, 45 tests) from Noguerola I,
+  Blanch AR (2008), Identification of Vibrio spp. with a set of dichotomous
+  keys, Journal of Applied Microbiology 105:175-185,
+  doi:10.1111/j.1365-2672.2008.03730.x. One table of results from the
+  article; the article's text and keys are not included.
+
+Rights holders who object to any of this material may contact the
+maintainer (see DESCRIPTION) and it will be removed.
