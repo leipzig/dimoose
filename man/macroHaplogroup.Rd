@@ -14,19 +14,19 @@ macroHaplogroup(
 \arguments{
 \item{haplogroup}{Haplogroup names.}
 
-\item{level}{`"letter"` (default) uses the conventional label: `L0` to
-`L6` for the African lineages and the leading letter otherwise (`H2a` is
-`H`, `U5b` is `U`). This is a naming convention, not a clade: for
-example D sits inside M phylogenetically. `"depth"` uses the ancestor at
+\item{level}{\code{"letter"} (default) uses the conventional label: \code{L0} to
+\code{L6} for the African lineages and the leading letter otherwise (\code{H2a} is
+\code{H}, \code{U5b} is \code{U}). This is a naming convention, not a clade: for
+example D sits inside M phylogenetically. \code{"depth"} uses the ancestor at
 a fixed depth from the root, which is a true clade.}
 
-\item{depth}{For `level = "depth"`, the depth of the ancestor to report;
+\item{depth}{For \code{level = "depth"}, the depth of the ancestor to report;
 haplogroups shallower than that are returned as they are.}
 
-\item{tree}{Default [phylotree17].}
+\item{tree}{Default \link{phylotree17}.}
 }
 \value{
-A character vector the length of `haplogroup`.
+A character vector the length of \code{haplogroup}.
 }
 \description{
 Macrohaplogroup of a haplogroup

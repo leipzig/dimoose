@@ -5,7 +5,7 @@
 \title{Raw FishBase key tables}
 \description{
 An R6 object holding a FishBase key's description and its couplet table as
-downloaded, before conversion to a [moose] object.
+downloaded, before conversion to a \link{moose} object.
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
@@ -13,7 +13,7 @@ downloaded, before conversion to a [moose] object.
 \item{\code{desc}}{Key title (read-only).}
 
 \item{\code{df}}{The key's couplet table: one row per lead, with columns
-`Statement`, `Choice`, `Character`, `Next`, `Prev` and `Taxon`.}
+\code{Statement}, \code{Choice}, \code{Character}, \code{Next}, \code{Prev} and \code{Taxon}.}
 }
 \if{html}{\out{</div>}}
 }

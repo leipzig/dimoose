@@ -262,3 +262,13 @@ test_that("a Lacks lead without a clean second sniglet shows its nearest misses,
   }
   expect_equal(key$meta$value[key$meta$key == "sniglet_empty"], "")
 })
+
+test_that("inventNames, discoverSniglets and simulateExpression leave the global RNG alone", {
+  set.seed(42)
+  before <- .Random.seed
+  inventNames(3)
+  patches <- array(seq_len(4 * 3 * 2) / 24, c(4, 3, 2))
+  discoverSniglets(patches, k = 2, nstart = 1)
+  simulateExpression(n = 50, genes = 4)
+  expect_identical(.Random.seed, before)
+})

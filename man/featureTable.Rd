@@ -17,35 +17,35 @@ featureTable(
 )
 }
 \arguments{
-\item{id}{Feature ids, e.g. `"sniglet:dulmzil"` or `"text:round_headlights"`.}
+\item{id}{Feature ids, e.g. \code{"sniglet:dulmzil"} or \code{"text:round_headlights"}.}
 
-\item{kind}{`"centroid_patch_max"` (highest cosine similarity between any
-image patch embedding and `embedding`), `"clip_text_pair"` (cosine with
-`prompt` minus cosine with `negative_prompt`) or `"external"` (computed
+\item{kind}{\code{"centroid_patch_max"} (highest cosine similarity between any
+image patch embedding and \code{embedding}), \code{"clip_text_pair"} (cosine with
+\code{prompt} minus cosine with \code{negative_prompt}) or \code{"external"} (computed
 by the user).}
 
-\item{label}{Name shown to people; defaults to `id`.}
+\item{label}{Name shown to people; defaults to \code{id}.}
 
-\item{prompt, negative_prompt}{Texts for `clip_text_pair` features.}
+\item{prompt, negative_prompt}{Texts for \code{clip_text_pair} features.}
 
-\item{region}{Crop as `"y0,y1,x0,x1"` fractions, or `NA` for the whole image.}
+\item{region}{Crop as \code{"y0,y1,x0,x1"} fractions, or \code{NA} for the whole image.}
 
-\item{embedding}{List of numeric vectors (one per feature), or `NULL`.}
+\item{embedding}{List of numeric vectors (one per feature), or \code{NULL}.}
 
-\item{exemplars}{List of data frames with columns `image`, `patch`,
-`score` and optionally `png` (base64) showing what the feature means.}
+\item{exemplars}{List of data frames with columns \code{image}, \code{patch},
+\code{score} and optionally \code{png} (base64) showing what the feature means.}
 
 \item{definition}{Optional sentence saying what the feature is, shown in
-the wizard's glossary (see [renameSniglets()]).}
+the wizard's glossary (see \code{\link[=renameSniglets]{renameSniglets()}}).}
 }
 \value{
-A data frame with the columns above; `embedding` and `exemplars`
-  are list columns.
+A data frame with the columns above; \code{embedding} and \code{exemplars}
+are list columns.
 }
 \description{
-Keys built from images (see [keyFromTerms()] and [keyFromClusters()]) carry
-a `features` table that says how a machine computes the score each lead
-tests. [classify()] walks a key over a matrix of such scores.
+Keys built from images (see \code{\link[=keyFromTerms]{keyFromTerms()}} and \code{\link[=keyFromClusters]{keyFromClusters()}}) carry
+a \code{features} table that says how a machine computes the score each lead
+tests. \code{\link[=classify]{classify()}} walks a key over a matrix of such scores.
 }
 \examples{
 featureTable("sniglet:x", "centroid_patch_max", embedding = list(c(1, 0, 0)))

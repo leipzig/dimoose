@@ -7,21 +7,21 @@
 alignmentScores(key, alignment, reference = NULL)
 }
 \arguments{
-\item{key}{A key from [keyFromAlignment()].}
+\item{key}{A key from \code{\link[=keyFromAlignment]{keyFromAlignment()}}.}
 
-\item{alignment}{As in [keyFromAlignment()].}
+\item{alignment}{As in \code{\link[=keyFromAlignment]{keyFromAlignment()}}.}
 
 \item{reference}{Sequence to number sites by; by default the reference
 the key was built with, if any.}
 }
 \value{
-A `sequences x features` matrix: 1 if the sequence has the state
-  the first lead of a couplet asks for, 0 if it has another state, and
-  `NA` if it has a gap or an ambiguity code there.
+A \verb{sequences x features} matrix: 1 if the sequence has the state
+the first lead of a couplet asks for, 0 if it has another state, and
+\code{NA} if it has a gap or an ambiguity code there.
 }
 \description{
-Computes the tests of a [keyFromAlignment()] key for each sequence, for
-[classify()]. The sequences must be aligned to the same coordinates the
+Computes the tests of a \code{\link[=keyFromAlignment]{keyFromAlignment()}} key for each sequence, for
+\code{\link[=classify]{classify()}}. The sequences must be aligned to the same coordinates the
 key was built with: the same alignment columns or, for a key built with a
-`reference`, an alignment that contains that reference sequence.
+\code{reference}, an alignment that contains that reference sequence.
 }

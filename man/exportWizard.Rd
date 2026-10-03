@@ -15,34 +15,34 @@ exportWizard(
 )
 }
 \arguments{
-\item{moose}{A [moose] object, e.g. from [importFishbase()].}
+\item{moose}{A \link{moose} object, e.g. from \code{\link[=importFishbase]{importFishbase()}}.}
 
-\item{file}{Path of the HTML file to write. If `NULL`, the HTML is returned
+\item{file}{Path of the HTML file to write. If \code{NULL}, the HTML is returned
 as a string instead.}
 
-\item{displayLinks}{If `TRUE`, show the couplet numbers each lead leads to
-and comes from, as in a printed key. If `FALSE`, hide them. Leads stay
+\item{displayLinks}{If \code{TRUE}, show the couplet numbers each lead leads to
+and comes from, as in a printed key. If \code{FALSE}, hide them. Leads stay
 clickable either way.}
 
-\item{order}{Order of couplets. Only `"original"` (the key's own order) is
+\item{order}{Order of couplets. Only \code{"original"} (the key's own order) is
 implemented.}
 
 \item{title}{Page title. Defaults to the key's description.}
 
-\item{map}{If `TRUE`, include a map of the key: the whole key drawn as a
+\item{map}{If \code{TRUE}, include a map of the key: the whole key drawn as a
 tree, marking the current couplet, the path taken so far and the
 branches (and number of taxa) still possible. It sits beside the key on
 wide screens and behind a Map button on phones.}
 
-\item{staticPaths}{If `TRUE`, write each taxon's path through the key into
-the page, so it shows without JavaScript. If `FALSE`, the page builds
+\item{staticPaths}{If \code{TRUE}, write each taxon's path through the key into
+the page, so it shows without JavaScript. If \code{FALSE}, the page builds
 the path in the browser when a result is shown, which keeps large keys
-(such as [phylotreeKey()] on the whole tree) much smaller. The default
-is `TRUE` for keys with up to 1,000 taxa.}
+(such as \code{\link[=phylotreeKey]{phylotreeKey()}} on the whole tree) much smaller. The default
+is \code{TRUE} for keys with up to 1,000 taxa.}
 }
 \value{
-The path to `file`, invisibly, or the HTML as a character string if
-  `file` is `NULL`.
+The path to \code{file}, invisibly, or the HTML as a character string if
+\code{file} is \code{NULL}.
 }
 \description{
 Writes a moose key as a single self-contained HTML page. With JavaScript
@@ -51,7 +51,7 @@ the choices made (each one clickable to go back to it) and supports the
 browser's Back button. Without JavaScript, the same page is the full key
 with every lead hyperlinked to its next couplet or taxon. Each taxon gets
 a result section listing the characters on its path, and a map of the
-key shows where the user is (see `map`).
+key shows where the user is (see \code{map}).
 }
 \details{
 The key is checked first: leads pointing at missing couplets, terminal

@@ -17,12 +17,12 @@ site mutates.}
 \item{types}{Mutation types to count; by default substitutions and
 back-mutations. Insertions and deletions are left out, except that a
 reverted insertion counts as a back-mutation at its insertion site
-(for example `"5899.1"`).}
+(for example \code{"5899.1"}).}
 
-\item{mutations}{Default [phylotree17_mutations].}
+\item{mutations}{Default \link{phylotree17_mutations}.}
 }
 \value{
-A data frame of `site` and `n_branches`, most recurrent first.
+A data frame of \code{site} and \code{n_branches}, most recurrent first.
 }
 \description{
 Sites that mutate independently on many branches of the tree, such as

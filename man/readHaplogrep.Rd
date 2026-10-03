@@ -9,18 +9,18 @@ readHaplogrep(file, key = FALSE)
 \arguments{
 \item{file}{Path to the tree XML.}
 
-\item{key}{If `TRUE`, return a [moose] key built with [keyFromLeads()]
+\item{key}{If \code{TRUE}, return a \link{moose} key built with \code{\link[=keyFromLeads]{keyFromLeads()}}
 instead of the data frame.}
 }
 \value{
-A data frame with `haplogroup`, `parent`, `depth`, `n_subclades`
-  and `mutations`, or a [moose] object if `key = TRUE`.
+A data frame with \code{haplogroup}, \code{parent}, \code{depth}, \code{n_subclades}
+and \code{mutations}, or a \link{moose} object if \code{key = TRUE}.
 }
 \description{
-Parses the nested `<haplogroup>` XML that Haplogrep distributes (for
-example `phylotree-rcrs-17`'s `tree.xml`) into the same data frame shape as
-[phylotree17], so any Haplogrep tree can be loaded, not just the bundled
-snapshot. Each haplogroup's `<details><poly>` entries become its mutations.
+Parses the nested \verb{<haplogroup>} XML that Haplogrep distributes (for
+example \code{phylotree-rcrs-17}'s \code{tree.xml}) into the same data frame shape as
+\link{phylotree17}, so any Haplogrep tree can be loaded, not just the bundled
+snapshot. Each haplogroup's \verb{<details><poly>} entries become its mutations.
 }
 \examples{
 \dontrun{
@@ -28,5 +28,5 @@ tree <- readHaplogrep("tree.xml")
 }
 }
 \seealso{
-[phylotree17], [phylotreeKey()]
+\link{phylotree17}, \code{\link[=phylotreeKey]{phylotreeKey()}}
 }

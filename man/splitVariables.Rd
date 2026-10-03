@@ -7,12 +7,12 @@
 splitVariables(fit)
 }
 \arguments{
-\item{fit}{A [mecit()] fit.}
+\item{fit}{A \code{\link[=mecit]{mecit()}} fit.}
 }
 \value{
-The names (as given in `partition`) of the variables used in any
-  split, in the order they first appear; `character(0)` if the tree has no
-  splits.
+The names (as given in \code{partition}) of the variables used in any
+split, in the order they first appear; \code{character(0)} if the tree has no
+splits.
 }
 \description{
 Variables a fitted tree splits on

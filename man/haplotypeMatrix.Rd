@@ -15,18 +15,18 @@ haplotypeMatrix(
 \item{haplogroups}{Haplogroup names, one per row of the result; repeats are
 allowed (e.g. one per sample).}
 
-\item{sites}{Sites to report: positions as character (`"16311"`) or
-insertion sites (`"573.X"`). Defaults to the sites of
-[recurrentPositions()].}
+\item{sites}{Sites to report: positions as character (\code{"16311"}) or
+insertion sites (\code{"573.X"}). Defaults to the sites of
+\code{\link[=recurrentPositions]{recurrentPositions()}}.}
 
-\item{tree, mutations}{The tree and its mutations; default [phylotree17] and
-[phylotree17_mutations]. `tree` needs `haplogroup`, `parent` and `depth`;
-`mutations` needs `haplogroup`, `notation`, `position`, `type`,
-`ancestral` and `derived`.}
+\item{tree, mutations}{The tree and its mutations; default \link{phylotree17} and
+\link{phylotree17_mutations}. \code{tree} needs \code{haplogroup}, \code{parent} and \code{depth};
+\code{mutations} needs \code{haplogroup}, \code{notation}, \code{position}, \code{type},
+\code{ancestral} and \code{derived}.}
 }
 \value{
-An integer matrix of 0/1, one row per entry of `haplogroups` (row
-  names are the haplogroups) and one column per site.
+An integer matrix of 0/1, one row per entry of \code{haplogroups} (row
+names are the haplogroups) and one column per site.
 }
 \description{
 Follows every haplogroup's path from the root of the tree and records, for
@@ -34,12 +34,12 @@ each requested site, whether the haplogroup's haplotype differs from the
 root (RSRS) there. Back-mutations are applied as Haplogrep defines them
 (they undo the latest change at that site), so a site gained and later
 reverted on a lineage is not carried below the reversion. Insertions are
-tracked as their own sites (`"573.X"`, `"2491.1"`), separate from
+tracked as their own sites (\code{"573.X"}, \code{"2491.1"}), separate from
 substitutions at the same position; a deletion counts as carried.
 }
 \examples{
 haplotypeMatrix(c("H2a2a1", "U5b", "L0a1b"), sites = c("152", "16311", "16278"))
 }
 \seealso{
-[recurrentPositions()], [macroHaplogroup()], [simulateExpression()]
+\code{\link[=recurrentPositions]{recurrentPositions()}}, \code{\link[=macroHaplogroup]{macroHaplogroup()}}, \code{\link[=simulateExpression]{simulateExpression()}}
 }

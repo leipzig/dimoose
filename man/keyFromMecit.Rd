@@ -7,22 +7,22 @@
 keyFromMecit(fit, desc = NULL, digits = 2)
 }
 \arguments{
-\item{fit}{A [mecit()] fit.}
+\item{fit}{A \code{\link[=mecit]{mecit()}} fit.}
 
 \item{desc}{Title of the key.}
 
 \item{digits}{Decimal places for stratum levels.}
 }
 \value{
-A [moose] key.
+A \link{moose} key.
 }
 \description{
 Each split becomes a couplet and each terminal node a result, labelled
 with its stratum level and size. Splits on 0/1 variables read as
 "Carries 16311" / "Does not carry 16311". The leads carry machine-readable
-tests on the split variables, so [classify()] can place new samples given
-their [haplotypeMatrix()], and [exportWizard()] can draw the tree.
+tests on the split variables, so \code{\link[=classify]{classify()}} can place new samples given
+their \code{\link[=haplotypeMatrix]{haplotypeMatrix()}}, and \code{\link[=exportWizard]{exportWizard()}} can draw the tree.
 Splits on factor columns become text-only couplets ("tissue is liver or
-lung"), which a person can follow but [classify()] cannot; the function
+lung"), which a person can follow but \code{\link[=classify]{classify()}} cannot; the function
 warns when the key has any.
 }

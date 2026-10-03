@@ -7,18 +7,18 @@
 classify(key, scores)
 }
 \arguments{
-\item{key}{A [moose] key with `Feature`, `Test` and `Threshold` lead
-columns, e.g. from [keyFromTerms()].}
+\item{key}{A \link{moose} key with \code{Feature}, \code{Test} and \code{Threshold} lead
+columns, e.g. from \code{\link[=keyFromTerms]{keyFromTerms()}}.}
 
 \item{scores}{A numeric matrix, one row per object, with a column for every
-feature id the key tests (see [featureScores()] and [scoreImages()]).}
+feature id the key tests (see \code{\link[=featureScores]{featureScores()}} and \code{\link[=scoreImages]{scoreImages()}}).}
 }
 \value{
-A data frame with `id` (row names of `scores`), `result` and
-  `path` (the leads taken, e.g. `"1a 3b"`).
+A data frame with \code{id} (row names of \code{scores}), \code{result} and
+\code{path} (the leads taken, e.g. \code{"1a 3b"}).
 }
 \description{
-Walks each row of `scores` through `key`: at every couplet the lead whose
-test (`Feature`, `Test`, `Threshold`) passes is taken. When no lead or
-more than one passes (for instance on a missing score), the result is `NA`.
+Walks each row of \code{scores} through \code{key}: at every couplet the lead whose
+test (\code{Feature}, \code{Test}, \code{Threshold}) passes is taken. When no lead or
+more than one passes (for instance on a missing score), the result is \code{NA}.
 }

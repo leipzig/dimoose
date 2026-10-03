@@ -9,10 +9,11 @@ inventNames(n, seed = 1)
 \arguments{
 \item{n}{Number of names.}
 
-\item{seed}{Random seed, so the same call gives the same names.}
+\item{seed}{Random seed, so the same call gives the same names. The
+global random number generator state is left unchanged.}
 }
 \value{
-A character vector of `n` distinct lower-case words.
+A character vector of \code{n} distinct lower-case words.
 }
 \description{
 Random words made of consonant onsets, vowels and codas. They name

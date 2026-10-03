@@ -98,7 +98,9 @@ test_that("images to key to classify, with exemplar crops and scores for new ima
 })
 
 test_that("the Python requirements come from the bundled requirements file", {
-  expect_setequal(pythonRequirements(), c("torch", "open_clip_torch", "pillow", "numpy"))
+  req <- pythonRequirements()
+  expect_setequal(sub("[=<>~!].*$", "", req), c("torch", "open_clip_torch", "pillow", "numpy"))
+  expect_false(any(grepl("#", req, fixed = TRUE)))   # comments are not requirements
 })
 
 test_that("the documented steps identify the held-out example photos", {

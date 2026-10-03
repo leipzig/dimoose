@@ -18,35 +18,34 @@ keyFromSniglets(
 keyFromTerms(scores, images, terms, ...)
 }
 \arguments{
-\item{scores}{`images x sniglets` matrix from [snigletScores()].}
+\item{scores}{\verb{images x sniglets} matrix from \code{\link[=snigletScores]{snigletScores()}}.}
 
-\item{images}{[imageSet()] data frame with one row per row of `scores`.}
+\item{images}{\code{\link[=imageSet]{imageSet()}} data frame with one row per row of \code{scores}.}
 
-\item{sniglets}{The [discoverSniglets()] object the scores were computed
-with. Names given with [renameSniglets()] are used in the key.}
+\item{sniglets}{The \code{\link[=discoverSniglets]{discoverSniglets()}} object the scores were computed
+with. Names given with \code{\link[=renameSniglets]{renameSniglets()}} are used in the key.}
 
-\item{method}{`"balanced"` or `"rpart"`.}
+\item{method}{\code{"balanced"} or \code{"rpart"}.}
 
-\item{quantile}{Presence threshold quantile for `"balanced"`.}
+\item{quantile}{Presence threshold quantile for \code{"balanced"}.}
 
 \item{desc, meta}{Title and metadata of the key.}
 
-\item{terms, ...}{`keyFromTerms()` is the earlier name of
-`keyFromSniglets()`; its third argument was called `terms`.}
+\item{terms, ...}{\code{keyFromTerms()} is the earlier name of
+\code{keyFromSniglets()}; its third argument was called \code{terms}.}
 }
 \value{
-A [moose] key whose leads carry `Feature`, `Test`, `Threshold` and
-  `Question`, and whose `features` table holds the centroids. Feature ids
-  are `"sniglet:<coined word>"` and never change; `label` is the name
-  shown, which [renameSniglets()] changes.
+A \link{moose} key whose leads carry \code{Feature}, \code{Test}, \code{Threshold} and
+\code{Question}, and whose \code{features} table holds the centroids. Feature ids
+are \code{"sniglet:<coined word>"} and never change; \code{label} is the name
+shown, which \code{\link[=renameSniglets]{renameSniglets()}} changes.
 }
 \description{
-Each step asks whether the image has one sniglet. `method =
-"balanced"` is fordera's algorithm: a sniglet is present when its score is
-above the `quantile` of that sniglet's scores over all images; a label has
+Each step asks whether the image has one sniglet. \code{method = "balanced"} is fordera's algorithm: a sniglet is present when its score is
+above the \code{quantile} of that sniglet's scores over all images; a label has
 a sniglet if any of its images does; each split uses the unused sniglet
 that divides the remaining labels most evenly (ties to the earlier one).
-`method = "rpart"` suits several images per label. It first gives each
+\code{method = "rpart"} suits several images per label. It first gives each
 sniglet one threshold, the cut of its scores that best separates the
 labels, and then grows a classification tree on has/lacks, so a sniglet
 means the same thing wherever the key asks about it.
@@ -55,11 +54,11 @@ means the same thing wherever the key asks about it.
 
 A lead that only says a specimen lacks something gives the reader nothing
 to look for. Where it can, the "Lacks" lead therefore also names what its
-images have instead: another sniglet that at least 90% of them have and at
-most 10% of the other side do (`"Lacks gaithiark; has blienvaurk"`). The
+images have instead: another sniglet that at least 90\% of them have and at
+most 10\% of the other side do (\code{"Lacks gaithiark; has blienvaurk"}). The
 machine still tests only the first sniglet. Every lead also records example
-regions from the images that take it (`Examples`), which
-[patchExemplars()] turns into crops: for a "Lacks" lead with no such second
+regions from the images that take it (\code{Examples}), which
+\code{\link[=patchExemplars]{patchExemplars()}} turns into crops: for a "Lacks" lead with no such second
 sniglet, they are the regions that come closest to the missing one.
 }
 

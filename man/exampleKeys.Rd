@@ -14,30 +14,32 @@ arachnidaKey()
 vibrioKey()
 }
 \value{
-A [moose] object.
+A \link{moose} object.
 }
 \description{
-Ready-made [moose] keys built from the datasets that come with moose. All
-four are ordinary moose objects: they share the same fields (`leads`,
-`df`, `meta`, `taxa`, `desc`) and methods (`print()`, `summary()`,
-`validate()`, `toDataTree()`, `toNewick()`) and all work with
-[exportWizard()].
+Ready-made \link{moose} keys built from the datasets that come with moose. All
+four are ordinary moose objects: they share the same fields (\code{leads},
+\code{df}, \code{meta}, \code{taxa}, \code{desc}) and methods (\code{print()}, \code{summary()},
+\code{validate()}, \code{toDataTree()}, \code{toNewick()}) and all work with
+\code{\link[=exportWizard]{exportWizard()}}.
 }
 \details{
-- `sharkKey()`: FishBase key 1, *Key to the families of sharks in the
-  Western Central Pacific* (Compagno 1998), from saved FishBase pages in
-  `inst/extdata/fishbase/`; 23 couplets, 24 families.
-- `arachnidaKey()`: the *Key to the Orders of Arachnida* from Triplehorn &
-  Johnson (2005), the [arachnida] dataset; 11 couplets, 11 orders
-  (Schizomida is reached from two couplets).
-- `vibrioKey()`: a key generated from the [vibrio] consensus matrix of
-  Noguerola & Blanch (2008) with [keyFromRpart()]. Tests scored `+` or
-  `(+)` count as positive and `-` or `(-)` as negative; variable (`v`,
-  `d`) and not determined (`ND`) results are treated as missing, and rpart
-  routes a species past such a test with surrogate splits, so a species
-  that varies for a test appears on only one side of it. Species the tests
-  cannot separate share a result.
-- [phylotreeKey()]: PhyloTree Build 17.
+\itemize{
+\item \code{sharkKey()}: FishBase key 1, \emph{Key to the families of sharks in the
+Western Central Pacific} (Compagno 1998), from saved FishBase pages in
+\verb{inst/extdata/fishbase/}; 23 couplets, 24 families.
+\item \code{arachnidaKey()}: the \emph{Key to the Orders of Arachnida} from Triplehorn &
+Johnson (2005), the \link{arachnida} dataset; 11 couplets, 11 orders
+(Schizomida is reached from two couplets).
+\item \code{vibrioKey()}: a key generated from the \link{vibrio} consensus matrix of
+Noguerola & Blanch (2008) with \code{\link[=keyFromRpart]{keyFromRpart()}}. Tests scored \code{+} or
+\verb{(+)} count as positive and \code{-} or \verb{(-)} as negative; variable (\code{v},
+\code{d}) and not determined (\code{ND}) results are treated as missing, and rpart
+routes a species past such a test with surrogate splits, so a species
+that varies for a test appears on only one side of it. Species the tests
+cannot separate share a result.
+\item \code{\link[=phylotreeKey]{phylotreeKey()}}: PhyloTree Build 17.
+}
 }
 \examples{
 sharks <- sharkKey()
@@ -50,15 +52,15 @@ exportWizard(sharkKey(), "sharks.html")
 }
 \references{
 Compagno LJV (1998). General remarks. In Carpenter KE, Niem VH (eds.),
-*FAO species identification guide for fishery purposes. The living marine
-resources of the Western Central Pacific*, vol. 2, pp. 1196-1207. FAO,
-Rome. FishBase key 1: <https://www.fishbase.se/keys/description.php?keycode=1>.
+\emph{FAO species identification guide for fishery purposes. The living marine
+resources of the Western Central Pacific}, vol. 2, pp. 1196-1207. FAO,
+Rome. FishBase key 1: \url{https://www.fishbase.se/keys/description.php?keycode=1}.
 
-Triplehorn CA, Johnson NF (2005). *Borror and DeLong's Introduction to the
-Study of Insects*, 7th ed., chapter 5. Thomson Brooks/Cole. ISBN
+Triplehorn CA, Johnson NF (2005). \emph{Borror and DeLong's Introduction to the
+Study of Insects}, 7th ed., chapter 5. Thomson Brooks/Cole. ISBN
 0-03-096835-6.
 
-Noguerola I, Blanch AR (2008). Identification of *Vibrio* spp. with a set
-of dichotomous keys. *Journal of Applied Microbiology* 105, 175-185.
+Noguerola I, Blanch AR (2008). Identification of \emph{Vibrio} spp. with a set
+of dichotomous keys. \emph{Journal of Applied Microbiology} 105, 175-185.
 \doi{10.1111/j.1365-2672.2008.03730.x}
 }

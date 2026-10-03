@@ -7,12 +7,12 @@
 embedTexts(model, texts)
 }
 \arguments{
-\item{model}{A [visionModel()].}
+\item{model}{A \code{\link[=visionModel]{visionModel()}}.}
 
 \item{texts}{Character vector.}
 }
 \value{
-A `texts x d` matrix with the texts as row names.
+A \verb{texts x d} matrix with the texts as row names.
 }
 \description{
 Embed texts

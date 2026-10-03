@@ -10,43 +10,43 @@ discoverSniglets(patches, k = 40, seed = 1, nstart = 10, exemplars = 4)
 discoverTerms(...)
 }
 \arguments{
-\item{patches}{A numeric array `images x regions x dimensions` (unit length
-rows), e.g. `embedImages(...)$patches`; `dimnames(patches)[[1]]` are the
+\item{patches}{A numeric array \verb{images x regions x dimensions} (unit length
+rows), e.g. \code{embedImages(...)$patches}; \code{dimnames(patches)[[1]]} are the
 image ids. Rows that are all zero are empty regions and are ignored.}
 
 \item{k}{Number of sniglets.}
 
-\item{seed}{Seed for k-means and for [inventNames()].}
+\item{seed}{Seed for k-means and for \code{\link[=inventNames]{inventNames()}}.}
 
-\item{nstart}{Random starts for [stats::kmeans()].}
+\item{nstart}{Random starts for \code{\link[stats:kmeans]{stats::kmeans()}}.}
 
 \item{exemplars}{Number of example regions to record per sniglet, each
 from a different image.}
 
-\item{...}{Passed to [discoverSniglets()].}
+\item{...}{Passed to \code{\link[=discoverSniglets]{discoverSniglets()}}.}
 }
 \value{
-An object of class `mooseSniglets`: `sniglets` (data frame with
-  `id`, `sniglet` (the coined word), `name` (what people see; the coined
-  word until renamed) and `definition`), `centroids` (`k x d`, rows named
-  by coined word), `exemplars` (data frame `sniglet`, `image`, `patch`,
-  `score`: the best-matching region of each of the best-matching images),
-  `best` (for every image, the region that matches each sniglet best) and
-  `tiles` (the tiling of the regions, see [embedImages()]).
+An object of class \code{mooseSniglets}: \code{sniglets} (data frame with
+\code{id}, \code{sniglet} (the coined word), \code{name} (what people see; the coined
+word until renamed) and \code{definition}), \code{centroids} (\verb{k x d}, rows named
+by coined word), \code{exemplars} (data frame \code{sniglet}, \code{image}, \code{patch},
+\code{score}: the best-matching region of each of the best-matching images),
+\code{best} (for every image, the region that matches each sniglet best) and
+\code{tiles} (the tiling of the regions, see \code{\link[=embedImages]{embedImages()}}).
 }
 \description{
 A sniglet is a visual feature that a model found and that has no name of
-its own, so moose coins one for it (`"dulmzil"`). This function runs
+its own, so moose coins one for it (\code{"dulmzil"}). This function runs
 k-means on every patch embedding of every image and keeps the unit length
-centroids as the definitions of `k` sniglets. An image "has" a sniglet
-when one of its patches is close to that centroid (see [snigletScores()]).
+centroids as the definitions of \code{k} sniglets. An image "has" a sniglet
+when one of its patches is close to that centroid (see \code{\link[=snigletScores]{snigletScores()}}).
 Once you have looked at what a sniglet picks out, give it a real name with
-[renameSniglets()].
+\code{\link[=renameSniglets]{renameSniglets()}}.
 }
 \details{
-`discoverTerms()`, `termScores()` and `keyFromTerms()` are the
-  earlier names of [discoverSniglets()], [snigletScores()] and
-  [keyFromSniglets()], and still work.
+\code{discoverTerms()}, \code{termScores()} and \code{keyFromTerms()} are the
+earlier names of \code{\link[=discoverSniglets]{discoverSniglets()}}, \code{\link[=snigletScores]{snigletScores()}} and
+\code{\link[=keyFromSniglets]{keyFromSniglets()}}, and still work.
 }
 \examples{
 set.seed(1)

@@ -5,23 +5,23 @@
 \alias{vibrio}
 \title{Vibrio consensus identification matrix}
 \format{
-A data frame with 74 rows and 46 columns: `species`, then 45 tests
-  coded as in the paper: `+` positive, `-` negative, `(+)` / `(-)` mostly
-  positive / negative, `v` or `d` variable, `ND` not determined (and one
-  blank cell in the source, `NA`). Tests under the paper's "Acid from" and
-  "Resistance to" headings are named with that prefix.
+A data frame with 74 rows and 46 columns: \code{species}, then 45 tests
+coded as in the paper: \code{+} positive, \code{-} negative, \verb{(+)} / \verb{(-)} mostly
+positive / negative, \code{v} or \code{d} variable, \code{ND} not determined (and one
+blank cell in the source, \code{NA}). Tests under the paper's "Acid from" and
+"Resistance to" headings are named with that prefix.
 }
 \source{
-Noguerola I, Blanch AR (2008). Identification of *Vibrio* spp.
-  with a set of dichotomous keys. *Journal of Applied Microbiology* 105,
-  175-185. \doi{10.1111/j.1365-2672.2008.03730.x}. Extracted from the
-  paper's table; see `data-raw/vibrio/` in the package sources.
+Noguerola I, Blanch AR (2008). Identification of \emph{Vibrio} spp.
+with a set of dichotomous keys. \emph{Journal of Applied Microbiology} 105,
+175-185. \doi{10.1111/j.1365-2672.2008.03730.x}. Extracted from the
+paper's table; see \verb{data-raw/vibrio/} in the package sources.
 }
 \usage{
 vibrio
 }
 \description{
-Biochemical and growth test results for 74 *Vibrio* taxa from Noguerola &
-Blanch (2008), one row per taxon. [vibrioKey()] generates a key from it.
+Biochemical and growth test results for 74 \emph{Vibrio} taxa from Noguerola &
+Blanch (2008), one row per taxon. \code{\link[=vibrioKey]{vibrioKey()}} generates a key from it.
 }
 \keyword{datasets}

@@ -17,24 +17,24 @@ importFishbase(
 
 \item{fishbaseUrl}{Base URL of the FishBase mirror, with a trailing slash.}
 
-\item{separateTerms}{If `TRUE`, split each lead's character statement on
-`";"` into one row per term.}
+\item{separateTerms}{If \code{TRUE}, split each lead's character statement on
+\code{";"} into one row per term.}
 
-\item{usePhyloService}{Taxonomic name resolution: `"GNA"` verifies terminal
-taxa with the Global Names verifier (`taxize::gna_verifier()`, requires
-the 'taxize' package); `"none"` skips resolution. `"GNR"` is accepted as
-an alias for `"GNA"`. `"TNRS"` is no longer available because
-`taxize::tnrs()` is defunct.}
+\item{usePhyloService}{Taxonomic name resolution: \code{"GNA"} verifies terminal
+taxa with the Global Names verifier (\code{taxize::gna_verifier()}, requires
+the 'taxize' package); \code{"none"} skips resolution. \code{"GNR"} is accepted as
+an alias for \code{"GNA"}. \code{"TNRS"} is no longer available because
+\code{taxize::tnrs()} is defunct.}
 
-\item{embedImages}{If `TRUE`, download the key's morphology images and store
-them base64-encoded in `meta`. Image URLs are always stored.}
+\item{embedImages}{If \code{TRUE}, download the key's morphology images and store
+them base64-encoded in \code{meta}. Image URLs are always stored.}
 }
 \value{
-A [moose] object.
+A \link{moose} object.
 }
 \description{
-Downloads a key from FishBase and converts it into a [moose] object. See
-<https://www.fishbase.se/keys/allkeys.php> for the list of keys and their
+Downloads a key from FishBase and converts it into a \link{moose} object. See
+\url{https://www.fishbase.se/keys/allkeys.php} for the list of keys and their
 key codes.
 }
 \examples{
@@ -44,5 +44,5 @@ sharks$taxa
 }
 }
 \seealso{
-[parseFishbase()] to build a key from saved HTML pages.
+\code{\link[=parseFishbase]{parseFishbase()}} to build a key from saved HTML pages.
 }

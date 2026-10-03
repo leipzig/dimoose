@@ -45,35 +45,35 @@ macrohaplogroups with this standard deviation (a random slope).}
 most recurrent other sites plus the markers of the four most common
 macrohaplogroups in the sample.}
 
-\item{macroLevel}{Passed to [macroHaplogroup()] as `level`.}
+\item{macroLevel}{Passed to \code{\link[=macroHaplogroup]{macroHaplogroup()}} as \code{level}.}
 
 \item{seed}{Random seed.}
 }
 \value{
-A list with `expr` (samples x genes), `samples` (data frame of
-  `sample`, `haplogroup`, `macro`), `X` (samples x sites, 0/1, from
-  [haplotypeMatrix()]), `truth` (`beta`, genes x sites; `b`, genes x
-  macrohaplogroups; `geneType`; and `slope` when `slopeSD > 0`),
-  `effectSites`, `markerSites` and `decoySites`.
+A list with \code{expr} (samples x genes), \code{samples} (data frame of
+\code{sample}, \code{haplogroup}, \code{macro}), \code{X} (samples x sites, 0/1, from
+\code{\link[=haplotypeMatrix]{haplotypeMatrix()}}), \code{truth} (\code{beta}, genes x sites; \code{b}, genes x
+macrohaplogroups; \code{geneType}; and \code{slope} when \code{slopeSD > 0}),
+\code{effectSites}, \code{markerSites} and \code{decoySites}.
 }
 \description{
 Simulates per-sample expression for a set of genes, where recurrent
 mutations (variants that arise independently on many branches) shift
 expression by fixed amounts on top of a baseline that differs between
-macrohaplogroups. It is the ground truth for testing [mecit()]: a good
+macrohaplogroups. It is the ground truth for testing \code{\link[=mecit]{mecit()}}: a good
 method finds the mutation effects as splits and does not split on clade
 markers that only track the macrohaplogroup baselines.
 }
 \details{
-Samples are drawn uniformly from the leaf haplogroups of [phylotree17],
+Samples are drawn uniformly from the leaf haplogroups of \link{phylotree17},
 so their macrohaplogroups are as unbalanced as the tree itself (H is far
-more common than L5). For sample *i* and gene *g*:
+more common than L5). For sample \emph{i} and gene \emph{g}:
 
-`expr[i, g] = b[g, macro(i)] + sum_s beta[g, s] * X[i, s] + slope + noise`
+\verb{expr[i, g] = b[g, macro(i)] + sum_s beta[g, s] * X[i, s] + slope + noise}
 
-Genes come in three kinds: `"mutation"` genes have a baseline and one or
-more mutation effects, `"baseline"` genes have only the macrohaplogroup
-baseline, and `"null"` genes are pure noise.
+Genes come in three kinds: \code{"mutation"} genes have a baseline and one or
+more mutation effects, \code{"baseline"} genes have only the macrohaplogroup
+baseline, and \code{"null"} genes are pure noise.
 
 The default effect sites (16362, 150, 709, 16093) are highly recurrent
 but carried by a minority of lineages across many macrohaplogroups. The
@@ -87,5 +87,5 @@ sim <- simulateExpression(n = 300, genes = 10)
 table(sim$truth$geneType)
 }
 \seealso{
-[mecit()], [haplotypeMatrix()]
+\code{\link[=mecit]{mecit()}}, \code{\link[=haplotypeMatrix]{haplotypeMatrix()}}
 }

@@ -10,15 +10,15 @@ snigletScores(patches, centroids)
 termScores(patches, centroids)
 }
 \arguments{
-\item{patches}{As in [discoverSniglets()].}
+\item{patches}{As in \code{\link[=discoverSniglets]{discoverSniglets()}}.}
 
-\item{centroids}{A `k x d` matrix of sniglet centroids (unit rows), e.g.
-`discoverSniglets(...)$centroids`.}
+\item{centroids}{A \verb{k x d} matrix of sniglet centroids (unit rows), e.g.
+\code{discoverSniglets(...)$centroids}.}
 }
 \value{
-An `images x sniglets` matrix: for each sniglet, the highest cosine
-  similarity between the centroid and any patch of the image. Columns are
-  named by the coined words, whatever the sniglets have been renamed to.
+An \verb{images x sniglets} matrix: for each sniglet, the highest cosine
+similarity between the centroid and any patch of the image. Columns are
+named by the coined words, whatever the sniglets have been renamed to.
 }
 \description{
 Score images against sniglets

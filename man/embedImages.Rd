@@ -15,19 +15,19 @@ embedImages(
 )
 }
 \arguments{
-\item{model}{A [visionModel()].}
+\item{model}{A \code{\link[=visionModel]{visionModel()}}.}
 
-\item{paths}{Image files, or an [imageSet()] (its `path` column is
-embedded and its `id` column names the rows).}
+\item{paths}{Image files, or an \code{\link[=imageSet]{imageSet()}} (its \code{path} column is
+embedded and its \code{id} column names the rows).}
 
-\item{region}{Optional crop `c(y0, y1, x0, x1)` as fractions, applied to
+\item{region}{Optional crop \code{c(y0, y1, x0, x1)} as fractions, applied to
 every image before embedding.}
 
-\item{patches}{If `TRUE`, also return the local embeddings.}
+\item{patches}{If \code{TRUE}, also return the local embeddings.}
 
-\item{tiles}{Size of the grid of tiles: `4` cuts 4 x 4 windows that
+\item{tiles}{Size of the grid of tiles: \code{4} cuts 4 x 4 windows that
 overlap their neighbours by half. Several sizes give several scales
-(`c(2, 4)`). `0` uses the model's patch tokens.}
+(\code{c(2, 4)}). \code{0} uses the model's patch tokens.}
 
 \item{minDetail}{Tiles with less detail than this (standard deviation of
 the grey levels, 0 to 255) are treated as empty background and match
@@ -40,21 +40,21 @@ about its backdrop. It has no effect on photos without a plain
 background.}
 }
 \value{
-A list: `image` (`images x d` matrix, rows named by image id: the
-  file name without extension, or the `id` of an [imageSet()]) and
-  `patches` (`images x regions x d` array, or `NULL`), which remembers the
-  tiling in its `tiles` attribute.
+A list: \code{image} (\verb{images x d} matrix, rows named by image id: the
+file name without extension, or the \code{id} of an \code{\link[=imageSet]{imageSet()}}) and
+\code{patches} (\verb{images x regions x d} array, or \code{NULL}), which remembers the
+tiling in its \code{tiles} attribute.
 }
 \description{
-Returns one embedding per image and, for [discoverSniglets()], embeddings
+Returns one embedding per image and, for \code{\link[=discoverSniglets]{discoverSniglets()}}, embeddings
 of local regions of each image.
 }
 \details{
-By default the regions are **tiles**: overlapping windows cut out of the
+By default the regions are \strong{tiles}: overlapping windows cut out of the
 image and embedded one by one, as if each were a whole image. A tile's
 embedding describes only what is inside it, so tiles find parts and
 surfaces that different images have in common (a stem end, a dimpled
-peel). Tiles that are mostly plain background are left out. `tiles = 0` uses the model's own patch tokens instead, which is
+peel). Tiles that are mostly plain background are left out. \code{tiles = 0} uses the model's own patch tokens instead, which is
 faster (one pass per image) and is what fordera does, but in the last
 layer of a CLIP model each token carries much of the whole image, so the
 features found are less local.

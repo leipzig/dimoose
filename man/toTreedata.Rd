@@ -7,17 +7,17 @@
 toTreedata(key)
 }
 \arguments{
-\item{key}{A [moose] key.}
+\item{key}{A \link{moose} key.}
 }
 \value{
-A [tidytree::treedata] object.
+A \link[tidytree:treedata]{tidytree::treedata} object.
 }
 \description{
-Builds a `treedata` object whose tree is the key's spanning tree and whose
-node data carries each lead's `Character`, `Choice` and `Taxon`. The data
+Builds a \code{treedata} object whose tree is the key's spanning tree and whose
+node data carries each lead's \code{Character}, \code{Choice} and \code{Taxon}. The data
 of a child node describes the edge into it, so in ggtree you draw lead text
-on branches with `geom_label(aes(x = branch, label = Character))` and join
-your own data by the `node` column (never by label, since taxa repeat).
+on branches with \code{geom_label(aes(x = branch, label = Character))} and join
+your own data by the \code{node} column (never by label, since taxa repeat).
 }
 \examples{
 \dontrun{
@@ -27,5 +27,5 @@ ggtree(td) + geom_tiplab() + geom_label(aes(x = branch, label = Character))
 }
 }
 \seealso{
-[toNewick()], [toIgraph()]
+\code{\link[=toNewick]{toNewick()}}, \code{\link[=toIgraph]{toIgraph()}}
 }

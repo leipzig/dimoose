@@ -7,17 +7,17 @@
 looKey(images, build, score, groups = NULL)
 }
 \arguments{
-\item{images}{[imageSet()] data frame of all images.}
+\item{images}{\code{\link[=imageSet]{imageSet()}} data frame of all images.}
 
 \item{build}{Function of the training row indices returning a key.}
 
 \item{score}{Function of (key, test row index) returning a one-row scores
 matrix for that image.}
 
-\item{groups}{As in [evaluateKey()].}
+\item{groups}{As in \code{\link[=evaluateKey]{evaluateKey()}}.}
 }
 \value{
-As [evaluateKey()].
+As \code{\link[=evaluateKey]{evaluateKey()}}.
 }
 \description{
 Leave-one-out evaluation of a key builder

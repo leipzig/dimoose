@@ -11,29 +11,31 @@ toNewick(
 )
 }
 \arguments{
-\item{key}{A [moose] key.}
+\item{key}{A \link{moose} key.}
 
-\item{labels}{`"quoted"` (the default, identical to `key$toNewick()`) or
-`"safe"`, which replaces every label with an ASCII id (`n<couplet>` for
-couplets, `t<n>` for taxa) and returns the mapping in a side table, so
+\item{labels}{\code{"quoted"} (the default, identical to \code{key$toNewick()}) or
+\code{"safe"}, which replaces every label with an ASCII id (\verb{n<couplet>} for
+couplets, \verb{t<n>} for taxa) and returns the mapping in a side table, so
 fragile parsers never see spaces or punctuation. The real text travels in
 the companion table (this is also the Newick-plus-table shape Taxonium
 reads).}
 
-\item{annotate}{`"none"` (default), `"nhx"` or `"beast"`: attach each lead's
-`Character` text to the node it leads to, as an NHX
-(`[&&NHX:lead=...]`) or BEAST-style (`[&lead=...]`) comment. Values are
-sanitized (`, : ; = " [ ]` and newlines removed) because Newick comments
-cannot carry them. Only one of `labels = "safe"` or `annotate` applies at
-a time; `annotate` wins if both are given.}
+\item{annotate}{\code{"none"} (default), \code{"nhx"} or \code{"beast"}: attach each lead's
+\code{Character} text to the node it leads to, as an NHX
+(\verb{[&&NHX:lead=...]}) or BEAST-style (\verb{[&lead=...]}) comment. Values are
+sanitized (\verb{, : ; = " [ ]} and newlines removed) because Newick comments
+cannot carry them. Only one of \code{labels = "safe"} or \code{annotate} applies at
+a time; \code{annotate} wins if both are given.
+
+[ ]: R:\%20}
 }
 \value{
-For `labels = "quoted"` or any `annotate`, a single Newick string.
-  For `labels = "safe"` with `annotate = "none"`, a list of `newick` (the
-  string) and `labels` (a data frame of `id` and `label`).
+For \code{labels = "quoted"} or any \code{annotate}, a single Newick string.
+For \code{labels = "safe"} with \code{annotate = "none"}, a list of \code{newick} (the
+string) and \code{labels} (a data frame of \code{id} and \code{label}).
 }
 \description{
-The [moose] method `$toNewick()` writes quoted Newick, which is correct but
+The \link{moose} method \verb{$toNewick()} writes quoted Newick, which is correct but
 which several parsers (ape, scikit-bio, toytree) mangle. This wrapper adds
 two options for interoperating with the wider phylogenetics ecosystem.
 }
@@ -42,5 +44,5 @@ k <- arachnidaKey()
 cat(toNewick(k, annotate = "nhx"))
 }
 \seealso{
-[toTreedata()], [toAuspiceJSON()]
+\code{\link[=toTreedata]{toTreedata()}}, \code{\link[=toAuspiceJSON]{toAuspiceJSON()}}
 }

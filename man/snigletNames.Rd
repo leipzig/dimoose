@@ -7,22 +7,24 @@
 snigletNames(x)
 }
 \arguments{
-\item{x}{A key from [keyFromSniglets()], or a [discoverSniglets()] result.}
+\item{x}{A key from \code{\link[=keyFromSniglets]{keyFromSniglets()}}, or a \code{\link[=discoverSniglets]{discoverSniglets()}} result.}
 }
 \value{
 A data frame with one row per sniglet:
-  * `sniglet`: the coined word. It identifies the sniglet and never changes.
-  * `name`: the name people see. It is the coined word until you rename it.
-  * `definition`: an optional sentence saying what the sniglet is.
-  * `used` (keys only): whether the key asks about this sniglet. Only these
-    need names.
+\itemize{
+\item \code{sniglet}: the coined word. It identifies the sniglet and never changes.
+\item \code{name}: the name people see. It is the coined word until you rename it.
+\item \code{definition}: an optional sentence saying what the sniglet is.
+\item \code{used} (keys only): whether the key asks about this sniglet. Only these
+need names.
+}
 }
 \description{
-Lists the sniglets of a key (or of a [discoverSniglets()] result) with the
-names they currently go by. This is the table [renameSniglets()] takes:
-write it to a CSV file, fill in the `name` and `definition` columns, and
+Lists the sniglets of a key (or of a \code{\link[=discoverSniglets]{discoverSniglets()}} result) with the
+names they currently go by. This is the table \code{\link[=renameSniglets]{renameSniglets()}} takes:
+write it to a CSV file, fill in the \code{name} and \code{definition} columns, and
 read it back.
 }
 \seealso{
-[renameSniglets()]
+\code{\link[=renameSniglets]{renameSniglets()}}
 }

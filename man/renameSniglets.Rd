@@ -7,41 +7,42 @@
 renameSniglets(x, names = NULL, definitions = NULL)
 }
 \arguments{
-\item{x}{A key from [keyFromSniglets()], or a [discoverSniglets()] result
+\item{x}{A key from \code{\link[=keyFromSniglets]{keyFromSniglets()}}, or a \code{\link[=discoverSniglets]{discoverSniglets()}} result
 (so that every key built from it afterwards uses the names).}
 
 \item{names}{The new names: a named character vector
-(`c(dulmzil = "an egg-crate grille")`), a names table as described above,
+(\code{c(dulmzil = "an egg-crate grille")}), a names table as described above,
 or the path of a CSV file holding one.}
 
 \item{definitions}{Optional named character vector of definitions, named
-like `names`. `names` may be `NULL` to change definitions only.}
+like \code{names}. \code{names} may be \code{NULL} to change definitions only.}
 }
 \value{
-A renamed copy of `x`; `x` itself is not changed.
+A renamed copy of \code{x}; \code{x} itself is not changed.
 }
 \description{
-Sniglets start with coined names (`"dulmzil"`) because nobody has looked at
+Sniglets start with coined names (\code{"dulmzil"}) because nobody has looked at
 them yet. After looking at what a sniglet picks out (the example crops in
 the wizard's glossary), give it a real name. The coined word stays as the
 sniglet's permanent identifier, so scores, machine tests and saved name
 tables keep working; only the text people read changes: the leads
-(`"Has round headlights"`), the questions and the glossary.
+(\code{"Has round headlights"}), the questions and the glossary.
 }
 \details{
 The names table has one row per sniglet you want to rename, with columns
-`sniglet` (the coined word, or the sniglet's current name), `name` and
-optionally `definition`. Rules:
+\code{sniglet} (the coined word, or the sniglet's current name), \code{name} and
+optionally \code{definition}. Rules:
+\itemize{
+\item a blank \code{name} puts the coined word back;
+\item no two sniglets may share a name, and a name may not be another
+sniglet's coined word;
+\item a \code{definition} column replaces the definitions of the rows listed
+(blank removes one); without the column, definitions are left alone;
+\item a \code{used} column, as \code{\link[=snigletNames]{snigletNames()}} returns, is ignored.
+}
 
-* a blank `name` puts the coined word back;
-* no two sniglets may share a name, and a name may not be another
-  sniglet's coined word;
-* a `definition` column replaces the definitions of the rows listed
-  (blank removes one); without the column, definitions are left alone;
-* a `used` column, as [snigletNames()] returns, is ignored.
-
-Names read best as noun phrases (`"an egg-crate grille"`), since leads are
-written "Has *name*" and "Lacks *name*".
+Names read best as noun phrases (\code{"an egg-crate grille"}), since leads are
+written "Has \emph{name}" and "Lacks \emph{name}".
 }
 \examples{
 set.seed(1)
@@ -54,5 +55,5 @@ s <- renameSniglets(s, stats::setNames("round headlights", first),
 snigletNames(s)
 }
 \seealso{
-[snigletNames()]
+\code{\link[=snigletNames]{snigletNames()}}
 }

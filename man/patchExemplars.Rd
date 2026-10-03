@@ -7,11 +7,11 @@
 patchExemplars(model, key, images, pad = NULL, size = 96)
 }
 \arguments{
-\item{model}{A [visionModel()].}
+\item{model}{A \code{\link[=visionModel]{visionModel()}}.}
 
-\item{key}{A key from [keyFromSniglets()].}
+\item{key}{A key from \code{\link[=keyFromSniglets]{keyFromSniglets()}}.}
 
-\item{images}{The [imageSet()] the key was built from (for file paths).}
+\item{images}{The \code{\link[=imageSet]{imageSet()}} the key was built from (for file paths).}
 
 \item{pad}{Pixels of context to show around the region. By default none
 for tiles, and half a patch's width for patch tokens.}
@@ -23,9 +23,9 @@ The key, modified in place and returned invisibly.
 }
 \description{
 Cuts out the example regions of each sniglet and of each lead, stores them
-as PNGs in the key's `features` and `meta`, and points the leads at them
-so [exportWizard()] shows them. A "Has" lead shows the sniglet in the
+as PNGs in the key's \code{features} and \code{meta}, and points the leads at them
+so \code{\link[=exportWizard]{exportWizard()}} shows them. A "Has" lead shows the sniglet in the
 images that take that lead; a "Lacks" lead shows what its images have
-instead (see [keyFromSniglets()]). The glossary shows each sniglet's
+instead (see \code{\link[=keyFromSniglets]{keyFromSniglets()}}). The glossary shows each sniglet's
 examples across all the images.
 }

@@ -7,16 +7,16 @@
 toIgraph(key)
 }
 \arguments{
-\item{key}{A [moose] key.}
+\item{key}{A \link{moose} key.}
 }
 \value{
-An [igraph::igraph] directed graph.
+An \link[igraph:aaa-igraph-package]{igraph::igraph} directed graph.
 }
 \description{
-Unlike `toNewick()` and `toDataTree()`, which use a spanning tree, this
+Unlike \code{toNewick()} and \code{toDataTree()}, which use a spanning tree, this
 keeps the key's true structure: a couplet reached from several leads has
-several incoming edges. Each edge carries the lead's `label` and
-`Character` text; vertices are couplets and taxa.
+several incoming edges. Each edge carries the lead's \code{label} and
+\code{Character} text; vertices are couplets and taxa.
 }
 \examples{
 \dontrun{

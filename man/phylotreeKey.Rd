@@ -7,29 +7,28 @@
 phylotreeKey(root = "mtMRCA", paragroups = TRUE, maxDepth = Inf)
 }
 \arguments{
-\item{root}{Haplogroup to start from; the default, `"mtMRCA"`, is the
+\item{root}{Haplogroup to start from; the default, \code{"mtMRCA"}, is the
 whole tree.}
 
-\item{paragroups}{If `TRUE`, add a "none of these" choice to every step.}
+\item{paragroups}{If \code{TRUE}, add a "none of these" choice to every step.}
 
-\item{maxDepth}{Maximum number of steps below `root`. Haplogroups at that
+\item{maxDepth}{Maximum number of steps below \code{root}. Haplogroups at that
 depth become results even if they have subclades.}
 }
 \value{
-A [moose] object whose `leads` have a `Label` column with the
-  haplogroup names.
+A \link{moose} object whose \code{leads} have a \code{Label} column with the
+haplogroup names.
 }
 \description{
-Turns [phylotree17], or the part of it below `root`, into a [moose] key.
+Turns \link{phylotree17}, or the part of it below \code{root}, into a \link{moose} key.
 Each haplogroup with subclades becomes a step at which the user picks the
-subclade whose defining mutations the sample carries. With `paragroups =
-TRUE` every step also offers "none of these", which identifies the
-paragroup, written as in PhyloTree with a trailing `*` (e.g. `H2a*`).
+subclade whose defining mutations the sample carries. With \code{paragroups = TRUE} every step also offers "none of these", which identifies the
+paragroup, written as in PhyloTree with a trailing \code{*} (e.g. \verb{H2a*}).
 }
 \details{
 The whole tree gives a very large key (2,420 steps and 5,435 possible
-results with paragroups), so for [exportWizard()] a subtree or a
-`maxDepth` is usually more practical.
+results with paragroups), so for \code{\link[=exportWizard]{exportWizard()}} a subtree or a
+\code{maxDepth} is usually more practical.
 }
 \examples{
 h2a <- phylotreeKey("H2a")
@@ -40,5 +39,5 @@ exportWizard(phylotreeKey(maxDepth = 6), "macrohaplogroups.html")
 }
 }
 \seealso{
-[phylotree17], [exportWizard()]
+\link{phylotree17}, \code{\link[=exportWizard]{exportWizard()}}
 }

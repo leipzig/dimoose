@@ -7,24 +7,24 @@
 featureScores(key, image = NULL, patches = NULL, textEmb = NULL)
 }
 \arguments{
-\item{key}{A [moose] key with a `features` table.}
+\item{key}{A \link{moose} key with a \code{features} table.}
 
-\item{image}{`objects x d` matrix of image embeddings (unit rows).}
+\item{image}{\verb{objects x d} matrix of image embeddings (unit rows).}
 
-\item{patches}{`objects x patches x d` array of patch embeddings.}
+\item{patches}{\verb{objects x patches x d} array of patch embeddings.}
 
-\item{textEmb}{`prompts x d` matrix of text embeddings whose row names are
-the prompt texts, e.g. from [embedTexts()].}
+\item{textEmb}{\verb{prompts x d} matrix of text embeddings whose row names are
+the prompt texts, e.g. from \code{\link[=embedTexts]{embedTexts()}}.}
 }
 \value{
-An `objects x features` matrix with feature ids as column names.
+An \verb{objects x features} matrix with feature ids as column names.
 }
 \description{
 Model-free: give it the embeddings and it applies each feature's rule.
-`centroid_patch_max` features need `patches`; `clip_text_pair` features
-need `image` and `textEmb` (rows named by prompt). For `external`
+\code{centroid_patch_max} features need \code{patches}; \code{clip_text_pair} features
+need \code{image} and \code{textEmb} (rows named by prompt). For \code{external}
 features supply the scores yourself.
 }
 \seealso{
-[scoreImages()] for images-to-scores in one call.
+\code{\link[=scoreImages]{scoreImages()}} for images-to-scores in one call.
 }

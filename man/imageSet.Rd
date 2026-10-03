@@ -12,18 +12,20 @@ imageSet(paths, label = NULL)
 tif/tiff.}
 
 \item{label}{Class of each image:
-* `NULL`: for a folder whose images are in subfolders, the name of the
-  subfolder each image is in (`pics/cardinal/IMG_01.jpg` is a
-  `cardinal`); otherwise the file name without its extension;
-* a character vector as long as `paths` (for a folder, as long as the
-  files found, which are sorted by path);
-* a function applied to the file names without extensions (e.g.
-  `function(x) sub("_.*$", "", x)` so that `1967_alt` counts as `1967`).}
+\itemize{
+\item \code{NULL}: for a folder whose images are in subfolders, the name of the
+subfolder each image is in (\code{pics/cardinal/IMG_01.jpg} is a
+\code{cardinal}); otherwise the file name without its extension;
+\item a character vector as long as \code{paths} (for a folder, as long as the
+files found, which are sorted by path);
+\item a function applied to the file names without extensions (e.g.
+\code{function(x) sub("_.*$", "", x)} so that \verb{1967_alt} counts as \code{1967}).
+}}
 }
 \value{
-A data frame with `id`, `path` and `label`. `id` is the file name
-  without its extension; when two files share a name, their folder is put
-  in front (`cardinal_IMG_01`) so that ids are unique.
+A data frame with \code{id}, \code{path} and \code{label}. \code{id} is the file name
+without its extension; when two files share a name, their folder is put
+in front (\code{cardinal_IMG_01}) so that ids are unique.
 }
 \description{
 The starting point for automated key generation: one row per photo, with

@@ -10,7 +10,7 @@ imageMime(path)
 \item{path}{One file.}
 }
 \value{
-`"image/png"`, `"image/jpeg"`, `"image/gif"`, `"image/webp"` or `NA`.
+\code{"image/png"}, \code{"image/jpeg"}, \code{"image/gif"}, \code{"image/webp"} or \code{NA}.
 }
 \description{
 MIME type of an image file from its first bytes

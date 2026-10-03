@@ -5,9 +5,6 @@
 #' tree representations.
 #'
 #' @keywords internal
-#' @importFrom magrittr %>%
-#' @importFrom rlang .data
 #' @importFrom R6 R6Class
-#' @importFrom data.tree FromDataFrameNetwork
-#' @importFrom dplyr select mutate distinct
+#' @importFrom data.tree Node
 "_PACKAGE"

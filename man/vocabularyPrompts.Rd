@@ -7,16 +7,16 @@
 vocabularyPrompts(vocabulary, template = "{x}")
 }
 \arguments{
-\item{vocabulary}{Data frame with `feature` and `opposite` columns (and an
-optional `region`, `"y0,y1,x0,x1"` fractions).}
+\item{vocabulary}{Data frame with \code{feature} and \code{opposite} columns (and an
+optional \code{region}, \code{"y0,y1,x0,x1"} fractions).}
 
-\item{template}{Text with `{x}` where the feature goes, e.g.
-`"a pickup truck with {x}"`.}
+\item{template}{Text with \code{{x}} where the feature goes, e.g.
+\code{"a pickup truck with {x}"}.}
 }
 \value{
 A character vector: the feature prompt then the opposite prompt
-  for each row, in order. Embed these with [embedTexts()] and pass the
-  result to [keyFromClusters()].
+for each row, in order. Embed these with \code{\link[=embedTexts]{embedTexts()}} and pass the
+result to \code{\link[=keyFromClusters]{keyFromClusters()}}.
 }
 \description{
 Prompts for a vocabulary of visual features

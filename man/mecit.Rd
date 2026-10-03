@@ -23,15 +23,15 @@ mecit(
 
 \item{partition}{Matrix or data frame of candidate split variables, one row
 per observation, with column names (which may be non-syntactic, like
-`"16311"`).}
+\code{"16311"}).}
 
-\item{cluster}{Cluster of each observation, or `NULL` for no random
+\item{cluster}{Cluster of each observation, or \code{NULL} for no random
 effect.}
 
-\item{method}{`"ctree"` or `"mob"`.}
+\item{method}{\code{"ctree"} or \code{"mob"}.}
 
-\item{slope}{Optional names of `partition` columns to give random slopes
-within clusters, as in `(1 + slope | cluster)`.}
+\item{slope}{Optional names of \code{partition} columns to give random slopes
+within clusters, as in \code{(1 + slope | cluster)}.}
 
 \item{alpha}{Significance level for splitting (Bonferroni-adjusted over
 the candidate variables).}
@@ -40,44 +40,44 @@ the candidate variables).}
 
 \item{maxdepth}{Maximum tree depth.}
 
-\item{ranefstart}{If `TRUE`, start from random effects estimated without a
+\item{ranefstart}{If \code{TRUE}, start from random effects estimated without a
 tree.}
 
 \item{abstol, maxit}{Convergence tolerance and the maximum number of
-iterations. For `"ctree"` the tolerance is on the largest change in any
-observation's random-effect contribution; for `"mob"` it is passed to
-[glmertree::lmertree()], where it applies to the change in log-likelihood.}
+iterations. For \code{"ctree"} the tolerance is on the largest change in any
+observation's random-effect contribution; for \code{"mob"} it is passed to
+\code{\link[glmertree:glmertree]{glmertree::lmertree()}}, where it applies to the change in log-likelihood.}
 }
 \value{
-An object of class `mecit`: `tree` (a partykit tree), `lmer` (the
-  final mixed model, or `NULL`), `strata` (data frame of `node`, `mean`
-  and `n`; `mean` is the stratum level net of random effects), `node`
-  (terminal node of each observation), `ranef` (random-effect
-  contribution of each observation), `method`, `iterations` and
-  `converged`.
+An object of class \code{mecit}: \code{tree} (a partykit tree), \code{lmer} (the
+final mixed model, or \code{NULL}), \code{strata} (data frame of \code{node}, \code{mean}
+and \code{n}; \code{mean} is the stratum level net of random effects), \code{node}
+(terminal node of each observation), \code{ranef} (random-effect
+contribution of each observation), \code{method}, \code{iterations} and
+\code{converged}.
 }
 \description{
 Fits a tree that partitions observations on candidate split variables (for
-example which mutations each sample carries, from [haplotypeMatrix()])
+example which mutations each sample carries, from \code{\link[=haplotypeMatrix]{haplotypeMatrix()}})
 while a random effect absorbs differences between clusters (for example
-macrohaplogroups, from [macroHaplogroup()]). Without the random effect, a
+macrohaplogroups, from \code{\link[=macroHaplogroup]{macroHaplogroup()}}). Without the random effect, a
 tree also splits on variables that merely track the clusters, such as
 clade-defining markers; with it, those differences are removed before the
 tree looks for splits.
 }
 \details{
-`method = "ctree"` (the default) is the RE-EM algorithm of Sela & Simonoff
+\code{method = "ctree"} (the default) is the RE-EM algorithm of Sela & Simonoff
 (2012) with conditional inference trees, as proposed by Fu & Simonoff
-(2015). It alternates between (1) a [partykit::ctree()] on the response
+(2015). It alternates between (1) a \code{\link[partykit:ctree]{partykit::ctree()}} on the response
 minus the current random-effect contribution and (2) a linear mixed model
-([lme4::lmer()]) with one fixed effect per terminal node plus the random
-effects, until the random effects stop changing. `method = "mob"` uses
-model-based partitioning through [glmertree::lmertree()] (Fokkema et al.
-2018). In both, `ranefstart = TRUE` estimates the random effects from an
+(\code{\link[lme4:lmer]{lme4::lmer()}}) with one fixed effect per terminal node plus the random
+effects, until the random effects stop changing. \code{method = "mob"} uses
+model-based partitioning through \code{\link[glmertree:glmertree]{glmertree::lmertree()}} (Fokkema et al.
+2018). In both, \code{ranefstart = TRUE} estimates the random effects from an
 intercept-only mixed model before the first tree, which keeps that tree from
 splitting on cluster-level variables.
 
-With `cluster = NULL` the result is a plain conditional inference tree, the
+With \code{cluster = NULL} the result is a plain conditional inference tree, the
 baseline a mixed-effects tree is compared with.
 }
 \examples{
@@ -90,18 +90,18 @@ exportWizard(keyFromMecit(fit), "mecit.html")
 }
 \references{
 Sela RJ, Simonoff JS (2012). RE-EM trees: a data mining approach for
-longitudinal and clustered data. *Machine Learning* 86, 169-207.
+longitudinal and clustered data. \emph{Machine Learning} 86, 169-207.
 \doi{10.1007/s10994-011-5258-3}
 
 Fu W, Simonoff JS (2015). Unbiased regression trees for longitudinal and
-clustered data. *Computational Statistics & Data Analysis* 88, 53-74.
+clustered data. \emph{Computational Statistics & Data Analysis} 88, 53-74.
 \doi{10.1016/j.csda.2015.02.004}
 
 Fokkema M, Smits N, Zeileis A, Hothorn T, Kelderman H (2018). Detecting
 treatment-subgroup interactions in clustered data with generalized linear
-mixed-effects model trees. *Behavior Research Methods* 50, 2016-2034.
+mixed-effects model trees. \emph{Behavior Research Methods} 50, 2016-2034.
 \doi{10.3758/s13428-017-0971-x}
 }
 \seealso{
-[splitVariables()], [keyFromMecit()], [simulateExpression()]
+\code{\link[=splitVariables]{splitVariables()}}, \code{\link[=keyFromMecit]{keyFromMecit()}}, \code{\link[=simulateExpression]{simulateExpression()}}
 }

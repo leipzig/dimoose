@@ -11,21 +11,21 @@ keyFromRpart(
 )
 }
 \arguments{
-\item{fit}{An `rpart` object with `method = "class"`, e.g. from
-[generateTree()].}
+\item{fit}{An \code{rpart} object with \code{method = "class"}, e.g. from
+\code{\link[=generateTree]{generateTree()}}.}
 
 \item{desc}{Title of the key.}
 
 \item{meta}{Key/value metadata data frame.}
 }
 \value{
-A [moose] object.
+A \link{moose} object.
 }
 \description{
-Converts an [rpart::rpart()] classification tree into a dichotomous key:
+Converts an \code{\link[rpart:rpart]{rpart::rpart()}} classification tree into a dichotomous key:
 every split becomes a couplet with two leads, and every leaf a result.
 Taxa that the tree cannot separate share a leaf and are listed together
-(`"A / B"`).
+(\code{"A / B"}).
 }
 \examples{
 d <- data.frame(
@@ -38,5 +38,5 @@ fit <- generateTree(d, "taxon",
 keyFromRpart(fit, "Three taxa")$leads
 }
 \seealso{
-[vibrioKey()]
+\code{\link[=vibrioKey]{vibrioKey()}}
 }

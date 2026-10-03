@@ -7,17 +7,17 @@
 scoreImages(key, model, paths)
 }
 \arguments{
-\item{key}{A key with a `features` table.}
+\item{key}{A key with a \code{features} table.}
 
-\item{model}{A [visionModel()].}
+\item{model}{A \code{\link[=visionModel]{visionModel()}}.}
 
-\item{paths}{Image files, or an [imageSet()] (its `path` column is
-embedded and its `id` column names the rows).}
+\item{paths}{Image files, or an \code{\link[=imageSet]{imageSet()}} (its \code{path} column is
+embedded and its \code{id} column names the rows).}
 }
 \value{
-An `images x features` matrix for [classify()].
+An \verb{images x features} matrix for \code{\link[=classify]{classify()}}.
 }
 \description{
 Embeds the images (once per distinct crop region the key's text features
-use) and applies [featureScores()].
+use) and applies \code{\link[=featureScores]{featureScores()}}.
 }
