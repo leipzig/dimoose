@@ -74,3 +74,12 @@ test_that("keyFromTerms rpart route works and labels that cannot be split share 
   expect_s3_class(k2, "moose")
   expect_true(all(grepl("^term:", k2$leads$Feature)))
 })
+
+test_that("inventNames and discoverTerms leave the global RNG alone", {
+  set.seed(42)
+  before <- .Random.seed
+  inventNames(3)
+  patches <- array(seq_len(4 * 3 * 2) / 24, c(4, 3, 2))
+  discoverTerms(patches, k = 2, nstart = 1)
+  expect_identical(.Random.seed, before)
+})

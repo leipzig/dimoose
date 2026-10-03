@@ -6,7 +6,9 @@
 #' @param data A data frame containing the feature matrix.
 #' @param target_col Name of the target/response column.
 #' @param method `"rpart"`, `"randomForest"` (requires the 'randomForest'
-#'   package), or `"gbm"` (requires the 'gbm' package).
+#'   package), or `"gbm"` (requires the 'gbm' package; `"multinomial"`
+#'   distribution unless the response is numeric 0/1, which uses
+#'   `"bernoulli"`).
 #' @param params Optional list of arguments passed to the fitting function,
 #'   overriding the defaults.
 #' @return A fitted `rpart`, `randomForest` or `gbm` object.
@@ -53,18 +55,16 @@ generateTree <- function(data, target_col, method = c("rpart", "randomForest", "
       do.call(randomForest::randomForest, c(list(formula = formula, data = data), utils::modifyList(defaults, params)))
     },
     gbm = {
+      # gbm's "bernoulli" needs a 0/1 response; taxa are a factor, which gbm
+      # handles with "multinomial"
+      y <- data[[target_col]]
+      binary <- is.numeric(y) && all(y %in% c(0, 1))
+      if (!binary && !is.factor(y)) data[[target_col]] <- factor(y)
       defaults <- list(
-        distribution = "bernoulli", n.trees = 100, interaction.depth = 3,
+        distribution = if (binary) "bernoulli" else "multinomial", n.trees = 100, interaction.depth = 3,
         shrinkage = 0.1, cv.folds = 5
       )
       do.call(gbm::gbm, c(list(formula = formula, data = data), utils::modifyList(defaults, params)))
     }
   )
-}
-
-# Placeholder: load the consensus matrix from Noguerola & Blanch (2008),
-# "Identification of Vibrio spp. with a set of dichotomous keys",
-# J Appl Microbiol, doi:10.1111/j.1365-2672.2008.03730.x
-importVibrio <- function(consensus) {
-  consensus
 }

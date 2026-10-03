@@ -4,7 +4,8 @@
 #' visual terms that have no English name (as fordera does).
 #'
 #' @param n Number of names.
-#' @param seed Random seed, so the same call gives the same names.
+#' @param seed Random seed, so the same call gives the same names. The
+#'   global random number generator state is left unchanged.
 #' @return A character vector of `n` distinct lower-case words.
 #' @examples
 #' inventNames(5)
@@ -16,16 +17,17 @@ inventNames <- function(n, seed = 1) {
   vowels <- c("a", "e", "i", "o", "u", "ae", "ai", "au", "ei", "eu", "ia", "ie", "oa", "oi", "ou", "ua", "y")
   codas <- c("", "", "l", "m", "n", "r", "s", "t", "k", "lm", "ld", "nd", "nt", "rk", "rl", "rn",
              "sk", "st", "ss", "ff", "ps", "x", "ng")
-  set.seed(seed)
-  out <- character()
-  while (length(out) < n) {
-    syl <- sample(2:3, 1)
-    w <- paste0(vapply(seq_len(syl), function(i) {
-      paste0(sample(onsets, 1), sample(vowels, 1), sample(codas, 1))
-    }, character(1)), collapse = "")
-    if (nchar(w) <= 14 && !w %in% out) out <- c(out, w)
-  }
-  out
+  withr::with_seed(seed, {
+    out <- character()
+    while (length(out) < n) {
+      syl <- sample(2:3, 1)
+      w <- paste0(vapply(seq_len(syl), function(i) {
+        paste0(sample(onsets, 1), sample(vowels, 1), sample(codas, 1))
+      }, character(1)), collapse = "")
+      if (nchar(w) <= 14 && !w %in% out) out <- c(out, w)
+    }
+    out
+  })
 }
 
 #' Discover visual terms by clustering patch embeddings
@@ -59,8 +61,7 @@ discoverTerms <- function(patches, k = 40, seed = 1, nstart = 10, exemplars = 4)
   ids <- dimnames(patches)[[1]]
   if (is.null(ids)) ids <- as.character(seq_len(n))
   X <- matrix(aperm(patches, c(2, 1, 3)), n * p, d) # row = patch within image, image-major
-  set.seed(seed)
-  km <- stats::kmeans(X, centers = k, nstart = nstart, iter.max = 100)
+  km <- withr::with_seed(seed, stats::kmeans(X, centers = k, nstart = nstart, iter.max = 100))
   centroids <- km$centers / sqrt(rowSums(km$centers^2))
   nm <- inventNames(k, seed = seed)
   rownames(centroids) <- nm

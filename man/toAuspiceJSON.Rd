@@ -7,25 +7,25 @@
 toAuspiceJSON(key, title = NULL, file = NULL)
 }
 \arguments{
-\item{key}{A [moose] key.}
+\item{key}{A \link{moose} key.}
 
 \item{title}{Dataset title; defaults to the key's description.}
 
-\item{file}{Optional path to write to; if `NULL`, the JSON is returned as a
+\item{file}{Optional path to write to; if \code{NULL}, the JSON is returned as a
 string.}
 }
 \value{
-The JSON string (invisibly if written to `file`).
+The JSON string (invisibly if written to \code{file}).
 }
 \description{
 Writes the key's spanning tree as an Auspice v2 dataset, which the
 Nextstrain viewer and auspice.us can display. Node names are made unique
 and space-free (required by the schema); the original labels and each
-lead's text are kept in `node_attrs`. `div` is the depth from the root.
+lead's text are kept in \code{node_attrs}. \code{div} is the depth from the root.
 }
 \examples{
 js <- toAuspiceJSON(phylotreeKey("H2a"))
 }
 \seealso{
-[toNewick()], [toTreedata()]
+\code{\link[=toNewick]{toNewick()}}, \code{\link[=toTreedata]{toTreedata()}}
 }

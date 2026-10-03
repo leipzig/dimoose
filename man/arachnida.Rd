@@ -7,26 +7,26 @@
 \format{
 A data frame with 22 rows (11 couplets) and 6 columns:
 \describe{
-  \item{Statement}{Couplet number.}
-  \item{Choice}{`a` for the first lead (`1.`), `b` for the second (`1'.`).}
-  \item{Character}{Text of the lead.}
-  \item{Next}{Couplet the lead leads to, or `"-"`.}
-  \item{Taxon}{Order the lead ends in, for terminal leads.}
-  \item{Page}{Page of the book where that order is treated.}
+\item{Statement}{Couplet number.}
+\item{Choice}{\code{a} for the first lead (\code{1.}), \code{b} for the second (\verb{1'.}).}
+\item{Character}{Text of the lead.}
+\item{Next}{Couplet the lead leads to, or \code{"-"}.}
+\item{Taxon}{Order the lead ends in, for terminal leads.}
+\item{Page}{Page of the book where that order is treated.}
 }
 }
 \source{
-Triplehorn CA, Johnson NF (2005). *Borror and DeLong's
-  Introduction to the Study of Insects*, 7th ed. Thomson Brooks/Cole.
-  Transcription: `data-raw/arachnida/` in the package sources.
+Triplehorn CA, Johnson NF (2005). \emph{Borror and DeLong's
+Introduction to the Study of Insects}, 7th ed. Thomson Brooks/Cole.
+Transcription: \verb{data-raw/arachnida/} in the package sources.
 }
 \usage{
 arachnida
 }
 \description{
-The key from Triplehorn & Johnson (2005), *Borror and DeLong's
-Introduction to the Study of Insects*, 7th ed., chapter 5, as a table of
-leads (see [keyFromLeads()]); [arachnidaKey()] turns it into a [moose]
+The key from Triplehorn & Johnson (2005), \emph{Borror and DeLong's
+Introduction to the Study of Insects}, 7th ed., chapter 5, as a table of
+leads (see \code{\link[=keyFromLeads]{keyFromLeads()}}); \code{\link[=arachnidaKey]{arachnidaKey()}} turns it into a \link{moose}
 key. Transcribed by hand from the book.
 }
 \keyword{datasets}

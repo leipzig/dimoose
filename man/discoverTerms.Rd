@@ -7,28 +7,28 @@
 discoverTerms(patches, k = 40, seed = 1, nstart = 10, exemplars = 4)
 }
 \arguments{
-\item{patches}{A numeric array `images x patches x dimensions` (unit length
-rows), e.g. `embedImages(...)$patches`; `dimnames(patches)[[1]]` are the
+\item{patches}{A numeric array \verb{images x patches x dimensions} (unit length
+rows), e.g. \code{embedImages(...)$patches}; \code{dimnames(patches)[[1]]} are the
 image ids.}
 
 \item{k}{Number of terms.}
 
-\item{seed}{Seed for k-means and for [inventNames()].}
+\item{seed}{Seed for k-means and for \code{\link[=inventNames]{inventNames()}}.}
 
-\item{nstart}{Random starts for [stats::kmeans()].}
+\item{nstart}{Random starts for \code{\link[stats:kmeans]{stats::kmeans()}}.}
 
 \item{exemplars}{Number of best-matching patches to record per term.}
 }
 \value{
-An object of class `mooseTerms`: `terms` (data frame `id`, `name`),
-  `centroids` (`k x d`, rows named by term) and `exemplars` (data frame
-  `term`, `image`, `patch`, `score`).
+An object of class \code{mooseTerms}: \code{terms} (data frame \code{id}, \code{name}),
+\code{centroids} (\verb{k x d}, rows named by term) and \code{exemplars} (data frame
+\code{term}, \code{image}, \code{patch}, \code{score}).
 }
 \description{
 Runs k-means on every patch embedding of every image and keeps the unit
-length centroids as the definitions of `k` invented terms. An image "has"
+length centroids as the definitions of \code{k} invented terms. An image "has"
 a term when one of its patches is close to that centroid (see
-[termScores()]).
+\code{\link[=termScores]{termScores()}}).
 }
 \examples{
 set.seed(1)

@@ -15,28 +15,27 @@ keyFromTerms(
 )
 }
 \arguments{
-\item{scores}{`images x terms` matrix from [termScores()].}
+\item{scores}{\verb{images x terms} matrix from \code{\link[=termScores]{termScores()}}.}
 
-\item{images}{[imageSet()] data frame with one row per row of `scores`.}
+\item{images}{\code{\link[=imageSet]{imageSet()}} data frame with one row per row of \code{scores}.}
 
-\item{terms}{The `mooseTerms` object the scores were computed with.}
+\item{terms}{The \code{mooseTerms} object the scores were computed with.}
 
-\item{method}{`"balanced"` or `"rpart"`.}
+\item{method}{\code{"balanced"} or \code{"rpart"}.}
 
-\item{quantile}{Presence threshold quantile for `"balanced"`.}
+\item{quantile}{Presence threshold quantile for \code{"balanced"}.}
 
 \item{desc, meta}{Title and metadata of the key.}
 }
 \value{
-A [moose] key whose leads carry `Feature`, `Test`, `Threshold` and
-  `Question`, and whose `features` table holds the centroids.
+A \link{moose} key whose leads carry \code{Feature}, \code{Test}, \code{Threshold} and
+\code{Question}, and whose \code{features} table holds the centroids.
 }
 \description{
-Each step asks whether the image has one invented term. `method =
-"balanced"` is fordera's algorithm: a term is present when its score is
-above the `quantile` of that term's scores over all images; a label has a
+Each step asks whether the image has one invented term. \code{method = "balanced"} is fordera's algorithm: a term is present when its score is
+above the \code{quantile} of that term's scores over all images; a label has a
 term if any of its images does; each split uses the unused term that
 divides the remaining labels most evenly (ties to the earlier term).
-`method = "rpart"` grows a classification tree on the scores instead, with
+\code{method = "rpart"} grows a classification tree on the scores instead, with
 the split points as thresholds.
 }

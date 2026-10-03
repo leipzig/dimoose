@@ -1,4 +1,6 @@
-torch
-open_clip_torch
-pillow
-numpy
+# Versions tested with tests/testthat/test-vision-python.R (Python 3.14,
+# OpenAI ViT-B-32 weights); torch and open_clip match analysis/fordera.
+torch==2.14.1
+open_clip_torch==3.3.0
+pillow==12.3.0
+numpy==2.5.3

@@ -6,183 +6,173 @@
 \description{
 An R6 object holding a dichotomous key as a table of the leads on every
 path from the root to a terminal taxon. Usually created by
-[importFishbase()] or [parseFishbase()]. See
-<https://www.fishbase.se/keys/allkeys.php> for FishBase keys.
+\code{\link[=importFishbase]{importFishbase()}} or \code{\link[=parseFishbase]{parseFishbase()}}. See
+\url{https://www.fishbase.se/keys/allkeys.php} for FishBase keys.
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{desc}}{Key title or description (read-only).}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{desc}}{Key title or description (read-only).}
 
-\item{\code{df}}{Data frame with one row per lead (or per term, if terms were
-separated) per terminal taxon, with columns `Statement`, `Choice`,
-`Character`, `Taxon`, and `pSt`/`pCh` for the parent lead.}
+    \item{\code{df}}{Data frame with one row per lead (or per term, if terms were
+separated) per terminal taxon, with columns \code{Statement}, \code{Choice},
+\code{Character}, \code{Taxon}, and \code{pSt}/\code{pCh} for the parent lead.}
 
-\item{\code{meta}}{Key/value data frame of metadata (citation, image URLs, ...).}
+    \item{\code{meta}}{Key/value data frame of metadata (citation, image URLs, ...).}
 
-\item{\code{taxa}}{Data frame of terminal taxa and their resolved names.}
+    \item{\code{taxa}}{Data frame of terminal taxa and their resolved names.}
 
-\item{\code{leads}}{Data frame with one row per lead: `Statement`, `Choice`,
-`Character`, `Next` (next couplet, or `"-"` if terminal) and `Taxon`,
-plus optional `Prev`, `Image`, `ImageLink`, `TaxonUrl`, `Question`,
-`Feature`, `Test` and `Threshold`. Derived from `df` when the object
+    \item{\code{leads}}{Data frame with one row per lead: \code{Statement}, \code{Choice},
+\code{Character}, \code{Next} (next couplet, or \code{"-"} if terminal) and \code{Taxon},
+plus optional \code{Prev}, \code{Image}, \code{ImageLink}, \code{TaxonUrl}, \code{Question},
+\code{Feature}, \code{Test} and \code{Threshold}. Derived from \code{df} when the object
 was created without one.}
 
-\item{\code{features}}{Data frame of features a machine can compute, one per
-row (see [featureTable()]), or `NULL` for keys meant only for people.}
-}
-\if{html}{\out{</div>}}
+    \item{\code{features}}{Data frame of features a machine can compute, one per
+row (see \code{\link[=featureTable]{featureTable()}}), or \code{NULL} for keys meant only for people.}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-moose-new}{\code{moose$new()}}
-\item \href{#method-moose-print}{\code{moose$print()}}
-\item \href{#method-moose-summary}{\code{moose$summary()}}
-\item \href{#method-moose-validate}{\code{moose$validate()}}
-\item \href{#method-moose-toDataTree}{\code{moose$toDataTree()}}
-\item \href{#method-moose-toNewick}{\code{moose$toNewick()}}
-\item \href{#method-moose-toPolyclave}{\code{moose$toPolyclave()}}
-\item \href{#method-moose-clone}{\code{moose$clone()}}
-}
+  \itemize{
+    \item \href{#method-moose-initialize}{\code{moose$new()}}
+    \item \href{#method-moose-print}{\code{moose$print()}}
+    \item \href{#method-moose-summary}{\code{moose$summary()}}
+    \item \href{#method-moose-validate}{\code{moose$validate()}}
+    \item \href{#method-moose-toDataTree}{\code{moose$toDataTree()}}
+    \item \href{#method-moose-toNewick}{\code{moose$toNewick()}}
+    \item \href{#method-moose-clone}{\code{moose$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-moose-new"></a>}}
-\if{latex}{\out{\hypertarget{method-moose-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new moose object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$new(df, desc = NA, meta = NA, taxa = NA, leads = NULL, features = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-moose-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-moose-initialize}{}}}
+\subsection{\code{moose$new()}}{
+  Create a new moose object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{moose$new(df, desc = NA, meta = NA, taxa = NA, leads = NULL, features = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{df}}{Data frame of leads (see the \code{df} field).}
+      \item{\code{desc}}{Key title or description.}
+      \item{\code{meta}}{Key/value metadata data frame.}
+      \item{\code{taxa}}{Data frame of terminal taxa.}
+      \item{\code{leads}}{Optional data frame of leads (see the \code{leads} field).}
+      \item{\code{features}}{Optional data frame of machine-readable features (see
+\code{\link[=featureTable]{featureTable()}}).}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{df}}{Data frame of leads (see the `df` field).}
-
-\item{\code{desc}}{Key title or description.}
-
-\item{\code{meta}}{Key/value metadata data frame.}
-
-\item{\code{taxa}}{Data frame of terminal taxa.}
-
-\item{\code{leads}}{Optional data frame of leads (see the `leads` field).}
-
-\item{\code{features}}{Optional data frame of machine-readable features (see
-[featureTable()]).}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-moose-print"></a>}}
 \if{latex}{\out{\hypertarget{method-moose-print}{}}}
-\subsection{Method \code{print()}}{
-Print a short overview of the key.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$print(...)}\if{html}{\out{</div>}}
+\subsection{\code{moose$print()}}{
+  Print a short overview of the key.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{moose$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Unused.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Unused.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-moose-summary"></a>}}
 \if{latex}{\out{\hypertarget{method-moose-summary}{}}}
-\subsection{Method \code{summary()}}{
-Counts describing the key.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$summary()}\if{html}{\out{</div>}}
+\subsection{\code{moose$summary()}}{
+  Counts describing the key.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{moose$summary()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A one-row data frame: \code{title}, \code{couplets}, \code{leads}, \code{taxa},
+\code{depth} (longest path in steps) and \code{problems} (see \code{validate()}).
+  }
 }
 
-\subsection{Returns}{
-A one-row data frame: `title`, `couplets`, `leads`, `taxa`,
-  `depth` (longest path in steps) and `problems` (see `validate()`).
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-moose-validate"></a>}}
 \if{latex}{\out{\hypertarget{method-moose-validate}{}}}
-\subsection{Method \code{validate()}}{
-Check the key: leads to missing couplets, terminal leads
-  without a taxon, couplets with fewer than two leads, couplets that
-  cannot be reached from the first one, and (for keys with features)
-  leads whose machine test is missing or inconsistent.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$validate()}\if{html}{\out{</div>}}
+\subsection{\code{moose$validate()}}{
+  Check the key: leads to missing couplets, terminal leads
+without a taxon, couplets with fewer than two leads, couplets that
+cannot be reached from the first one, and (for keys with features)
+leads whose machine test is missing or inconsistent.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{moose$validate()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A character vector of problems, invisibly if there are none.
+  }
 }
 
-\subsection{Returns}{
-A character vector of problems, invisibly if there are none.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-moose-toDataTree"></a>}}
 \if{latex}{\out{\hypertarget{method-moose-toDataTree}{}}}
-\subsection{Method \code{toDataTree()}}{
-Convert the key to a [data.tree::Node]: couplets are
-  internal nodes and taxa leaves; each child node carries the `lead`
-  label and the `character` text of the lead that leads to it. A
-  couplet reached from several leads is attached under the first.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$toDataTree()}\if{html}{\out{</div>}}
+\subsection{\code{moose$toDataTree()}}{
+  Convert the key to a \link[data.tree:Node]{data.tree::Node}: couplets are
+internal nodes and taxa leaves; each child node carries the \code{lead}
+label and the \code{character} text of the lead that leads to it. A
+couplet reached from several leads is attached under the first.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{moose$toDataTree()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-moose-toNewick"></a>}}
 \if{latex}{\out{\hypertarget{method-moose-toNewick}{}}}
-\subsection{Method \code{toNewick()}}{
-Write the key's topology in Newick format, with couplets
-  as internal node labels and taxa as leaves (labels quoted when
-  needed). A couplet reached from several leads is placed under the
-  first.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$toNewick()}\if{html}{\out{</div>}}
+\subsection{\code{moose$toNewick()}}{
+  Write the key's topology in Newick format, with couplets
+as internal node labels and taxa as leaves (labels quoted when
+needed). A couplet reached from several leads is placed under the
+first.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{moose$toNewick()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A single string ending in \verb{;}.
+  }
 }
 
-\subsection{Returns}{
-A single string ending in `;`.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-moose-toPolyclave"></a>}}
-\if{latex}{\out{\hypertarget{method-moose-toPolyclave}{}}}
-\subsection{Method \code{toPolyclave()}}{
-Convert the key to a polyclave (multi-access key). Not yet
-  implemented: currently returns the lead table unchanged.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$toPolyclave(delim = ";")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{delim}}{Separator between character terms.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-moose-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-moose-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{moose$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{moose$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{moose$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

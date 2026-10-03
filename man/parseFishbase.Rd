@@ -14,32 +14,32 @@ parseFishbase(
 )
 }
 \arguments{
-\item{description}{The description page (`keys/description.php`): an
-`xml_document`, a file path, or a string of HTML.}
+\item{description}{The description page (\code{keys/description.php}): an
+\code{xml_document}, a file path, or a string of HTML.}
 
-\item{questions}{The questions page (`keys/questions.php`), in any of the
+\item{questions}{The questions page (\code{keys/questions.php}), in any of the
 same forms.}
 
-\item{separateTerms}{If `TRUE`, split each lead's character statement on
-`";"` into one row per term.}
+\item{separateTerms}{If \code{TRUE}, split each lead's character statement on
+\code{";"} into one row per term.}
 
-\item{usePhyloService}{Taxonomic name resolution: `"GNA"` verifies terminal
-taxa with the Global Names verifier (`taxize::gna_verifier()`, requires
-the 'taxize' package); `"none"` skips resolution. `"GNR"` is accepted as
-an alias for `"GNA"`. `"TNRS"` is no longer available because
-`taxize::tnrs()` is defunct.}
+\item{usePhyloService}{Taxonomic name resolution: \code{"GNA"} verifies terminal
+taxa with the Global Names verifier (\code{taxize::gna_verifier()}, requires
+the 'taxize' package); \code{"none"} skips resolution. \code{"GNR"} is accepted as
+an alias for \code{"GNA"}. \code{"TNRS"} is no longer available because
+\code{taxize::tnrs()} is defunct.}
 
-\item{embedImages}{If `TRUE`, download the key's morphology images and store
-them base64-encoded in `meta`. Image URLs are always stored.}
+\item{embedImages}{If \code{TRUE}, download the key's morphology images and store
+them base64-encoded in \code{meta}. Image URLs are always stored.}
 
 \item{pageUrl}{URL of the questions page, used to resolve relative image
 links.}
 }
 \value{
-A [moose] object.
+A \link{moose} object.
 }
 \description{
-The offline half of [importFishbase()]: parses a FishBase key description
+The offline half of \code{\link[=importFishbase]{importFishbase()}}: parses a FishBase key description
 page and its questions (couplet) page, both already downloaded.
 }
 \examples{

@@ -7,19 +7,19 @@
 embedImages(model, paths, region = NULL, patches = TRUE)
 }
 \arguments{
-\item{model}{A [visionModel()].}
+\item{model}{A \code{\link[=visionModel]{visionModel()}}.}
 
 \item{paths}{Image files.}
 
-\item{region}{Optional crop `c(y0, y1, x0, x1)` as fractions, applied to
+\item{region}{Optional crop \code{c(y0, y1, x0, x1)} as fractions, applied to
 every image before embedding.}
 
-\item{patches}{If `TRUE`, also return per-patch embeddings.}
+\item{patches}{If \code{TRUE}, also return per-patch embeddings.}
 }
 \value{
-A list: `image` (`images x d` matrix, rows named by file name
-  without extension) and `patches` (`images x patches x d` array, or
-  `NULL`).
+A list: \code{image} (\verb{images x d} matrix, rows named by file name
+without extension) and \code{patches} (\verb{images x patches x d} array, or
+\code{NULL}).
 }
 \description{
 Embed images

@@ -7,44 +7,44 @@
 \format{
 A data frame with 5,435 rows and 5 columns:
 \describe{
-  \item{haplogroup}{Haplogroup name.}
-  \item{parent}{Name of the parent haplogroup (`NA` for `mtMRCA`).}
-  \item{depth}{Number of branches from `mtMRCA`.}
-  \item{n_subclades}{Number of direct subclades.}
-  \item{mutations}{Space-separated mutations of the branch leading to this
-    haplogroup, as written by Haplogrep.}
+\item{haplogroup}{Haplogroup name.}
+\item{parent}{Name of the parent haplogroup (\code{NA} for \code{mtMRCA}).}
+\item{depth}{Number of branches from \code{mtMRCA}.}
+\item{n_subclades}{Number of direct subclades.}
+\item{mutations}{Space-separated mutations of the branch leading to this
+haplogroup, as written by Haplogrep.}
 }
 }
 \source{
-Haplogrep 3 tree `phylotree-rsrs-17`, release 17.2, commit
-  `0e79ddf1b78f7a1b81fb5d607bc31a6ddea7b18b`, `src/tree.xml`
-  (<https://github.com/genepi/phylotree-rsrs-17>), MIT license. The
-  conversion and a script that checks these data against GitHub are in
-  `data-raw/phylotree17/` in the package sources.
+Haplogrep 3 tree \code{phylotree-rsrs-17}, release 17.2, commit
+\verb{0e79ddf1b78f7a1b81fb5d607bc31a6ddea7b18b}, \code{src/tree.xml}
+(\url{https://github.com/genepi/phylotree-rsrs-17}), MIT license. The
+conversion and a script that checks these data against GitHub are in
+\verb{data-raw/phylotree17/} in the package sources.
 }
 \usage{
 phylotree17
 }
 \description{
 The 5,435 haplogroups of PhyloTree Build 17 (van Oven 2015) as
-distributed by Haplogrep 3 (release 17.2 of `phylotree-rsrs-17`), one row
-per haplogroup, rooted at `mtMRCA`. Use [phylotreeKey()] to turn the tree,
-or part of it, into an identification key, and [phylotree17_mutations] for
+distributed by Haplogrep 3 (release 17.2 of \code{phylotree-rsrs-17}), one row
+per haplogroup, rooted at \code{mtMRCA}. Use \code{\link[=phylotreeKey]{phylotreeKey()}} to turn the tree,
+or part of it, into an identification key, and \link{phylotree17_mutations} for
 the mutations one per row.
 }
 \details{
-Rows are in the order of Haplogrep's `tree.xml`, which is preorder (each
+Rows are in the order of Haplogrep's \code{tree.xml}, which is preorder (each
 haplogroup directly before its subclades). Names and mutations are
-Haplogrep's, verbatim: names such as `H2a+152  16311` or `K1b1+(16093)`
-label branches that PhyloTree leaves unnamed, and two names (`M4’’67`,
-`M4’’67+16311!`) contain the Unicode character U+2019. Haplogrep's
+Haplogrep's, verbatim: names such as \verb{H2a+152  16311} or \code{K1b1+(16093)}
+label branches that PhyloTree leaves unnamed, and two names (\verb{M4’’67},
+\verb{M4’’67+16311!}) contain the Unicode character U+2019. Haplogrep's
 trailing space on one name is trimmed.
 
 Mutations are in RSRS orientation: each is the state on the branch leading
-to the haplogroup. `16362C` is a substitution (position and derived base),
-`263G!` a back-mutation (it reverts the latest change at that position;
-`!!` marks a second reversion), `315.1C` or `5899.XC` an insertion (`X`:
-unspecified length) and `249d` a deletion. Unlike some other copies (e.g.
+to the haplogroup. \verb{16362C} is a substitution (position and derived base),
+\verb{263G!} a back-mutation (it reverts the latest change at that position;
+\verb{!!} marks a second reversion), \verb{315.1C} or \verb{5899.XC} an insertion (\code{X}:
+unspecified length) and \verb{249d} a deletion. Unlike some other copies (e.g.
 MToolBox's), PhyloTree's unstable mutations, which PhyloTree prints in
 parentheses, are included; the parentheses are not recorded.
 }
@@ -54,14 +54,14 @@ phylotree17[phylotree17$parent \%in\% "H2a2a", ]
 }
 \references{
 van Oven M (2015). PhyloTree Build 17: Growing the human mitochondrial DNA
-tree. *Forensic Science International: Genetics Supplement Series* 5,
+tree. \emph{Forensic Science International: Genetics Supplement Series} 5,
 e392-e394. \doi{10.1016/j.fsigss.2015.09.155}
 
 Schönherr S, Weissensteiner H, Kronenberg F, Forer L (2023). Haplogrep 3 -
 an interactive haplogroup classification and analysis platform.
-*Nucleic Acids Research* 51, W263-W268. \doi{10.1093/nar/gkad284}
+\emph{Nucleic Acids Research} 51, W263-W268. \doi{10.1093/nar/gkad284}
 }
 \seealso{
-[phylotree17_mutations], [phylotreeKey()]
+\link{phylotree17_mutations}, \code{\link[=phylotreeKey]{phylotreeKey()}}
 }
 \keyword{datasets}

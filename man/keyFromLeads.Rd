@@ -7,29 +7,29 @@
 keyFromLeads(leads, desc = NA, meta = NULL, taxa = NULL, features = NULL)
 }
 \arguments{
-\item{leads}{Data frame with columns `Statement` (couplet), `Choice`,
-`Character` (the lead's text), `Next` (next couplet, or `"-"` if the lead
-ends in a result) and `Taxon` (the result, for terminal leads). Optional
-columns `Label`, `Image`, `ImageLink` and `TaxonUrl` are used by
-[exportWizard()]; any others are kept.}
+\item{leads}{Data frame with columns \code{Statement} (couplet), \code{Choice},
+\code{Character} (the lead's text), \code{Next} (next couplet, or \code{"-"} if the lead
+ends in a result) and \code{Taxon} (the result, for terminal leads). Optional
+columns \code{Label}, \code{Image}, \code{ImageLink} and \code{TaxonUrl} are used by
+\code{\link[=exportWizard]{exportWizard()}}; any others are kept.}
 
 \item{desc}{Title or description of the key.}
 
-\item{meta}{Key/value data frame of metadata (e.g. `citation`).}
+\item{meta}{Key/value data frame of metadata (e.g. \code{citation}).}
 
-\item{taxa}{Data frame of results with `submitted_name` and
-`matched_name`; by default every taxon matches itself.}
+\item{taxa}{Data frame of results with \code{submitted_name} and
+\code{matched_name}; by default every taxon matches itself.}
 
-\item{features}{Optional [featureTable()] for keys a machine can follow
-(the leads then also carry `Feature`, `Test` and `Threshold`).}
+\item{features}{Optional \code{\link[=featureTable]{featureTable()}} for keys a machine can follow
+(the leads then also carry \code{Feature}, \code{Test} and \code{Threshold}).}
 }
 \value{
-A [moose] object.
+A \link{moose} object.
 }
 \description{
-The common constructor behind [sharkKey()], [arachnidaKey()],
-[vibrioKey()] and [phylotreeKey()]: takes one row per lead and returns a
-[moose] object.
+The common constructor behind \code{\link[=sharkKey]{sharkKey()}}, \code{\link[=arachnidaKey]{arachnidaKey()}},
+\code{\link[=vibrioKey]{vibrioKey()}} and \code{\link[=phylotreeKey]{phylotreeKey()}}: takes one row per lead and returns a
+\link{moose} object.
 }
 \examples{
 leads <- data.frame(

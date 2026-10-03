@@ -282,7 +282,6 @@ toAuspiceJSON <- function(key, title = NULL, file = NULL) {
 #' }
 #' @export
 readHaplogrep <- function(file, key = FALSE) {
-  if (!requireNamespace("xml2", quietly = TRUE)) stop("Install the xml2 package", call. = FALSE)
   doc <- xml2::read_xml(file)
   rows <- list()
   visit <- function(nd, parent, depth) {

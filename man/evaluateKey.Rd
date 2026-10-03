@@ -7,20 +7,20 @@
 evaluateKey(key, scores, labels, groups = NULL)
 }
 \arguments{
-\item{key}{A [moose] key with `Feature`, `Test` and `Threshold` lead
-columns, e.g. from [keyFromTerms()].}
+\item{key}{A \link{moose} key with \code{Feature}, \code{Test} and \code{Threshold} lead
+columns, e.g. from \code{\link[=keyFromTerms]{keyFromTerms()}}.}
 
 \item{scores}{A numeric matrix, one row per object, with a column for every
-feature id the key tests (see [featureScores()] and [scoreImages()]).}
+feature id the key tests (see \code{\link[=featureScores]{featureScores()}} and \code{\link[=scoreImages]{scoreImages()}}).}
 
-\item{labels}{True label of each row of `scores`.}
+\item{labels}{True label of each row of \code{scores}.}
 
 \item{groups}{Optional named vector mapping labels to coarser groups (e.g.
 model years to generations) for a second accuracy figure.}
 }
 \value{
-A list: `results` (one row per object with `actual`, `predicted`,
-  `correct`, `groupCorrect`), `accuracy`, `groupAccuracy` and `confusion`.
+A list: \code{results} (one row per object with \code{actual}, \code{predicted},
+\code{correct}, \code{groupCorrect}), \code{accuracy}, \code{groupAccuracy} and \code{confusion}.
 }
 \description{
 Accuracy of a key followed by machine

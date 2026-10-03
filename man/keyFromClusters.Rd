@@ -18,29 +18,29 @@ keyFromClusters(
 )
 }
 \arguments{
-\item{image}{`images x d` matrix of unit-length image embeddings.}
+\item{image}{\verb{images x d} matrix of unit-length image embeddings.}
 
-\item{images}{[imageSet()] data frame, one row per row of `image`.}
+\item{images}{\code{\link[=imageSet]{imageSet()}} data frame, one row per row of \code{image}.}
 
-\item{vocabulary}{As in [vocabularyPrompts()].}
+\item{vocabulary}{As in \code{\link[=vocabularyPrompts]{vocabularyPrompts()}}.}
 
-\item{textEmb}{Text embeddings of `vocabularyPrompts(vocabulary, template)`,
-rows named by prompt (as [embedTexts()] returns them).}
+\item{textEmb}{Text embeddings of \code{vocabularyPrompts(vocabulary, template)},
+rows named by prompt (as \code{\link[=embedTexts]{embedTexts()}} returns them).}
 
-\item{template}{Must match the one used to make `textEmb`.}
+\item{template}{Must match the one used to make \code{textEmb}.}
 
 \item{order}{Optional function of a character vector of labels returning
 a number; at each split the child with the smaller value comes first.}
 
 \item{maxPerSide}{Most images per side used for the side means.}
 
-\item{calibrate}{`"none"` (threshold 0) or `"midpoint"` (halfway between
+\item{calibrate}{\code{"none"} (threshold 0) or \code{"midpoint"} (halfway between
 the two sides' mean scores).}
 
 \item{desc, meta}{Title and metadata.}
 }
 \value{
-A [moose] key with `clip_text_pair` features.
+A \link{moose} key with \code{clip_text_pair} features.
 }
 \description{
 Classes are clustered on the mean embedding of their images (Ward's

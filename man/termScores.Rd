@@ -7,14 +7,14 @@
 termScores(patches, centroids)
 }
 \arguments{
-\item{patches}{As in [discoverTerms()].}
+\item{patches}{As in \code{\link[=discoverTerms]{discoverTerms()}}.}
 
-\item{centroids}{A `k x d` matrix of term centroids (unit rows), e.g.
-`discoverTerms(...)$centroids`.}
+\item{centroids}{A \verb{k x d} matrix of term centroids (unit rows), e.g.
+\code{discoverTerms(...)$centroids}.}
 }
 \value{
-An `images x terms` matrix: for each term, the highest cosine
-  similarity between the centroid and any patch of the image.
+An \verb{images x terms} matrix: for each term, the highest cosine
+similarity between the centroid and any patch of the image.
 }
 \description{
 Score images against terms

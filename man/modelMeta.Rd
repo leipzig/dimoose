@@ -7,10 +7,10 @@
 modelMeta(model)
 }
 \arguments{
-\item{model}{A [visionModel()].}
+\item{model}{A \code{\link[=visionModel]{visionModel()}}.}
 }
 \value{
-A key/value data frame with `model_*` keys.
+A key/value data frame with \verb{model_*} keys.
 }
 \description{
 Model details as metadata rows

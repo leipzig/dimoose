@@ -9,14 +9,14 @@ imageSet(paths, label = NULL)
 \arguments{
 \item{paths}{Image files.}
 
-\item{label}{Class of each image: `NULL` (the file name without its
-extension), a character vector as long as `paths`, or a function applied
-to those file names (e.g. `function(x) sub("_.*$", "", x)` so that
-`1967_alt` counts as `1967`).}
+\item{label}{Class of each image: \code{NULL} (the file name without its
+extension), a character vector as long as \code{paths}, or a function applied
+to those file names (e.g. \code{function(x) sub("_.*$", "", x)} so that
+\verb{1967_alt} counts as \code{1967}).}
 }
 \value{
-A data frame with `id` (file name without extension), `path` and
-  `label`.
+A data frame with \code{id} (file name without extension), \code{path} and
+\code{label}.
 }
 \description{
 A set of labelled images

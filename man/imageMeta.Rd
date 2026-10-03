@@ -15,7 +15,7 @@ imageMeta(paths, ids = NULL)
 A key/value data frame.
 }
 \description{
-Reads image files and returns `image_<id>` rows for a key's `meta`, which
-[exportWizard()] embeds in the page (each image once); leads refer to them
-by id in their `Image` column (several separated by `;`).
+Reads image files and returns \verb{image_<id>} rows for a key's \code{meta}, which
+\code{\link[=exportWizard]{exportWizard()}} embeds in the page (each image once); leads refer to them
+by id in their \code{Image} column (several separated by \verb{;}).
 }

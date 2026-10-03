@@ -7,11 +7,11 @@
 patchExemplars(model, key, images, pad = 48, size = 96)
 }
 \arguments{
-\item{model}{A [visionModel()].}
+\item{model}{A \code{\link[=visionModel]{visionModel()}}.}
 
-\item{key}{A key from [keyFromTerms()].}
+\item{key}{A key from \code{\link[=keyFromTerms]{keyFromTerms()}}.}
 
-\item{images}{The [imageSet()] the key was built from (for file paths).}
+\item{images}{The \code{\link[=imageSet]{imageSet()}} the key was built from (for file paths).}
 
 \item{pad, size}{Context around the patch and the crop's output size, px.}
 }
@@ -20,6 +20,6 @@ The key, modified in place and returned invisibly.
 }
 \description{
 Cuts out the best-matching patch (with some context) for each term's
-exemplars, stores them as PNGs in the key's `features` and `meta`, and
-points each "Has term" lead at them so [exportWizard()] shows them.
+exemplars, stores them as PNGs in the key's \code{features} and \code{meta}, and
+points each "Has term" lead at them so \code{\link[=exportWizard]{exportWizard()}} shows them.
 }

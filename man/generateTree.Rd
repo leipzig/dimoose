@@ -16,14 +16,16 @@ generateTree(
 
 \item{target_col}{Name of the target/response column.}
 
-\item{method}{`"rpart"`, `"randomForest"` (requires the 'randomForest'
-package), or `"gbm"` (requires the 'gbm' package).}
+\item{method}{\code{"rpart"}, \code{"randomForest"} (requires the 'randomForest'
+package), or \code{"gbm"} (requires the 'gbm' package; \code{"multinomial"}
+distribution unless the response is numeric 0/1, which uses
+\code{"bernoulli"}).}
 
 \item{params}{Optional list of arguments passed to the fitting function,
 overriding the defaults.}
 }
 \value{
-A fitted `rpart`, `randomForest` or `gbm` object.
+A fitted \code{rpart}, \code{randomForest} or \code{gbm} object.
 }
 \description{
 Fits a classification tree (or tree ensemble) with the taxon column as the

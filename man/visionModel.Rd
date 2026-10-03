@@ -12,19 +12,19 @@ visionModel(
 )
 }
 \arguments{
-\item{weights}{Local checkpoint file (e.g. OpenAI's `ViT-B-32.pt`); if
-`NULL`, open_clip downloads `pretrained` weights for `name`.}
+\item{weights}{Local checkpoint file (e.g. OpenAI's \verb{ViT-B-32.pt}); if
+\code{NULL}, open_clip downloads \code{pretrained} weights for \code{name}.}
 
 \item{name, pretrained}{open_clip model name and pretrained tag.}
 
 \item{python}{Optional path to the Python executable to use (passed to
-[reticulate::use_python()]).}
+\code{\link[reticulate:use_python]{reticulate::use_python()}}).}
 }
 \value{
-An object of class `mooseVisionModel` with `py` (the Python model)
-  and `spec` (library, architecture, weights SHA-256, image size, ...).
+An object of class \code{mooseVisionModel} with \code{py} (the Python model)
+and \code{spec} (library, architecture, weights SHA-256, image size, ...).
 }
 \description{
 Uses Python's open_clip through reticulate. Install the Python side with
-`pip install -r $(Rscript -e 'cat(system.file("python/requirements.txt", package="moose"))')`.
+\verb{pip install -r $(Rscript -e 'cat(system.file("python/requirements.txt", package="moose"))')}.
 }

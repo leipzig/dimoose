@@ -201,12 +201,6 @@ moose <- R6::R6Class("moose",
         paste0(if (length(kids)) paste0("(", paste(kids, collapse = ","), ")") else "", quote(cp))
       }
       paste0(newick(check$root), ";")
-    },
-    #' @description Convert the key to a polyclave (multi-access key). Not yet
-    #'   implemented: currently returns the lead table unchanged.
-    #' @param delim Separator between character terms.
-    toPolyclave = function(delim = ";") {
-      private$.df
     }
   )
 )

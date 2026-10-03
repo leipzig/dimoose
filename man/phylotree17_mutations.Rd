@@ -7,31 +7,31 @@
 \format{
 A data frame with 13,384 rows and 6 columns:
 \describe{
-  \item{haplogroup}{Haplogroup whose branch carries the mutation.}
-  \item{notation}{The mutation as written by Haplogrep.}
-  \item{position}{Position in the RSRS/rCRS coordinates.}
-  \item{type}{`transition`, `transversion`, `back-mutation`,
-    `insertion` or `deletion`.}
-  \item{ancestral}{Base before the mutation (for a reverted insertion, the
-    inserted sequence); `NA` for insertions.}
-  \item{derived}{Base after the mutation, or the inserted sequence; `NA`
-    for deletions and reverted insertions.}
+\item{haplogroup}{Haplogroup whose branch carries the mutation.}
+\item{notation}{The mutation as written by Haplogrep.}
+\item{position}{Position in the RSRS/rCRS coordinates.}
+\item{type}{\code{transition}, \code{transversion}, \code{back-mutation},
+\code{insertion} or \code{deletion}.}
+\item{ancestral}{Base before the mutation (for a reverted insertion, the
+inserted sequence); \code{NA} for insertions.}
+\item{derived}{Base after the mutation, or the inserted sequence; \code{NA}
+for deletions and reverted insertions.}
 }
 }
 \source{
-See [phylotree17].
+See \link{phylotree17}.
 }
 \usage{
 phylotree17_mutations
 }
 \description{
-The mutations of every haplogroup in [phylotree17], one row per mutation,
+The mutations of every haplogroup in \link{phylotree17}, one row per mutation,
 in the order Haplogrep lists them, with the bases before and after worked
 out by following the tree from the RSRS.
 }
 \details{
 Seven back-mutations revert a position that nothing earlier on their path
-changes (six `16233C!`, e.g. in `D4c1b1`, and `D5a2` `1438A!`); for those
+changes (six \verb{16233C!}, e.g. in \code{D4c1b1}, and \code{D5a2} \verb{1438A!}); for those
 the written base is taken as the result.
 }
 \examples{
