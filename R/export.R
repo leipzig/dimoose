@@ -202,7 +202,7 @@ imageStyle <- function(images) {
 
 # Glossary of the key's sniglets: name, coined word, definition, example
 # crops, where found. Anchors use the coined word, which never changes.
-glossaryHtml <- function(features, leads, coupletId) {
+glossaryHtml <- function(features, leads, coupletId, images = character()) {
   if (is.null(features)) return("")
   terms <- which(features$kind == "centroid_patch_max")
   if (length(terms) == 0) return("")
@@ -210,9 +210,16 @@ glossaryHtml <- function(features, leads, coupletId) {
     coined <- snigletWord(features$id[j])
     name <- features$label[j]
     ex <- features$exemplars[[j]]
-    crops <- if (!is.null(ex) && !is.null(ex$png)) paste0(sprintf(
-      "<span class=\"fig\" role=\"img\" aria-label=\"%s in %s\" style=\"background-image:url(&quot;data:image/png;base64,%s&quot;)\"></span>",
-      htmlEscape(name), htmlEscape(ex$image), ex$png), collapse = "") else ""
+    crops <- if (!is.null(ex) && !is.null(ex$png)) {
+      # a crop the page already declares (patchExemplars() stores each one in
+      # the key's images) is referenced, not embedded a second time
+      uri <- paste0("data:image/png;base64,", ex$png)
+      known <- paste0(gsub("[^A-Za-z0-9_-]", "_", coined), "_", seq_along(uri))
+      shared <- !is.na(images[known]) & unname(images[known]) == uri
+      paste0(sprintf("<span class=\"fig\" role=\"img\" aria-label=\"%s in %s\" style=\"background-image:%s\"></span>",
+        htmlEscape(name), htmlEscape(ex$image),
+        ifelse(shared, sprintf("var(%s)", cssName(known)), sprintf("url(&quot;%s&quot;)", uri))), collapse = "")
+    } else ""
     seen <- if (is.null(ex)) NULL else if (!is.null(ex$label)) unique(ex$label) else unique(ex$image)
     where <- if (length(seen)) sprintf("<p class=\"found\">Seen in %s</p>", htmlEscape(paste(seen, collapse = ", "))) else ""
     asked <- unique(leads$Statement[leads$Feature == features$id[j]])
@@ -305,11 +312,11 @@ renderWizard <- function(leads, check, title, citation, taxa, images, displayLin
       if (!is.null(features) && nzchar(leads$Feature[i])) {
         fr <- match(leads$Feature[i], features$id)
         if (!is.na(fr) && features$kind[fr] == "centroid_patch_max") {
-          gloss <- sprintf("<a class=\"gloss\" href=\"#g-%s\" title=\"What does this look like?\">?</a>",
+          gloss <- sprintf("<a class=\"gloss\" href=\"#g-%s\" title=\"What is this? See the glossary\" aria-label=\"Glossary entry for this sniglet\">?</a>",
             htmlEscape(snigletWord(features$id[fr])))
         }
       }
-      sprintf("<li class=\"lead\">%s%s%s</li>", choose, gloss, figs)
+      sprintf("<li class=\"lead%s\">%s%s%s</li>", if (nzchar(gloss)) " examples" else "", choose, gloss, figs)
     }, character(1))
     id <- coupletId(cp)
     q <- if (!is.null(leads$Question)) leads$Question[idx[1]] else ""
@@ -398,7 +405,7 @@ renderWizard <- function(leads, check, title, citation, taxa, images, displayLin
     "<div class=\"columns", if (isTRUE(map)) " has-map" else "", "\">\n", mapHtml,
     "<main>\n", warningsHtml, "\n", paste(coupletHtml, collapse = "\n"), "\n",
     if (length(taxonHtml) > 0) "<h2 class=\"group\">Taxa</h2>\n" else "",
-    paste(taxonHtml, collapse = "\n"), "\n", glossaryHtml(features, leads, coupletId), "\n</main>\n</div>\n",
+    paste(taxonHtml, collapse = "\n"), "\n", glossaryHtml(features, leads, coupletId, images), "\n</main>\n</div>\n",
     "<footer><p>", length(check$couplets), if (nodeLabel == "Couplet") " couplets, " else " steps, ",
     length(taxonNames), if (nodeLabel == "Couplet") " taxa. " else " possible results. ",
     "<span class=\"hint\">Press a, b (or 1, 2) to choose a lead. </span>",

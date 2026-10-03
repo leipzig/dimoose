@@ -197,3 +197,32 @@ test_that("a renamed sniglet shows its new name, its definition and its coined w
   expect_match(html, sprintf("id=\"g-%s\"", coined), fixed = TRUE)      # the anchor keeps the coined word
   expect_false(grepl(paste("Has", coined), html, fixed = TRUE))
 })
+
+test_that("a sniglet lead is marked so that its example crops choose it", {
+  html <- exportWizard(glossaryKey())
+  expect_match(html, "<li class=\"lead examples\"><a class=\"choose\"", fixed = TRUE)
+  expect_match(html, "<a class=\"gloss\" href=\"#g-", fixed = TRUE)
+  # an ordinary key keeps plain leads: its figures zoom or open their link
+  plain <- exportWizard(sharkKey())
+  expect_match(plain, "<li class=\"lead\">", fixed = TRUE)
+  expect_false(grepl("lead examples", plain, fixed = TRUE))
+})
+
+test_that("a glossary crop the key already stores is embedded once", {
+  key <- glossaryKey()
+  f <- key$features
+  coined <- snigletWord(f$id[1])
+  cpng <- tempfile(fileext = ".png"); png::writePNG(array(runif(8 * 8 * 3), c(8, 8, 3)), cpng)
+  b64 <- base64enc::base64encode(cpng)
+  f$exemplars[[1]]$png[1] <- b64
+  key$features <- f
+  key$meta <- rbind(key$meta, data.frame(key = paste0("image_", coined, "_1"),
+                                         value = paste0("data:image/png;base64,", b64), stringsAsFactors = FALSE))
+  html <- exportWizard(key)
+  expect_equal(lengths(regmatches(html, gregexpr(b64, html, fixed = TRUE))), 1)
+  expect_match(html, sprintf("background-image:var(--img-%s_1)", coined), fixed = TRUE)
+  # a crop that differs from the stored one is still shown as itself
+  f$exemplars[[1]]$png[1] <- base64enc::base64encode(charToRaw("other"))
+  key$features <- f
+  expect_match(exportWizard(key), "background-image:url(&quot;data:image/png;base64,b3RoZXI=", fixed = TRUE)
+})
