@@ -161,7 +161,7 @@ mecit <- function(y, partition, cluster = NULL, method = c("ctree", "mob"), slop
 #' @export
 print.mecit <- function(x, ...) {
   sv <- splitVariables(x)
-  cat("<moose mecit> ", x$method, "\n", sep = "")
+  cat("<dimoose mecit> ", x$method, "\n", sep = "")
   cat(sprintf("  %d strata; splits on: %s\n", nrow(x$strata), if (length(sv)) paste(sv, collapse = ", ") else "(none)"))
   if (!is.null(x$lmer)) {
     k <- nlevels(lme4::getME(x$lmer, "flist")[[1]])
@@ -203,7 +203,7 @@ splitVariables <- function(fit) {
 #' @param fit A [mecit()] fit.
 #' @param desc Title of the key.
 #' @param digits Decimal places for stratum levels.
-#' @return A [moose] key.
+#' @return A [dimoose] key.
 #' @export
 keyFromMecit <- function(fit, desc = NULL, digits = 2) {
   tree <- fit$tree

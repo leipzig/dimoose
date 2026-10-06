@@ -9,12 +9,12 @@ readHaplogrep(file, key = FALSE)
 \arguments{
 \item{file}{Path to the tree XML.}
 
-\item{key}{If \code{TRUE}, return a \link{moose} key built with \code{\link[=keyFromLeads]{keyFromLeads()}}
+\item{key}{If \code{TRUE}, return a \link{dimoose} key built with \code{\link[=keyFromLeads]{keyFromLeads()}}
 instead of the data frame.}
 }
 \value{
 A data frame with \code{haplogroup}, \code{parent}, \code{depth}, \code{n_subclades}
-and \code{mutations}, or a \link{moose} object if \code{key = TRUE}.
+and \code{mutations}, or a \link{dimoose} object if \code{key = TRUE}.
 }
 \description{
 Parses the nested \verb{<haplogroup>} XML that Haplogrep distributes (for

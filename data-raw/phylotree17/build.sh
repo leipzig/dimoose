@@ -5,7 +5,7 @@
 set -eu
 COMMIT=0e79ddf1b78f7a1b81fb5d607bc31a6ddea7b18b
 BASE="https://raw.githubusercontent.com/genepi/phylotree-rsrs-17/$COMMIT/src"
-WORK="${TMPDIR:-/tmp}/moose-phylotree17"
+WORK="${TMPDIR:-/tmp}/dimoose-phylotree17"
 mkdir -p "$WORK"
 curl -sSfL -o "$WORK/tree.xml" "$BASE/tree.xml"
 curl -sSfL -o "$WORK/rsrs.fasta" "$BASE/rsrs.fasta"

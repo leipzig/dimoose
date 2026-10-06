@@ -6,7 +6,7 @@ test_that("importFishbase downloads and parses the shark key (keycode 1)", {
 
   result <- importFishbase(keycode = 1, usePhyloService = "none")
 
-  expect_s3_class(result, "moose")
+  expect_s3_class(result, "dimoose")
   expect_match(result$desc, "shark", ignore.case = TRUE)
   expect_gt(nrow(result$df), 0)
   expect_true(all(c("Statement", "Choice", "Character", "Taxon") %in% names(result$df)))

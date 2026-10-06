@@ -1,6 +1,6 @@
 #' Import a dichotomous key from FishBase
 #'
-#' Downloads a key from FishBase and converts it into a [moose] object. See
+#' Downloads a key from FishBase and converts it into a [dimoose] object. See
 #' <https://www.fishbase.se/keys/allkeys.php> for the list of keys and their
 #' key codes.
 #'
@@ -15,7 +15,7 @@
 #'   `taxize::tnrs()` is defunct.
 #' @param embedImages If `TRUE`, download the key's morphology images and store
 #'   them base64-encoded in `meta`. Image URLs are always stored.
-#' @return A [moose] object.
+#' @return A [dimoose] object.
 #' @seealso [parseFishbase()] to build a key from saved HTML pages.
 #' @examples
 #' \dontrun{
@@ -39,7 +39,7 @@ importFishbase <- function(keycode,
   )
 }
 
-#' Build a moose object from FishBase key pages
+#' Build a dimoose object from FishBase key pages
 #'
 #' The offline half of [importFishbase()]: parses a FishBase key description
 #' page and its questions (couplet) page, both already downloaded.
@@ -51,7 +51,7 @@ importFishbase <- function(keycode,
 #' @inheritParams importFishbase
 #' @param pageUrl URL of the questions page, used to resolve relative image
 #'   links.
-#' @return A [moose] object.
+#' @return A [dimoose] object.
 #' @examples
 #' \dontrun{
 #' parseFishbase("description.html", "questions.html", usePhyloService = "none")
@@ -90,13 +90,13 @@ parseFishbase <- function(description, questions,
     ))
   }
 
-  moose$new(df, info$desc, meta, taxa, leads = keytable)
+  dimoose$new(df, info$desc, meta, taxa, leads = keytable)
 }
 
 # ---- internals --------------------------------------------------------------
 
-mooseUserAgent <- function() {
-  httr::user_agent("moose R package (https://github.com/leipzig/moose)")
+dimooseUserAgent <- function() {
+  httr::user_agent("dimoose R package (https://github.com/leipzig/dimoose)")
 }
 
 asHtmlDocument <- function(x) {
@@ -108,14 +108,14 @@ asHtmlDocument <- function(x) {
 
 fetchFishbasePages <- function(keycode, fishbaseUrl) {
   descUrl <- paste0(fishbaseUrl, "keys/description.php?keycode=", keycode)
-  descResponse <- httr::GET(descUrl, mooseUserAgent(), httr::timeout(60))
+  descResponse <- httr::GET(descUrl, dimooseUserAgent(), httr::timeout(60))
   httr::stop_for_status(descResponse, task = "download the FishBase key description")
 
   # FishBase serves the couplets only in response to a form POST
   questionsUrl <- paste0(fishbaseUrl, "keys/questions.php")
   keyResponse <- httr::POST(questionsUrl,
     body = list(keycode = keycode), encode = "form",
-    mooseUserAgent(), httr::timeout(60)
+    dimooseUserAgent(), httr::timeout(60)
   )
   httr::stop_for_status(keyResponse, task = "download the FishBase key couplets")
 
@@ -340,7 +340,7 @@ fishbaseImageUrls <- function(doc, pageUrl) {
 downloadAndEncodeImage <- function(url) {
   tryCatch(
     {
-      response <- httr::GET(url, mooseUserAgent(), httr::timeout(30))
+      response <- httr::GET(url, dimooseUserAgent(), httr::timeout(30))
       if (httr::status_code(response) != 200) {
         warning("Failed to download image: ", url, call. = FALSE)
         return(NA_character_)

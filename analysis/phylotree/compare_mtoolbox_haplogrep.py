@@ -173,7 +173,7 @@ def main(xml_path, hg_tsv, mu_tsv, rcrs_fa, rsrs_fa, outdir, unstable_path=None)
     xphylo["L1'2'3'4'5'6"] = "mt-MRCA"
     xphylo["L0"] = "mt-MRCA"
 
-    # --- MToolBox (moose data) -------------------------------------------------
+    # --- MToolBox (dimoose data) -------------------------------------------------
     mparent = {}
     morder = []
     for r in csv.DictReader(open(hg_tsv), delimiter="\t"):

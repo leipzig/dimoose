@@ -11,7 +11,7 @@ toNewick(
 )
 }
 \arguments{
-\item{key}{A \link{moose} key.}
+\item{key}{A \link{dimoose} key.}
 
 \item{labels}{\code{"quoted"} (the default, identical to \code{key$toNewick()}) or
 \code{"safe"}, which replaces every label with an ASCII id (\verb{n<couplet>} for
@@ -35,7 +35,7 @@ For \code{labels = "safe"} with \code{annotate = "none"}, a list of \code{newick
 string) and \code{labels} (a data frame of \code{id} and \code{label}).
 }
 \description{
-The \link{moose} method \verb{$toNewick()} writes quoted Newick, which is correct but
+The \link{dimoose} method \verb{$toNewick()} writes quoted Newick, which is correct but
 which several parsers (ape, scikit-bio, toytree) mangle. This wrapper adds
 two options for interoperating with the wider phylogenetics ecosystem.
 }

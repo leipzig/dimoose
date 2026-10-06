@@ -65,13 +65,13 @@ test_that("imageSet warns about a mixed layout and rejects a missing folder", {
   expect_error(imageSet(file.path(root, "no_such_dir")), "No such folder")
 })
 
-test_that("the example photos that ship with moose are labelled by folder", {
-  pics <- system.file("extdata", "pics", package = "moose")
+test_that("the example photos that ship with dimoose are labelled by folder", {
+  pics <- system.file("extdata", "pics", package = "dimoose")
   s <- imageSet(pics)
   expect_equal(nrow(s), 36)
   expect_equal(as.vector(table(s$label)), rep(6L, 6))
   expect_setequal(s$label, c("banana", "blueberry", "kiwi", "lemon", "pineapple", "strawberry"))
   expect_false(anyDuplicated(s$id) > 0)
   expect_true(all(vapply(s$path, imageMime, "") == "image/jpeg"))
-  expect_length(list.files(system.file("extdata", "new-photos", package = "moose")), 6)
+  expect_length(list.files(system.file("extdata", "new-photos", package = "dimoose")), 6)
 })

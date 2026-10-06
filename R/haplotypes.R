@@ -23,8 +23,8 @@
 #' @examples
 #' haplotypeMatrix(c("H2a2a1", "U5b", "L0a1b"), sites = c("152", "16311", "16278"))
 #' @export
-haplotypeMatrix <- function(haplogroups, sites = NULL, tree = moose::phylotree17,
-                            mutations = moose::phylotree17_mutations) {
+haplotypeMatrix <- function(haplogroups, sites = NULL, tree = dimoose::phylotree17,
+                            mutations = dimoose::phylotree17_mutations) {
   if (is.null(sites)) sites <- recurrentPositions(mutations = mutations)$site
   sites <- as.character(sites)
   unknown <- setdiff(unique(haplogroups), tree$haplogroup)
@@ -85,7 +85,7 @@ mutationSite <- function(mutations) {
 #' head(recurrentPositions())
 #' @export
 recurrentPositions <- function(min_branches = 10, types = c("transition", "transversion", "back-mutation"),
-                               mutations = moose::phylotree17_mutations) {
+                               mutations = dimoose::phylotree17_mutations) {
   m <- mutations[mutations$type %in% types, , drop = FALSE]
   site <- mutationSite(m)
   n <- tapply(m$haplogroup, site, function(h) length(unique(h)))
@@ -112,7 +112,7 @@ recurrentPositions <- function(min_branches = 10, types = c("transition", "trans
 #' macroHaplogroup(c("H2a2a1", "L3e1", "U5b"))
 #' macroHaplogroup("H2a", level = "depth", depth = 3)
 #' @export
-macroHaplogroup <- function(haplogroup, level = c("letter", "depth"), depth = 2, tree = moose::phylotree17) {
+macroHaplogroup <- function(haplogroup, level = c("letter", "depth"), depth = 2, tree = dimoose::phylotree17) {
   level <- match.arg(level)
   if (level == "letter") {
     return(ifelse(grepl("^L[0-9]", haplogroup), sub("^(L[0-9]+).*$", "\\1", haplogroup),
@@ -134,7 +134,7 @@ macroHaplogroup <- function(haplogroup, level = c("letter", "depth"), depth = 2,
 
 # Substitution sites on the branches leading into the given haplogroups (the
 # markers that define those clades)
-cladeMarkerSites <- function(haplogroups, mutations = moose::phylotree17_mutations) {
+cladeMarkerSites <- function(haplogroups, mutations = dimoose::phylotree17_mutations) {
   m <- mutations[mutations$haplogroup %in% haplogroups & mutations$type %in% c("transition", "transversion"), ]
   unique(mutationSite(m))
 }

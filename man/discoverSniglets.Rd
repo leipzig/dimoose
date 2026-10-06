@@ -26,7 +26,7 @@ from a different image.}
 \item{...}{Passed to \code{\link[=discoverSniglets]{discoverSniglets()}}.}
 }
 \value{
-An object of class \code{mooseSniglets}: \code{sniglets} (data frame with
+An object of class \code{dimooseSniglets}: \code{sniglets} (data frame with
 \code{id}, \code{sniglet} (the coined word), \code{name} (what people see; the coined
 word until renamed) and \code{definition}), \code{centroids} (\verb{k x d}, rows named
 by coined word), \code{exemplars} (data frame \code{sniglet}, \code{image}, \code{patch},
@@ -36,7 +36,7 @@ by coined word), \code{exemplars} (data frame \code{sniglet}, \code{image}, \cod
 }
 \description{
 A sniglet is a visual feature that a model found and that has no name of
-its own, so moose coins one for it (\code{"dulmzil"}). This function runs
+its own, so dimoose coins one for it (\code{"dulmzil"}). This function runs
 k-means on every patch embedding of every image and keeps the unit length
 centroids as the definitions of \code{k} sniglets. An image "has" a sniglet
 when one of its patches is close to that centroid (see \code{\link[=snigletScores]{snigletScores()}}).

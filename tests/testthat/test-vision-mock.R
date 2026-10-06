@@ -6,14 +6,14 @@ test_that("visionModel wraps the Python model and its spec", {
   fv <- fakeVisionModel()
   local_mocked_bindings(pyVision = function() fv$model$mod)
   m <- visionModel(weights = "w.pt", name = "ViT-B-16", pretrained = "laion")
-  expect_s3_class(m, "mooseVisionModel")
+  expect_s3_class(m, "dimooseVisionModel")
   expect_equal(fv$calls$load_model[[1]], list(name = "ViT-B-16", pretrained = "laion", weights = "w.pt"))
   expect_equal(m$spec$arch, "ViT-B-32")
 })
 
 test_that("a vision model prints its architecture and size", {
   m <- fakeVisionModel()$model
-  expect_output(print(m), "<moose vision model> ViT-B-32 (open_clip), 8 dimensions", fixed = TRUE)
+  expect_output(print(m), "<dimoose vision model> ViT-B-32 (open_clip), 8 dimensions", fixed = TRUE)
   expect_output(expect_invisible(print(m)))
 })
 

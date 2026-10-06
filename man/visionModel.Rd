@@ -27,19 +27,19 @@ architecture \code{name}; not used for the other kinds of \code{name}.}
 \code{\link[reticulate:use_python]{reticulate::use_python()}}).}
 }
 \value{
-An object of class \code{mooseVisionModel} with \code{py} (the Python model)
+An object of class \code{dimooseVisionModel} with \code{py} (the Python model)
 and \code{spec} (library, architecture, weights SHA-256, image size, ...).
 }
 \description{
 Uses Python's open_clip through reticulate. You do not need to install
 anything in Python yourself: the first call sets up a private Python with
-the packages moose needs (\code{torch}, \code{open_clip_torch}, \code{pillow}, \code{numpy})
+the packages dimoose needs (\code{torch}, \code{open_clip_torch}, \code{pillow}, \code{numpy})
 and reuses it afterwards. That first call downloads them, which takes a
 few minutes. This needs reticulate 1.41 or later.
 }
 \details{
 To use a Python of your own instead, give its path in \code{python}, or select
-it with \code{\link[reticulate:use_python]{reticulate::use_python()}}, \code{\link[reticulate:use_python]{reticulate::use_virtualenv()}} or the
+it with \code{\link[reticulate:use_python]{reticulate::use_python()}}, \code{\link[reticulate:use_virtualenv]{reticulate::use_virtualenv()}} or the
 \code{RETICULATE_PYTHON} environment variable before the first call, and install
 the packages there with
 \code{reticulate::py_install(c("torch", "open_clip_torch", "pillow", "numpy"))}.

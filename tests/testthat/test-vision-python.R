@@ -1,6 +1,6 @@
 # Looks for open_clip without importing it: importing it here would load torch
-# before moose's Python module can make torch use its own fast maths library
-# (see inst/python/moose_vision.py), and every test would run many times slower.
+# before dimoose's Python module can make torch use its own fast maths library
+# (see inst/python/dimoose_vision.py), and every test would run many times slower.
 hasOpenClip <- function() {
   isTRUE(tryCatch(reticulate::py_eval("__import__('importlib.util').util.find_spec('open_clip') is not None"),
                   error = function(e) FALSE))
@@ -8,8 +8,8 @@ hasOpenClip <- function() {
 
 skipUnlessVision <- function() {
   skip_if_not_installed("reticulate")
-  w <- Sys.getenv("MOOSE_CLIP_WEIGHTS")
-  skip_if(!nzchar(w) || !file.exists(w), "MOOSE_CLIP_WEIGHTS not set")
+  w <- Sys.getenv("DIMOOSE_CLIP_WEIGHTS")
+  skip_if(!nzchar(w) || !file.exists(w), "DIMOOSE_CLIP_WEIGHTS not set")
   # declare the requirements first, as visionModel() does, so that a Python
   # provided by reticulate has them
   if (!reticulate::py_available(initialize = FALSE)) reticulate::py_require(pythonRequirements())
@@ -30,15 +30,15 @@ testPics <- function(n = 4) {
 
 test_that("visionModel loads and reports its spec", {
   skipUnlessVision()
-  m <- visionModel(Sys.getenv("MOOSE_CLIP_WEIGHTS"))
-  expect_s3_class(m, "mooseVisionModel")
+  m <- visionModel(Sys.getenv("DIMOOSE_CLIP_WEIGHTS"))
+  expect_s3_class(m, "dimooseVisionModel")
   expect_equal(m$spec$dim, 512L)
   expect_equal(modelMeta(m)$key[1], "model_library")
 })
 
 test_that("embedImages and embedTexts return named matrices", {
   skipUnlessVision()
-  m <- visionModel(Sys.getenv("MOOSE_CLIP_WEIGHTS"))
+  m <- visionModel(Sys.getenv("DIMOOSE_CLIP_WEIGHTS"))
   p <- testPics()
   e <- embedImages(m, p)
   expect_equal(dim(e$image), c(4, 512))
@@ -65,7 +65,7 @@ test_that("embedImages and embedTexts return named matrices", {
 
 test_that("images to key to classify, with exemplar crops and scores for new images", {
   skipUnlessVision()
-  m <- visionModel(Sys.getenv("MOOSE_CLIP_WEIGHTS"))
+  m <- visionModel(Sys.getenv("DIMOOSE_CLIP_WEIGHTS"))
   p <- testPics()
   images <- imageSet(p)
   e <- embedImages(m, p)
@@ -105,8 +105,8 @@ test_that("the Python requirements come from the bundled requirements file", {
 
 test_that("the documented steps identify the held-out example photos", {
   skipUnlessVision()
-  m <- visionModel(Sys.getenv("MOOSE_CLIP_WEIGHTS"))
-  images <- imageSet(system.file("extdata", "pics", package = "moose"))
+  m <- visionModel(Sys.getenv("DIMOOSE_CLIP_WEIGHTS"))
+  images <- imageSet(system.file("extdata", "pics", package = "dimoose"))
   emb <- embedImages(m, images)
   sniglets <- discoverSniglets(emb$patches)
   scores <- snigletScores(emb$patches, sniglets$centroids)
@@ -121,7 +121,7 @@ test_that("the documented steps identify the held-out example photos", {
   expect_true(all(nzchar(shown$leads$Image)))
   expect_true(all(unlist(strsplit(shown$leads$Image, ";")) %in% sub("^image_", "", shown$meta$key)))
   expect_match(exportWizard(shown), "lead_1b_1", fixed = TRUE)
-  new <- list.files(system.file("extdata", "new-photos", package = "moose"), full.names = TRUE)
+  new <- list.files(system.file("extdata", "new-photos", package = "dimoose"), full.names = TRUE)
   r <- classify(key, scoreImages(key, m, new))
   expect_gte(sum(r$result == c("banana", "blueberry", "kiwi", "lemon", "pineapple", "strawberry")), 5)
 })
@@ -154,7 +154,7 @@ del _m', dir, dir))
   expect_equal(m$spec$pretrained, "repository")
   expect_equal(m$spec$patch_size, 16L)             # BioCLIP's architecture: ViT-B/16
   expect_equal(m$spec$dim, 512L)
-  images <- imageSet(system.file("extdata", "pics", package = "moose"))[c(1:3, 7:9, 13:15), ]
+  images <- imageSet(system.file("extdata", "pics", package = "dimoose"))[c(1:3, 7:9, 13:15), ]
   emb <- embedImages(m, images, tiles = 2)
   expect_equal(dim(emb$patches), c(9, 4, 512))
   expect_equal(dim(embedImages(m, images[1:2, ], tiles = 0)$patches), c(2, 196, 512))   # 14 x 14 patch tokens

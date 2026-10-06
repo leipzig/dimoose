@@ -1,4 +1,4 @@
-Package: moose
+Package: dimoose
 Type: Package
 Title: Tools to Reshape and Manipulate Dichotomous Keys Used in Taxonomic
     Identification
@@ -15,8 +15,8 @@ Description: Transforms between dichotomous identification keys and a
     'Haplogrep' 3.
 License: GPL
 Copyright: See inst/COPYRIGHTS for third-party data and example pages.
-URL: https://github.com/leipzig/moose
-BugReports: https://github.com/leipzig/moose/issues
+URL: https://github.com/leipzig/dimoose
+BugReports: https://github.com/leipzig/dimoose/issues
 Encoding: UTF-8
 LazyData: true
 Depends:
@@ -54,4 +54,4 @@ Suggests:
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
-RoxygenNote: 7.3.1
+Config/roxygen2/version: 8.1.0

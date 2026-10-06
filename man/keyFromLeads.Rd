@@ -2,7 +2,7 @@
 % Please edit documentation in R/keys.R
 \name{keyFromLeads}
 \alias{keyFromLeads}
-\title{Build a moose key from a table of leads}
+\title{Build a dimoose key from a table of leads}
 \usage{
 keyFromLeads(leads, desc = NA, meta = NULL, taxa = NULL, features = NULL)
 }
@@ -24,12 +24,12 @@ columns \code{Label}, \code{Image}, \code{ImageLink} and \code{TaxonUrl} are use
 (the leads then also carry \code{Feature}, \code{Test} and \code{Threshold}).}
 }
 \value{
-A \link{moose} object.
+A \link{dimoose} object.
 }
 \description{
 The common constructor behind \code{\link[=sharkKey]{sharkKey()}}, \code{\link[=arachnidaKey]{arachnidaKey()}},
 \code{\link[=vibrioKey]{vibrioKey()}} and \code{\link[=phylotreeKey]{phylotreeKey()}}: takes one row per lead and returns a
-\link{moose} object.
+\link{dimoose} object.
 }
 \examples{
 leads <- data.frame(

@@ -33,7 +33,7 @@ defines them, so a site that is gained and later reverted is not carried
 below the reversion:
 
 ```{r}
-library(moose)
+library(dimoose)
 head(recurrentPositions(), 8)
 haplotypeMatrix(c("H2a2a1", "U5b1", "L0a1b"), sites = c("16362", "150", "16278"))
 ```
@@ -81,7 +81,7 @@ intersect(splitVariables(plain), sim$markerSites)
 
 ## A MECIT is a key
 
-A fitted tree turns into a moose key. Its couplets ask whether the sample
+A fitted tree turns into a dimoose key. Its couplets ask whether the sample
 carries each split site, and its results are expression strata. The key
 carries machine-readable tests, so `classify()` can place new samples from
 their haplotypes, and `exportWizard()` draws it:

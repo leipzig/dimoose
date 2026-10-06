@@ -7,8 +7,8 @@
 haplotypeMatrix(
   haplogroups,
   sites = NULL,
-  tree = moose::phylotree17,
-  mutations = moose::phylotree17_mutations
+  tree = dimoose::phylotree17,
+  mutations = dimoose::phylotree17_mutations
 )
 }
 \arguments{

@@ -48,7 +48,7 @@ test_that("features accepts a data frame or NULL", {
 
 test_that("leads are rebuilt from the path table when not given", {
   k <- arachnidaKey()
-  rebuilt <- moose$new(k$df, "Arachnida")
+  rebuilt <- dimoose$new(k$df, "Arachnida")
   cols <- c("Statement", "Choice", "Next", "Taxon")
   ord <- function(x) x[order(as.numeric(x$Statement), x$Choice), cols]
   expect_equal(ord(rebuilt$leads), ord(k$leads), ignore_attr = TRUE)
@@ -56,13 +56,13 @@ test_that("leads are rebuilt from the path table when not given", {
 })
 
 test_that("a key without a path table has no leads", {
-  empty <- moose$new(NULL)
+  empty <- dimoose$new(NULL)
   expect_equal(nrow(empty$leads), 0)
   expect_named(empty$leads, c("Statement", "Choice", "Character", "Next", "Taxon"))
 })
 
 test_that("print shows the title, counts and problems", {
-  expect_output(print(keyFromLeads(tinyLeads(), "Tiny")), "<moose key> Tiny\n  2 couplets, 4 leads, 3 taxa, up to 2 steps deep")
+  expect_output(print(keyFromLeads(tinyLeads(), "Tiny")), "<dimoose key> Tiny\n  2 couplets, 4 leads, 3 taxa, up to 2 steps deep")
   expect_output(print(keyFromLeads(tinyLeads())), "(untitled)", fixed = TRUE)
 
   broken <- tinyLeads()
@@ -88,7 +88,7 @@ test_that("summary() dispatches to the summary method", {
 })
 
 test_that("rawhtml downloads a key's description and couplet table", {
-  dir <- system.file("extdata", "fishbase", package = "moose")
+  dir <- system.file("extdata", "fishbase", package = "dimoose")
   fetched <- NULL
   local_mocked_bindings(fetchFishbasePages = function(keycode, fishbaseUrl) {
     fetched <<- list(keycode = keycode, fishbaseUrl = fishbaseUrl)

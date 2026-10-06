@@ -52,7 +52,7 @@ named in full or by the first word of their FASTA header.}
 
 \item{model}{Substitution model, passed to the tool: the \code{model} of
 \code{\link[ape:dist.dna]{ape::dist.dna()}} for the distance methods (default \code{"K80"}; \code{"JTT"}
-through \code{\link[phangorn:dist.hamming]{phangorn::dist.ml()}} for proteins), the model of
+through \code{\link[phangorn:dist.ml]{phangorn::dist.ml()}} for proteins), the model of
 \code{\link[phangorn:pml_bb]{phangorn::pml_bb()}} for \code{"ml"} (default \code{"GTR+G(4)"}, or \code{"LG+G(4)"}
 for proteins), or IQ-TREE's \code{-m} (default: IQ-TREE chooses).}
 
@@ -66,7 +66,7 @@ for proteins), or IQ-TREE's \code{-m} (default: IQ-TREE chooses).}
 \item{desc, meta}{Title and extra metadata of the key.}
 }
 \value{
-A \link{moose} key. Its \code{meta} records the tool, the rooting, the tree
+A \link{dimoose} key. Its \code{meta} records the tool, the rooting, the tree
 in Newick format (\code{newick}, names quoted where Newick needs it), how many couplets lack a diagnostic site
 (\code{weak_couplets}) and how many do not follow the tree
 (\code{regrouped_couplets}).
@@ -99,12 +99,12 @@ if (requireNamespace("ape", quietly = TRUE)) {
   classify(key, alignmentScores(key, aln))
 }
 
-# the example files that ship with moose
-fasta <- system.file("extdata", "aligned.fasta", package = "moose")
-mtdna <- system.file("extdata", "mtdna.fasta", package = "moose")
+# the example files that ship with dimoose
+fasta <- system.file("extdata", "aligned.fasta", package = "dimoose")
+mtdna <- system.file("extdata", "mtdna.fasta", package = "dimoose")
 if (requireNamespace("ape", quietly = TRUE)) {
   keyFromAlignment(fasta)
-  keyFromAlignment(fasta, tree = system.file("extdata", "aligned.nwk", package = "moose"))
+  keyFromAlignment(fasta, tree = system.file("extdata", "aligned.nwk", package = "dimoose"))
   keyFromAlignment(mtdna, reference = "H2a2a1", outgroup = "L0a1")
 }
 \dontrun{

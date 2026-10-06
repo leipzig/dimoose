@@ -1,5 +1,5 @@
 # A stand-in for visionModel() that needs no Python: the `mod` functions
-# mimic inst/python/moose_vision.py (unnamed arrays, zero-based patch
+# mimic inst/python/dimoose_vision.py (unnamed arrays, zero-based patch
 # indices) but return the embeddings of a syntheticVision() set, looked up by
 # file name. Every call is recorded in `calls` so tests can check what the R
 # wrappers passed through.
@@ -39,6 +39,6 @@ fakeVisionModel <- function(sv = syntheticVision()) {
       as.list(paste0("PNG", seq_along(paths)))
     }
   )
-  model <- structure(list(py = "fake-py", mod = mod, spec = spec), class = "mooseVisionModel")
+  model <- structure(list(py = "fake-py", mod = mod, spec = spec), class = "dimooseVisionModel")
   list(model = model, calls = calls, sv = sv)
 }

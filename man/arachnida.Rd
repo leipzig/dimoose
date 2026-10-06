@@ -26,7 +26,7 @@ arachnida
 \description{
 The key from Triplehorn & Johnson (2005), \emph{Borror and DeLong's
 Introduction to the Study of Insects}, 7th ed., chapter 5, as a table of
-leads (see \code{\link[=keyFromLeads]{keyFromLeads()}}); \code{\link[=arachnidaKey]{arachnidaKey()}} turns it into a \link{moose}
+leads (see \code{\link[=keyFromLeads]{keyFromLeads()}}); \code{\link[=arachnidaKey]{arachnidaKey()}} turns it into a \link{dimoose}
 key. Transcribed by hand from the book.
 }
 \keyword{datasets}

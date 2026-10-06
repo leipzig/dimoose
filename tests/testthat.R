@@ -1,4 +1,4 @@
 library(testthat)
-library(moose)
+library(dimoose)
 
-test_check("moose")
+test_check("dimoose")

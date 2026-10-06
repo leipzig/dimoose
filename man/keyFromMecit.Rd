@@ -14,7 +14,7 @@ keyFromMecit(fit, desc = NULL, digits = 2)
 \item{digits}{Decimal places for stratum levels.}
 }
 \value{
-A \link{moose} key.
+A \link{dimoose} key.
 }
 \description{
 Each split becomes a couplet and each terminal node a result, labelled

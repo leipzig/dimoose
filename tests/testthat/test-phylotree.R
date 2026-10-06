@@ -36,7 +36,7 @@ test_that("known haplogroups are as in PhyloTree Build 17", {
 
 test_that("phylotreeKey builds a key from any subtree", {
   k <- phylotreeKey("H2a2a")
-  expect_s3_class(k, "moose")
+  expect_s3_class(k, "dimoose")
   leads <- k$leads
   expect_identical(unique(leads$Statement), c("H2a2a", "H2a2a1"))
   expect_identical(leads$Label[leads$Statement == "H2a2a"], c("H2a2a1", "H2a2a2", "H2a2a*"))
@@ -72,7 +72,7 @@ test_that("names that sanitize to the same id get distinct sections", {
     stringsAsFactors = FALSE
   )
   df <- data.frame(Statement = "R", Choice = "1", Character = "x", Taxon = "A", pSt = "", pCh = "", stringsAsFactors = FALSE)
-  html <- exportWizard(moose$new(df, "Collision test", leads = leads))
+  html <- exportWizard(dimoose$new(df, "Collision test", leads = leads))
   ids <- sub(".*id=\"([^\"]+)\"", "\\1", regmatches(html, gregexpr("<section class=\"couplet\" id=\"[^\"]+\"", html))[[1]])
   expect_length(ids, 3)
   expect_false(anyDuplicated(ids) > 0)

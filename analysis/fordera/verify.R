@@ -1,11 +1,11 @@
-# Checks moose's vision keys against fordera's outputs (V1-V4 in the spec).
-# Needs: FORDERA (fordera checkout), MOOSE_CLIP_WEIGHTS, Python with torch+open_clip.
+# Checks dimoose's vision keys against fordera's outputs (V1-V4 in the spec).
+# Needs: FORDERA (fordera checkout), DIMOOSE_CLIP_WEIGHTS, Python with torch+open_clip.
 # Run from the package root with pkgload, or adjust the load path below.
-suppressMessages(pkgload::load_all(Sys.getenv("MOOSE_PKG", "."), quiet = TRUE))
+suppressMessages(pkgload::load_all(Sys.getenv("DIMOOSE_PKG", "."), quiet = TRUE))
 library(jsonlite)
 fordera <- Sys.getenv("FORDERA", "~/Documents/fordera")
 np <- reticulate::import("numpy")
-model <- visionModel(Sys.getenv("MOOSE_CLIP_WEIGHTS"))
+model <- visionModel(Sys.getenv("DIMOOSE_CLIP_WEIGHTS"))
 
 man <- fromJSON(file.path(fordera, "data/processed/manifest.json"), simplifyVector = FALSE)
 paths <- file.path(fordera, "data/processed", basename(vapply(man, function(e) e$processed_path, "")))
@@ -24,10 +24,10 @@ ours <- snigletScores(emb$patches, cent)
 theirs <- t(vapply(man, function(e) unlist(ts$per_image_presence[[e$processed_path]]), numeric(nrow(cent))))
 colnames(theirs) <- rownames(cent); rownames(theirs) <- images$id
 v1 <- max(abs(ours - theirs))
-cat(sprintf("V1 max |moose - fordera| patch score: %.2e  (%s)\n", v1, if (v1 < 1e-3) "PASS" else "FAIL"))
+cat(sprintf("V1 max |dimoose - fordera| patch score: %.2e  (%s)\n", v1, if (v1 < 1e-3) "PASS" else "FAIL"))
 
 # ---- V2: balanced tree from fordera's scores equals trait_tree.json ----------
-fterms <- structure(list(sniglets = data.frame(id = seq_len(nrow(cent)), sniglet = rownames(cent), name = rownames(cent), definition = NA_character_), centroids = cent, exemplars = NULL), class = "mooseSniglets")
+fterms <- structure(list(sniglets = data.frame(id = seq_len(nrow(cent)), sniglet = rownames(cent), name = rownames(cent), definition = NA_character_), centroids = cent, exemplars = NULL), class = "dimooseSniglets")
 k2 <- keyFromSniglets(theirs, images, fterms, quantile = 0.6)
 tt <- fromJSON(file.path(fordera, "outputs/trait_tree.json"), simplifyVector = FALSE)
 rows <- list(); counter <- 0
@@ -74,9 +74,9 @@ cat(sprintf("V4 question key self-walk: year %.1f%% gen %.1f%% (threshold 0); ye
   100 * e4$accuracy, 100 * e4$groupAccuracy, 100 * e4m$accuracy, 100 * e4m$groupAccuracy))
 
 k3 <- patchExemplars(model, k3, images, pad = 48)
-if (nzchar(Sys.getenv("MOOSE_WRITE_HTML"))) {
+if (nzchar(Sys.getenv("DIMOOSE_WRITE_HTML"))) {
   exportWizard(k3, "fordera-sniglets.html")
   exportWizard(k4, "fordera-questions.html")
 }
 saveRDS(list(v1 = v1, v2_same = same, v2 = e2, v3 = e3, loo = loo, looRefit = looRefit, v4 = e4, v4m = e4m,
-  spec = modelMeta(model)), Sys.getenv("MOOSE_VERIFY_OUT", "verify-results.rds"))
+  spec = modelMeta(model)), Sys.getenv("DIMOOSE_VERIFY_OUT", "verify-results.rds"))

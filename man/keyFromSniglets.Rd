@@ -35,7 +35,7 @@ with. Names given with \code{\link[=renameSniglets]{renameSniglets()}} are used 
 \code{keyFromSniglets()}; its third argument was called \code{terms}.}
 }
 \value{
-A \link{moose} key whose leads carry \code{Feature}, \code{Test}, \code{Threshold} and
+A \link{dimoose} key whose leads carry \code{Feature}, \code{Test}, \code{Threshold} and
 \code{Question}, and whose \code{features} table holds the centroids. Feature ids
 are \code{"sniglet:<coined word>"} and never change; \code{label} is the name
 shown, which \code{\link[=renameSniglets]{renameSniglets()}} changes.

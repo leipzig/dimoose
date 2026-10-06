@@ -49,7 +49,7 @@
 #'   `PATH`.
 #' @param args Extra command-line arguments for FastTree or IQ-TREE.
 #' @param desc,meta Title and extra metadata of the key.
-#' @return A [moose] key. Its `meta` records the tool, the rooting, the tree
+#' @return A [dimoose] key. Its `meta` records the tool, the rooting, the tree
 #'   in Newick format (`newick`, names quoted where Newick needs it), how many couplets lack a diagnostic site
 #'   (`weak_couplets`) and how many do not follow the tree
 #'   (`regrouped_couplets`).
@@ -63,12 +63,12 @@
 #'   classify(key, alignmentScores(key, aln))
 #' }
 #'
-#' # the example files that ship with moose
-#' fasta <- system.file("extdata", "aligned.fasta", package = "moose")
-#' mtdna <- system.file("extdata", "mtdna.fasta", package = "moose")
+#' # the example files that ship with dimoose
+#' fasta <- system.file("extdata", "aligned.fasta", package = "dimoose")
+#' mtdna <- system.file("extdata", "mtdna.fasta", package = "dimoose")
 #' if (requireNamespace("ape", quietly = TRUE)) {
 #'   keyFromAlignment(fasta)
-#'   keyFromAlignment(fasta, tree = system.file("extdata", "aligned.nwk", package = "moose"))
+#'   keyFromAlignment(fasta, tree = system.file("extdata", "aligned.nwk", package = "dimoose"))
 #'   keyFromAlignment(mtdna, reference = "H2a2a1", outgroup = "L0a1")
 #' }
 #' \dontrun{
@@ -442,7 +442,7 @@ buildTree <- function(mat, tool, type, model, exe, args) {
     },
     fasttree = {
       prog <- findProgram(exe, c("FastTree", "fasttree", "FastTreeMP"), "FastTree")
-      dir <- tempfile("moose-fasttree"); dir.create(dir); on.exit(unlink(dir, recursive = TRUE))
+      dir <- tempfile("dimoose-fasttree"); dir.create(dir); on.exit(unlink(dir, recursive = TRUE))
       aln <- file.path(dir, "aln.fasta"); out <- file.path(dir, "tree.nwk")
       writeFastaAlignment(mat, aln)
       status <- system2(prog, c(if (type == "DNA") "-nt", "-quiet", args, shQuote(aln)), stdout = out, stderr = file.path(dir, "log.txt"))
@@ -454,7 +454,7 @@ buildTree <- function(mat, tool, type, model, exe, args) {
     },
     iqtree = {
       prog <- findProgram(exe, c("iqtree3", "iqtree2", "iqtree"), "IQ-TREE")
-      dir <- tempfile("moose-iqtree"); dir.create(dir); on.exit(unlink(dir, recursive = TRUE))
+      dir <- tempfile("dimoose-iqtree"); dir.create(dir); on.exit(unlink(dir, recursive = TRUE))
       aln <- file.path(dir, "aln.fasta"); prefix <- file.path(dir, "run")
       writeFastaAlignment(mat, aln)
       status <- system2(prog, c("-s", shQuote(aln), "-pre", shQuote(prefix), "-quiet", "-redo",

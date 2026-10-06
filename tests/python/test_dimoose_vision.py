@@ -4,10 +4,10 @@ import pytest
 from PIL import Image
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "inst", "python"))
-import moose_vision as mv
+import dimoose_vision as mv
 
-WEIGHTS = os.environ.get("MOOSE_CLIP_WEIGHTS")
-pytestmark = pytest.mark.skipif(not WEIGHTS, reason="MOOSE_CLIP_WEIGHTS not set")
+WEIGHTS = os.environ.get("DIMOOSE_CLIP_WEIGHTS")
+pytestmark = pytest.mark.skipif(not WEIGHTS, reason="DIMOOSE_CLIP_WEIGHTS not set")
 
 
 @pytest.fixture(scope="module")

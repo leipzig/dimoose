@@ -79,7 +79,7 @@
 
 #' Build an identification key from PhyloTree Build 17
 #'
-#' Turns [phylotree17], or the part of it below `root`, into a [moose] key.
+#' Turns [phylotree17], or the part of it below `root`, into a [dimoose] key.
 #' Each haplogroup with subclades becomes a step at which the user picks the
 #' subclade whose defining mutations the sample carries. With `paragroups =
 #' TRUE` every step also offers "none of these", which identifies the
@@ -94,7 +94,7 @@
 #' @param paragroups If `TRUE`, add a "none of these" choice to every step.
 #' @param maxDepth Maximum number of steps below `root`. Haplogroups at that
 #'   depth become results even if they have subclades.
-#' @return A [moose] object whose `leads` have a `Label` column with the
+#' @return A [dimoose] object whose `leads` have a `Label` column with the
 #'   haplogroup names.
 #' @seealso [phylotree17], [exportWizard()]
 #' @examples
@@ -106,7 +106,7 @@
 #' }
 #' @export
 phylotreeKey <- function(root = "mtMRCA", paragroups = TRUE, maxDepth = Inf) {
-  tree <- moose::phylotree17
+  tree <- dimoose::phylotree17
   if (!is.character(root) || length(root) != 1 || !root %in% tree$haplogroup) {
     stop("`root` must be a haplogroup in phylotree17", call. = FALSE)
   }
