@@ -333,4 +333,4 @@ The bundled PhyloTree Build 17 is taken from [Haplogrep](https://haplogrep.i-med
 
 The image-based key work builds on the [Imageomics Institute](https://imageomics.osu.edu/) and the NSF HDR-BGNN (Harnessing the Data Revolution — Biology-Guided Neural Networks) effort, whose BioCLIP and TreeOfLife models make domain-specific biological embeddings possible.
 
-Moose was built in Whitefish, Montana. The moose depicted in the logo is named Dichotomoose.
+Dimoose was built in Whitefish, Montana. The moose depicted in the logo is named Dichotomoose.
