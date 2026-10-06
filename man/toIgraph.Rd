@@ -7,10 +7,10 @@
 toIgraph(key)
 }
 \arguments{
-\item{key}{A \link{moose} key.}
+\item{key}{A \link{dimoose} key.}
 }
 \value{
-An \link[igraph:aaa-igraph-package]{igraph::igraph} directed graph.
+An \link[igraph:igraph]{igraph::igraph} directed graph.
 }
 \description{
 Unlike \code{toNewick()} and \code{toDataTree()}, which use a spanning tree, this

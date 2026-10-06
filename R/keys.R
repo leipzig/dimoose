@@ -1,8 +1,8 @@
-#' Build a moose key from a table of leads
+#' Build a dimoose key from a table of leads
 #'
 #' The common constructor behind [sharkKey()], [arachnidaKey()],
 #' [vibrioKey()] and [phylotreeKey()]: takes one row per lead and returns a
-#' [moose] object.
+#' [dimoose] object.
 #'
 #' @param leads Data frame with columns `Statement` (couplet), `Choice`,
 #'   `Character` (the lead's text), `Next` (next couplet, or `"-"` if the lead
@@ -15,7 +15,7 @@
 #'   `matched_name`; by default every taxon matches itself.
 #' @param features Optional [featureTable()] for keys a machine can follow
 #'   (the leads then also carry `Feature`, `Test` and `Threshold`).
-#' @return A [moose] object.
+#' @return A [dimoose] object.
 #' @examples
 #' leads <- data.frame(
 #'   Statement = c("1", "1", "2", "2"), Choice = c("a", "b", "a", "b"),
@@ -47,10 +47,10 @@ keyFromLeads <- function(leads, desc = NA, meta = NULL, taxa = NULL, features = 
     taxa <- data.frame(submitted_name = tx, matched_name = tx, stringsAsFactors = FALSE)
   }
   if (!is.null(leads$Threshold)) leads$Threshold <- as.numeric(leads$Threshold)
-  moose$new(keyPaths(leads, separateTerms = FALSE), desc, meta, taxa, leads = leads, features = features)
+  dimoose$new(keyPaths(leads, separateTerms = FALSE), desc, meta, taxa, leads = leads, features = features)
 }
 
-#' Build a moose key from a classification tree
+#' Build a dimoose key from a classification tree
 #'
 #' Converts an [rpart::rpart()] classification tree into a dichotomous key:
 #' every split becomes a couplet with two leads, and every leaf a result.
@@ -61,7 +61,7 @@ keyFromLeads <- function(leads, desc = NA, meta = NULL, taxa = NULL, features = 
 #'   [generateTree()].
 #' @param desc Title of the key.
 #' @param meta Key/value metadata data frame.
-#' @return A [moose] object.
+#' @return A [dimoose] object.
 #' @seealso [vibrioKey()]
 #' @examples
 #' d <- data.frame(
@@ -106,8 +106,8 @@ keyFromRpart <- function(fit, desc = "Key generated from a classification tree",
 
 #' Example keys
 #'
-#' Ready-made [moose] keys built from the datasets that come with moose. All
-#' four are ordinary moose objects: they share the same fields (`leads`,
+#' Ready-made [dimoose] keys built from the datasets that come with dimoose. All
+#' four are ordinary dimoose objects: they share the same fields (`leads`,
 #' `df`, `meta`, `taxa`, `desc`) and methods (`print()`, `summary()`,
 #' `validate()`, `toDataTree()`, `toNewick()`) and all work with
 #' [exportWizard()].
@@ -127,7 +127,7 @@ keyFromRpart <- function(fit, desc = "Key generated from a classification tree",
 #'   cannot separate share a result.
 #' - [phylotreeKey()]: PhyloTree Build 17.
 #'
-#' @return A [moose] object.
+#' @return A [dimoose] object.
 #' @references
 #' Compagno LJV (1998). General remarks. In Carpenter KE, Niem VH (eds.),
 #' *FAO species identification guide for fishery purposes. The living marine
@@ -155,7 +155,7 @@ NULL
 #' @rdname exampleKeys
 #' @export
 sharkKey <- function() {
-  dir <- system.file("extdata", "fishbase", package = "moose")
+  dir <- system.file("extdata", "fishbase", package = "dimoose")
   parseFishbase(
     file.path(dir, "key1-description.html"),
     file.path(dir, "key1-questions.html"),
@@ -167,7 +167,7 @@ sharkKey <- function() {
 #' @export
 arachnidaKey <- function() {
   keyFromLeads(
-    moose::arachnida,
+    dimoose::arachnida,
     desc = "Key to the Orders of Arachnida",
     meta = data.frame(
       key = "citation",
@@ -183,7 +183,7 @@ arachnidaKey <- function() {
 #' @rdname exampleKeys
 #' @export
 vibrioKey <- function() {
-  matrix <- moose::vibrio
+  matrix <- dimoose::vibrio
   score <- function(x) {
     factor(ifelse(x %in% c("+", "(+)"), "+", ifelse(x %in% c("-", "(-)"), "-", NA)), levels = c("+", "-"))
   }
@@ -213,7 +213,7 @@ vibrioKey <- function() {
 #'
 #' The key from Triplehorn & Johnson (2005), *Borror and DeLong's
 #' Introduction to the Study of Insects*, 7th ed., chapter 5, as a table of
-#' leads (see [keyFromLeads()]); [arachnidaKey()] turns it into a [moose]
+#' leads (see [keyFromLeads()]); [arachnidaKey()] turns it into a [dimoose]
 #' key. Transcribed by hand from the book.
 #'
 #' @format A data frame with 22 rows (11 couplets) and 6 columns:

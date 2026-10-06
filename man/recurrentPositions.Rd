@@ -7,7 +7,7 @@
 recurrentPositions(
   min_branches = 10,
   types = c("transition", "transversion", "back-mutation"),
-  mutations = moose::phylotree17_mutations
+  mutations = dimoose::phylotree17_mutations
 )
 }
 \arguments{

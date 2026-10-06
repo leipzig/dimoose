@@ -14,11 +14,11 @@ arachnidaKey()
 vibrioKey()
 }
 \value{
-A \link{moose} object.
+A \link{dimoose} object.
 }
 \description{
-Ready-made \link{moose} keys built from the datasets that come with moose. All
-four are ordinary moose objects: they share the same fields (\code{leads},
+Ready-made \link{dimoose} keys built from the datasets that come with dimoose. All
+four are ordinary dimoose objects: they share the same fields (\code{leads},
 \code{df}, \code{meta}, \code{taxa}, \code{desc}) and methods (\code{print()}, \code{summary()},
 \code{validate()}, \code{toDataTree()}, \code{toNewick()}) and all work with
 \code{\link[=exportWizard]{exportWizard()}}.

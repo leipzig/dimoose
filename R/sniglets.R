@@ -33,7 +33,7 @@ inventNames <- function(n, seed = 1) {
 #' Discover sniglets by clustering patch embeddings
 #'
 #' A sniglet is a visual feature that a model found and that has no name of
-#' its own, so moose coins one for it (`"dulmzil"`). This function runs
+#' its own, so dimoose coins one for it (`"dulmzil"`). This function runs
 #' k-means on every patch embedding of every image and keeps the unit length
 #' centroids as the definitions of `k` sniglets. An image "has" a sniglet
 #' when one of its patches is close to that centroid (see [snigletScores()]).
@@ -48,7 +48,7 @@ inventNames <- function(n, seed = 1) {
 #' @param nstart Random starts for [stats::kmeans()].
 #' @param exemplars Number of example regions to record per sniglet, each
 #'   from a different image.
-#' @return An object of class `mooseSniglets`: `sniglets` (data frame with
+#' @return An object of class `dimooseSniglets`: `sniglets` (data frame with
 #'   `id`, `sniglet` (the coined word), `name` (what people see; the coined
 #'   word until renamed) and `definition`), `centroids` (`k x d`, rows named
 #'   by coined word), `exemplars` (data frame `sniglet`, `image`, `patch`,
@@ -97,7 +97,7 @@ discoverSniglets <- function(patches, k = 40, seed = 1, nstart = 10, exemplars =
   structure(list(sniglets = data.frame(id = seq_len(k), sniglet = nm, name = nm, definition = NA_character_,
                                        stringsAsFactors = FALSE),
                  centroids = centroids, exemplars = ex, best = best,
-                 tiles = if (is.null(tiles)) integer(0) else as.integer(tiles), empty = empty), class = "mooseSniglets")
+                 tiles = if (is.null(tiles)) integer(0) else as.integer(tiles), empty = empty), class = "dimooseSniglets")
 }
 
 #' @rdname discoverSniglets
@@ -160,7 +160,7 @@ termScores <- function(patches, centroids) snigletScores(patches, centroids)
 #' [patchExemplars()] turns into crops: for a "Lacks" lead with no such second
 #' sniglet, they are the regions that come closest to the missing one.
 #'
-#' @return A [moose] key whose leads carry `Feature`, `Test`, `Threshold` and
+#' @return A [dimoose] key whose leads carry `Feature`, `Test`, `Threshold` and
 #'   `Question`, and whose `features` table holds the centroids. Feature ids
 #'   are `"sniglet:<coined word>"` and never change; `label` is the name
 #'   shown, which [renameSniglets()] changes.
@@ -347,7 +347,7 @@ keyFromTerms <- function(scores, images, terms, ...) keyFromSniglets(scores, ima
 #' @seealso [renameSniglets()]
 #' @export
 snigletNames <- function(x) {
-  if (inherits(x, "moose")) {
+  if (inherits(x, "dimoose")) {
     f <- x$features
     rows <- if (is.null(f)) integer() else which(f$kind == "centroid_patch_max")
     if (!length(rows)) stop("This key has no sniglets", call. = FALSE)
@@ -404,7 +404,7 @@ snigletNames <- function(x) {
 #' @export
 renameSniglets <- function(x, names = NULL, definitions = NULL) {
   current <- snigletNames(x)
-  what <- if (inherits(x, "moose")) "key" else "set"
+  what <- if (inherits(x, "dimoose")) "key" else "set"
   # rows of `current` that the given coined words (or current names) refer to
   find <- function(words) {
     row <- match(words, current$sniglet)
@@ -431,7 +431,7 @@ renameSniglets <- function(x, names = NULL, definitions = NULL) {
     definition[find(names(definitions))] <- blankToNA(definitions)
   }
 
-  if (!inherits(x, "moose")) {
+  if (!inherits(x, "dimoose")) {
     x <- asSniglets(x)
     x$sniglets$name <- name
     x$sniglets$definition <- definition
@@ -492,14 +492,14 @@ snigletNamesTable <- function(names) {
 
 # Accept the object discoverTerms() used to return.
 asSniglets <- function(x) {
-  if (inherits(x, "mooseSniglets")) return(x)
-  if (inherits(x, "mooseTerms") && !is.null(x$terms)) {
+  if (inherits(x, "dimooseSniglets")) return(x)
+  if (inherits(x, "dimooseTerms") && !is.null(x$terms)) {
     ex <- x$exemplars
     if (!is.null(ex) && "term" %in% names(ex)) names(ex)[names(ex) == "term"] <- "sniglet"
     return(structure(list(
       sniglets = data.frame(id = x$terms$id, sniglet = x$terms$name, name = x$terms$name,
                             definition = NA_character_, stringsAsFactors = FALSE),
-      centroids = x$centroids, exemplars = ex, tiles = integer(0)), class = "mooseSniglets"))
+      centroids = x$centroids, exemplars = ex, tiles = integer(0)), class = "dimooseSniglets"))
   }
   stop("Expected the result of discoverSniglets()", call. = FALSE)
 }

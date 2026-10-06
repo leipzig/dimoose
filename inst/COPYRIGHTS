@@ -1,4 +1,4 @@
-moose includes third-party data:
+dimoose includes third-party data:
 
 data/phylotree17.rda, data/phylotree17_mutations.rda
   PhyloTree Build 17 (van Oven M, 2015, Forensic Science International:
@@ -37,7 +37,7 @@ inst/extdata/aligned.fasta, inst/extdata/aligned.nwk
   a neighbour-joining tree of it.
 
 inst/extdata/mtdna.fasta
-  Sequences rebuilt by moose from PhyloTree Build 17 and the RSRS reference
+  Sequences rebuilt by dimoose from PhyloTree Build 17 and the RSRS reference
   sequence (Behar DM et al., 2012, American Journal of Human Genetics
   90:675-684), both as distributed in the Haplogrep 3 tree
   "phylotree-rsrs-17" under the MIT License reproduced above. They are not
@@ -56,14 +56,14 @@ inst/extdata/pics/, inst/extdata/new-photos/
   "Strawberry 1"; those in pics/ keep their original file names, and those in
   new-photos/ are renamed unknown1.jpg to unknown6.jpg (one per fruit, in the
   order above). data-raw/photos/build.R lists the selection. These images
-  remain under CC BY-SA 4.0, separately from the licence of moose's code.
+  remain under CC BY-SA 4.0, separately from the licence of dimoose's code.
 
 The following third-party material is included under fair use (17 U.S.C.
 § 107). Each item is a small, attributed excerpt of a larger scientific
 work, reproduced for non-commercial research and teaching: to test and
 demonstrate software that converts identification keys into other formats.
 Factual content (characters, taxa and test results) is not itself subject
-to copyright; the excerpts are included for their structure, which moose
+to copyright; the excerpts are included for their structure, which dimoose
 transforms rather than republishes as reading material. None of them
 substitutes for the original work, and each is credited in the package
 documentation with a pointer to the source.

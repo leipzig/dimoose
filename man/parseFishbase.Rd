@@ -2,7 +2,7 @@
 % Please edit documentation in R/import.R
 \name{parseFishbase}
 \alias{parseFishbase}
-\title{Build a moose object from FishBase key pages}
+\title{Build a dimoose object from FishBase key pages}
 \usage{
 parseFishbase(
   description,
@@ -36,7 +36,7 @@ them base64-encoded in \code{meta}. Image URLs are always stored.}
 links.}
 }
 \value{
-A \link{moose} object.
+A \link{dimoose} object.
 }
 \description{
 The offline half of \code{\link[=importFishbase]{importFishbase()}}: parses a FishBase key description

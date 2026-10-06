@@ -55,7 +55,7 @@ simulateExpression <- function(n = 1000, genes = 20, effectSites = c("16362", "1
                                effect = 1, macroSD = 1, slopeSD = 0, noise = 1, decoys = NULL,
                                macroLevel = "letter", seed = 1) {
   withr::local_seed(seed)   # the caller's random number stream is left as it was
-  tree <- moose::phylotree17
+  tree <- dimoose::phylotree17
   leaves <- tree$haplogroup[tree$n_subclades == 0]
   hap <- sample(leaves, n, replace = TRUE)
   macro <- macroHaplogroup(hap, level = macroLevel)

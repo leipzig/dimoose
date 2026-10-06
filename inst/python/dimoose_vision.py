@@ -1,6 +1,6 @@
-"""Embeddings and crops for moose vision keys.
+"""Embeddings and crops for dimoose vision keys.
 
-Everything that needs a model or pixels lives here; moose's R code only ever
+Everything that needs a model or pixels lives here; dimoose's R code only ever
 sees the numpy arrays these functions return.
 """
 import base64
@@ -82,7 +82,7 @@ def load_model(name="ViT-B-32", pretrained="openai", weights=None, device="cpu")
     visual = model.visual
     if not all(hasattr(visual, a) for a in ("conv1", "ln_post", "proj", "output_tokens")):
         raise ValueError(
-            "moose needs a model whose image tower is an open_clip vision transformer; "
+            "dimoose needs a model whose image tower is an open_clip vision transformer; "
             "%s has a %s" % (name, type(visual).__name__))
     model.eval()
     model.visual.output_tokens = True
@@ -184,7 +184,7 @@ def embed_images(vm, paths, region=None, patches=True, batch=16, tiles=None, min
                 if tokens.shape[1] != grid * grid:
                     raise ValueError(
                         "expected %d patch tokens but got %d; this open_clip model/version "
-                        "returns tokens in a shape moose does not handle" % (grid * grid, tokens.shape[1]))
+                        "returns tokens in a shape dimoose does not handle" % (grid * grid, tokens.shape[1]))
                 if visual.proj is not None:
                     tokens = tokens @ visual.proj
                 patch_out.append(_unit(tokens.float().cpu().numpy(), axis=2))

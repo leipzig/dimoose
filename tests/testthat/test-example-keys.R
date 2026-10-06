@@ -7,9 +7,9 @@ keys <- list(
 )
 
 for (name in names(keys)) {
-  test_that(paste(name, "is a moose key with the common fields and methods"), {
+  test_that(paste(name, "is a dimoose key with the common fields and methods"), {
     k <- keys[[name]]()
-    expect_s3_class(k, "moose")
+    expect_s3_class(k, "dimoose")
 
     expect_true(all(c("Statement", "Choice", "Character", "Next", "Taxon") %in% names(k$leads)))
     expect_true(all(c("Statement", "Choice", "Character", "Taxon", "pSt", "pCh") %in% names(k$df)))
@@ -24,7 +24,7 @@ for (name in names(keys)) {
     expect_gt(s$couplets, 0)
     expect_gt(s$taxa, 1)
     expect_equal(s$problems, 0)
-    expect_output(print(k), "<moose key>")
+    expect_output(print(k), "<dimoose key>")
 
     tree <- k$toDataTree()
     expect_s3_class(tree, "Node")

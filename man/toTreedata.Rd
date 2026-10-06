@@ -7,7 +7,7 @@
 toTreedata(key)
 }
 \arguments{
-\item{key}{A \link{moose} key.}
+\item{key}{A \link{dimoose} key.}
 }
 \value{
 A \link[tidytree:treedata]{tidytree::treedata} object.

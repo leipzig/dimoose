@@ -16,11 +16,11 @@ whole tree.}
 depth become results even if they have subclades.}
 }
 \value{
-A \link{moose} object whose \code{leads} have a \code{Label} column with the
+A \link{dimoose} object whose \code{leads} have a \code{Label} column with the
 haplogroup names.
 }
 \description{
-Turns \link{phylotree17}, or the part of it below \code{root}, into a \link{moose} key.
+Turns \link{phylotree17}, or the part of it below \code{root}, into a \link{dimoose} key.
 Each haplogroup with subclades becomes a step at which the user picks the
 subclade whose defining mutations the sample carries. With \code{paragroups = TRUE} every step also offers "none of these", which identifies the
 paragroup, written as in PhyloTree with a trailing \code{*} (e.g. \verb{H2a*}).

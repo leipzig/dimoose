@@ -2,7 +2,7 @@
 % Please edit documentation in R/keys.R
 \name{keyFromRpart}
 \alias{keyFromRpart}
-\title{Build a moose key from a classification tree}
+\title{Build a dimoose key from a classification tree}
 \usage{
 keyFromRpart(
   fit,
@@ -19,7 +19,7 @@ keyFromRpart(
 \item{meta}{Key/value metadata data frame.}
 }
 \value{
-A \link{moose} object.
+A \link{dimoose} object.
 }
 \description{
 Converts an \code{\link[rpart:rpart]{rpart::rpart()}} classification tree into a dichotomous key:

@@ -1,6 +1,6 @@
 fixture <- function(name) {
   file <- c(fishbaseDescription.html = "key1-description.html", fishbaseDetail.html = "key1-questions.html")[[name]]
-  system.file("extdata", "fishbase", file, package = "moose")
+  system.file("extdata", "fishbase", file, package = "dimoose")
 }
 
 sharks <- function(...) {
@@ -13,14 +13,14 @@ sharks <- function(...) {
 }
 
 test_that("description page yields plain strings", {
-  info <- moose:::parseFishbaseDescription(xml2::read_html(fixture("fishbaseDescription.html")))
+  info <- dimoose:::parseFishbaseDescription(xml2::read_html(fixture("fishbaseDescription.html")))
   expect_identical(info$desc, "Key to the families of sharks in the Western Central Pacific.")
   expect_type(info$citation, "character")
   expect_match(info$citation, "^Compagno")
 })
 
 test_that("key table is found by its header row, not by position", {
-  kt <- moose:::parseFishbaseKeyTable(xml2::read_html(fixture("fishbaseDetail.html")))
+  kt <- dimoose:::parseFishbaseKeyTable(xml2::read_html(fixture("fishbaseDetail.html")))
   expect_named(kt, c("Statement", "Choice", "Character", "Next", "Prev", "Taxon", "Image", "ImageLink", "TaxonUrl"))
   expect_match(kt$Image[1], "^https://www.fishbase.se/images/thumbnails/morphpic/tn_1term1.gif$")
   expect_identical(kt$ImageLink[1], "https://www.fishbase.se/keys/pic/1term1.gif")
@@ -32,9 +32,9 @@ test_that("key table is found by its header row, not by position", {
   expect_identical(kt$Taxon[kt$Statement == "4"], c("Echinorhinidae", "Squalidae"))
 })
 
-test_that("parseFishbase builds a moose object from saved pages", {
+test_that("parseFishbase builds a dimoose object from saved pages", {
   m <- sharks()
-  expect_s3_class(m, "moose")
+  expect_s3_class(m, "dimoose")
   expect_identical(m$desc, "Key to the families of sharks in the Western Central Pacific.")
   expect_true(all(c("Statement", "Choice", "Character", "Taxon", "pSt", "pCh") %in% names(m$df)))
   expect_true(all(c("Squatinidae", "Pristiophoridae", "Echinorhinidae") %in% m$df$Taxon))
@@ -80,7 +80,7 @@ test_that("a couplet reached from two leads yields one path per parent", {
     Taxon = c("", "", "A", "B", "", "C"),
     stringsAsFactors = FALSE
   )
-  paths <- moose:::keyPaths(kt)
+  paths <- dimoose:::keyPaths(kt)
   a <- paths[paths$Taxon == "A", ]
   expect_setequal(a$pSt[a$Statement == "2"], c("1", "3"))
 })
@@ -95,5 +95,5 @@ test_that("cycles are reported instead of recursing forever", {
     Taxon = c("", "A", "", "B"),
     stringsAsFactors = FALSE
   )
-  expect_error(moose:::keyPaths(kt), "Cycle")
+  expect_error(dimoose:::keyPaths(kt), "Cycle")
 })

@@ -9,7 +9,7 @@ test_that("inventNames are unique, pronounceable and reproducible", {
 test_that("discoverSniglets finds the planted concepts", {
   v <- syntheticVision(n_labels = 8, k = 4, p = 9, d = 8)
   t <- discoverSniglets(v$patches, k = 4, seed = 1)
-  expect_s3_class(t, "mooseSniglets")
+  expect_s3_class(t, "dimooseSniglets")
   expect_equal(dim(t$centroids), c(4, 8))
   expect_equal(unname(round(sqrt(rowSums(t$centroids^2)), 6)), rep(1, 4))
   sims <- v$concepts %*% t(t$centroids)
@@ -35,7 +35,7 @@ test_that("keyFromTerms balanced reproduces a hand-worked example", {
   terms <- list(terms = data.frame(id = 1:3, name = colnames(scores)), centroids = diag(3),
                 exemplars = data.frame(term = character(), image = character(), patch = integer(), score = numeric()))
   rownames(terms$centroids) <- colnames(scores)
-  class(terms) <- "mooseTerms"
+  class(terms) <- "dimooseTerms"
   k <- keyFromTerms(scores, images, terms, quantile = 0.5)
   l <- k$leads
   expect_equal(l$Feature[1:2], c("sniglet:t1", "sniglet:t1"))
@@ -56,7 +56,7 @@ test_that("label presence is any over its images", {
   colnames(scores) <- c("t1", "t2")
   images <- data.frame(id = rownames(scores), path = "", label = c("A", "A", "B", "C"), stringsAsFactors = FALSE)
   terms <- list(terms = data.frame(id = 1:2, name = colnames(scores)), centroids = diag(2), exemplars = NULL)
-  class(terms) <- "mooseTerms"
+  class(terms) <- "dimooseTerms"
   k <- keyFromTerms(scores, images, terms, quantile = 0.5)
   expect_equal(sum(k$leads$Next == "-"), 3)
   expect_length(k$validate(), 0)
@@ -67,11 +67,11 @@ test_that("keyFromTerms rpart route works and labels that cannot be split share 
   colnames(scores) <- c("t1", "t2")
   images <- data.frame(id = rownames(scores), path = "", label = rownames(scores), stringsAsFactors = FALSE)
   terms <- list(terms = data.frame(id = 1:2, name = colnames(scores)), centroids = diag(2), exemplars = NULL)
-  class(terms) <- "mooseTerms"
+  class(terms) <- "dimooseTerms"
   k <- keyFromTerms(scores, images, terms, quantile = 0.5)
   expect_true("A / B" %in% k$leads$Taxon)
   k2 <- keyFromTerms(scores, images, terms, method = "rpart")
-  expect_s3_class(k2, "moose")
+  expect_s3_class(k2, "dimoose")
   expect_true(all(grepl("^sniglet:", k2$leads$Feature)))
 })
 
@@ -82,7 +82,7 @@ snigletFixture <- function() {
   images <- data.frame(id = rownames(scores), path = "", label = rownames(scores), stringsAsFactors = FALSE)
   s <- structure(list(
     sniglets = data.frame(id = 1:3, sniglet = colnames(scores), name = colnames(scores), definition = NA_character_),
-    centroids = diag(3), exemplars = NULL), class = "mooseSniglets")
+    centroids = diag(3), exemplars = NULL), class = "dimooseSniglets")
   rownames(s$centroids) <- colnames(scores)
   list(scores = scores, images = images, sniglets = s, key = keyFromSniglets(scores, images, s, quantile = 0.5))
 }
@@ -170,9 +170,9 @@ test_that("the earlier names still work", {
   t <- discoverTerms(v$patches, k = 4)
   s <- termScores(v$patches, t$centroids)
   k <- keyFromTerms(s, v$images, t, quantile = 0.5)
-  expect_s3_class(k, "moose")
+  expect_s3_class(k, "dimoose")
   old <- structure(list(terms = data.frame(id = 1:4, name = colnames(s)), centroids = t$centroids,
-                        exemplars = stats::setNames(t$exemplars, c("term", "image", "patch", "score"))), class = "mooseTerms")
+                        exemplars = stats::setNames(t$exemplars, c("term", "image", "patch", "score"))), class = "dimooseTerms")
   # the same key; only the per-lead examples are missing, which the old object cannot supply
   same <- setdiff(names(k$leads), c("Examples", "Counter", "Character"))
   expect_equal(keyFromTerms(s, v$images, old, quantile = 0.5)$leads[, same], k$leads[, same])
@@ -222,7 +222,7 @@ test_that("both leads of a couplet get example regions, and Lacks names what its
   images <- data.frame(id = rownames(scores), path = "", label = rep(names(per), each = 3), stringsAsFactors = FALSE)
   best <- matrix(seq_len(length(scores)) %% 5L + 1L, nrow(scores), 4, dimnames = dimnames(scores))
   s <- structure(list(sniglets = data.frame(id = 1:4, sniglet = letters[1:4], name = letters[1:4], definition = NA_character_),
-                      centroids = diag(4), exemplars = NULL, best = best, tiles = 4L), class = "mooseSniglets")
+                      centroids = diag(4), exemplars = NULL, best = best, tiles = 4L), class = "dimooseSniglets")
   rownames(s$centroids) <- letters[1:4]
   key <- keyFromSniglets(scores, images, s, method = "rpart")
   l <- key$leads

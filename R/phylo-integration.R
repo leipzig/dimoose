@@ -2,11 +2,11 @@
 
 #' Write a key as Newick, with safe labels or node annotations
 #'
-#' The [moose] method `$toNewick()` writes quoted Newick, which is correct but
+#' The [dimoose] method `$toNewick()` writes quoted Newick, which is correct but
 #' which several parsers (ape, scikit-bio, toytree) mangle. This wrapper adds
 #' two options for interoperating with the wider phylogenetics ecosystem.
 #'
-#' @param key A [moose] key.
+#' @param key A [dimoose] key.
 #' @param labels `"quoted"` (the default, identical to `key$toNewick()`) or
 #'   `"safe"`, which replaces every label with an ASCII id (`n<couplet>` for
 #'   couplets, `t<n>` for taxa) and returns the mapping in a side table, so
@@ -30,7 +30,7 @@
 toNewick <- function(key, labels = c("quoted", "safe"), annotate = c("none", "nhx", "beast")) {
   labels <- match.arg(labels)
   annotate <- match.arg(annotate)
-  if (!inherits(key, "moose")) stop("`key` must be a moose object", call. = FALSE)
+  if (!inherits(key, "dimoose")) stop("`key` must be a dimoose object", call. = FALSE)
   leads <- normalizeLeads(key$leads)
   check <- checkLeads(leads)
   lab <- leadLabels(leads)
@@ -87,7 +87,7 @@ toNewick <- function(key, labels = c("quoted", "safe"), annotate = c("none", "nh
 #' several incoming edges. Each edge carries the lead's `label` and
 #' `Character` text; vertices are couplets and taxa.
 #'
-#' @param key A [moose] key.
+#' @param key A [dimoose] key.
 #' @return An [igraph::igraph] directed graph.
 #' @examples
 #' \dontrun{
@@ -118,7 +118,7 @@ toIgraph <- function(key) {
 #' on branches with `geom_label(aes(x = branch, label = Character))` and join
 #' your own data by the `node` column (never by label, since taxa repeat).
 #'
-#' @param key A [moose] key.
+#' @param key A [dimoose] key.
 #' @return A [tidytree::treedata] object.
 #' @seealso [toNewick()], [toIgraph()]
 #' @examples
@@ -199,7 +199,7 @@ toTreedata <- function(key) {
 #' and space-free (required by the schema); the original labels and each
 #' lead's text are kept in `node_attrs`. `div` is the depth from the root.
 #'
-#' @param key A [moose] key.
+#' @param key A [dimoose] key.
 #' @param title Dataset title; defaults to the key's description.
 #' @param file Optional path to write to; if `NULL`, the JSON is returned as a
 #'   string.
@@ -213,7 +213,7 @@ toAuspiceJSON <- function(key, title = NULL, file = NULL) {
   leads <- normalizeLeads(key$leads)
   check <- checkLeads(leads)
   lab <- leadLabels(leads)
-  if (is.null(title)) title <- if (length(key$desc) == 1 && !is.na(key$desc)) as.character(key$desc) else "moose key"
+  if (is.null(title)) title <- if (length(key$desc) == 1 && !is.na(key$desc)) as.character(key$desc) else "dimoose key"
 
   used <- new.env()
   uniqueName <- function(x) {
@@ -271,10 +271,10 @@ toAuspiceJSON <- function(key, title = NULL, file = NULL) {
 #' snapshot. Each haplogroup's `<details><poly>` entries become its mutations.
 #'
 #' @param file Path to the tree XML.
-#' @param key If `TRUE`, return a [moose] key built with [keyFromLeads()]
+#' @param key If `TRUE`, return a [dimoose] key built with [keyFromLeads()]
 #'   instead of the data frame.
 #' @return A data frame with `haplogroup`, `parent`, `depth`, `n_subclades`
-#'   and `mutations`, or a [moose] object if `key = TRUE`.
+#'   and `mutations`, or a [dimoose] object if `key = TRUE`.
 #' @seealso [phylotree17], [phylotreeKey()]
 #' @examples
 #' \dontrun{

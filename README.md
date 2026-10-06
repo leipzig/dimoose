@@ -1,4 +1,4 @@
-# moose <img src="man/figures/logo.svg" align="right" height="139" alt="moose logo" />
+# dimoose <img src="man/figures/logo.svg" align="right" height="139" alt="dimoose logo" />
 
 An R package to manage dichotomous keys.
 
@@ -12,7 +12,7 @@ Despite their different uses, phylogenetic trees are similar to dichotomous keys
 - the paths are traversed using mutation "decisions" instead of visible phenotypes
 - all points on a phylogenetic tree represent an organism that actually existed (instead of a group of possibilities)
 
-Moose supports phylogenetic trees in which the mutations are known, such as PhyloTree, and ships PhyloTree Build 17 (the human mitochondrial DNA phylogeny, as distributed by Haplogrep 3).
+dimoose supports phylogenetic trees in which the mutations are known, such as PhyloTree, and ships PhyloTree Build 17 (the human mitochondrial DNA phylogeny, as distributed by Haplogrep 3).
 
 ## Package methods
 
@@ -31,22 +31,21 @@ This package provides tools to:
 
 ## Installation
 
-Install moose from [R-universe](https://leipzig.r-universe.dev/moose),
+Install dimoose from [R-universe](https://leipzig.r-universe.dev/dimoose),
 which has ready-built versions for Windows, macOS and Linux:
 
 ```r
-install.packages("moose", repos = c("https://leipzig.r-universe.dev", "https://cloud.r-project.org"))
+install.packages("dimoose", repos = c("https://leipzig.r-universe.dev", "https://cloud.r-project.org"))
 ```
 
-Keep both addresses and that order. CRAN has an unrelated package that is
-also called moose; with R-universe listed, R installs this one, which has the
-higher version number.
+The package was called moose until version 0.1.0; it was renamed because CRAN
+has an unrelated package of that name.
 
 Or install the current source from GitHub:
 
 ```r
 install.packages("remotes")
-remotes::install_github("leipzig/moose")
+remotes::install_github("leipzig/dimoose")
 ```
 
 That is enough to read, build, check and export keys. Some features use
@@ -62,13 +61,13 @@ optional packages, which are only needed if you use that feature:
 To install all of the optional R packages at once, and build the vignettes:
 
 ```r
-remotes::install_github("leipzig/moose", dependencies = TRUE, build_vignettes = TRUE)
+remotes::install_github("leipzig/dimoose", dependencies = TRUE, build_vignettes = TRUE)
 ```
 
 ## A first key
 
 ```r
-library(moose)
+library(dimoose)
 sharks <- sharkKey()
 summary(sharks)
 exportWizard(sharks, "sharks.html")   # an interactive, self-contained wizard
@@ -78,7 +77,7 @@ There are vignettes on automated key generation [from photos](vignettes/vision-k
 
 ## Included datasets
 
-Four example keys ship with the package. They come from very different sources and are built in different ways, but they are all ordinary moose objects: they share the same fields (`leads`, `df`, `meta`, `taxa`, `desc`) and methods (`print()`, `summary()`, `validate()`, `toDataTree()`, `toNewick()`) and all work with `exportWizard()` and the phylogenetics exports.
+Four example keys ship with the package. They come from very different sources and are built in different ways, but they are all ordinary dimoose objects: they share the same fields (`leads`, `df`, `meta`, `taxa`, `desc`) and methods (`print()`, `summary()`, `validate()`, `toDataTree()`, `toNewick()`) and all work with `exportWizard()` and the phylogenetics exports.
 
 ### Sharks — `sharkKey()`
 
@@ -98,20 +97,20 @@ PhyloTree Build 17, the human mitochondrial DNA phylogeny (van Oven 2015), as di
 
 # Automated key generation
 
-Most keys are written by people. moose can also generate one from data: from
+Most keys are written by people. dimoose can also generate one from data: from
 a multiple sequence alignment, or from a pile of photos. Either way the result
-is an ordinary moose key that works with `exportWizard()`, `classify()` and
+is an ordinary dimoose key that works with `exportWizard()`, `classify()` and
 the phylogenetics exports.
 
 ## From a multiple sequence alignment
 
 One command takes aligned sequences to a key. A phylogeny program builds the
-tree, moose roots it, and every fork becomes a couplet whose leads are the
+tree, dimoose roots it, and every fork becomes a couplet whose leads are the
 alignment sites that tell its two sides apart:
 
 ```r
-library(moose)
-fasta <- system.file("extdata", "aligned.fasta", package = "moose")   # or the path of your own FASTA file
+library(dimoose)
+fasta <- system.file("extdata", "aligned.fasta", package = "dimoose")   # or the path of your own FASTA file
 key <- keyFromAlignment(fasta)
 exportWizard(key, "key.html")
 
@@ -123,13 +122,13 @@ head(key$leads[, c("Statement", "Character", "Next", "Taxon")], 4)
 #> 4         2 201C 234T 297A    - No1114S
 ```
 
-`aligned.fasta` is an example that ships with moose: 15 wood mouse cytochrome
+`aligned.fasta` is an example that ships with dimoose: 15 wood mouse cytochrome
 *b* sequences. A second one, `mtdna.fasta`, has whole human mitochondrial
 genomes for 14 haplogroups. Numbered by the sequence of the rCRS's haplogroup
 and rooted on L0, its key asks about the familiar PhyloTree positions:
 
 ```r
-mtdna <- system.file("extdata", "mtdna.fasta", package = "moose")
+mtdna <- system.file("extdata", "mtdna.fasta", package = "dimoose")
 mt <- keyFromAlignment(mtdna, reference = "H2a2a1", outgroup = "L0a1")
 mt$leads[7:8, c("Statement", "Character", "Next")]
 #>   Statement         Character Next
@@ -165,16 +164,16 @@ call sets up a private Python with the packages it needs (through
 downloads several gigabytes, mostly PyTorch.
 
 Then it is five steps. They run as written on the example photos that ship
-with moose: 36 small photos of six fruits, from the
+with dimoose: 36 small photos of six fruits, from the
 [Fruits-360](https://github.com/fruits-360/fruits-360-100x100) dataset
 (CC BY-SA 4.0). For your own photos, give the path of your folder instead.
 
 ```r
-library(moose)
+library(dimoose)
 
 # 1. Photos and labels. With one folder per class (pics/banana/..., pics/kiwi/...),
 #    each photo is labelled by its folder.
-pics   <- system.file("extdata", "pics", package = "moose")
+pics   <- system.file("extdata", "pics", package = "dimoose")
 images <- imageSet(pics)
 #    Class in the file name:  imageSet("my_photos", label = function(x) sub("_.*$", "", x))
 #    Labels in a table:       imageSet(tab$file, label = tab$species)
@@ -197,7 +196,7 @@ key    <- patchExemplars(model, key, images)
 exportWizard(key, "key.html")
 
 # Identify a new photo with the key
-new <- list.files(system.file("extdata", "new-photos", package = "moose"), full.names = TRUE)
+new <- list.files(system.file("extdata", "new-photos", package = "dimoose"), full.names = TRUE)
 classify(key, scoreImages(key, model, new))
 ```
 
@@ -208,7 +207,7 @@ With one photo per class, use the default `method = "balanced"` in step 4
 
 The features in step 4 are found by the model, by clustering the tiles of
 all the photos: each one is a kind of region that several photos have in
-common, such as a rough skin or a stem end. They have no names, so moose
+common, such as a rough skin or a stem end. They have no names, so dimoose
 coins a pronounceable word for each one (`gaithiark`, `glienglaund`) and
 calls these **sniglets**. Both leads of a couplet describe something: one
 reads "Has glienglaund" and the other, where it can, says what those photos
@@ -312,7 +311,7 @@ suggested packages `partykit` and `lme4`, plus `glmertree` for `method = "mob"`.
 
 # Interoperating with phylogenetics tools
 
-A moose key is a tree, so it can be handed to the usual phylogenetics software:
+A dimoose key is a tree, so it can be handed to the usual phylogenetics software:
 
 ```r
 k <- phylotreeKey("H2a")
@@ -326,7 +325,7 @@ readHaplogrep("tree.xml")           # load any Haplogrep / PhyloTree tree XML
 
 # Acknowledgments
 
-Moose is built on phylo4, since it has the closest native resemblance to dichotomous trees but also borrows from data.tree and partykit.
+dimoose is built on phylo4, since it has the closest native resemblance to dichotomous trees but also borrows from data.tree and partykit.
 
 FishBase key import is made possible by the work of Scott Chamberlain and Carl Boettiger on rOpenSci's `rfishbase` and the R tooling for FishBase data.
 

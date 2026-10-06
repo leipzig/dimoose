@@ -20,7 +20,7 @@
 #' @field features Data frame of features a machine can compute, one per
 #'   row (see [featureTable()]), or `NULL` for keys meant only for people.
 #' @export
-moose <- R6::R6Class("moose",
+dimoose <- R6::R6Class("dimoose",
   lock_objects = FALSE,
   lock_class = TRUE,
   portable = TRUE,
@@ -89,7 +89,7 @@ moose <- R6::R6Class("moose",
     }
   ),
   public = list(
-    #' @description Create a new moose object.
+    #' @description Create a new dimoose object.
     #' @param df Data frame of leads (see the `df` field).
     #' @param desc Key title or description.
     #' @param meta Key/value metadata data frame.
@@ -109,7 +109,7 @@ moose <- R6::R6Class("moose",
     #' @param ... Unused.
     print = function(...) {
       s <- self$summary()
-      cat("<moose key> ", if (is.na(s$title)) "(untitled)" else s$title, "\n", sep = "")
+      cat("<dimoose key> ", if (is.na(s$title)) "(untitled)" else s$title, "\n", sep = "")
       cat(sprintf("  %d couplets, %d leads, %d taxa, up to %d steps deep\n",
         s$couplets, s$leads, s$taxa, s$depth))
       if (s$problems > 0) cat(sprintf("  %d problem(s): see $validate()\n", s$problems))
@@ -210,7 +210,7 @@ moose <- R6::R6Class("moose",
 #'
 #' @description
 #' An R6 object holding a FishBase key's description and its couplet table as
-#' downloaded, before conversion to a [moose] object.
+#' downloaded, before conversion to a [dimoose] object.
 #'
 #' @field desc Key title (read-only).
 #' @field df The key's couplet table: one row per lead, with columns
@@ -266,7 +266,7 @@ rawhtml <- R6::R6Class("rawhtml",
   )
 )
 
-# Rebuild a lead table from the path table (`moose$df`): one row per lead,
+# Rebuild a lead table from the path table (`dimoose$df`): one row per lead,
 # with Next taken from the leads whose parent is this lead.
 leadsFromPaths <- function(df) {
   if (is.null(df) || nrow(df) == 0) {
@@ -299,6 +299,6 @@ leadsFromPaths <- function(df) {
 }
 
 #' @export
-summary.moose <- function(object, ...) {
+summary.dimoose <- function(object, ...) {
   object$summary()
 }

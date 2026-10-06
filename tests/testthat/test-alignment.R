@@ -5,7 +5,7 @@ toyAlignment <- c(human = "ACGTACGTACGA", chimp = "ACGTACGTATGA", mouse = "ACCTA
 
 test_that("keyFromAlignment turns an alignment into a key of diagnostic sites", {
   key <- keyFromAlignment(toyAlignment, outgroup = "fish")
-  expect_s3_class(key, "moose")
+  expect_s3_class(key, "dimoose")
   expect_length(key$validate(), 0)
   l <- key$leads
   expect_equal(length(unique(l$Statement)), 4)
@@ -57,8 +57,8 @@ test_that("identical sequences share a result", {
 
 test_that("sites can be numbered by a reference sequence", {
   mat <- rbind(ref = c("-", "A", "C", "-", "-", "G"), x = c("T", "A", "C", "A", "A", "G"))
-  expect_equal(moose:::siteLabels(mat, "ref"), c("0.1", "1", "2", "2.1", "2.2", "3"))
-  expect_equal(moose:::siteLabels(mat), as.character(1:6))
+  expect_equal(dimoose:::siteLabels(mat, "ref"), c("0.1", "1", "2", "2.1", "2.2", "3"))
+  expect_equal(dimoose:::siteLabels(mat), as.character(1:6))
   aln <- c(ref = "GC-GTAC", a = "ACTGTAC", b = "ACTGAAC", c = "AC-GAAT")
   key <- keyFromAlignment(aln, reference = "ref", outgroup = "ref")
   expect_true(any(grepl("^site:6:", key$features$id)))    # column 7 is position 6 in ref
@@ -183,10 +183,10 @@ test_that("more input checks", {
   expect_true("author" %in% k$meta$key)
 })
 
-test_that("the example alignments that ship with moose make keys", {
-  fasta <- system.file("extdata", "aligned.fasta", package = "moose")
-  newick <- system.file("extdata", "aligned.nwk", package = "moose")
-  mtdna <- system.file("extdata", "mtdna.fasta", package = "moose")
+test_that("the example alignments that ship with dimoose make keys", {
+  fasta <- system.file("extdata", "aligned.fasta", package = "dimoose")
+  newick <- system.file("extdata", "aligned.nwk", package = "dimoose")
+  mtdna <- system.file("extdata", "mtdna.fasta", package = "dimoose")
   expect_true(all(nzchar(c(fasta, newick, mtdna))))
   key <- keyFromAlignment(fasta)
   expect_equal(nrow(key$taxa), 15)

@@ -41,7 +41,7 @@ slug <- function(x) gsub("^_|_$", "", gsub("[^a-z0-9]+", "_", tolower(x)))
 #' @param calibrate `"none"` (threshold 0) or `"midpoint"` (halfway between
 #'   the two sides' mean scores).
 #' @param desc,meta Title and metadata.
-#' @return A [moose] key with `clip_text_pair` features.
+#' @return A [dimoose] key with `clip_text_pair` features.
 #' @export
 keyFromClusters <- function(image, images, vocabulary, textEmb, template = "{x}", order = NULL,
                             maxPerSide = 10, calibrate = c("none", "midpoint"),

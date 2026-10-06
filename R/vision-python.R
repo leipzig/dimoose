@@ -1,6 +1,6 @@
 # The Python packages the vision layer needs, from inst/python/requirements.txt.
 pythonRequirements <- function() {
-  req <- readLines(system.file("python", "requirements.txt", package = "moose"), warn = FALSE)
+  req <- readLines(system.file("python", "requirements.txt", package = "dimoose"), warn = FALSE)
   req <- trimws(sub("#.*$", "", req))
   req[nzchar(req)]
 }
@@ -19,10 +19,10 @@ pyVision <- local({
         reticulate::py_require(pythonRequirements())
       }
       mod <<- tryCatch(
-        reticulate::import_from_path("moose_vision", path = system.file("python", package = "moose"), convert = TRUE),
+        reticulate::import_from_path("dimoose_vision", path = system.file("python", package = "dimoose"), convert = TRUE),
         error = function(e) {
           cfg <- tryCatch(reticulate::py_config()$python, error = function(e) "unknown")
-          stop("Could not load moose's Python code with the Python at ", cfg, ":\n", conditionMessage(e),
+          stop("Could not load dimoose's Python code with the Python at ", cfg, ":\n", conditionMessage(e),
                "\nIt needs the Python packages ", paste(pythonRequirements(), collapse = ", "), ". Install them there with\n",
                "  reticulate::py_install(c(", paste0("\"", pythonRequirements(), "\"", collapse = ", "), "))\n",
                "or let reticulate provide a Python: restart R without RETICULATE_PYTHON set and without the `python` argument.",
@@ -37,7 +37,7 @@ pyVision <- local({
 #'
 #' Uses Python's open_clip through reticulate. You do not need to install
 #' anything in Python yourself: the first call sets up a private Python with
-#' the packages moose needs (`torch`, `open_clip_torch`, `pillow`, `numpy`)
+#' the packages dimoose needs (`torch`, `open_clip_torch`, `pillow`, `numpy`)
 #' and reuses it afterwards. That first call downloads them, which takes a
 #' few minutes. This needs reticulate 1.41 or later.
 #'
@@ -78,7 +78,7 @@ pyVision <- local({
 #'   architecture `name`; not used for the other kinds of `name`.
 #' @param python Optional path to the Python executable to use (passed to
 #'   [reticulate::use_python()]).
-#' @return An object of class `mooseVisionModel` with `py` (the Python model)
+#' @return An object of class `dimooseVisionModel` with `py` (the Python model)
 #'   and `spec` (library, architecture, weights SHA-256, image size, ...).
 #' @examples
 #' \dontrun{
@@ -95,12 +95,12 @@ visionModel <- function(weights = NULL, name = "ViT-B-32", pretrained = "openai"
   if (tolower(name) %in% names(known)) name <- known[[tolower(name)]]
   mod <- pyVision()
   py <- mod$load_model(name = name, pretrained = pretrained, weights = weights)
-  structure(list(py = py, mod = mod, spec = py$spec), class = "mooseVisionModel")
+  structure(list(py = py, mod = mod, spec = py$spec), class = "dimooseVisionModel")
 }
 
 #' @export
-print.mooseVisionModel <- function(x, ...) {
-  cat("<moose vision model> ", x$spec$arch, " (", x$spec$library, "), ", x$spec$dim, " dimensions\n", sep = "")
+print.dimooseVisionModel <- function(x, ...) {
+  cat("<dimoose vision model> ", x$spec$arch, " (", x$spec$library, "), ", x$spec$dim, " dimensions\n", sep = "")
   invisible(x)
 }
 

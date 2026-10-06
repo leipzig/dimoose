@@ -65,4 +65,4 @@ The four checks are V1–V4 from the spec
   the same `verify.R` structure applies by swapping the model.
 
 Full numeric results are saved alongside this file as `verify-results.rds`
-when the script is run with `MOOSE_VERIFY_OUT` set.
+when the script is run with `DIMOOSE_VERIFY_OUT` set.

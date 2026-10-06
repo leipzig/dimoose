@@ -4,7 +4,7 @@ count <- function(html, pattern) lengths(regmatches(html, gregexpr(pattern, html
 tinyKey <- function(leads) {
   df <- data.frame(Statement = "1", Choice = "a", Character = "x", Taxon = "A",
                    pSt = "", pCh = "", stringsAsFactors = FALSE)
-  moose$new(df, "Tiny key", leads = leads)
+  dimoose$new(df, "Tiny key", leads = leads)
 }
 
 test_that("the shark key exports as one self-contained page", {
@@ -89,13 +89,13 @@ test_that("leads are rebuilt from paths when a key has no lead table", {
   original <- m$leads
   key <- function(x) paste(x$Statement, x$Choice, x$Next, x$Taxon)
   expect_setequal(key(rebuilt), key(original))
-  plain <- moose$new(m$df, m$desc)
+  plain <- dimoose$new(m$df, m$desc)
   expect_equal(count(exportWizard(plain), "class=\"taxon\""), 24)
 })
 
 test_that("unimplemented options fail clearly", {
   expect_error(exportWizard(sharks(), order = "parsimony"), "not implemented")
-  expect_error(exportWizard(list()), "moose object")
+  expect_error(exportWizard(list()), "dimoose object")
 })
 
 test_that("the map draws every couplet and taxon, linked to the sections", {
@@ -230,7 +230,7 @@ test_that("a glossary crop the key already stores is embedded once", {
 test_that("the wizard script follows in-page links itself", {
   # Preview panes and sandboxed frames ignore "#..." navigation, so the page
   # must not depend on location.hash changing to move between couplets.
-  js <- paste(readLines(system.file("wizard", "wizard.js", package = "moose"), warn = FALSE), collapse = "\n")
+  js <- paste(readLines(system.file("wizard", "wizard.js", package = "dimoose"), warn = FALSE), collapse = "\n")
   expect_false(grepl("location.hash\\s*=", js))
   expect_match(js, "ev.preventDefault();\n    go(anchor);", fixed = TRUE)
 })

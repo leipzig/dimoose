@@ -84,5 +84,5 @@ test_that("readHaplogrep parses nested haplogroup XML into a phylotree key", {
   expect_setequal(tree$haplogroup, c("A", "A1", "A2"))
   expect_equal(tree$parent[tree$haplogroup == "A1"], "A")
   k <- readHaplogrep(f, key = TRUE)
-  expect_s3_class(k, "moose")
+  expect_s3_class(k, "dimoose")
 })

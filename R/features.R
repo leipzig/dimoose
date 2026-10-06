@@ -82,7 +82,7 @@ checkFeatures <- function(leads, features) {
 #' test (`Feature`, `Test`, `Threshold`) passes is taken. When no lead or
 #' more than one passes (for instance on a missing score), the result is `NA`.
 #'
-#' @param key A [moose] key with `Feature`, `Test` and `Threshold` lead
+#' @param key A [dimoose] key with `Feature`, `Test` and `Threshold` lead
 #'   columns, e.g. from [keyFromTerms()].
 #' @param scores A numeric matrix, one row per object, with a column for every
 #'   feature id the key tests (see [featureScores()] and [scoreImages()]).
@@ -186,7 +186,7 @@ looKey <- function(images, build, score, groups = NULL) {
 #' need `image` and `textEmb` (rows named by prompt). For `external`
 #' features supply the scores yourself.
 #'
-#' @param key A [moose] key with a `features` table.
+#' @param key A [dimoose] key with a `features` table.
 #' @param image `objects x d` matrix of image embeddings (unit rows).
 #' @param patches `objects x patches x d` array of patch embeddings.
 #' @param textEmb `prompts x d` matrix of text embeddings whose row names are

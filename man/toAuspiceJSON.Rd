@@ -7,7 +7,7 @@
 toAuspiceJSON(key, title = NULL, file = NULL)
 }
 \arguments{
-\item{key}{A \link{moose} key.}
+\item{key}{A \link{dimoose} key.}
 
 \item{title}{Dataset title; defaults to the key's description.}
 

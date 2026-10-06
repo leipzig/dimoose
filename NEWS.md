@@ -1,7 +1,13 @@
-# moose 0.1.0
+# dimoose 0.1.0
 
 * First release.
-* Dichotomous keys as `moose` objects: build them from lead tables
+* Renamed from moose, because CRAN has an unrelated package of that name.
+  The key class is now `dimoose` (`dimoose$new()`, `inherits(x, "dimoose")`),
+  the S3 classes are `dimooseVisionModel`, `dimooseTerms` and
+  `dimooseSniglets`, the vision tests read `DIMOOSE_CLIP_WEIGHTS`, and the
+  repository is <https://github.com/leipzig/dimoose>. The first argument of
+  `exportWizard()` is now `key`.
+* Dichotomous keys as `dimoose` objects: build them from lead tables
   (`keyFromLeads()`), classification trees (`keyFromRpart()`,
   `generateTree()`) or FishBase (`importFishbase()`, `parseFishbase()`), then
   validate, summarise and convert them to `data.tree`, Newick, igraph,

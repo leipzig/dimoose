@@ -8,7 +8,7 @@ macroHaplogroup(
   haplogroup,
   level = c("letter", "depth"),
   depth = 2,
-  tree = moose::phylotree17
+  tree = dimoose::phylotree17
 )
 }
 \arguments{

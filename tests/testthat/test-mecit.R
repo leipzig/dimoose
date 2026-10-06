@@ -87,7 +87,7 @@ test_that("keyFromMecit turns the tree into a key a machine can follow", {
   X <- f$X; colnames(X) <- c("16311", "7028", "573.X")
   fit <- mecit(f$y, X, f$cluster)
   key <- keyFromMecit(fit)
-  expect_s3_class(key, "moose")
+  expect_s3_class(key, "dimoose")
   expect_length(key$validate(), 0)
   l <- key$leads
   expect_equal(l$Character[1:2], c("Carries 16311", "Does not carry 16311"))
@@ -108,7 +108,7 @@ test_that("print and summary of a mecit fit", {
   skip_if_no_mecit()
   f <- mecitFixture()
   fit <- mecit(f$y, f$X, f$cluster)
-  expect_output(print(fit), "<moose mecit>")
+  expect_output(print(fit), "<dimoose mecit>")
   expect_output(print(fit), "splits on: a")
 })
 

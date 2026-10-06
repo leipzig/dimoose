@@ -7,7 +7,7 @@
 featureScores(key, image = NULL, patches = NULL, textEmb = NULL)
 }
 \arguments{
-\item{key}{A \link{moose} key with a \code{features} table.}
+\item{key}{A \link{dimoose} key with a \code{features} table.}
 
 \item{image}{\verb{objects x d} matrix of image embeddings (unit rows).}
 

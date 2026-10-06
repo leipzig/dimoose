@@ -1,7 +1,7 @@
 # Method comparison for mixed-effects conditional inference trees (MECITs)
 # on simulated PhyloTree expression data. See REPORT.md.
 # Run from the package root:  Rscript analysis/mecit/run.R
-suppressMessages(pkgload::load_all(Sys.getenv("MOOSE_PKG", "."), quiet = TRUE))
+suppressMessages(pkgload::load_all(Sys.getenv("DIMOOSE_PKG", "."), quiet = TRUE))
 out <- Sys.getenv("MECIT_OUT", "analysis/mecit")
 
 lmFound <- function(y, X, macro = NULL) {

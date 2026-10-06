@@ -7,7 +7,7 @@
 evaluateKey(key, scores, labels, groups = NULL)
 }
 \arguments{
-\item{key}{A \link{moose} key with \code{Feature}, \code{Test} and \code{Threshold} lead
+\item{key}{A \link{dimoose} key with \code{Feature}, \code{Test} and \code{Threshold} lead
 columns, e.g. from \code{\link[=keyFromTerms]{keyFromTerms()}}.}
 
 \item{scores}{A numeric matrix, one row per object, with a column for every

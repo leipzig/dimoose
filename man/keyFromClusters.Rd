@@ -40,7 +40,7 @@ the two sides' mean scores).}
 \item{desc, meta}{Title and metadata.}
 }
 \value{
-A \link{moose} key with \code{clip_text_pair} features.
+A \link{dimoose} key with \code{clip_text_pair} features.
 }
 \description{
 Classes are clustered on the mean embedding of their images (Ward's

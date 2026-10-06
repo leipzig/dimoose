@@ -56,7 +56,7 @@
     if (!sectionOf(anchor)) return false;
     here = anchor;
     try {
-      if (readHash() !== anchor) history.pushState({ moose: anchor }, "", "#" + encodeURIComponent(anchor));
+      if (readHash() !== anchor) history.pushState({ dimoose: anchor }, "", "#" + encodeURIComponent(anchor));
     } catch (e) { /* no history here (sandboxed frame): the page still moves */ }
     update(true);
     if (!body.classList.contains("wizard")) {   // the full key: jump to the place
@@ -244,11 +244,11 @@
       body.classList.toggle("map-open", open);
       mapBtn.setAttribute("aria-expanded", open ? "true" : "false");
       mapBtn.textContent = open ? "Hide map" : "Map";
-      try { localStorage.setItem("moose-map-open", open ? "1" : "0"); } catch (e) { /* storage unavailable */ }
+      try { localStorage.setItem("dimoose-map-open", open ? "1" : "0"); } catch (e) { /* storage unavailable */ }
       if (open) centerMap(currentId());
     };
     var saved = null;
-    try { saved = localStorage.getItem("moose-map-open"); } catch (e) { /* storage unavailable */ }
+    try { saved = localStorage.getItem("dimoose-map-open"); } catch (e) { /* storage unavailable */ }
     mapBtn.addEventListener("click", function () { setMap(!body.classList.contains("map-open")); });
     if (saved === "1") setMap(true);
   }
@@ -299,7 +299,7 @@
 
   // Back and forward buttons, and an address typed by hand
   function fromAddress(ev) {
-    var anchor = ev && ev.state && ev.state.moose ? ev.state.moose : readHash();
+    var anchor = ev && ev.state && ev.state.dimoose ? ev.state.dimoose : readHash();
     here = sectionOf(anchor) ? anchor : "";
     update(true);
     // the browser may still jump to the anchor after this; a step starts at the top

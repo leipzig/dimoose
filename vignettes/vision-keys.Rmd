@@ -30,9 +30,9 @@ data instead. This vignette goes from a pile of photos to a dichotomous key;
 ## The short version
 
 ```{r}
-library(moose)
+library(dimoose)
 
-pics   <- system.file("extdata", "pics", package = "moose")   # example photos; or your own folder
+pics   <- system.file("extdata", "pics", package = "dimoose")   # example photos; or your own folder
 images <- imageSet(pics)                     # 1. photos and their labels
 model  <- visionModel()                      # 2. a vision model
 emb    <- embedImages(model, images)         # 3. photos -> embeddings
@@ -45,7 +45,7 @@ exportWizard(key, "key.html")
 key <- renameSniglets(key, c(gaithiark = "a dull, finely textured skin"))   # 6. name what you see
 ```
 
-The example photos ship with moose, so this runs as written: 36 small photos
+The example photos ship with dimoose, so this runs as written: 36 small photos
 of six fruits (banana, blueberry, kiwi, lemon, pineapple, strawberry), six of
 each, from the [Fruits-360](https://github.com/fruits-360/fruits-360-100x100)
 dataset (CC BY-SA 4.0). To use your own photos, put the path of your folder
@@ -57,7 +57,7 @@ each step and the choices in it.
 
 ## Setup {#setup}
 
-moose uses CLIP through
+dimoose uses CLIP through
 [open_clip](https://github.com/mlfoundations/open_clip), a Python library,
 reached from R with [reticulate](https://rstudio.github.io/reticulate/):
 
@@ -66,7 +66,7 @@ install.packages("reticulate")
 ```
 
 There is nothing to install in Python by hand. The first time you call
-`visionModel()`, reticulate sets up a private Python with the packages moose
+`visionModel()`, reticulate sets up a private Python with the packages dimoose
 needs (`torch`, `open_clip_torch`, `pillow`, `numpy`) and keeps it for later
 sessions. That first call downloads several gigabytes, mostly PyTorch, so
 allow it a few minutes.
@@ -99,7 +99,7 @@ pics/
 ```
 
 ```{r}
-pics   <- system.file("extdata", "pics", package = "moose")
+pics   <- system.file("extdata", "pics", package = "dimoose")
 images <- imageSet(pics)
 ```
 
@@ -182,7 +182,7 @@ like.
 
 `discoverSniglets()` clusters all the tiles. Each cluster is a recurring
 visual feature: a kind of region that turns up in several photos. It has no
-name, so moose coins a pronounceable word for it (`gaithiark`) and defines it
+name, so dimoose coins a pronounceable word for it (`gaithiark`) and defines it
 by the tiles that match it best. These are **sniglets**. `snigletScores()` scores each photo for each sniglet, and
 `keyFromSniglets()` grows a key in which each step asks whether the specimen
 has one sniglet:
@@ -192,7 +192,7 @@ sniglets <- discoverSniglets(emb$patches, k = 40)
 scores   <- snigletScores(emb$patches, sniglets$centroids)
 key      <- keyFromSniglets(scores, images, sniglets, method = "rpart")
 key
-#> <moose key> Key generated from sniglets
+#> <dimoose key> Key generated from sniglets
 #>   5 couplets, 10 leads, 6 taxa, up to 4 steps deep
 ```
 
@@ -212,7 +212,7 @@ in the right class and `"balanced"` 58%.
 ### Questions in words
 
 The second method keeps the questions in plain language. You supply a
-vocabulary of contrasting features. moose clusters the classes into a tree
+vocabulary of contrasting features. dimoose clusters the classes into a tree
 and, for each fork, picks the pair that best separates its two sides:
 
 ```{r}
@@ -241,7 +241,7 @@ could check by eye, and give more pairs than the key has forks.
 
 ## Step 5: look at the key and share it
 
-A key is an ordinary moose object, so everything else in the package works on
+A key is an ordinary dimoose object, so everything else in the package works on
 it:
 
 ```{r}
@@ -357,7 +357,7 @@ can follow it. `scoreImages()` embeds new photos and scores them, and
 `classify()` walks the key:
 
 ```{r}
-new <- list.files(system.file("extdata", "new-photos", package = "moose"), full.names = TRUE)
+new <- list.files(system.file("extdata", "new-photos", package = "dimoose"), full.names = TRUE)
 classify(key, scoreImages(key, model, new))
 #>         id     result        path
 #> 1 unknown1     banana 1b 3a 4a 5a

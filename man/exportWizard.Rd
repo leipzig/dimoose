@@ -5,7 +5,7 @@
 \title{Export an interactive dichotomous key}
 \usage{
 exportWizard(
-  moose,
+  key,
   file = NULL,
   displayLinks = TRUE,
   order = c("original", "parsimony"),
@@ -15,7 +15,7 @@ exportWizard(
 )
 }
 \arguments{
-\item{moose}{A \link{moose} object, e.g. from \code{\link[=importFishbase]{importFishbase()}}.}
+\item{key}{A \link{dimoose} object, e.g. from \code{\link[=importFishbase]{importFishbase()}}.}
 
 \item{file}{Path of the HTML file to write. If \code{NULL}, the HTML is returned
 as a string instead.}
@@ -45,7 +45,7 @@ The path to \code{file}, invisibly, or the HTML as a character string if
 \code{file} is \code{NULL}.
 }
 \description{
-Writes a moose key as a single self-contained HTML page. With JavaScript
+Writes a dimoose key as a single self-contained HTML page. With JavaScript
 on, the page steps through the key one couplet at a time, keeps a trail of
 the choices made (each one clickable to go back to it) and supports the
 browser's Back button. Without JavaScript, the same page is the full key

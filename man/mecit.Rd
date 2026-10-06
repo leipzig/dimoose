@@ -46,7 +46,7 @@ tree.}
 \item{abstol, maxit}{Convergence tolerance and the maximum number of
 iterations. For \code{"ctree"} the tolerance is on the largest change in any
 observation's random-effect contribution; for \code{"mob"} it is passed to
-\code{\link[glmertree:glmertree]{glmertree::lmertree()}}, where it applies to the change in log-likelihood.}
+\code{\link[glmertree:lmertree]{glmertree::lmertree()}}, where it applies to the change in log-likelihood.}
 }
 \value{
 An object of class \code{mecit}: \code{tree} (a partykit tree), \code{lmer} (the
@@ -72,7 +72,7 @@ tree looks for splits.
 minus the current random-effect contribution and (2) a linear mixed model
 (\code{\link[lme4:lmer]{lme4::lmer()}}) with one fixed effect per terminal node plus the random
 effects, until the random effects stop changing. \code{method = "mob"} uses
-model-based partitioning through \code{\link[glmertree:glmertree]{glmertree::lmertree()}} (Fokkema et al.
+model-based partitioning through \code{\link[glmertree:lmertree]{glmertree::lmertree()}} (Fokkema et al.
 2018). In both, \code{ranefstart = TRUE} estimates the random effects from an
 intercept-only mixed model before the first tree, which keeps that tree from
 splitting on cluster-level variables.

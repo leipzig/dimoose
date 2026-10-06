@@ -30,10 +30,10 @@ an alias for \code{"GNA"}. \code{"TNRS"} is no longer available because
 them base64-encoded in \code{meta}. Image URLs are always stored.}
 }
 \value{
-A \link{moose} object.
+A \link{dimoose} object.
 }
 \description{
-Downloads a key from FishBase and converts it into a \link{moose} object. See
+Downloads a key from FishBase and converts it into a \link{dimoose} object. See
 \url{https://www.fishbase.se/keys/allkeys.php} for the list of keys and their
 key codes.
 }

@@ -23,7 +23,7 @@ writeLines(as.vector(rbind(paste0(">", rownames(wm)), apply(wm, 1, paste, collap
 ape::write.tree(ape::nj(ape::dist.dna(woodmouse)), file.path(out, "aligned.nwk"))
 
 # ---- PhyloTree haplogroup sequences --------------------------------------------
-# RSRS (Behar et al. 2012) as distributed with the tree moose ships, release 17.2
+# RSRS (Behar et al. 2012) as distributed with the tree dimoose ships, release 17.2
 rsrsUrl <- "https://raw.githubusercontent.com/genepi/phylotree-rsrs-17/0e79ddf/src/rsrs.fasta"
 rsrsFile <- Sys.getenv("RSRS_FASTA", "")
 if (!nzchar(rsrsFile)) { rsrsFile <- tempfile(fileext = ".fasta"); utils::download.file(rsrsUrl, rsrsFile, quiet = TRUE) }
