@@ -31,7 +31,18 @@ This package provides tools to:
 
 ## Installation
 
-moose is installed from GitHub:
+Install moose from [R-universe](https://leipzig.r-universe.dev/moose),
+which has ready-built versions for Windows, macOS and Linux:
+
+```r
+install.packages("moose", repos = c("https://leipzig.r-universe.dev", "https://cloud.r-project.org"))
+```
+
+Keep both addresses and that order. CRAN has an unrelated package that is
+also called moose; with R-universe listed, R installs this one, which has the
+higher version number.
+
+Or install the current source from GitHub:
 
 ```r
 install.packages("remotes")
