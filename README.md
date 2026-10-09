@@ -325,7 +325,7 @@ readHaplogrep("tree.xml")           # load any Haplogrep / PhyloTree tree XML
 
 # Acknowledgments
 
-dimoose is built on phylo4, since it has the closest native resemblance to dichotomous trees but also borrows from data.tree and partykit.
+dimoose stores keys as an R6 object over a lead table, uses data.tree and rpart for its trees, and bridges to ape, partykit, tidytree and igraph.
 
 FishBase key import is made possible by the work of Scott Chamberlain and Carl Boettiger on rOpenSci's `rfishbase` and the R tooling for FishBase data.
 
