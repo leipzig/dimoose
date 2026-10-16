@@ -22,7 +22,8 @@ keyDiagram(key, file = NULL, images = TRUE, title = NULL)
 
 - file:
 
-  Optional path of an `.svg` file to write.
+  Optional file to write: `.svg`, or `.png` and `.pdf` when the 'rsvg'
+  package is installed.
 
 - images:
 
@@ -41,6 +42,11 @@ keyDiagram(key, file = NULL, images = TRUE, title = NULL)
 The SVG as a single string, invisibly when `file` is given.
 
 ## Details
+
+Thumbnails are shrunk to 112 pixels when the 'magick' package is
+installed, which keeps diagrams of keys with large photos small. When
+'rgnparser' and its 'gnparser' program are installed, only text that
+parses as a scientific name is set in italics.
 
 A couplet reached from more than one lead is drawn once, under the first
 of them; the other leads get a dashed line to it.

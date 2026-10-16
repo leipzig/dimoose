@@ -8,6 +8,8 @@ them to other tree representations.
 
 Useful links:
 
+- <https://leipzig.github.io/dimoose/>
+
 - <https://github.com/leipzig/dimoose>
 
 - Report bugs at <https://github.com/leipzig/dimoose/issues>

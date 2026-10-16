@@ -17,7 +17,7 @@ name in italics.'><meta property="og:image" content="https://leipzig.github.io/d
 
     <a class="navbar-brand me-2" href="../index.html">dimoose</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,7 +75,8 @@ name in italics.</p>
 
 
 <dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
-<dd><p>Optional path of an <code>.svg</code> file to write.</p></dd>
+<dd><p>Optional file to write: <code>.svg</code>, or <code>.png</code> and <code>.pdf</code> when the
+'rsvg' package is installed.</p></dd>
 
 
 <dt id="arg-images">images<a class="anchor" aria-label="anchor" href="#arg-images"></a></dt>
@@ -95,7 +96,11 @@ Use <code>NA</code> for none.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>A couplet reached from more than one lead is drawn once, under the first
+    <p>Thumbnails are shrunk to 112 pixels when the 'magick' package is
+installed, which keeps diagrams of keys with large photos small. When
+'rgnparser' and its 'gnparser' program are installed, only text that
+parses as a scientific name is set in italics.</p>
+<p>A couplet reached from more than one lead is drawn once, under the first
 of them; the other leads get a dashed line to it.</p>
     </div>
     <div class="section level2">

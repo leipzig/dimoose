@@ -9,7 +9,7 @@ embeds in the page (each image once); leads refer to them by id in their
 ## Usage
 
 ``` r
-imageMeta(paths, ids = NULL)
+imageMeta(paths, ids = NULL, maxSize = 1200)
 ```
 
 ## Arguments
@@ -21,6 +21,12 @@ imageMeta(paths, ids = NULL)
 - ids:
 
   Names for the images; default the file names without extension.
+
+- maxSize:
+
+  Photos larger than this many pixels on their long side are scaled down
+  to it when the 'magick' package is installed, so keys made from camera
+  photos stay small; without 'magick' they are embedded as they are.
 
 ## Value
 
