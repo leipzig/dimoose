@@ -39,3 +39,13 @@ test_that("montanaKey embeds its photos and exports a wizard and a diagram", {
   svg <- keyDiagram(k)
   expect_equal(lengths(regmatches(svg, gregexpr("class=\"kd-thumb\"", svg))), sum(k$leads$Next == "-"))
 })
+
+test_that("both leads of a couplet contrast the same character when sizes overlap", {
+  m <- dimoose::montana
+  nine <- m$Character[m$Statement == "9"]
+  expect_true(all(grepl("beneath", nine)))
+})
+
+test_that("every lead of the montana key shows a photo, not only the results", {
+  expect_true(all(nzchar(dimoose::montana$Image)))
+})

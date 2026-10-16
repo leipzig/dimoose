@@ -43,8 +43,22 @@
 #' @export
 keyFromSpreadsheet <- function(file, photos = NULL, desc = NA, meta = NULL) {
   if (!file.exists(file)) stop("Spreadsheet ", file, " not found", call. = FALSE)
-  sheet <- utils::read.csv(file, colClasses = "character", check.names = FALSE, na.strings = character(),
-                           strip.white = TRUE, fileEncoding = "UTF-8-BOM")
+  # Excel saves "CSV UTF-8" with a byte-order mark, and plain "CSV" on Windows
+  # as Windows-1252; read either as UTF-8
+  text <- rawToChar(readBin(file, "raw", file.size(file)))
+  if (!validUTF8(text)) text <- iconv(text, "CP1252", "UTF-8")
+  Encoding(text) <- "UTF-8"
+  text <- sub("^\ufeff", "", text)
+  # A comma inside an unquoted cell shifts every cell after it; catch that
+  # before read.csv quietly pads or wraps the row
+  cells <- utils::count.fields(textConnection(text), sep = ",", quote = "\"", blank.lines.skip = FALSE)
+  wide <- which(!is.na(cells) & cells > cells[1])
+  if (length(wide)) {
+    stop(sprintf("Row %d has more cells than the header row; put quotes around a cell that contains a comma",
+                 wide[1]), call. = FALSE)
+  }
+  sheet <- utils::read.csv(text = text, colClasses = "character", check.names = FALSE, na.strings = character(),
+                           strip.white = TRUE, blank.lines.skip = FALSE, encoding = "UTF-8")
   # Match column names loosely: "Goes to", "goes_to" and "GOESTO" are the same
   aliases <- c(couplet = "Statement", statement = "Statement", choice = "Choice",
                description = "Character", character = "Character", goesto = "Next", "next" = "Next",
@@ -79,8 +93,17 @@ keyFromSpreadsheet <- function(file, photos = NULL, desc = NA, meta = NULL) {
     sprintf("Row %d goes to couplet %s, which is not in the sheet", row[missing], sheet$Next[missing]))
   if (length(problems)) stop(paste(problems, collapse = "\n"), call. = FALSE)
 
-  if (all(!nzchar(sheet$Choice))) {
-    sheet$Choice <- stats::ave(sheet$Statement, sheet$Statement, FUN = function(x) letters[seq_along(x)])
+  # Letter the leads that have no Choice, skipping letters already used
+  sheet$Choice <- stats::ave(sheet$Choice, sheet$Statement, FUN = function(x) {
+    x[!nzchar(x)] <- setdiff(letters, x)[seq_len(sum(!nzchar(x)))]
+    x
+  })
+  lead <- paste0(sheet$Statement, sheet$Choice)
+  again <- which(duplicated(lead))
+  if (length(again)) {
+    first <- match(lead[again[1]], lead)
+    stop(sprintf("Rows %d and %d are both lead %s; give them different Choice letters",
+                 row[first], row[again[1]], lead[again[1]]), call. = FALSE)
   }
   sheet$Next[!nzchar(sheet$Next)] <- "-"
 

@@ -86,3 +86,35 @@ test_that("the bundled Montana template is a spreadsheet for keyFromSpreadsheet"
   cols <- c("Statement", "Choice", "Character", "Next", "Taxon", "Question", "Image")
   expect_equal(k$leads[cols], m[cols], ignore_attr = TRUE)
 })
+
+test_that("a CSV saved by Windows Excel (Windows-1252) is read correctly", {
+  f <- file.path(withr::local_tempdir(), "key.csv")
+  lines <- c(sheet[1], "1,Leaf type?,Leaves compound.,2,", "1,Leaf type?,Leaves simple.,,A (Aa aa)",
+             "2,Leaflets?,Leaflets 3\x965.,,B (Bb bb)", "2,Leaflets?,Leaflets 5 to 7 \xe9.,,C (Cc cc)")
+  writeBin(charToRaw(paste0(paste(lines, collapse = "\r\n"), "\r\n")), f)
+  l <- keyFromSpreadsheet(f)$leads
+  expect_equal(l$Character[3:4], c("Leaflets 3–5.", "Leaflets 5 to 7 é."))
+  expect_equal(l$Taxon[4], "C (Cc cc)")
+})
+
+test_that("a comma inside an unquoted cell is reported by row", {
+  extra <- sheet; extra[4] <- "2,Leaflets?,Leaflets 3, coarsely toothed.,,Box elder (Acer negundo)"
+  expect_error(keyFromSpreadsheet(writeSheet(extra)), "Row 4 has more cells than the header")
+  trailing <- c(paste0(sheet[1], ",,"), paste0(sheet[2:5], ",,"))
+  trailing[4] <- "2,Leaflets?,Leaflets 3,,Yew, a conifer,,"
+  expect_error(keyFromSpreadsheet(writeSheet(trailing)), "Row 4 has more cells than the header")
+})
+
+test_that("rows are numbered as in the spreadsheet even after blank lines", {
+  gappy <- c(sheet[1:3], "", "", sheet[4], "2,Leaflets?,Leaflets 5.,9,")
+  expect_error(keyFromSpreadsheet(writeSheet(gappy)), "Row 7 goes to couplet 9")
+})
+
+test_that("blank Choice letters are filled and repeated ones are refused", {
+  partial <- c("Couplet,Choice,Description,Goes to,Species",
+               "1,a,Leaves compound.,2,", "1,,Leaves simple.,,A (Aa aa)",
+               "2,,Leaflets 3.,,B (Bb bb)", "2,b,Leaflets 5.,,C (Cc cc)")
+  expect_equal(keyFromSpreadsheet(writeSheet(partial))$leads$Choice, c("a", "b", "a", "b"))
+  twice <- partial; twice[3] <- "1,a,Leaves simple.,,A (Aa aa)"
+  expect_error(keyFromSpreadsheet(writeSheet(twice)), "Rows 2 and 3 are both lead 1a")
+})
