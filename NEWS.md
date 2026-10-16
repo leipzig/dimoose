@@ -1,4 +1,4 @@
-# dimoose (development version)
+# dimoose 0.1.2
 
 * `keyDiagram()` also writes `.png` and `.pdf` files when the 'rsvg' package
   is installed.
