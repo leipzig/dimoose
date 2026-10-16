@@ -1,0 +1,462 @@
+# Automated key generation from photos
+
+Most keys are written by people. **Automated key generation** builds one
+from data instead. This vignette goes from a pile of photos to a
+dichotomous key;
+[`vignette("alignment-keys")`](https://leipzig.github.io/dimoose/articles/alignment-keys.md)
+does the same from a multiple sequence alignment.
+
+## What you need
+
+- **Photos** of the things you want to tell apart: png, jpg, gif, webp,
+  bmp or tiff files. They can be of anything (species, specimens, parts,
+  truck model years).
+- **A label for each photo** saying which class it shows. A key leads to
+  named results, so photos without labels cannot make one. You need at
+  least two classes. Several photos per class give a better key than one
+  each.
+- **The reticulate package** (1.41 or later). The model that turns
+  photos into numbers runs in Python, which reticulate sets up for you
+  (see [Setup](#setup)).
+
+## The short version
+
+``` r
+
+library(dimoose)
+
+pics   <- system.file("extdata", "pics", package = "dimoose")   # example photos; or your own folder
+images <- imageSet(pics)                     # 1. photos and their labels
+model  <- visionModel()                      # 2. a vision model
+emb    <- embedImages(model, images)         # 3. photos -> embeddings
+sniglets <- discoverSniglets(emb$patches)    # 4. sniglets: recurring visual features...
+scores   <- snigletScores(emb$patches, sniglets$centroids)
+key      <- keyFromSniglets(scores, images, sniglets, method = "rpart")   # ...and a key on them
+key    <- patchExemplars(model, key, images) # 5. example crops, then a web page
+exportWizard(key, "key.html")
+
+key <- renameSniglets(key, c(gaithiark = "a dull, finely textured skin"))   # 6. name what you see
+```
+
+The example photos ship with dimoose, so this runs as written: 36 small
+photos of six fruits (banana, blueberry, kiwi, lemon, pineapple,
+strawberry), six of each, from the
+[Fruits-360](https://github.com/fruits-360/fruits-360-100x100) dataset
+(CC BY-SA 4.0). To use your own photos, put the path of your folder in
+place of `pics`.
+
+`key.html` is a self-contained page that walks a person through the key,
+showing example crops for each choice. The rest of this vignette
+explains each step and the choices in it.
+
+## Setup
+
+dimoose uses CLIP through
+[open_clip](https://github.com/mlfoundations/open_clip), a Python
+library, reached from R with
+[reticulate](https://rstudio.github.io/reticulate/):
+
+``` r
+
+install.packages("reticulate")
+```
+
+There is nothing to install in Python by hand. The first time you call
+[`visionModel()`](https://leipzig.github.io/dimoose/reference/visionModel.md),
+reticulate sets up a private Python with the packages dimoose needs
+(`torch`, `open_clip_torch`, `pillow`, `numpy`) and keeps it for later
+sessions. That first call downloads several gigabytes, mostly PyTorch,
+so allow it a few minutes.
+
+To use a Python you manage yourself, select it before the first call
+with `visionModel(python = "/path/to/python")`,
+[`reticulate::use_virtualenv()`](https://rstudio.github.io/reticulate/reference/use_python.html)
+or the `RETICULATE_PYTHON` environment variable, and install the
+packages there:
+
+``` r
+
+reticulate::py_install(c("torch", "open_clip_torch", "pillow", "numpy"))
+```
+
+Only step 3 (and the example crops in step 5) needs Python. Everything
+else is ordinary R on numeric matrices.
+
+## Step 1: say which photo shows what
+
+[`imageSet()`](https://leipzig.github.io/dimoose/reference/imageSet.md)
+makes a table with one row per photo: an `id`, the file `path` and the
+class `label`. There are three common ways photos come labelled, and it
+reads all of them.
+
+**One folder per class.** Point
+[`imageSet()`](https://leipzig.github.io/dimoose/reference/imageSet.md)
+at the top folder. Each photo takes the name of the folder it is in:
+
+    pics/
+      banana/    0_100.jpg  204_100.jpg  ...
+      blueberry/ 0_100.jpg  176_100.jpg  ...
+      ...
+
+``` r
+
+pics   <- system.file("extdata", "pics", package = "dimoose")
+images <- imageSet(pics)
+```
+
+The example photos are laid out this way. The other two layouts are for
+your own photos; the folder and file names below are placeholders.
+
+**The class is in the file name.** Give a function that turns a file
+name (without its extension) into the label:
+
+``` r
+
+# robin_01.jpg, robin_02.jpg, wren_01.jpg -> "robin", "robin", "wren"
+images <- imageSet("my_photos", label = function(x) sub("_.*$", "", x))
+```
+
+**The labels are in a table.** Read the spreadsheet and pass one label
+per file:
+
+``` r
+
+tab    <- read.csv("my_labels.csv")          # columns: file, species
+images <- imageSet(file.path("my_photos", tab$file), label = tab$species)
+```
+
+Check the result before going on:
+
+``` r
+
+table(images$label)
+#>     banana  blueberry       kiwi      lemon  pineapple strawberry
+#>          6          6          6          6          6          6
+```
+
+## Step 2: load a vision model
+
+[`visionModel()`](https://leipzig.github.io/dimoose/reference/visionModel.md)
+downloads OpenAI’s CLIP ViT-B/32 the first time, or loads a checkpoint
+you already have:
+
+``` r
+
+model <- visionModel()                       # or visionModel("ViT-B-32.pt")
+```
+
+For photos of organisms, use BioCLIP instead:
+`visionModel(name = "bioclip")`. See [Choosing a model](#models).
+
+The first call also sets up Python (see [Setup](#setup)).
+
+## Step 3: embed the photos
+
+[`embedImages()`](https://leipzig.github.io/dimoose/reference/embedImages.md)
+returns one embedding per photo and one per **tile** of each photo.
+Tiles are overlapping windows, 4 x 4 of them by default, each cut out
+and embedded on its own as if it were a whole picture:
+
+``` r
+
+emb <- embedImages(model, images)
+dim(emb$image)     # photos x dimensions
+#> [1]  36 512
+dim(emb$patches)   # photos x tiles x dimensions
+#> [1]  36  16 512
+```
+
+Tiles are what make the features local. A tile’s embedding describes
+only what is inside it (a patch of skin, a stem end, an edge), so the
+same kind of region can be recognised in photos of different things. In
+photos with a plain background, tiles that are mostly background are
+left out, so the features are about the subject.
+
+- `tiles = c(2, 4)` adds a coarser grid, for features at two scales.
+- `tiles = 0` uses the model’s own patch tokens instead. That is
+  quicker, one pass per photo, and is what fordera does. But in the last
+  layer of a CLIP model each token carries much of the whole picture, so
+  the features found tend to say “this is a kiwi”, not “this part looks
+  like that part”.
+
+This is the slow step: one pass of the model per tile. The later steps
+take seconds.
+
+## Step 4: build the key
+
+There are two ways to build the key. They differ in what the questions
+look like.
+
+### Sniglets
+
+[`discoverSniglets()`](https://leipzig.github.io/dimoose/reference/discoverSniglets.md)
+clusters all the tiles. Each cluster is a recurring visual feature: a
+kind of region that turns up in several photos. It has no name, so
+dimoose coins a pronounceable word for it (`gaithiark`) and defines it
+by the tiles that match it best. These are **sniglets**.
+[`snigletScores()`](https://leipzig.github.io/dimoose/reference/snigletScores.md)
+scores each photo for each sniglet, and
+[`keyFromSniglets()`](https://leipzig.github.io/dimoose/reference/keyFromSniglets.md)
+grows a key in which each step asks whether the specimen has one
+sniglet:
+
+``` r
+
+sniglets <- discoverSniglets(emb$patches, k = 40)
+scores   <- snigletScores(emb$patches, sniglets$centroids)
+key      <- keyFromSniglets(scores, images, sniglets, method = "rpart")
+key
+#> <dimoose key> Key generated from sniglets
+#>   5 couplets, 10 leads, 6 taxa, up to 4 steps deep
+```
+
+[`keyFromSniglets()`](https://leipzig.github.io/dimoose/reference/keyFromSniglets.md)
+has two tree builders:
+
+- `method = "rpart"` gives each sniglet one threshold (the cut of its
+  scores that best separates the classes) and fits a classification tree
+  on has/lacks. **Use it when you have several photos per class.**
+- `method = "balanced"` (the default, and the method of the
+  [fordera](https://github.com/leipzig/fordera) project) picks at each
+  step the sniglet that splits the remaining classes most evenly. It is
+  meant for **one photo per class**.
+
+On the example photos (six per class), `"rpart"` puts 81% of held-out
+photos in the right class and `"balanced"` 58%.
+
+### Questions in words
+
+The second method keeps the questions in plain language. You supply a
+vocabulary of contrasting features. dimoose clusters the classes into a
+tree and, for each fork, picks the pair that best separates its two
+sides:
+
+``` r
+
+vocab <- data.frame(
+  feature  = c("a smooth skin", "a round shape", "a yellow colour", "green leaves on top"),
+  opposite = c("a rough skin", "a long shape", "a dark colour", "no leaves")
+)
+template <- "a photo of a fruit with {x}"
+txt  <- embedTexts(model, vocabularyPrompts(vocab, template))
+qkey <- keyFromClusters(emb$image, images, vocab, txt, template = template)
+qkey$leads[1:6, c("Statement", "Character", "Next", "Taxon")]
+#>   Statement           Character Next      Taxon
+#> 1         1   Has a smooth skin    2
+#> 2         1    Has a rough skin    -  pineapple
+#> 3         2 Has a yellow colour    3
+#> 4         2   Has a dark colour    4
+#> 5         3   Has a round shape    - strawberry
+#> 6         3    Has a long shape    -     banana
+```
+
+The model’s answers are not always a person’s: here it files the
+strawberry under “a yellow colour”.
+
+The questions can only be as good as the vocabulary: write pairs a
+person could check by eye, and give more pairs than the key has forks.
+
+## Step 5: look at the key and share it
+
+A key is an ordinary dimoose object, so everything else in the package
+works on it:
+
+``` r
+
+key$leads[, c("Statement", "Character", "Next", "Taxon")]
+#>    Statement                           Character Next      Taxon
+#> 1          1                       Has gaithiark    2
+#> 2          1                     Lacks gaithiark    3
+#> 3          2      Lacks glienglaund; has laussym    -       kiwi
+#> 4          2                     Has glienglaund    -      lemon
+#> 5          3                      Lacks glirreur    4
+#> 6          3                        Has glirreur    -  pineapple
+#> 7          4                      Lacks laissloi    5
+#> 8          4                        Has laissloi    - strawberry
+#> 9          5 Lacks pruangglaint; has krualdspeus    -     banana
+#> 10         5                    Has pruangglaint    -  blueberry
+```
+
+Both leads of a couplet describe something. A lead that only said “Lacks
+glienglaund” would give the reader nothing to look for, so where it can
+the key adds what those photos have instead: a second sniglet that
+nearly all of them have and nearly none of the other side does (“Lacks
+glienglaund; has laussym”). The machine still tests only the first one.
+
+For a key of sniglets, add example crops so that people can see what
+each sniglet means, then export the wizard. Every lead gets examples
+from the photos that take it, from as many different classes as do, so
+they show what those classes share:
+
+- a “Has” lead shows the sniglet in those photos. For `gaithiark` they
+  are the matt skins of kiwis and a lemon;
+- a “Lacks” lead shows what its photos have instead: the second sniglet
+  when the lead names one, otherwise the regions that come closest to
+  the missing one.
+
+The glossary shows each sniglet across all the photos and lists the
+classes it is seen in.
+
+``` r
+
+key <- patchExemplars(model, key, images)
+exportWizard(key, "key.html")
+```
+
+## Step 6: rename the sniglets
+
+A coined word tells a reader nothing until they have looked at the
+crops. Once you have looked, you can say what each sniglet is.
+[`snigletNames()`](https://leipzig.github.io/dimoose/reference/snigletNames.md)
+lists them:
+
+``` r
+
+snigletNames(key)
+#>         sniglet          name definition  used
+#> 1     gaithiark     gaithiark       <NA>  TRUE
+#> 2 treuxraikbluk treuxraikbluk       <NA> FALSE
+#> 3     zhuprierl     zhuprierl       <NA> FALSE
+#> ...
+```
+
+Only the sniglets the key uses (`used`) need names. Rename a few
+directly:
+
+``` r
+
+key <- renameSniglets(key,
+  c(gaithiark = "a dull, finely textured skin"),
+  definitions = c(gaithiark = "Matt skin with a fine grain, as on a kiwi or a lemon"))
+```
+
+or fill in the table in a spreadsheet and read it back:
+
+``` r
+
+write.csv(snigletNames(key), "names.csv", row.names = FALSE)
+# ... edit the name and definition columns ...
+key <- renameSniglets(key, "names.csv")
+exportWizard(key, "key.html")
+```
+
+The leads now read “Has a dull, finely textured skin”, and the glossary
+shows the new name, the definition and the coined word it replaced.
+
+How renaming works:
+
+- **The coined word is the sniglet’s identifier and never changes.** The
+  name is only what people read. Scores, machine tests
+  ([`classify()`](https://leipzig.github.io/dimoose/reference/classify.md))
+  and name tables saved earlier keep working after a rename.
+- **A names table** has the columns `sniglet` (the coined word), `name`
+  and, optionally, `definition`. It can be a data frame or a CSV file.
+- **A blank name** puts the coined word back.
+- **Names must be distinct**, and a name cannot be another sniglet’s
+  coined word.
+- **Write names as noun phrases.** Leads are “Has *name*” and “Lacks
+  *name*”.
+- **To name sniglets before building keys**, rename the
+  [`discoverSniglets()`](https://leipzig.github.io/dimoose/reference/discoverSniglets.md)
+  result. Every key built from it then uses the names:
+  `sniglets <- renameSniglets(sniglets, "names.csv")`.
+
+## How good is the key?
+
+[`evaluateKey()`](https://leipzig.github.io/dimoose/reference/evaluateKey.md)
+follows the key by machine for every photo and reports how many end at
+the right class.
+[`looKey()`](https://leipzig.github.io/dimoose/reference/looKey.md) is
+the honest version: it rebuilds the key without each photo in turn and
+then tries that photo.
+
+``` r
+
+evaluateKey(key, scores, images$label)$accuracy
+
+looKey(images,
+  build = function(train) keyFromSniglets(scores[train, ], images[train, ], sniglets, method = "rpart"),
+  score = function(key, i) scores[i, , drop = FALSE])$accuracy
+#> [1] 0.8055556
+```
+
+## Identifying a new photo
+
+The key stores how each of its tests is computed from a photo, so a
+machine can follow it.
+[`scoreImages()`](https://leipzig.github.io/dimoose/reference/scoreImages.md)
+embeds new photos and scores them, and
+[`classify()`](https://leipzig.github.io/dimoose/reference/classify.md)
+walks the key:
+
+``` r
+
+new <- list.files(system.file("extdata", "new-photos", package = "dimoose"), full.names = TRUE)
+classify(key, scoreImages(key, model, new))
+#>         id     result        path
+#> 1 unknown1     banana 1b 3a 4a 5a
+#> 2 unknown2  blueberry 1b 3a 4a 5b
+#> 3 unknown3       kiwi       1a 2a
+#> 4 unknown4  pineapple       1b 3b
+#> 5 unknown5  pineapple       1b 3b
+#> 6 unknown6 strawberry    1b 3a 4b
+```
+
+Five of the six held-out photos are placed correctly. The fourth is a
+lemon that the key files as a pineapple.
+
+## Any model, no Python
+
+The key builders work on matrices, so embeddings from any model can be
+used directly. If you have a `photos x dimensions` matrix `X` and a
+`photos x regions x dimensions` array `P` from your own encoder, with
+rows in the order of `images`, skip steps 2 and 3:
+
+``` r
+
+sniglets <- discoverSniglets(P, k = 40)
+key      <- keyFromSniglets(snigletScores(P, sniglets$centroids), images, sniglets)
+```
+
+## Choosing a model: CLIP or BioCLIP
+
+The model is chosen in step 2, by the `name` you give
+[`visionModel()`](https://leipzig.github.io/dimoose/reference/visionModel.md):
+
+| Your photos | Model | Call | First download |
+|----|----|----|----|
+| Anything: objects, products, vehicles, mixed subjects | CLIP ViT-B/32 (OpenAI), the default | [`visionModel()`](https://leipzig.github.io/dimoose/reference/visionModel.md) | about 350 MB |
+| Organisms: plants, animals, fungi, specimens | [BioCLIP](https://imageomics.github.io/bioclip/) | `visionModel(name = "bioclip")` | about 600 MB |
+| Organisms, when accuracy matters more than speed | [BioCLIP 2](https://huggingface.co/imageomics/bioclip-2) | `visionModel(name = "bioclip-2")` | about 1.7 GB |
+
+``` r
+
+model <- visionModel()                    # regular CLIP
+model <- visionModel(name = "bioclip")    # BioCLIP
+model <- visionModel(name = "bioclip-2")  # BioCLIP 2
+```
+
+- **Only that one line changes.**
+  [`embedImages()`](https://leipzig.github.io/dimoose/reference/embedImages.md),
+  [`discoverSniglets()`](https://leipzig.github.io/dimoose/reference/discoverSniglets.md),
+  [`keyFromSniglets()`](https://leipzig.github.io/dimoose/reference/keyFromSniglets.md),
+  [`patchExemplars()`](https://leipzig.github.io/dimoose/reference/patchExemplars.md)
+  and
+  [`exportWizard()`](https://leipzig.github.io/dimoose/reference/exportWizard.md)
+  are called the same way with every model.
+- **Build and follow a key with the same model.** The key records which
+  model made it, and
+  [`scoreImages()`](https://leipzig.github.io/dimoose/reference/scoreImages.md)
+  warns, or stops, if you give it a different one.
+- **With BioCLIP, use sniglets.** Its text side was trained on names of
+  organisms, not on descriptions of what they look like, so vocabulary
+  questions
+  ([`keyFromClusters()`](https://leipzig.github.io/dimoose/reference/keyFromClusters.md))
+  work better with regular CLIP.
+- **BioCLIP 2 is a larger model**, so embedding takes several times
+  longer.
+
+BioCLIP is downloaded from the Hugging Face Hub on first use.
+`name = "hf-hub:<organisation>/<model>"` loads any other open_clip model
+there whose image side is a vision transformer, and
+`name = "local-dir:<folder>"` a copy you have already downloaded.

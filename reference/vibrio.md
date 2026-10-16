@@ -1,0 +1,28 @@
+# Vibrio consensus identification matrix
+
+Biochemical and growth test results for 74 *Vibrio* taxa from Noguerola
+& Blanch (2008), one row per taxon.
+[`vibrioKey()`](https://leipzig.github.io/dimoose/reference/exampleKeys.md)
+generates a key from it.
+
+## Usage
+
+``` r
+vibrio
+```
+
+## Format
+
+A data frame with 74 rows and 46 columns: `species`, then 45 tests coded
+as in the paper: `+` positive, `-` negative, `(+)` / `(-)` mostly
+positive / negative, `v` or `d` variable, `ND` not determined (and one
+blank cell in the source, `NA`). Tests under the paper's "Acid from" and
+"Resistance to" headings are named with that prefix.
+
+## Source
+
+Noguerola I, Blanch AR (2008). Identification of *Vibrio* spp. with a
+set of dichotomous keys. *Journal of Applied Microbiology* 105, 175-185.
+[doi:10.1111/j.1365-2672.2008.03730.x](https://doi.org/10.1111/j.1365-2672.2008.03730.x)
+. Extracted from the paper's table; see `data-raw/vibrio/` in the
+package sources.

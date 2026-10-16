@@ -1,0 +1,87 @@
+# Build a key from sniglet scores
+
+Each step asks whether the image has one sniglet. `method = "balanced"`
+is fordera's algorithm: a sniglet is present when its score is above the
+`quantile` of that sniglet's scores over all images; a label has a
+sniglet if any of its images does; each split uses the unused sniglet
+that divides the remaining labels most evenly (ties to the earlier one).
+`method = "rpart"` suits several images per label. It first gives each
+sniglet one threshold, the cut of its scores that best separates the
+labels, and then grows a classification tree on has/lacks, so a sniglet
+means the same thing wherever the key asks about it.
+
+## Usage
+
+``` r
+keyFromSniglets(
+  scores,
+  images,
+  sniglets,
+  method = c("balanced", "rpart"),
+  quantile = 0.6,
+  desc = "Key generated from sniglets",
+  meta = NULL
+)
+
+keyFromTerms(scores, images, terms, ...)
+```
+
+## Arguments
+
+- scores:
+
+  `images x sniglets` matrix from
+  [`snigletScores()`](https://leipzig.github.io/dimoose/reference/snigletScores.md).
+
+- images:
+
+  [`imageSet()`](https://leipzig.github.io/dimoose/reference/imageSet.md)
+  data frame with one row per row of `scores`.
+
+- sniglets:
+
+  The
+  [`discoverSniglets()`](https://leipzig.github.io/dimoose/reference/discoverSniglets.md)
+  object the scores were computed with. Names given with
+  [`renameSniglets()`](https://leipzig.github.io/dimoose/reference/renameSniglets.md)
+  are used in the key.
+
+- method:
+
+  `"balanced"` or `"rpart"`.
+
+- quantile:
+
+  Presence threshold quantile for `"balanced"`.
+
+- desc, meta:
+
+  Title and metadata of the key.
+
+- terms, ...:
+
+  `keyFromTerms()` is the earlier name of `keyFromSniglets()`; its third
+  argument was called `terms`.
+
+## Value
+
+A [dimoose](https://leipzig.github.io/dimoose/reference/dimoose.md) key
+whose leads carry `Feature`, `Test`, `Threshold` and `Question`, and
+whose `features` table holds the centroids. Feature ids are
+`"sniglet:<coined word>"` and never change; `label` is the name shown,
+which
+[`renameSniglets()`](https://leipzig.github.io/dimoose/reference/renameSniglets.md)
+changes.
+
+## Both leads describe something
+
+A lead that only says a specimen lacks something gives the reader
+nothing to look for. Where it can, the "Lacks" lead therefore also names
+what its images have instead: another sniglet that at least 90% of them
+have and at most 10% of the other side do
+(`"Lacks gaithiark; has blienvaurk"`). The machine still tests only the
+first sniglet. Every lead also records example regions from the images
+that take it (`Examples`), which
+[`patchExemplars()`](https://leipzig.github.io/dimoose/reference/patchExemplars.md)
+turns into crops: for a "Lacks" lead with no such second sniglet, they
+are the regions that come closest to the missing one.
