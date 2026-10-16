@@ -7,6 +7,14 @@
   `dimooseSniglets`, the vision tests read `DIMOOSE_CLIP_WEIGHTS`, and the
   repository is <https://github.com/leipzig/dimoose>. The first argument of
   `exportWizard()` is now `key`.
+* `keyFromSpreadsheet()` builds a key from a plain CSV spreadsheet (one row
+  per lead, with optional questions and photos) and reports mistakes by
+  spreadsheet row.
+* `keyDiagram()` draws any key as a top-down box diagram (SVG), with photos
+  in the result boxes.
+* `montanaKey()` and the `montana` dataset: a key to the eleven native
+  broadleaf trees of Montana with photos from Wikimedia Commons, kept as a
+  spreadsheet template in `inst/extdata/montana/`.
 * Dichotomous keys as `dimoose` objects: build them from lead tables
   (`keyFromLeads()`), classification trees (`keyFromRpart()`,
   `generateTree()`) or FishBase (`importFishbase()`, `parseFishbase()`), then

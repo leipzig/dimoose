@@ -73,11 +73,11 @@ summary(sharks)
 exportWizard(sharks, "sharks.html")   # an interactive, self-contained wizard
 ```
 
-There are vignettes on automated key generation [from photos](vignettes/vision-keys.Rmd) and [from a sequence alignment](vignettes/alignment-keys.Rmd), and on [mixed-effects conditional inference trees](vignettes/mecit.Rmd).
+To write your own key in a spreadsheet, see [A photo key to Montana's broadleaf trees](vignettes/montana-hardwoods.Rmd). There are also vignettes on automated key generation [from photos](vignettes/vision-keys.Rmd) and [from a sequence alignment](vignettes/alignment-keys.Rmd), and on [mixed-effects conditional inference trees](vignettes/mecit.Rmd).
 
 ## Included datasets
 
-Four example keys ship with the package. They come from very different sources and are built in different ways, but they are all ordinary dimoose objects: they share the same fields (`leads`, `df`, `meta`, `taxa`, `desc`) and methods (`print()`, `summary()`, `validate()`, `toDataTree()`, `toNewick()`) and all work with `exportWizard()` and the phylogenetics exports.
+Five example keys ship with the package. They come from very different sources and are built in different ways, but they are all ordinary dimoose objects: they share the same fields (`leads`, `df`, `meta`, `taxa`, `desc`) and methods (`print()`, `summary()`, `validate()`, `toDataTree()`, `toNewick()`) and all work with `exportWizard()` and the phylogenetics exports.
 
 ### Sharks — `sharkKey()`
 
@@ -94,6 +94,12 @@ A key **generated** from a biochemical consensus matrix rather than written by a
 ### PhyloTree — `phylotreeKey()` (datasets `phylotree17`, `phylotree17_mutations`)
 
 PhyloTree Build 17, the human mitochondrial DNA phylogeny (van Oven 2015), as distributed by Haplogrep 3: **5,435 haplogroups** and **13,384 mutations**. `phylotree17` is one row per haplogroup (name, parent, depth, subclade count, mutations); `phylotree17_mutations` is one row per mutation (position, type, ancestral/derived base). `phylotreeKey()` turns the tree, or any subtree, into a key whose "characters" are the defining mutations — for example `phylotreeKey("H2a")`. The full tree is large (2,420 steps), so a subtree or a `maxDepth` is usually more practical for the wizard. This is the "phylogenetic tree as a key" case, where the decisions are mutations rather than visible phenotypes.
+
+### Montana broadleaf trees — `montanaKey()` (dataset `montana`)
+
+A key to the **eleven native broadleaf (hardwood) trees of Montana**, written for dimoose: **10 couplets, 11 species**, each checked as native in the [Montana Field Guide](https://fieldguide.mt.gov) and USDA PLANTS, with 14 photos from Wikimedia Commons (most taken in Montana by Matt Lavin). It is kept as a plain spreadsheet, `inst/extdata/montana/montana-key.csv`, next to its photos, and `keyFromSpreadsheet()` turns it into the key, so it doubles as a template: copy the folder, edit the sheet in Excel or Google Sheets, and build your own key in one line. `keyDiagram()` draws any key as a box diagram:
+
+![Key to the native broadleaf trees of Montana](man/figures/montana-key.svg)
 
 # Automated key generation
 

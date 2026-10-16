@@ -21,3 +21,4 @@
 ^tests/python/\.pytest_cache$
 \.pytest_cache
 ^media$
+^man/figures/montana-key\.svg$

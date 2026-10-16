@@ -1,0 +1,120 @@
+---
+title: "A photo key to Montana's broadleaf trees"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A photo key to Montana's broadleaf trees}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+Montana has eleven native broadleaf (hardwood) trees, from the box elders and
+green ash of the eastern river bottoms to the aspen groves and paper birches of
+the mountains. This vignette shows a dichotomous key to them, written as a
+plain spreadsheet with a folder of photos, and the two ways dimoose can show it:
+a printable diagram and an interactive wizard.
+
+## Make your own key in three steps
+
+The key is an ordinary CSV file, so the quickest way to write a key of your own
+is to start from a copy of it:
+
+1. **Copy the template.** It ships with dimoose, next to its photos:
+
+    ```{r, eval = FALSE}
+    template <- system.file("extdata", "montana", package = "dimoose")
+    dir.create("~/my-key")
+    file.copy(template, "~/my-key", recursive = TRUE)   # makes ~/my-key/montana/
+    ```
+
+2. **Edit it in Excel, Numbers or Google Sheets.** One row per lead:
+
+    | Column | What goes in it |
+    |---|---|
+    | `Couplet` | The couplet's number. |
+    | `Choice` | Optional: `a`, `b`, ...; left blank, the leads are lettered in order. |
+    | `Question` | Optional: what the couplet asks, such as "Leaf type?". |
+    | `Description` | What the lead says. |
+    | `Goes to` | The next couplet, or blank when the lead names a species. |
+    | `Species` | The result, written "Common name (Genus species)". |
+    | `Photo` | Optional: photo file names in the same folder, separated by `;`. |
+
+    Put your photos in the same folder and save the sheet as CSV.
+
+3. **Build the key and look at it:**
+
+    ```{r, eval = FALSE}
+    library(dimoose)
+    k <- keyFromSpreadsheet("~/my-key/montana/montana-key.csv", desc = "My key")
+    k$validate()                       # lists any couplet that is never reached, etc.
+    keyDiagram(k, "my-key.svg")        # a printable diagram
+    exportWizard(k, "my-key.html")     # an interactive key for phones and browsers
+    ```
+
+If a row points to a couplet that is not in the sheet, or names a photo that is
+not in the folder, `keyFromSpreadsheet()` says which spreadsheet row to fix.
+
+## The Montana key
+
+```{r}
+library(dimoose)
+k <- montanaKey()
+k
+```
+
+`montanaKey()` is `keyFromSpreadsheet()` applied to the template above. Its
+first rows:
+
+```{r}
+csv <- system.file("extdata", "montana", "montana-key.csv", package = "dimoose")
+head(read.csv(csv, check.names = FALSE), 4)
+```
+
+Every species was checked as native to Montana in the
+[Montana Field Guide](https://fieldguide.mt.gov) and
+[USDA PLANTS](https://plants.usda.gov). Common hackberry is left out because
+the Montana Field Guide gives its origin in the state as undetermined, and
+American elm because it is planted rather than native. The characters in each
+couplet come from the Montana Field Guide's descriptions and, for leaf stalks
+and buds, the [Virginia Tech Dendrology](https://dendro.cnre.vt.edu) fact
+sheets; `?montana` lists the sources. The 14 photos are from Wikimedia Commons,
+most of them taken in Montana by Matt Lavin; their authors and licenses are in
+the package's `COPYRIGHTS` file.
+
+## A diagram of the key
+
+`keyDiagram()` draws any key top-down: each question in a blue box, its leads
+below it, and each species in a green box with its photo.
+
+```{r, eval = FALSE}
+keyDiagram(k, "montana-key.svg")
+```
+
+```{r, echo = FALSE}
+knitr::asis_output(paste0("<div style=\"overflow-x: auto\">", keyDiagram(k), "</div>"))
+```
+
+## An interactive key
+
+`exportWizard()` writes the same key as a single web page that asks one
+question at a time and shows the photos with each answer. It works offline,
+so it can be copied to a phone and used in the field.
+
+```{r}
+page <- tempfile(fileext = ".html")
+exportWizard(k, page)
+```
+
+Open the file in a browser to try it.
+
+## Diagrams of other keys
+
+`keyDiagram()` works on every dimoose key, whichever way it was made. Here is
+the key to the orders of Arachnida, transcribed from a textbook:
+
+```{r, eval = FALSE}
+keyDiagram(arachnidaKey(), "arachnida.svg")
+```
