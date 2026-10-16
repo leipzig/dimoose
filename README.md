@@ -97,7 +97,7 @@ PhyloTree Build 17, the human mitochondrial DNA phylogeny (van Oven 2015), as di
 
 ### Montana broadleaf trees — `montanaKey()` (dataset `montana`)
 
-A key to the **eleven native broadleaf (hardwood) trees of Montana**, written for dimoose: **10 couplets, 11 species**, each checked as native in the [Montana Field Guide](https://fieldguide.mt.gov) and USDA PLANTS, with 14 photos from Wikimedia Commons (most taken in Montana by Matt Lavin). It is kept as a plain spreadsheet, `inst/extdata/montana/montana-key.csv`, next to its photos, and `keyFromSpreadsheet()` turns it into the key, so it doubles as a template: copy the folder, edit the sheet in Excel or Google Sheets, and build your own key in one line. `keyDiagram()` draws any key as a box diagram:
+A key to the **eleven native broadleaf (hardwood) trees of Montana**, written for dimoose: **10 couplets, 11 species**, each checked as native in the [Montana Field Guide](https://fieldguide.mt.gov) and USDA PLANTS, with 14 photos from Wikimedia Commons (most taken in Montana by Matt Lavin). It is kept as a plain spreadsheet, `inst/extdata/montana/montana-key.csv`, next to its photos, and `keyFromSpreadsheet()` turns it into the key, so it doubles as a template: copy the folder, edit the sheet in Excel or Google Sheets, and build your own key in one line. `keyDiagram()` draws any key as a box diagram, and `exportWizard()` turns it into a page you can use on a phone: [try the Montana key](https://leipzig.github.io/dimoose/montana/).
 
 ![Key to the native broadleaf trees of Montana](man/figures/montana-key.svg)
 

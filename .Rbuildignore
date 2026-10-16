@@ -22,3 +22,6 @@
 \.pytest_cache
 ^media$
 ^man/figures/montana-key\.svg$
+^_pkgdown\.yml$
+^pkgdown-site$
+^pkgdown$

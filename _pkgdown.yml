@@ -1,0 +1,96 @@
+url: https://leipzig.github.io/dimoose/
+destination: pkgdown-site
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [intro, reference, articles, montana, news]
+    right: [search, github]
+  components:
+    montana:
+      text: Try the Montana key
+      href: montana/index.html
+
+articles:
+- title: Write your own key
+  navbar: ~
+  contents:
+  - montana-hardwoods
+- title: Generate keys from data
+  navbar: Generate keys from data
+  contents:
+  - vision-keys
+  - alignment-keys
+  - mecit
+
+reference:
+- title: Keys
+  desc: The dimoose key object and the ways to build one.
+  contents:
+  - dimoose
+  - keyFromSpreadsheet
+  - keyFromLeads
+  - keyFromRpart
+  - generateTree
+- title: Show and share a key
+  contents:
+  - keyDiagram
+  - exportWizard
+  - toNewick
+  - toIgraph
+  - toTreedata
+  - toAuspiceJSON
+- title: Example keys and data
+  contents:
+  - exampleKeys
+  - montana
+  - arachnida
+  - vibrio
+  - phylotree17
+  - phylotree17_mutations
+  - phylotreeKey
+- title: FishBase
+  contents:
+  - importFishbase
+  - parseFishbase
+  - rawhtml
+- title: Keys from photos
+  contents:
+  - visionModel
+  - modelMeta
+  - embedImages
+  - embedTexts
+  - imageSet
+  - imageMeta
+  - imageMime
+  - discoverSniglets
+  - snigletScores
+  - snigletNames
+  - renameSniglets
+  - inventNames
+  - keyFromSniglets
+  - vocabularyPrompts
+  - keyFromClusters
+  - patchExemplars
+  - scoreImages
+  - featureTable
+  - featureScores
+  - classify
+  - evaluateKey
+  - looKey
+- title: Keys from sequences and haplogroups
+  contents:
+  - keyFromAlignment
+  - alignmentScores
+  - readHaplogrep
+  - haplotypeMatrix
+  - macroHaplogroup
+  - recurrentPositions
+- title: Mixed-effects trees
+  contents:
+  - mecit
+  - keyFromMecit
+  - simulateExpression
+  - splitVariables

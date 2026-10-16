@@ -39,3 +39,6 @@ docs/
 # Local editor/agent files, kept out of the repository
 WARP.md
 *.Rproj
+
+# pkgdown website (built by .github/workflows/pkgdown.yaml)
+pkgdown-site/
