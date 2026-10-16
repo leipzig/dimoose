@@ -29,3 +29,13 @@ test_that("every montana species has a photo and every Image id exists", {
   expect_true(all(file.exists(file.path(dir, paste0(ids, ".jpg")))))
   expect_true(all(nzchar(m$Image[m$Next == "-"])))
 })
+
+test_that("montanaKey embeds its photos and exports a wizard and a diagram", {
+  k <- montanaKey()
+  expect_s3_class(k, "dimoose")
+  expect_length(k$validate(), 0)
+  expect_equal(sum(startsWith(k$meta$key, "image_")), length(list.files(system.file("extdata", "montana", package = "dimoose"), pattern = "\\.jpg$")))
+  expect_match(exportWizard(k), "data:image/jpeg;base64,", fixed = TRUE)
+  svg <- keyDiagram(k)
+  expect_equal(lengths(regmatches(svg, gregexpr("class=\"kd-thumb\"", svg))), sum(k$leads$Next == "-"))
+})

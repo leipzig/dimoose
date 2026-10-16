@@ -5,6 +5,7 @@
 \alias{sharkKey}
 \alias{arachnidaKey}
 \alias{vibrioKey}
+\alias{montanaKey}
 \title{Example keys}
 \usage{
 sharkKey()
@@ -12,13 +13,15 @@ sharkKey()
 arachnidaKey()
 
 vibrioKey()
+
+montanaKey()
 }
 \value{
 A \link{dimoose} object.
 }
 \description{
 Ready-made \link{dimoose} keys built from the datasets that come with dimoose. All
-four are ordinary dimoose objects: they share the same fields (\code{leads},
+five are ordinary dimoose objects: they share the same fields (\code{leads},
 \code{df}, \code{meta}, \code{taxa}, \code{desc}) and methods (\code{print()}, \code{summary()},
 \code{validate()}, \code{toDataTree()}, \code{toNewick()}) and all work with
 \code{\link[=exportWizard]{exportWizard()}}.
@@ -38,6 +41,10 @@ Noguerola & Blanch (2008) with \code{\link[=keyFromRpart]{keyFromRpart()}}. Test
 routes a species past such a test with surrogate splits, so a species
 that varies for a test appears on only one side of it. Species the tests
 cannot separate share a result.
+\item \code{montanaKey()}: the native broadleaf trees of Montana, written for
+dimoose (the \link{montana} dataset); 10 couplets, 11 species, with photos
+from Wikimedia Commons. It is built with \code{\link[=keyFromSpreadsheet]{keyFromSpreadsheet()}} from
+\code{inst/extdata/montana/montana-key.csv}, a template for writing your own.
 \item \code{\link[=phylotreeKey]{phylotreeKey()}}: PhyloTree Build 17.
 }
 }

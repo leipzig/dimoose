@@ -107,7 +107,7 @@ keyFromRpart <- function(fit, desc = "Key generated from a classification tree",
 #' Example keys
 #'
 #' Ready-made [dimoose] keys built from the datasets that come with dimoose. All
-#' four are ordinary dimoose objects: they share the same fields (`leads`,
+#' five are ordinary dimoose objects: they share the same fields (`leads`,
 #' `df`, `meta`, `taxa`, `desc`) and methods (`print()`, `summary()`,
 #' `validate()`, `toDataTree()`, `toNewick()`) and all work with
 #' [exportWizard()].
@@ -125,6 +125,10 @@ keyFromRpart <- function(fit, desc = "Key generated from a classification tree",
 #'   routes a species past such a test with surrogate splits, so a species
 #'   that varies for a test appears on only one side of it. Species the tests
 #'   cannot separate share a result.
+#' - `montanaKey()`: the native broadleaf trees of Montana, written for
+#'   dimoose (the [montana] dataset); 10 couplets, 11 species, with photos
+#'   from Wikimedia Commons. It is built with [keyFromSpreadsheet()] from
+#'   `inst/extdata/montana/montana-key.csv`, a template for writing your own.
 #' - [phylotreeKey()]: PhyloTree Build 17.
 #'
 #' @return A [dimoose] object.
@@ -203,6 +207,25 @@ vibrioKey <- function() {
         "Noguerola I, Blanch AR (2008). Identification of Vibrio spp. with a set of",
         "dichotomous keys. J Appl Microbiol 105:175-185. Key generated with rpart;",
         "variable and not determined results treated as missing."
+      ),
+      stringsAsFactors = FALSE
+    )
+  )
+}
+
+#' @rdname exampleKeys
+#' @export
+montanaKey <- function() {
+  keyFromSpreadsheet(
+    system.file("extdata", "montana", "montana-key.csv", package = "dimoose"),
+    desc = "Key to the native broadleaf trees of Montana",
+    meta = data.frame(
+      key = "citation",
+      value = paste(
+        "Key written for dimoose from the Montana Field Guide (Montana Natural Heritage",
+        "Program and Montana Fish, Wildlife & Parks), USDA PLANTS and Virginia Tech",
+        "Dendrology. Photos from Wikimedia Commons; authors and licenses in the",
+        "package's COPYRIGHTS file."
       ),
       stringsAsFactors = FALSE
     )

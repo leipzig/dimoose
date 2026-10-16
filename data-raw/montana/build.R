@@ -41,3 +41,15 @@ writeLines(c(
   "  license, separately from the licence of dimoose's code:",
   "", credits
 ), "data-raw/montana/COPYRIGHTS-photos.txt")
+
+# The key as a plain spreadsheet (inst/extdata/montana/montana-key.csv), which
+# montanaKey() reads with keyFromSpreadsheet() and people can copy as a
+# template for their own keys.
+sheet <- data.frame(
+  Couplet = montana$Statement, Choice = montana$Choice, Question = montana$Question,
+  Description = montana$Character, `Goes to` = ifelse(montana$Next == "-", "", montana$Next),
+  Species = montana$Taxon,
+  Photo = vapply(strsplit(montana$Image, ";", fixed = TRUE), function(x) if (length(x)) paste(paste0(x, ".jpg"), collapse = "; ") else "", ""),
+  check.names = FALSE, stringsAsFactors = FALSE
+)
+utils::write.csv(sheet, "inst/extdata/montana/montana-key.csv", row.names = FALSE, fileEncoding = "UTF-8")
