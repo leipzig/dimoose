@@ -7,11 +7,17 @@
 #' `"Common name (Genus species)"` is drawn on two lines with the scientific
 #' name in italics.
 #'
+#' Thumbnails are shrunk to 112 pixels when the 'magick' package is
+#' installed, which keeps diagrams of keys with large photos small. When
+#' 'rgnparser' and its 'gnparser' program are installed, only text that
+#' parses as a scientific name is set in italics.
+#'
 #' A couplet reached from more than one lead is drawn once, under the first
 #' of them; the other leads get a dashed line to it.
 #'
 #' @param key A [dimoose] key.
-#' @param file Optional path of an `.svg` file to write.
+#' @param file Optional file to write: `.svg`, or `.png` and `.pdf` when the
+#'   'rsvg' package is installed.
 #' @param images If `TRUE`, show a thumbnail in a result's box when the
 #'   terminal lead names an image (`Image` column) that is embedded in the
 #'   key's `meta` (see [imageMeta()]).
@@ -45,10 +51,16 @@ keyDiagram <- function(key, file = NULL, images = TRUE, title = NULL) {
 
   drawn <- character()
   shared <- list()
+  # Results written "Common name (Genus species)": which parentheses hold a
+  # scientific name (checked for all results at once)
+  parts <- regmatches(leads$Taxon, regexec("^(.*\\S)\\s*\\(([^()]+)\\)$", leads$Taxon))
+  inParens <- unique(vapply(parts, function(m) if (length(m) == 3) m[3] else NA_character_, ""))
+  inParens <- inParens[!is.na(inParens)]
+  scientific <- stats::setNames(isScientificName(inParens), inParens)
   taxonBox <- function(i) {
     tx <- leads$Taxon[i]
-    m <- regmatches(tx, regexec("^(.*\\S)\\s*\\(([^()]+)\\)$", tx))[[1]]
-    if (length(m) == 3) {
+    m <- parts[[i]]
+    if (length(m) == 3 && isTRUE(scientific[m[3]])) {
       common <- wrap(m[2]); sci <- wrap(m[3])
       lines <- c(common, sci); style <- c(rep("bold", length(common)), rep("italic", length(sci)))
     } else {
@@ -56,7 +68,7 @@ keyDiagram <- function(key, file = NULL, images = TRUE, title = NULL) {
     }
     ids <- splitUrls(leads$Image[i])
     found <- ids[ids %in% names(pics)]
-    box("kd-taxon", lines, style, thumb = if (length(found)) pics[[found[1]]] else NA_character_)
+    box("kd-taxon", lines, style, thumb = if (length(found)) thumbnail(pics[[found[1]]]) else NA_character_)
   }
   couplet <- function(cp) {
     drawn <<- c(drawn, cp)
@@ -140,8 +152,42 @@ keyDiagram <- function(key, file = NULL, images = TRUE, title = NULL) {
     "</svg>\n"
   )
   if (is.null(file)) return(svg)
-  con <- file(file, "w", encoding = "UTF-8")
-  on.exit(close(con))
-  writeLines(c("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", sub("\n$", "", svg)), con)
+  ext <- tolower(sub("^.*\\.", "", basename(file)))
+  if (!ext %in% c("svg", "png", "pdf")) {
+    stop("Save the diagram as .svg, .png or .pdf, not .", ext, call. = FALSE)
+  }
+  if (ext == "svg") {
+    con <- file(file, "w", encoding = "UTF-8")
+    on.exit(close(con))
+    writeLines(c("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", sub("\n$", "", svg)), con)
+  } else {
+    if (!canUse("rsvg")) {
+      stop("Writing a .", ext, " diagram needs the rsvg package: install.packages(\"rsvg\")", call. = FALSE)
+    }
+    bytes <- charToRaw(enc2utf8(svg))
+    if (ext == "png") rsvg::rsvg_png(bytes, file) else rsvg::rsvg_pdf(bytes, file)
+  }
   invisible(svg)
+}
+
+# Which of x are scientific names: parsed by gnparser (through 'rgnparser')
+# when it is installed, otherwise a capitalised genus followed by up to two
+# lower-case epithets.
+isScientificName <- function(x) {
+  if (!length(x)) return(logical())
+  if (canUse("rgnparser") && nzchar(Sys.which("gnparser"))) {
+    parsed <- suppressMessages(rgnparser::gn_parse_tidy(x))
+    return(!is.na(parsed$canonicalsimple[match(x, parsed$verbatim)]))
+  }
+  grepl("^[A-Z][a-z]+( [a-z][a-z-]+){0,2}$", x)
+}
+
+# A photo's data URI shrunk to a 112 px JPEG for a diagram thumbnail (shown
+# at 56 px), when 'magick' is installed; otherwise the photo as it is.
+thumbnail <- function(uri) {
+  if (!canUse("magick")) return(uri)
+  bytes <- base64enc::base64decode(sub("^data:[^,]*,", "", uri))
+  img <- magick::image_resize(magick::image_read(bytes), "112x112>")
+  img <- magick::image_background(img, "white")
+  paste0("data:image/jpeg;base64,", base64enc::base64encode(magick::image_write(img, format = "jpeg", quality = 82)))
 }

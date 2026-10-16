@@ -1,3 +1,16 @@
+# dimoose (development version)
+
+* `keyDiagram()` also writes `.png` and `.pdf` files when the 'rsvg' package
+  is installed.
+* With the 'magick' package installed, `keyDiagram()` shrinks thumbnails to
+  112 px and `imageMeta()` (and so `keyFromSpreadsheet()`) scales photos down
+  to at most 1200 px (`maxSize`), so keys made from camera photos stay small.
+  The Montana diagram drops from 1.2 MB to 83 KB.
+* `keyDiagram()` sets the part of a result in parentheses in italics only when
+  it is a scientific name: parsed by gnparser when 'rgnparser' is installed,
+  otherwise a capitalised genus and lower-case epithets. "Willows (several
+  species)" stays upright.
+
 # dimoose 0.1.1
 
 * `keyFromSpreadsheet()` builds a key from a plain CSV spreadsheet (one row

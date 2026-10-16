@@ -9,7 +9,8 @@ keyDiagram(key, file = NULL, images = TRUE, title = NULL)
 \arguments{
 \item{key}{A \link{dimoose} key.}
 
-\item{file}{Optional path of an \code{.svg} file to write.}
+\item{file}{Optional file to write: \code{.svg}, or \code{.png} and \code{.pdf} when the
+'rsvg' package is installed.}
 
 \item{images}{If \code{TRUE}, show a thumbnail in a result's box when the
 terminal lead names an image (\code{Image} column) that is embedded in the
@@ -30,6 +31,11 @@ couplet or ends in a green box naming the result. A result written as
 name in italics.
 }
 \details{
+Thumbnails are shrunk to 112 pixels when the 'magick' package is
+installed, which keeps diagrams of keys with large photos small. When
+'rgnparser' and its 'gnparser' program are installed, only text that
+parses as a scientific name is set in italics.
+
 A couplet reached from more than one lead is drawn once, under the first
 of them; the other leads get a dashed line to it.
 }

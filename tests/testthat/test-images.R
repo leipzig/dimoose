@@ -75,3 +75,18 @@ test_that("the example photos that ship with dimoose are labelled by folder", {
   expect_true(all(vapply(s$path, imageMime, "") == "image/jpeg"))
   expect_length(list.files(system.file("extdata", "new-photos", package = "dimoose")), 6)
 })
+
+test_that("imageMeta shrinks large photos with magick and keeps small ones", {
+  skip_if_not_installed("magick")
+  dir <- withr::local_tempdir()
+  big <- file.path(dir, "big.png")
+  magick::image_write(magick::image_blank(2400, 1600, "forestgreen"), big)
+  small <- list.files(system.file("extdata", "montana", package = "dimoose"), pattern = "\\.jpg$", full.names = TRUE)[1]
+  m <- imageMeta(c(big, small))
+  decode <- function(v) magick::image_read(base64enc::base64decode(sub("^data:[^,]+,", "", v)))
+  expect_equal(max(unlist(magick::image_info(decode(m$value[1]))[c("width", "height")])), 1200)
+  expect_identical(m$value[2], paste0("data:image/jpeg;base64,", base64enc::base64encode(small)))
+  expect_equal(max(unlist(magick::image_info(decode(imageMeta(big, maxSize = 300)$value))[c("width", "height")])), 300)
+  local_mocked_bindings(canUse = function(pkg) FALSE)
+  expect_identical(imageMeta(big)$value, paste0("data:image/png;base64,", base64enc::base64encode(big)))
+})

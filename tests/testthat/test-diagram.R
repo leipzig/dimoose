@@ -84,3 +84,53 @@ test_that("keyDiagram works on every example key", {
   for (k in list(sharkKey(), arachnidaKey(), vibrioKey())) expect_match(keyDiagram(k), "</svg>\n?$")
   expect_error(keyDiagram(list()), "dimoose")
 })
+
+test_that("keyDiagram writes PNG and PDF through rsvg and still returns the SVG", {
+  skip_if_not_installed("rsvg")
+  k <- keyFromLeads(tiny(), "Tiny")
+  png <- withr::local_tempfile(fileext = ".png")
+  pdf <- withr::local_tempfile(fileext = ".PDF")
+  expect_invisible(out <- keyDiagram(k, png))
+  expect_true(startsWith(out, "<svg"))
+  expect_identical(readBin(png, "raw", 4), as.raw(c(0x89, 0x50, 0x4e, 0x47)))
+  keyDiagram(k, pdf)
+  expect_identical(rawToChar(readBin(pdf, "raw", 4)), "%PDF")
+})
+
+test_that("PNG without rsvg, or an unknown extension, explains what to do", {
+  k <- keyFromLeads(tiny())
+  local_mocked_bindings(canUse = function(pkg) pkg != "rsvg")
+  expect_error(keyDiagram(k, withr::local_tempfile(fileext = ".png")), "install.packages\\(\"rsvg\"\\)")
+  expect_error(keyDiagram(k, withr::local_tempfile(fileext = ".gif")), "\\.svg, \\.png or \\.pdf")
+})
+
+test_that("thumbnails are shrunk with magick, and embedded as they are without it", {
+  skip_if_not_installed("magick")
+  k <- montanaKey()
+  small <- keyDiagram(k)
+  expect_lt(nchar(small), 250000)
+  thumbs <- regmatches(small, gregexpr("href=\"data:image/jpeg;base64,[^\"]+\"", small))[[1]]
+  expect_length(thumbs, sum(k$leads$Next == "-"))
+  img <- magick::image_read(base64enc::base64decode(sub("^href=\"data:image/jpeg;base64,(.*)\"$", "\\1", thumbs[1])))
+  expect_lte(max(unlist(magick::image_info(img)[c("width", "height")])), 112)
+  local_mocked_bindings(canUse = function(pkg) pkg != "magick")
+  expect_gt(nchar(keyDiagram(k)), 1e6)
+})
+
+test_that("only real scientific names are set in italics", {
+  odd <- tiny()
+  odd$Taxon <- c("", "Willows (several species)", "Box elder (Acer negundo)", "Shouting (ACER NEGUNDO)")
+  check <- function(svg) {
+    expect_match(svg, "font-style=\"italic\"[^>]*>Acer negundo<", perl = TRUE)
+    expect_false(grepl("italic\"[^>]*>several species<", svg, perl = TRUE))
+    expect_false(grepl("italic\"[^>]*>ACER NEGUNDO<", svg, perl = TRUE))
+    expect_match(svg, ">Willows \\(several species\\)<", perl = TRUE)
+  }
+  local({
+    local_mocked_bindings(canUse = function(pkg) pkg != "rgnparser")
+    check(keyDiagram(keyFromLeads(odd)))
+  })
+  skip_if_not_installed("rgnparser")
+  skip_if(!nzchar(Sys.which("gnparser")), "gnparser not installed")
+  check(keyDiagram(keyFromLeads(odd)))
+})

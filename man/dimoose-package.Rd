@@ -12,6 +12,7 @@ tree representations.
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://leipzig.github.io/dimoose/}
   \item \url{https://github.com/leipzig/dimoose}
   \item Report bugs at \url{https://github.com/leipzig/dimoose/issues}
 }

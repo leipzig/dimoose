@@ -4,12 +4,16 @@
 \alias{imageMeta}
 \title{Embed images in a key's metadata}
 \usage{
-imageMeta(paths, ids = NULL)
+imageMeta(paths, ids = NULL, maxSize = 1200)
 }
 \arguments{
 \item{paths}{Image files.}
 
 \item{ids}{Names for the images; default the file names without extension.}
+
+\item{maxSize}{Photos larger than this many pixels on their long side are
+scaled down to it when the 'magick' package is installed, so keys made
+from camera photos stay small; without 'magick' they are embedded as they are.}
 }
 \value{
 A key/value data frame.

@@ -80,14 +80,34 @@ imageMime <- function(path) {
 #'
 #' @param paths Image files.
 #' @param ids Names for the images; default the file names without extension.
+#' @param maxSize Photos larger than this many pixels on their long side are
+#'   scaled down to it when the 'magick' package is installed, so keys made
+#'   from camera photos stay small; without 'magick' they are embedded as they are.
 #' @return A key/value data frame.
 #' @export
-imageMeta <- function(paths, ids = NULL) {
+imageMeta <- function(paths, ids = NULL, maxSize = 1200) {
   if (is.null(ids)) ids <- sub("\\.[^.]+$", "", basename(paths))
+  shrink <- canUse("magick")
   value <- vapply(paths, function(p) {
     mime <- imageMime(p)
     if (is.na(mime)) stop(basename(p), " is not an image", call. = FALSE)
-    paste0("data:", mime, ";base64,", base64enc::base64encode(p))
+    bytes <- if (shrink) shrinkImage(p, maxSize, sub("^image/", "", mime)) else NULL
+    if (is.null(bytes)) bytes <- p
+    paste0("data:", mime, ";base64,", base64enc::base64encode(bytes))
   }, character(1))
   data.frame(key = paste0("image_", ids), value = unname(value), stringsAsFactors = FALSE)
+}
+
+# Is an optional (Suggests) package available? A function of its own so that
+# tests can pretend a package is missing.
+canUse <- function(pkg) requireNamespace(pkg, quietly = TRUE)
+
+# The image (a file path or raw bytes) scaled down with magick to fit in
+# maxSize x maxSize pixels, as raw bytes in `format`; NULL when it already fits.
+shrinkImage <- function(image, maxSize, format) {
+  img <- magick::image_read(image)
+  info <- magick::image_info(img)
+  if (max(info$width, info$height) <= maxSize) return(NULL)
+  img <- magick::image_resize(img, sprintf("%dx%d>", maxSize, maxSize))
+  magick::image_write(img, format = format)
 }
