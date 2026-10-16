@@ -1,0 +1,21 @@
+Statement	Choice	Character	Next	Taxon	Question	Image
+1	a	Leaves compound, divided into separate leaflets.	2		Leaf type?	
+1	b	Leaves simple, a single blade.	3		Leaf type?	
+2	a	Leaves opposite, with 3 (rarely 5) leaflets that have a few coarse teeth or shallow lobes.	-	Box elder (Acer negundo)	Leaflets?	
+2	b	Leaves opposite, with 5 to 7 leaflets with toothed margins.	-	Green ash (Fraxinus pennsylvanica)	Leaflets?	
+3	a	Leaves opposite, with 3 to 5 toothed lobes and red leaf stalks.	-	Rocky Mountain maple (Acer glabrum)	Leaf arrangement?	
+3	b	Leaves alternate.	4		Leaf arrangement?	
+4	a	Leaves deeply lobed, the lobes rounded; fruit an acorn.	-	Bur oak (Quercus macrocarpa)	Leaf lobes?	
+4	b	Leaves not lobed.	5		Leaf lobes?	
+5	a	Leaves narrowly lance-shaped, at least 2.5 times as long as wide.	6		Leaf shape?	
+5	b	Leaves broader: rounded, triangular or broadly lance-shaped.	7		Leaf shape?	
+6	a	Buds small and pressed against the twig, each covered by a single cap-like scale; leaves 3 to 8 cm long, whitish beneath.	-	Peachleaf willow (Salix amygdaloides)	Buds?	
+6	b	Buds long (about 2.5 cm), curved, resinous and fragrant; leaves 4 to 11 cm long.	-	Narrowleaf cottonwood (Populus angustifolia)	Buds?	
+7	a	Leaf stalks flattened from side to side.	8		Leaf stalk?	
+7	b	Leaf stalks round, or only slightly flattened.	9		Leaf stalk?	
+8	a	Leaves nearly round, 2 to 8 cm long, finely toothed; bark smooth and pale.	-	Quaking aspen (Populus tremuloides)	Leaf shape and teeth?	
+8	b	Leaves triangular, about as long as wide, with teeth at least 1 mm deep.	-	Plains cottonwood (Populus deltoides)	Leaf shape and teeth?	
+9	a	Leaves 5 to 15 cm long, silvery white beneath with rusty smears of resin.	-	Black cottonwood (Populus trichocarpa)	Leaf size?	
+9	b	Leaves 2 to 7 cm long, with sharp teeth.	10		Leaf size?	
+10	a	Bark white and peeling on older trees.	-	Paper birch (Betula papyrifera)	Bark?	
+10	b	Bark gray to brown, only slightly peeling; a small tree or large shrub along streams.	-	Water birch (Betula occidentalis)	Bark?	

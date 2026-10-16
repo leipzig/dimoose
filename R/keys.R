@@ -245,3 +245,32 @@ vibrioKey <- function() {
 #'   175-185. \doi{10.1111/j.1365-2672.2008.03730.x}. Extracted from the
 #'   paper's table; see `data-raw/vibrio/` in the package sources.
 "vibrio"
+
+#' Key to the native broadleaf trees of Montana
+#'
+#' A dichotomous key to the eleven native broadleaf (hardwood) trees of
+#' Montana, as a table of leads (see [keyFromLeads()]); [montanaKey()] turns it
+#' into a [dimoose] key with photos. Written for dimoose: native status was
+#' checked in the Montana Field Guide and USDA PLANTS, and every couplet's
+#' characters come from Montana Field Guide or Virginia Tech Dendrology
+#' descriptions. Common hackberry is left out because the Montana Field Guide
+#' gives its origin in Montana as undetermined.
+#'
+#' @format A data frame with 20 rows (10 couplets) and 7 character columns:
+#' \describe{
+#'   \item{Statement}{Couplet number.}
+#'   \item{Choice}{`a` or `b`.}
+#'   \item{Character}{Text of the lead.}
+#'   \item{Next}{Couplet the lead leads to, or `"-"`.}
+#'   \item{Taxon}{For terminal leads, `"Common name (Genus species)"`.}
+#'   \item{Question}{What the couplet asks, e.g. `"Leaf type?"`.}
+#'   \item{Image}{Ids of the photos in `inst/extdata/montana/` shown with the
+#'     lead, separated by `;`.}
+#' }
+#' @source Montana Field Guide, Montana Natural Heritage Program and Montana
+#'   Fish, Wildlife & Parks, <https://fieldguide.mt.gov>; USDA PLANTS
+#'   Database, <https://plants.usda.gov>; Virginia Tech Dendrology fact sheets,
+#'   <https://dendro.cnre.vt.edu>. The page for each species and the source of
+#'   each couplet are listed in `data-raw/montana/sources.md` in the package
+#'   sources.
+"montana"
