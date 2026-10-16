@@ -10,3 +10,22 @@ test_that("the montana lead table is a sound key of native trees", {
   expect_false(any(grepl("Ulmus", taxa)))
   expect_true(all(nzchar(m$Question)))
 })
+
+test_that("every montana photo is credited with an allowed license, and vice versa", {
+  dir <- system.file("extdata", "montana", package = "dimoose")
+  files <- sub("\\.jpg$", "", list.files(dir, pattern = "\\.jpg$"))
+  credits <- utils::read.delim(system.file("extdata", "montana", "photos.tsv", package = "dimoose"),
+                               colClasses = "character", quote = "", encoding = "UTF-8")
+  expect_setequal(files, credits$id)
+  expect_true(all(grepl("^(Public domain|CC0|CC BY( |-SA )[0-9.]+)$", credits$license)))
+  expect_true(all(nzchar(credits$author)) && all(startsWith(credits$source_url, "https://commons.wikimedia.org/")))
+  expect_lt(sum(file.size(file.path(dir, paste0(files, ".jpg")))), 1.5e6)
+})
+
+test_that("every montana species has a photo and every Image id exists", {
+  m <- dimoose::montana
+  dir <- system.file("extdata", "montana", package = "dimoose")
+  ids <- unlist(strsplit(m$Image[nzchar(m$Image)], ";", fixed = TRUE))
+  expect_true(all(file.exists(file.path(dir, paste0(ids, ".jpg")))))
+  expect_true(all(nzchar(m$Image[m$Next == "-"])))
+})

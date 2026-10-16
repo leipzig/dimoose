@@ -1,0 +1,33 @@
+inst/extdata/montana/
+  14 photographs from Wikimedia Commons, each resized by Wikimedia to
+  400 px wide; the files are unchanged otherwise. Each remains under its own
+  license, separately from the licence of dimoose's code:
+
+  acer_negundo_leaf.jpg: Matt Lavin from Bozeman, Montana, USA, CC BY-SA 2.0,
+    https://commons.wikimedia.org/wiki/File:Acer_negundo_Bozeman_2.jpg
+  fraxinus_pennsylvanica_leaf.jpg: Matt Lavin from Bozeman, Montana, USA, CC BY-SA 2.0,
+    https://commons.wikimedia.org/wiki/File:Fraxinus_pennsylvanica_(5107489733).jpg
+  acer_glabrum_leaf.jpg: Walter Siegmund, CC BY 2.5,
+    https://commons.wikimedia.org/wiki/File:Acer_glabrum_10491.JPG
+  quercus_macrocarpa_leaf.jpg: Matt Lavin from Bozeman, Montana, USA, CC BY-SA 2.0,
+    https://commons.wikimedia.org/wiki/File:Quercus_macrocarpa_(5107486893).jpg
+  quercus_macrocarpa_acorn.jpg: Matt Lavin from Bozeman, Montana, USA, CC BY-SA 2.0,
+    https://commons.wikimedia.org/wiki/File:Quercus_macrocarpa_(5107489209).jpg
+  salix_amygdaloides_leaf.jpg: Matt Lavin from Bozeman, Montana, USA, CC BY-SA 2.0,
+    https://commons.wikimedia.org/wiki/File:Salix_amygdaloides_(4018709988).jpg
+  populus_angustifolia_leaf.jpg: Matt Lavin from Bozeman, Montana, USA, CC BY-SA 2.0,
+    https://commons.wikimedia.org/wiki/File:Populus_angustifolia_(4998464419).jpg
+  populus_tremuloides_bark.jpg: Dcrjsr, CC BY 3.0,
+    https://commons.wikimedia.org/wiki/File:Quaking_aspen_Populus_tremuloides_trunk.jpg
+  feature_flat_petiole.jpg: Matt Lavin from Bozeman, Montana, USA, CC BY-SA 2.0,
+    https://commons.wikimedia.org/wiki/File:Populus_tremuloides_(5002915056).jpg
+  populus_deltoides_leaf.jpg: Matt Lavin from Bozeman, Montana, USA, CC BY-SA 2.0,
+    https://commons.wikimedia.org/wiki/File:Populus_deltoides_(5027342562).jpg
+  populus_trichocarpa_leaf.jpg: Matt Lavin from Bozeman, Montana, USA, CC BY-SA 2.0,
+    https://commons.wikimedia.org/wiki/File:Populus_balsamifera_-_balsam_poplar_-_Flickr_-_Matt_Lavin_(4).jpg
+  betula_papyrifera_bark.jpg: Rob Duval, CC BY-SA 3.0,
+    https://commons.wikimedia.org/wiki/File:Betula_papyrifera-bark.jpg
+  betula_papyrifera_leaf.jpg: Walter Siegmund (talk), CC BY-SA 3.0,
+    https://commons.wikimedia.org/wiki/File:Betula_papyrifera_8853.JPG
+  betula_occidentalis_bark.jpg: Dcrjsr, CC BY 4.0,
+    https://commons.wikimedia.org/wiki/File:Betula_occidentalis_water_birch_bark.jpg
