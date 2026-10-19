@@ -138,9 +138,18 @@ model <- visionModel(name = "bioclip-2")
 suggestSpecies(k, model, "my-tree.jpg", top = 3)
 ```
 
-Only the key's own species are ranked. Treat the answer as a hint and confirm
-it by working through the key: the model can be wrong, especially on close
-relatives such as the cottonwoods.
+Only the key's own species are ranked. For one answer per photo, use
+`identifyPhotos()`: when no species reaches the confidence you ask for (0.8 by
+default), it adds up the probabilities of the species in each genus, then
+family and order (looked up in GBIF), and answers with the most precise group
+that reaches it.
+
+```{r, eval = FALSE}
+identifyPhotos(k, model, "my-tree.jpg", kingdom = "Plantae")
+```
+
+Treat the answer as a hint and confirm it by working through the key: the
+model can be wrong, especially on close relatives such as the cottonwoods.
 
 ## Diagrams of other keys
 

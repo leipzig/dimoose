@@ -18,7 +18,9 @@ A data frame with one row per name checked: \code{Taxon} (as in the
 key), \code{name} (the scientific name checked), \code{status} (\code{"ok"},
 \code{"misspelled"}, \code{"synonym"}, \code{"not found"}, or \code{"unchecked"} when GBIF
 could not be reached), \code{gbif} (the name GBIF matched), \code{accepted} (the
-name GBIF accepts for it) and \code{note} (what to fix, in words).
+name GBIF accepts for it), \code{genus}, \code{family} and \code{order} (from GBIF's
+classification, used by \code{\link[=identifyPhotos]{identifyPhotos()}}) and \code{note} (what to fix, in
+words).
 }
 \description{
 Looks up the scientific name of every result in the key in the

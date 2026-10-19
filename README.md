@@ -289,6 +289,12 @@ model <- visionModel(name = "bioclip-2")
 suggestSpecies(montanaKey(), model, "my-tree.jpg")   # the 3 best of the key's 11 species, with probabilities
 ```
 
+`identifyPhotos()` gives one answer per photo instead, and steps up to the
+genus, family or order (from GBIF) when no single species is likely enough:
+a cottonwood it cannot place between the key's two cottonwoods comes back as
+genus *Populus*.
+
+
 Other models: `name = "hf-hub:<organisation>/<model>"` loads any open_clip
 model on the Hugging Face Hub whose image side is a vision transformer, and
 `name = "local-dir:<folder>"` loads a copy you have downloaded.

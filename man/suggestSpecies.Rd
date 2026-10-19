@@ -45,3 +45,7 @@ model <- visionModel(name = "bioclip-2")
 suggestSpecies(montanaKey(), model, "my-photo.jpg")
 }
 }
+\seealso{
+\code{\link[=identifyPhotos]{identifyPhotos()}} for one answer per photo, at the genus or
+family when the species is uncertain.
+}

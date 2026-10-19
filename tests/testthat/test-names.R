@@ -1,7 +1,8 @@
 # GBIF's answers for the names in these tests, as /v1/species/match gives them
 fakeGbif <- function(name, kingdom = NULL) {
   switch(name,
-    "Populus tremuloides" = list(matchType = "EXACT", status = "ACCEPTED", canonicalName = "Populus tremuloides"),
+    "Populus tremuloides" = list(matchType = "EXACT", status = "ACCEPTED", canonicalName = "Populus tremuloides",
+                                 genus = "Populus", family = "Salicaceae", order = "Malpighiales"),
     "Fraxinus pensylvanica" = list(matchType = "FUZZY", status = "ACCEPTED", canonicalName = "Fraxinus pennsylvanica"),
     "Ulmus fulva" = list(matchType = "EXACT", status = "SYNONYM", canonicalName = "Ulmus fulva", acceptedUsageKey = 5361867),
     "Acer negundo" = list(matchType = "EXACT", status = "ACCEPTED", canonicalName = "Acer negundo"),
@@ -107,4 +108,68 @@ test_that("suggestSpecies takes its own prompt and needs a key with results", {
   suggestSpecies(k, fv$model, "/pics/L1.png", prompt = "%s")
   expect_equal(fv$calls$embed_texts[[1]], c("Populus tremuloides", "Acer negundo"))
   expect_error(suggestSpecies(k, fv$model, "/pics/L1.png", prompt = "no placeholder"), "%s")
+})
+
+test_that("checkNames gives each name's genus, family and order", {
+  local_mocked_bindings(gbifMatch = fakeGbif, gbifAccepted = fakeAccepted)
+  out <- checkNames(namesKey(c("Quaking aspen (Populus tremuloides)", "Xyzzy plugh")))
+  expect_equal(out$genus, c("Populus", NA))
+  expect_equal(out$family, c("Salicaceae", NA))
+  expect_equal(out$order, c("Malpighiales", NA))
+})
+
+# Three poplars and willows (Salicaceae) and a maple, with fixed probabilities
+lineageKey <- function() namesKey(c("Quaking aspen (Populus tremuloides)", "Black cottonwood (Populus trichocarpa)",
+                                     "Peachleaf willow (Salix amygdaloides)", "Box elder (Acer negundo)", "Mystery tree"))
+lineageTable <- data.frame(
+  Taxon = c("Quaking aspen (Populus tremuloides)", "Black cottonwood (Populus trichocarpa)",
+            "Peachleaf willow (Salix amygdaloides)", "Box elder (Acer negundo)"),
+  genus = c("Populus", "Populus", "Salix", "Acer"),
+  family = c("Salicaceae", "Salicaceae", "Salicaceae", "Sapindaceae"),
+  order = c("Malpighiales", "Malpighiales", "Malpighiales", "Sapindales"), stringsAsFactors = FALSE)
+fixedProbabilities <- function(key, model, paths, prompt) {
+  taxa <- lineageTable$Taxon
+  p <- rbind(sure = c(0.90, 0.04, 0.02, 0.02, 0.02),
+             genus = c(0.45, 0.45, 0.04, 0.03, 0.03),
+             family = c(0.40, 0.25, 0.25, 0.05, 0.05),
+             unsure = c(0.30, 0.10, 0.10, 0.20, 0.30))
+  colnames(p) <- c(taxa, "Mystery tree")
+  p[paths, , drop = FALSE]
+}
+
+test_that("identifyPhotos falls back to the genus, then the family, when no species is likely enough", {
+  local_mocked_bindings(speciesProbabilities = fixedProbabilities)
+  out <- identifyPhotos(lineageKey(), NULL, c("sure", "genus", "family", "unsure"), lineage = lineageTable)
+  expect_named(out, c("image", "name", "rank", "probability", "confident", "Taxon"))
+  expect_equal(out$image, c("sure", "genus", "family", "unsure"))
+  expect_equal(out$name, c("Populus tremuloides", "Populus", "Salicaceae", "Populus tremuloides"))
+  expect_equal(out$rank, c("species", "genus", "family", "species"))
+  expect_equal(out$probability, c(0.90, 0.90, 0.90, 0.30))
+  expect_equal(out$confident, c(TRUE, TRUE, TRUE, FALSE))
+  expect_equal(out$Taxon, c("Quaking aspen (Populus tremuloides)", NA, NA, "Quaking aspen (Populus tremuloides)"))
+})
+
+test_that("identifyPhotos uses the confidence it is given, up to the order", {
+  local_mocked_bindings(speciesProbabilities = fixedProbabilities)
+  out <- identifyPhotos(lineageKey(), NULL, c("sure", "family"), lineage = lineageTable, confidence = 0.95)
+  expect_equal(out$name, c("Salicaceae", "Populus tremuloides"))
+  expect_equal(out$rank, c("family", "species"))
+  expect_equal(out$probability, c(0.96, 0.40))
+  expect_equal(out$confident, c(TRUE, FALSE))
+  # with box elder moved into the same order, the poplars, willow and maple together reach 0.95
+  sameOrder <- lineageTable; sameOrder$order[4] <- "Malpighiales"
+  out <- identifyPhotos(lineageKey(), NULL, "family", lineage = sameOrder, confidence = 0.95)
+  expect_equal(c(out$name, out$rank), c("Malpighiales", "order"))
+  expect_equal(out$probability, 0.95)
+  expect_error(identifyPhotos(lineageKey(), NULL, "sure", lineage = lineageTable, confidence = 1.5), "between 0 and 1")
+})
+
+test_that("identifyPhotos gets the lineages from GBIF when none are given", {
+  local_mocked_bindings(speciesProbabilities = fixedProbabilities,
+                        checkNames = function(key, kingdom = NULL) { seenKingdom <<- kingdom; lineageTable })
+  seenKingdom <- NULL
+  out <- identifyPhotos(lineageKey(), NULL, "genus", kingdom = "Plantae")
+  expect_equal(seenKingdom, "Plantae")
+  expect_equal(out$name, "Populus")
+  expect_error(identifyPhotos(lineageKey(), NULL, "genus", lineage = data.frame(Taxon = "x")), "genus")
 })

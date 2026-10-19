@@ -18,7 +18,9 @@
 #'   key), `name` (the scientific name checked), `status` (`"ok"`,
 #'   `"misspelled"`, `"synonym"`, `"not found"`, or `"unchecked"` when GBIF
 #'   could not be reached), `gbif` (the name GBIF matched), `accepted` (the
-#'   name GBIF accepts for it) and `note` (what to fix, in words).
+#'   name GBIF accepts for it), `genus`, `family` and `order` (from GBIF's
+#'   classification, used by [identifyPhotos()]) and `note` (what to fix, in
+#'   words).
 #' @seealso `keyFromSpreadsheet(checkNames = TRUE)`, which runs this check
 #'   and reports problems by spreadsheet row.
 #' @examples
@@ -35,7 +37,8 @@ checkNames <- function(key, kingdom = NULL) {
   keep <- !bare | isScientificName(name)
   taxa <- taxa[keep]; name <- name[keep]
   out <- data.frame(Taxon = taxa, name = name, status = rep("unchecked", length(name)), gbif = NA_character_,
-                    accepted = NA_character_, note = "", stringsAsFactors = FALSE)
+                    accepted = NA_character_, genus = NA_character_, family = NA_character_, order = NA_character_,
+                    note = "", stringsAsFactors = FALSE)
   failed <- character()
   for (i in seq_along(name)) {
     res <- tryCatch({
@@ -54,6 +57,7 @@ checkNames <- function(key, kingdom = NULL) {
     }
     out$gbif[i] <- m$canonicalName
     out$accepted[i] <- res$acc
+    for (r in c("genus", "family", "order")) if (!is.null(m[[r]])) out[[r]][i] <- m[[r]]
     synonym <- identical(m$status, "SYNONYM")
     if (type == "FUZZY") {
       out$status[i] <- "misspelled"
@@ -96,6 +100,8 @@ checkNames <- function(key, kingdom = NULL) {
 #'   goes. The default is the one BioCLIP was trained with.
 #' @return A data frame with `top` rows per image: `image` (its id), `rank`,
 #'   `Taxon`, `probability` and `similarity` (cosine similarity).
+#' @seealso [identifyPhotos()] for one answer per photo, at the genus or
+#'   family when the species is uncertain.
 #' @examples
 #' \dontrun{
 #' model <- visionModel(name = "bioclip-2")
@@ -103,6 +109,93 @@ checkNames <- function(key, kingdom = NULL) {
 #' }
 #' @export
 suggestSpecies <- function(key, model, paths, top = 3, prompt = "a photo of %s.") {
+  if (!inherits(key, "dimoose")) stop("`key` must be a dimoose object", call. = FALSE)
+  prob <- speciesProbabilities(key, model, paths, prompt)
+  sim <- attr(prob, "similarity")
+  taxa <- colnames(prob)
+  top <- min(as.integer(top), length(taxa))
+  rows <- lapply(seq_len(nrow(prob)), function(i) {
+    o <- order(-prob[i, ])[seq_len(top)]
+    data.frame(image = rownames(prob)[i], rank = seq_len(top), Taxon = taxa[o], probability = unname(prob[i, o]),
+               similarity = unname(sim[i, o]), stringsAsFactors = FALSE)
+  })
+  out <- do.call(rbind, rows)
+  rownames(out) <- NULL
+  out
+}
+
+#' Name what a photo shows, as precisely as the evidence allows
+#'
+#' Like [suggestSpecies()], compares each photo with the key's own species,
+#' but gives one answer per photo: the species when it alone is likely
+#' enough, otherwise the genus, family or order whose species together are.
+#' A photo of a cottonwood that the model cannot place between the key's two
+#' cottonwoods is reported as genus *Populus* rather than as a coin toss
+#' between them.
+#'
+#' The genus, family and order of each species come from GBIF (see
+#' [checkNames()]), which needs an internet connection, or from a table you
+#' give in `lineage`. Results with no lineage (for example ones named only by
+#' a common name) count only as themselves.
+#'
+#' @inheritParams suggestSpecies
+#' @param confidence The probability an answer must reach, between 0 and 1.
+#' @param lineage Optional data frame with columns `Taxon` (as in the key),
+#'   `genus`, `family` and `order`, such as the output of [checkNames()].
+#' @inheritParams checkNames
+#' @return A data frame with one row per image: `image`, `name` (the
+#'   scientific name of the answer), `rank` (`"species"`, `"genus"`,
+#'   `"family"` or `"order"`), `probability`, `confident` (whether
+#'   `probability` reaches `confidence`; when nothing does, the answer is the
+#'   most likely species) and `Taxon` (the key's result, for species-level
+#'   answers).
+#' @examples
+#' \dontrun{
+#' model <- visionModel(name = "bioclip-2")
+#' identifyPhotos(montanaKey(), model, "my-tree.jpg", kingdom = "Plantae")
+#' }
+#' @export
+identifyPhotos <- function(key, model, paths, confidence = 0.8, lineage = NULL, kingdom = NULL,
+                           prompt = "a photo of %s.") {
+  if (!is.numeric(confidence) || length(confidence) != 1 || is.na(confidence) || confidence <= 0 || confidence > 1) {
+    stop("`confidence` must be a probability between 0 and 1", call. = FALSE)
+  }
+  if (!is.null(lineage) && !all(c("Taxon", "genus", "family", "order") %in% names(lineage))) {
+    stop("`lineage` needs the columns Taxon, genus, family and order", call. = FALSE)
+  }
+  prob <- speciesProbabilities(key, model, paths, prompt)
+  if (is.null(lineage)) lineage <- checkNames(key, kingdom)
+  taxa <- colnames(prob)
+  name <- scientificPart(taxa)
+  name[is.na(name)] <- taxa[is.na(name)]
+  at <- match(taxa, lineage$Taxon)
+  groups <- lapply(c(genus = "genus", family = "family", order = "order"), function(r) lineage[[r]][at])
+  reach <- function(p) p >= confidence - 1e-9
+  rows <- lapply(seq_len(nrow(prob)), function(i) {
+    p <- prob[i, ]
+    best <- which.max(p)
+    answer <- function(nm, rank, pr, ok, taxon) {
+      data.frame(image = rownames(prob)[i], name = nm, rank = rank, probability = unname(pr), confident = ok,
+                 Taxon = taxon, stringsAsFactors = FALSE)
+    }
+    if (reach(p[best])) return(answer(name[best], "species", p[best], TRUE, taxa[best]))
+    for (r in names(groups)) {
+      g <- groups[[r]]
+      if (all(is.na(g))) next
+      sums <- tapply(p[!is.na(g)], g[!is.na(g)], sum)
+      if (reach(max(sums))) return(answer(names(sums)[which.max(sums)], r, max(sums), TRUE, NA_character_))
+    }
+    answer(name[best], "species", p[best], FALSE, taxa[best])
+  })
+  out <- do.call(rbind, rows)
+  rownames(out) <- NULL
+  out
+}
+
+# Probability of each of the key's results for each image: an images x
+# results matrix (softmax of cosine similarity x 100), with the similarities
+# in its "similarity" attribute.
+speciesProbabilities <- function(key, model, paths, prompt) {
   if (!inherits(key, "dimoose")) stop("`key` must be a dimoose object", call. = FALSE)
   if (!grepl("%s", prompt, fixed = TRUE)) stop("`prompt` must contain %s where the species name goes", call. = FALSE)
   taxa <- unique(key$leads$Taxon[!is.na(key$leads$Taxon) & nzchar(key$leads$Taxon)])
@@ -112,17 +205,11 @@ suggestSpecies <- function(key, model, paths, top = 3, prompt = "a photo of %s."
   img <- embedImages(model, paths, patches = FALSE)$image
   txt <- embedTexts(model, sprintf(prompt, name))
   sim <- img %*% t(txt)
-  top <- min(as.integer(top), length(taxa))
-  rows <- lapply(seq_len(nrow(sim)), function(i) {
-    s <- sim[i, ]
-    p <- exp(100 * (s - max(s))); p <- p / sum(p)
-    o <- order(-s)[seq_len(top)]
-    data.frame(image = rownames(img)[i], rank = seq_len(top), Taxon = taxa[o], probability = p[o],
-               similarity = unname(s[o]), stringsAsFactors = FALSE)
-  })
-  out <- do.call(rbind, rows)
-  rownames(out) <- NULL
-  out
+  dimnames(sim) <- list(rownames(img), taxa)
+  prob <- exp(100 * (sim - apply(sim, 1, max)))
+  prob <- prob / rowSums(prob)
+  attr(prob, "similarity") <- sim
+  prob
 }
 
 # The scientific name in results written "Common name (Genus species)", or NA.
