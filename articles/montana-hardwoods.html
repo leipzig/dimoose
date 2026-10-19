@@ -156,11 +156,22 @@ CSV.</p>
 <p>If a row points to a couplet that is not in the sheet, or names a
 photo that is not in the folder, <code><a href="../reference/keyFromSpreadsheet.html">keyFromSpreadsheet()</a></code> says
 which spreadsheet row to fix.</p>
+<p>To check the species names too, add <code>checkNames = TRUE</code>.
+dimoose then looks each scientific name up in the <a href="https://www.gbif.org" class="external-link">GBIF</a> backbone taxonomy (this needs an
+internet connection) and warns about names that are misspelled, are
+outdated synonyms, or are not known at all, again by row. The Montana
+names all pass; a sheet with two mistakes would give:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/keyFromSpreadsheet.html">keyFromSpreadsheet</a></span><span class="op">(</span><span class="st">"~/my-key/montana/montana-key.csv"</span>, checkNames <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Some species names do not match GBIF:</span></span>
+<span><span class="co">#&gt; Row 5: Fraxinus pensylvanica is not in GBIF; did you mean Fraxinus pennsylvanica?</span></span>
+<span><span class="co">#&gt; Row 9: Ulmus fulva is a synonym; GBIF accepts Ulmus rubra</span></span></code></pre></div>
+<p><code>checkNames(k)</code> gives the same check as a table.</p>
 </div>
 <div class="section level2">
 <h2 id="the-montana-key">The Montana key<a class="anchor" aria-label="anchor" href="#the-montana-key"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://leipzig.github.io/dimoose/">dimoose</a></span><span class="op">)</span></span>
 <span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exampleKeys.html">montanaKey</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">k</span></span>
@@ -168,7 +179,7 @@ which spreadsheet row to fix.</p>
 <span><span class="co">#&gt;   10 couplets, 20 leads, 11 taxa, up to 7 steps deep</span></span></code></pre></div>
 <p><code><a href="../reference/exampleKeys.html">montanaKey()</a></code> is <code><a href="../reference/keyFromSpreadsheet.html">keyFromSpreadsheet()</a></code>
 applied to the template above. Its first rows:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"montana"</span>, <span class="st">"montana-key.csv"</span>, package <span class="op">=</span> <span class="st">"dimoose"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">csv</span>, check.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Couplet Choice   Question</span></span>
@@ -202,7 +213,7 @@ file.</p>
 <p><code><a href="../reference/keyDiagram.html">keyDiagram()</a></code> draws any key top-down: each question in a
 blue box, its leads below it, and each species in a green box with its
 photo.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/keyDiagram.html">keyDiagram</a></span><span class="op">(</span><span class="va">k</span>, <span class="st">"montana-key.svg"</span><span class="op">)</span></span></code></pre></div>
 <div style="overflow-x: auto">
 <svg xmlns="http://www.w3.org/2000/svg" width="2290" height="1192" viewbox="0 0 2290 1192" font-family="Helvetica, Arial, sans-serif"><title>
@@ -308,10 +319,32 @@ occidentalis</text></svg>
 that asks one question at a time and shows the photos with each answer.
 It works offline, so it can be copied to a phone and used in the
 field.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">page</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".html"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/exportWizard.html">exportWizard</a></span><span class="op">(</span><span class="va">k</span>, <span class="va">page</span><span class="op">)</span></span></code></pre></div>
 <p>Open the file in a browser to try it.</p>
+</div>
+<div class="section level2">
+<h2 id="checking-a-photo-against-the-key">Checking a photo against the key<a class="anchor" aria-label="anchor" href="#checking-a-photo-against-the-key"></a>
+</h2>
+<p>If you have a photo and want a second opinion, a vision model trained
+on organisms can rank the key’s eleven species by how well they match
+it. BioCLIP 2 knows many species by their scientific name, so it needs
+no example photos (see <code><a href="../reference/visionModel.html">?visionModel</a></code>; the first call
+downloads the model, about 1.7 GB):</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/visionModel.html">visionModel</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"bioclip-2"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/suggestSpecies.html">suggestSpecies</a></span><span class="op">(</span><span class="va">k</span>, <span class="va">model</span>, <span class="st">"my-tree.jpg"</span>, top <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<p>Only the key’s own species are ranked. For one answer per photo, use
+<code><a href="../reference/identifyPhotos.html">identifyPhotos()</a></code>: when no species reaches the confidence
+you ask for (0.8 by default), it adds up the probabilities of the
+species in each genus, then family and order (looked up in GBIF), and
+answers with the most precise group that reaches it.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/identifyPhotos.html">identifyPhotos</a></span><span class="op">(</span><span class="va">k</span>, <span class="va">model</span>, <span class="st">"my-tree.jpg"</span>, kingdom <span class="op">=</span> <span class="st">"Plantae"</span><span class="op">)</span></span></code></pre></div>
+<p>Treat the answer as a hint and confirm it by working through the key:
+the model can be wrong, especially on close relatives such as the
+cottonwoods.</p>
 </div>
 <div class="section level2">
 <h2 id="diagrams-of-other-keys">Diagrams of other keys<a class="anchor" aria-label="anchor" href="#diagrams-of-other-keys"></a>
@@ -319,7 +352,7 @@ field.</p>
 <p><code><a href="../reference/keyDiagram.html">keyDiagram()</a></code> works on every dimoose key, whichever way
 it was made. Here is the key to the orders of Arachnida, transcribed
 from a textbook:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/keyDiagram.html">keyDiagram</a></span><span class="op">(</span><span class="fu"><a href="../reference/exampleKeys.html">arachnidaKey</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"arachnida.svg"</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

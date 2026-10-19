@@ -178,7 +178,9 @@ Lavin). It is kept as a plain spreadsheet,
 [`keyFromSpreadsheet()`](https://leipzig.github.io/dimoose/reference/keyFromSpreadsheet.md)
 turns it into the key, so it doubles as a template: copy the folder,
 edit the sheet in Excel or Google Sheets, and build your own key in one
-line.
+line. `keyFromSpreadsheet(file, checkNames = TRUE)` also checks the
+species names against [GBIF](https://www.gbif.org) and points out
+misspellings and outdated synonyms by spreadsheet row.
 [`keyDiagram()`](https://leipzig.github.io/dimoose/reference/keyDiagram.md)
 draws any key as a box diagram, and
 [`exportWizard()`](https://leipzig.github.io/dimoose/reference/exportWizard.md)
@@ -401,6 +403,25 @@ model <- visionModel(name = "bioclip")
   work better with regular CLIP.
 - **BioCLIP 2 is a larger model**, so embedding takes several times
   longer.
+
+BioCLIP 2 also recognises many species from their scientific name alone,
+with no example photos.
+[`suggestSpecies()`](https://leipzig.github.io/dimoose/reference/suggestSpecies.md)
+uses this to check a photo against a key you already have: it ranks only
+the key’s own species, which is far more reliable than asking the model
+to pick from every species it knows.
+
+``` r
+
+model <- visionModel(name = "bioclip-2")
+suggestSpecies(montanaKey(), model, "my-tree.jpg")   # the 3 best of the key's 11 species, with probabilities
+```
+
+[`identifyPhotos()`](https://leipzig.github.io/dimoose/reference/identifyPhotos.md)
+gives one answer per photo instead, and steps up to the genus, family or
+order (from GBIF) when no single species is likely enough: a cottonwood
+it cannot place between the key’s two cottonwoods comes back as genus
+*Populus*.
 
 Other models: `name = "hf-hub:<organisation>/<model>"` loads any
 open_clip model on the Hugging Face Hub whose image side is a vision

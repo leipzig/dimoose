@@ -7,7 +7,13 @@ lead:
 ## Usage
 
 ``` r
-keyFromSpreadsheet(file, photos = NULL, desc = NA, meta = NULL)
+keyFromSpreadsheet(
+  file,
+  photos = NULL,
+  desc = NA,
+  meta = NULL,
+  checkNames = FALSE
+)
 ```
 
 ## Arguments
@@ -29,6 +35,13 @@ keyFromSpreadsheet(file, photos = NULL, desc = NA, meta = NULL)
 
   Optional key/value metadata data frame (e.g. a `citation` row); the
   photos are added to it.
+
+- checkNames:
+
+  If `TRUE`, check the species names against GBIF with
+  [`checkNames()`](https://leipzig.github.io/dimoose/reference/checkNames.md)
+  and warn, by spreadsheet row, about names that are misspelled,
+  outdated synonyms or unknown. Needs an internet connection.
 
 ## Value
 

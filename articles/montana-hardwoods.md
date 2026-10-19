@@ -51,6 +51,23 @@ that is not in the folder,
 [`keyFromSpreadsheet()`](https://leipzig.github.io/dimoose/reference/keyFromSpreadsheet.md)
 says which spreadsheet row to fix.
 
+To check the species names too, add `checkNames = TRUE`. dimoose then
+looks each scientific name up in the [GBIF](https://www.gbif.org)
+backbone taxonomy (this needs an internet connection) and warns about
+names that are misspelled, are outdated synonyms, or are not known at
+all, again by row. The Montana names all pass; a sheet with two mistakes
+would give:
+
+``` r
+
+k <- keyFromSpreadsheet("~/my-key/montana/montana-key.csv", checkNames = TRUE)
+#> Warning: Some species names do not match GBIF:
+#> Row 5: Fraxinus pensylvanica is not in GBIF; did you mean Fraxinus pennsylvanica?
+#> Row 9: Ulmus fulva is a synonym; GBIF accepts Ulmus rubra
+```
+
+`checkNames(k)` gives the same check as a table.
+
 ## The Montana key
 
 ``` r
@@ -128,6 +145,37 @@ exportWizard(k, page)
 ```
 
 Open the file in a browser to try it.
+
+## Checking a photo against the key
+
+If you have a photo and want a second opinion, a vision model trained on
+organisms can rank the key’s eleven species by how well they match it.
+BioCLIP 2 knows many species by their scientific name, so it needs no
+example photos (see
+[`?visionModel`](https://leipzig.github.io/dimoose/reference/visionModel.md);
+the first call downloads the model, about 1.7 GB):
+
+``` r
+
+model <- visionModel(name = "bioclip-2")
+suggestSpecies(k, model, "my-tree.jpg", top = 3)
+```
+
+Only the key’s own species are ranked. For one answer per photo, use
+[`identifyPhotos()`](https://leipzig.github.io/dimoose/reference/identifyPhotos.md):
+when no species reaches the confidence you ask for (0.8 by default), it
+adds up the probabilities of the species in each genus, then family and
+order (looked up in GBIF), and answers with the most precise group that
+reaches it.
+
+``` r
+
+identifyPhotos(k, model, "my-tree.jpg", kingdom = "Plantae")
+```
+
+Treat the answer as a hint and confirm it by working through the key:
+the model can be wrong, especially on close relatives such as the
+cottonwoods.
 
 ## Diagrams of other keys
 

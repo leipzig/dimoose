@@ -10,6 +10,7 @@
 <url><loc>https://leipzig.github.io/dimoose/news/index.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/alignmentScores.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/arachnida.html</loc></url>
+<url><loc>https://leipzig.github.io/dimoose/reference/checkNames.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/classify.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/dimoose-package.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/dimoose.html</loc></url>
@@ -23,6 +24,7 @@
 <url><loc>https://leipzig.github.io/dimoose/reference/featureTable.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/generateTree.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/haplotypeMatrix.html</loc></url>
+<url><loc>https://leipzig.github.io/dimoose/reference/identifyPhotos.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/imageMeta.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/imageMime.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/imageSet.html</loc></url>
@@ -56,6 +58,7 @@
 <url><loc>https://leipzig.github.io/dimoose/reference/snigletNames.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/snigletScores.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/splitVariables.html</loc></url>
+<url><loc>https://leipzig.github.io/dimoose/reference/suggestSpecies.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/toAuspiceJSON.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/toIgraph.html</loc></url>
 <url><loc>https://leipzig.github.io/dimoose/reference/toNewick.html</loc></url>

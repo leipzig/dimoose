@@ -8,6 +8,8 @@ The dimoose key object and the ways to build one.
   A dichotomous key
 - [`keyFromSpreadsheet()`](https://leipzig.github.io/dimoose/reference/keyFromSpreadsheet.md)
   : Build a key from a spreadsheet
+- [`checkNames()`](https://leipzig.github.io/dimoose/reference/checkNames.md)
+  : Check a key's species names against GBIF
 - [`keyFromLeads()`](https://leipzig.github.io/dimoose/reference/keyFromLeads.md)
   : Build a dimoose key from a table of leads
 - [`keyFromRpart()`](https://leipzig.github.io/dimoose/reference/keyFromRpart.md)
@@ -98,6 +100,10 @@ The dimoose key object and the ways to build one.
   : Add example crops to a sniglet key
 - [`scoreImages()`](https://leipzig.github.io/dimoose/reference/scoreImages.md)
   : Score new images against a key's features
+- [`suggestSpecies()`](https://leipzig.github.io/dimoose/reference/suggestSpecies.md)
+  : Suggest which of a key's species a photo shows
+- [`identifyPhotos()`](https://leipzig.github.io/dimoose/reference/identifyPhotos.md)
+  : Name what a photo shows, as precisely as the evidence allows
 - [`featureTable()`](https://leipzig.github.io/dimoose/reference/featureTable.md)
   : A table of machine-computable features
 - [`featureScores()`](https://leipzig.github.io/dimoose/reference/featureScores.md)
