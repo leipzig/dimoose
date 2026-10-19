@@ -2,7 +2,7 @@ Package: dimoose
 Type: Package
 Title: Tools to Reshape and Manipulate Dichotomous Keys Used in Taxonomic
     Identification
-Version: 0.1.2
+Version: 0.2.0
 Authors@R:
     person("Jeremy", "Leipzig", , "leipzig@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7224-9620"))

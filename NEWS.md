@@ -1,3 +1,20 @@
+# dimoose 0.2.0
+
+* `checkNames()` looks up every scientific name in a key in the GBIF backbone
+  taxonomy and reports misspellings ("did you mean *Fraxinus
+  pennsylvanica*?"), outdated synonyms ("GBIF accepts *Ulmus rubra*") and
+  unknown names, with each name's genus, family and order. It needs an
+  internet connection but no extra packages.
+* `keyFromSpreadsheet(checkNames = TRUE)` runs that check and warns about
+  problems by spreadsheet row.
+* `suggestSpecies()` ranks a key's own species against a photo by their
+  scientific names, with no example photos needed. It works best with
+  BioCLIP 2 (`visionModel(name = "bioclip-2")`).
+* `identifyPhotos()` gives one answer per photo: the species when it is likely
+  enough, otherwise the genus, family or order whose species together are.
+  On the 14 Montana photos with BioCLIP 2 it named 12 to species and the
+  other two to the right genus, with no wrong answers.
+
 # dimoose 0.1.2
 
 * `keyDiagram()` also writes `.png` and `.pdf` files when the 'rsvg' package
