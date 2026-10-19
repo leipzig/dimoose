@@ -1,5 +1,25 @@
 # Changelog
 
+## dimoose 0.2.0
+
+- [`checkNames()`](https://leipzig.github.io/dimoose/reference/checkNames.md)
+  looks up every scientific name in a key in the GBIF backbone taxonomy
+  and reports misspellings (“did you mean *Fraxinus pennsylvanica*?”),
+  outdated synonyms (“GBIF accepts *Ulmus rubra*”) and unknown names,
+  with each name’s genus, family and order. It needs an internet
+  connection but no extra packages.
+- `keyFromSpreadsheet(checkNames = TRUE)` runs that check and warns
+  about problems by spreadsheet row.
+- [`suggestSpecies()`](https://leipzig.github.io/dimoose/reference/suggestSpecies.md)
+  ranks a key’s own species against a photo by their scientific names,
+  with no example photos needed. It works best with BioCLIP 2
+  (`visionModel(name = "bioclip-2")`).
+- [`identifyPhotos()`](https://leipzig.github.io/dimoose/reference/identifyPhotos.md)
+  gives one answer per photo: the species when it is likely enough,
+  otherwise the genus, family or order whose species together are. On
+  the 14 Montana photos with BioCLIP 2 it named 12 to species and the
+  other two to the right genus, with no wrong answers.
+
 ## dimoose 0.1.2
 
 - [`keyDiagram()`](https://leipzig.github.io/dimoose/reference/keyDiagram.md)

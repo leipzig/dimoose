@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">dimoose</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,9 +38,20 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/leipzig/dimoose/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/leipzig/dimoose/blob/v0.2.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="dimoose-020">dimoose 0.2.0<a class="anchor" aria-label="anchor" href="#dimoose-020"></a></h2>
+<ul><li>
+<code><a href="../reference/checkNames.html">checkNames()</a></code> looks up every scientific name in a key in the GBIF backbone taxonomy and reports misspellings (“did you mean <em>Fraxinus pennsylvanica</em>?”), outdated synonyms (“GBIF accepts <em>Ulmus rubra</em>”) and unknown names, with each name’s genus, family and order. It needs an internet connection but no extra packages.</li>
+<li>
+<code>keyFromSpreadsheet(checkNames = TRUE)</code> runs that check and warns about problems by spreadsheet row.</li>
+<li>
+<code><a href="../reference/suggestSpecies.html">suggestSpecies()</a></code> ranks a key’s own species against a photo by their scientific names, with no example photos needed. It works best with BioCLIP 2 (<code>visionModel(name = "bioclip-2")</code>).</li>
+<li>
+<code><a href="../reference/identifyPhotos.html">identifyPhotos()</a></code> gives one answer per photo: the species when it is likely enough, otherwise the genus, family or order whose species together are. On the 14 Montana photos with BioCLIP 2 it named 12 to species and the other two to the right genus, with no wrong answers.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2" id="dimoose-012">dimoose 0.1.2<a class="anchor" aria-label="anchor" href="#dimoose-012"></a></h2>
 <ul><li>

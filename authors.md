@@ -8,16 +8,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/leipzig/dimoose/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/leipzig/dimoose/blob/v0.2.0/DESCRIPTION)
 
 Leipzig J (2026). *dimoose: Tools to Reshape and Manipulate Dichotomous
-Keys Used in Taxonomic Identification*. R package version 0.1.2,
+Keys Used in Taxonomic Identification*. R package version 0.2.0,
 <https://leipzig.github.io/dimoose/>.
 
     @Manual{,
       title = {dimoose: Tools to Reshape and Manipulate Dichotomous Keys Used in Taxonomic Identification},
       author = {Jeremy Leipzig},
       year = {2026},
-      note = {R package version 0.1.2},
+      note = {R package version 0.2.0},
       url = {https://leipzig.github.io/dimoose/},
     }
