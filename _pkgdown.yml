@@ -31,6 +31,7 @@ reference:
   contents:
   - dimoose
   - keyFromSpreadsheet
+  - checkNames
   - keyFromLeads
   - keyFromRpart
   - generateTree
@@ -75,6 +76,7 @@ reference:
   - keyFromClusters
   - patchExemplars
   - scoreImages
+  - suggestSpecies
   - featureTable
   - featureScores
   - classify

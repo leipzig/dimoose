@@ -4,7 +4,13 @@
 \alias{keyFromSpreadsheet}
 \title{Build a key from a spreadsheet}
 \usage{
-keyFromSpreadsheet(file, photos = NULL, desc = NA, meta = NULL)
+keyFromSpreadsheet(
+  file,
+  photos = NULL,
+  desc = NA,
+  meta = NULL,
+  checkNames = FALSE
+)
 }
 \arguments{
 \item{file}{Path of the CSV file (UTF-8).}
@@ -16,6 +22,10 @@ default the folder the CSV file is in.}
 
 \item{meta}{Optional key/value metadata data frame (e.g. a \code{citation}
 row); the photos are added to it.}
+
+\item{checkNames}{If \code{TRUE}, check the species names against GBIF with
+\code{\link[=checkNames]{checkNames()}} and warn, by spreadsheet row, about names that are
+misspelled, outdated synonyms or unknown. Needs an internet connection.}
 }
 \value{
 A \link{dimoose} key.

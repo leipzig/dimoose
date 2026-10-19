@@ -32,6 +32,9 @@
 #' @param desc Title of the key.
 #' @param meta Optional key/value metadata data frame (e.g. a `citation`
 #'   row); the photos are added to it.
+#' @param checkNames If `TRUE`, check the species names against GBIF with
+#'   [checkNames()] and warn, by spreadsheet row, about names that are
+#'   misspelled, outdated synonyms or unknown. Needs an internet connection.
 #' @return A [dimoose] key.
 #' @seealso [keyFromLeads()] to build a key from a data frame,
 #'   [keyDiagram()] and [exportWizard()] to show it.
@@ -41,7 +44,7 @@
 #' k
 #' keyDiagram(k, tempfile(fileext = ".svg"))
 #' @export
-keyFromSpreadsheet <- function(file, photos = NULL, desc = NA, meta = NULL) {
+keyFromSpreadsheet <- function(file, photos = NULL, desc = NA, meta = NULL, checkNames = FALSE) {
   if (!file.exists(file)) stop("Spreadsheet ", file, " not found", call. = FALSE)
   # Excel saves "CSV UTF-8" with a byte-order mark, and plain "CSV" on Windows
   # as Windows-1252; read either as UTF-8
@@ -135,5 +138,15 @@ keyFromSpreadsheet <- function(file, photos = NULL, desc = NA, meta = NULL) {
 
   leads <- sheet[c("Statement", "Choice", "Character", "Next", "Taxon", "Question", "Image")]
   rownames(leads) <- NULL
-  keyFromLeads(leads, desc, meta)
+  key <- keyFromLeads(leads, desc, meta)
+  if (isTRUE(checkNames)) {
+    checked <- dimoose::checkNames(key)
+    bad <- checked[checked$status %in% c("misspelled", "synonym", "not found"), ]
+    if (nrow(bad)) {
+      at <- row[match(bad$Taxon, sheet$Taxon)]
+      warning("Some species names do not match GBIF:\n",
+              paste(paste0("Row ", at, ": ", bad$note)[order(at)], collapse = "\n"), call. = FALSE)
+    }
+  }
+  key
 }

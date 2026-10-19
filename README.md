@@ -97,7 +97,7 @@ PhyloTree Build 17, the human mitochondrial DNA phylogeny (van Oven 2015), as di
 
 ### Montana broadleaf trees — `montanaKey()` (dataset `montana`)
 
-A key to the **eleven native broadleaf (hardwood) trees of Montana**, written for dimoose: **10 couplets, 11 species**, each checked as native in the [Montana Field Guide](https://fieldguide.mt.gov) and USDA PLANTS, with 14 photos from Wikimedia Commons (most taken in Montana by Matt Lavin). It is kept as a plain spreadsheet, `inst/extdata/montana/montana-key.csv`, next to its photos, and `keyFromSpreadsheet()` turns it into the key, so it doubles as a template: copy the folder, edit the sheet in Excel or Google Sheets, and build your own key in one line. `keyDiagram()` draws any key as a box diagram, and `exportWizard()` turns it into a page you can use on a phone: [try the Montana key](https://leipzig.github.io/dimoose/montana/).
+A key to the **eleven native broadleaf (hardwood) trees of Montana**, written for dimoose: **10 couplets, 11 species**, each checked as native in the [Montana Field Guide](https://fieldguide.mt.gov) and USDA PLANTS, with 14 photos from Wikimedia Commons (most taken in Montana by Matt Lavin). It is kept as a plain spreadsheet, `inst/extdata/montana/montana-key.csv`, next to its photos, and `keyFromSpreadsheet()` turns it into the key, so it doubles as a template: copy the folder, edit the sheet in Excel or Google Sheets, and build your own key in one line. `keyFromSpreadsheet(file, checkNames = TRUE)` also checks the species names against [GBIF](https://www.gbif.org) and points out misspellings and outdated synonyms by spreadsheet row. `keyDiagram()` draws any key as a box diagram, and `exportWizard()` turns it into a page you can use on a phone: [try the Montana key](https://leipzig.github.io/dimoose/montana/).
 
 ![Key to the native broadleaf trees of Montana](man/figures/montana-key.svg)
 
@@ -278,6 +278,16 @@ model <- visionModel(name = "bioclip")
   organisms, not on descriptions of what they look like, so vocabulary
   questions (`keyFromClusters()`) work better with regular CLIP.
 - **BioCLIP 2 is a larger model**, so embedding takes several times longer.
+
+BioCLIP 2 also recognises many species from their scientific name alone, with
+no example photos. `suggestSpecies()` uses this to check a photo against a key
+you already have: it ranks only the key's own species, which is far more
+reliable than asking the model to pick from every species it knows.
+
+```r
+model <- visionModel(name = "bioclip-2")
+suggestSpecies(montanaKey(), model, "my-tree.jpg")   # the 3 best of the key's 11 species, with probabilities
+```
 
 Other models: `name = "hf-hub:<organisation>/<model>"` loads any open_clip
 model on the Hugging Face Hub whose image side is a vision transformer, and
