@@ -2,5 +2,5 @@
 # OpenAI ViT-B-32 weights); torch and open_clip match analysis/fordera.
 torch==2.14.1
 open_clip_torch==3.3.0
-pillow==12.3.0
+pillow==13.0.0
 numpy==2.5.3
