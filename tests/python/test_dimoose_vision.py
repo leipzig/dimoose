@@ -4,7 +4,7 @@ import pytest
 from PIL import Image
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "inst", "python"))
-import dimoose_vision as mv
+mv = pytest.importorskip("dimoose_vision")   # skipped where torch or open_clip is not installed
 
 WEIGHTS = os.environ.get("DIMOOSE_CLIP_WEIGHTS")
 pytestmark = pytest.mark.skipif(not WEIGHTS, reason="DIMOOSE_CLIP_WEIGHTS not set")

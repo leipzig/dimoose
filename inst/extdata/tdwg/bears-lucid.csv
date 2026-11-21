@@ -1,0 +1,10 @@
+,Ursidae:Ursus:Ursus arctos,Ursidae:Ursus:Ursus maritimus,Ursidae:Ursus:Ursus americanus,Ursidae:Ailuropoda:Ailuropoda melanoleuca
+Coat:Colour:white,0,1,0,1
+Coat:Colour:brown,1,0,2,0
+Coat:Colour:black,0,0,1,1
+Shoulder hump:present,1,0,0,0
+Shoulder hump:absent,0,1,1,1
+Diet:mostly meat,0,1,0,0
+Diet:mixed,1,0,1,0
+Diet:mostly plants,3,0,0,1
+Body:Head and body length#,1:1.4:1.7:2.8:3.0,1:1.8:2.0:2.5:2.8,1:1.2:1.3:1.9:1.9,1:1.2:1.2:1.9:1.9

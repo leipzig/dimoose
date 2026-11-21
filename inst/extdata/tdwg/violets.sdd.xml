@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Datasets xmlns="http://rs.tdwg.org/UBIF/2006/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://rs.tdwg.org/UBIF/2006/ http://rs.tdwg.org/UBIF/2006/Schema/1.1/SDD.xsd">
+  <TechnicalMetadata created="2026-11-19T10:00:00">
+    <Generator name="handcrafted example for the dimoose package" version="1"/>
+  </TechnicalMetadata>
+  <Dataset xml:lang="en">
+    <Representation>
+      <Label>Four violets</Label>
+      <Detail>A small example of an SDD 1.1 file with categorical, quantitative and text characters. The codings are for illustration only.</Detail>
+    </Representation>
+    <TaxonNames>
+      <TaxonName id="t1">
+        <Representation>
+          <Label>Viola odorata</Label>
+          <Detail>Sweet violet</Detail>
+        </Representation>
+      </TaxonName>
+      <TaxonName id="t2">
+        <Representation>
+          <Label>Viola tricolor</Label>
+          <Detail>Wild pansy</Detail>
+        </Representation>
+      </TaxonName>
+      <TaxonName id="t3">
+        <Representation>
+          <Label>Viola biflora</Label>
+          <Detail>Alpine yellow violet</Detail>
+        </Representation>
+      </TaxonName>
+      <TaxonName id="t4">
+        <Representation>
+          <Label>Viola palustris</Label>
+          <Detail>Marsh violet</Detail>
+        </Representation>
+      </TaxonName>
+    </TaxonNames>
+    <Characters>
+      <CategoricalCharacter id="c1">
+        <Representation>
+          <Label>Aerial stem</Label>
+        </Representation>
+        <States>
+          <StateDefinition id="s1">
+            <Representation>
+              <Label>present</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s2">
+            <Representation>
+              <Label>absent</Label>
+            </Representation>
+          </StateDefinition>
+        </States>
+      </CategoricalCharacter>
+      <CategoricalCharacter id="c2">
+        <Representation>
+          <Label>Flower colour</Label>
+        </Representation>
+        <States>
+          <StateDefinition id="s3">
+            <Representation>
+              <Label>violet</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s4">
+            <Representation>
+              <Label>white</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s5">
+            <Representation>
+              <Label>yellow</Label>
+            </Representation>
+          </StateDefinition>
+        </States>
+      </CategoricalCharacter>
+      <CategoricalCharacter id="c3">
+        <Representation>
+          <Label>Stem hairs</Label>
+        </Representation>
+        <States>
+          <StateDefinition id="s6">
+            <Representation>
+              <Label>hairy</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s7">
+            <Representation>
+              <Label>glabrous</Label>
+            </Representation>
+          </StateDefinition>
+        </States>
+      </CategoricalCharacter>
+      <QuantitativeCharacter id="c4">
+        <Representation>
+          <Label>Flower length</Label>
+        </Representation>
+        <MeasurementUnit>
+          <Label role="Abbrev">m</Label>
+        </MeasurementUnit>
+        <Default>
+          <MeasurementUnitPrefix>milli</MeasurementUnitPrefix>
+        </Default>
+      </QuantitativeCharacter>
+      <TextCharacter id="c5">
+        <Representation>
+          <Label>Notes</Label>
+        </Representation>
+      </TextCharacter>
+    </Characters>
+    <CharacterTrees>
+      <CharacterTree id="ct1">
+        <Representation>
+          <Label>Order of and dependencies between characters</Label>
+        </Representation>
+        <ShouldContainAllCharacters>true</ShouldContainAllCharacters>
+        <Nodes>
+          <CharNode>
+            <Character ref="c1"/>
+          </CharNode>
+          <CharNode>
+            <Character ref="c2"/>
+          </CharNode>
+          <CharNode>
+            <DependencyRules>
+              <InapplicableIf>
+                <State ref="s2"/>
+              </InapplicableIf>
+            </DependencyRules>
+            <Character ref="c3"/>
+          </CharNode>
+          <CharNode>
+            <Character ref="c4"/>
+          </CharNode>
+          <CharNode>
+            <Character ref="c5"/>
+          </CharNode>
+        </Nodes>
+      </CharacterTree>
+    </CharacterTrees>
+    <CodedDescriptions>
+      <CodedDescription id="D1">
+        <Representation>
+          <Label>Viola odorata</Label>
+        </Representation>
+        <Scope>
+          <TaxonName ref="t1"/>
+        </Scope>
+        <SummaryData>
+          <Categorical ref="c1">
+            <State ref="s2"/>
+          </Categorical>
+          <Categorical ref="c2">
+            <State ref="s3"/>
+            <State ref="s4"/>
+          </Categorical>
+          <Categorical ref="c3">
+            <Status code="NotApplicable"/>
+          </Categorical>
+          <Quantitative ref="c4">
+            <Measure type="Min" value="13"/>
+            <Measure type="Max" value="15"/>
+          </Quantitative>
+          <TextChar ref="c5">
+            <Content>Flowers strongly scented</Content>
+          </TextChar>
+        </SummaryData>
+      </CodedDescription>
+      <CodedDescription id="D2">
+        <Representation>
+          <Label>Viola tricolor</Label>
+        </Representation>
+        <Scope>
+          <TaxonName ref="t2"/>
+        </Scope>
+        <SummaryData>
+          <Categorical ref="c1">
+            <State ref="s1"/>
+          </Categorical>
+          <Categorical ref="c2">
+            <State ref="s3"/>
+            <State ref="s4"/>
+            <State ref="s5"/>
+          </Categorical>
+          <Categorical ref="c3">
+            <State ref="s6"/>
+            <State ref="s7"/>
+          </Categorical>
+          <Quantitative ref="c4">
+            <Measure type="Min" value="10"/>
+            <Measure type="UMethLower" value="15"/>
+            <Measure type="UMethUpper" value="25"/>
+            <Measure type="Max" value="30"/>
+          </Quantitative>
+        </SummaryData>
+      </CodedDescription>
+      <CodedDescription id="D3">
+        <Representation>
+          <Label>Viola biflora</Label>
+        </Representation>
+        <Scope>
+          <TaxonName ref="t3"/>
+        </Scope>
+        <SummaryData>
+          <Categorical ref="c1">
+            <State ref="s1"/>
+          </Categorical>
+          <Categorical ref="c2">
+            <State ref="s5"/>
+          </Categorical>
+          <Categorical ref="c3">
+            <State ref="s7"/>
+          </Categorical>
+          <Quantitative ref="c4">
+            <Measure type="Min" value="12"/>
+            <Measure type="Mean" value="13.5"/>
+            <Measure type="Max" value="15"/>
+            <Measure type="N" value="20"/>
+          </Quantitative>
+          <TextChar ref="c5">
+            <Content>Usually two flowers on a stem</Content>
+          </TextChar>
+        </SummaryData>
+      </CodedDescription>
+      <CodedDescription id="D4">
+        <Representation>
+          <Label>Viola palustris</Label>
+        </Representation>
+        <Scope>
+          <TaxonName ref="t4"/>
+        </Scope>
+        <SummaryData>
+          <Categorical ref="c1">
+            <State ref="s2"/>
+          </Categorical>
+          <Categorical ref="c2">
+            <State ref="s3"/>
+          </Categorical>
+          <Categorical ref="c3">
+            <Status code="NotApplicable"/>
+          </Categorical>
+          <Quantitative ref="c4">
+            <Status code="DataUnavailable"/>
+          </Quantitative>
+        </SummaryData>
+      </CodedDescription>
+    </CodedDescriptions>
+  </Dataset>
+</Datasets>

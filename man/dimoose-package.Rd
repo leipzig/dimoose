@@ -3,12 +3,70 @@
 \docType{package}
 \name{dimoose-package}
 \alias{dimoose-package}
-\title{dimoose: manage, manipulate, and mine dichotomous keys}
+\title{dimoose: read, build, check, prune and share dichotomous keys}
 \description{
-Tools to import dichotomous identification keys (currently from FishBase),
-represent them as tables of couplets and leads, and convert them to other
-tree representations.
+A dichotomous key identifies a specimen by a series of choices. dimoose
+keeps a key as a \link{dimoose} object, a table of couplets and leads, and
+provides the tools around it. \code{key$validate()} checks any key, however it
+was made.
 }
+\section{Where to start}{
+
+\itemize{
+\item \strong{Write a key} in a spreadsheet and read it with \code{\link[=keyFromSpreadsheet]{keyFromSpreadsheet()}};
+\code{\link[=keyToSpreadsheet]{keyToSpreadsheet()}} writes any key back out for editing.
+\code{\link[=montanaKey]{montanaKey()}}, \code{\link[=sharkKey]{sharkKey()}}, \code{\link[=arachnidaKey]{arachnidaKey()}}, \code{\link[=vibrioKey]{vibrioKey()}} and
+\code{\link[=phylotreeKey]{phylotreeKey()}} are example keys.
+\item \strong{Read a key somebody else wrote}: plain text as printed in a flora
+(\code{\link[=keyFromText]{keyFromText()}}, \code{\link[=parseTextKey]{parseTextKey()}}), FishBase (\code{\link[=importFishbase]{importFishbase()}}), or
+the keys and character matrices of other identification software
+(\code{\link[=readSDD]{readSDD()}}, \code{\link[=readSDDKey]{readSDDKey()}}, \code{\link[=readDELTA]{readDELTA()}}, \code{\link[=readLucid]{readLucid()}},
+\code{\link[=readLucidKey]{readLucidKey()}}, \code{\link[=readXper]{readXper()}}, each with a writer).
+\item \strong{Check it}: \code{\link[=checkNames]{checkNames()}} looks its names up in GBIF, and \code{summary()}
+and \code{\link[=keyQuality]{keyQuality()}} say how many steps it takes to reach a result,
+optionally weighted by how common each taxon is (\code{\link[=occurrenceWeights]{occurrenceWeights()}}).
+\item \strong{Cut it down or join keys up}: \code{\link[=pruneKey]{pruneKey()}} keeps or drops taxa,
+\code{\link[=regionalKey]{regionalKey()}} keeps the taxa recorded in a place, and \code{\link[=mergeKeys]{mergeKeys()}}
+grafts one key onto a result of another.
+\item \strong{Generate a key from data}: from a character matrix
+(\code{\link[=keyFromMatrix]{keyFromMatrix()}}, or \code{\link[=generateTree]{generateTree()}} with \code{\link[=keyFromRpart]{keyFromRpart()}}), from a
+sequence alignment (\code{\link[=keyFromAlignment]{keyFromAlignment()}}), or from labelled photos with
+a vision model (\code{\link[=visionModel]{visionModel()}}, \code{\link[=embedImages]{embedImages()}}, \code{\link[=discoverSniglets]{discoverSniglets()}},
+\code{\link[=keyFromSniglets]{keyFromSniglets()}}, \code{\link[=keyFromClusters]{keyFromClusters()}}). Such keys can be followed by
+machine with \code{\link[=classify]{classify()}} and tested with \code{\link[=evaluateKey]{evaluateKey()}} and
+\code{\link[=benchmarkKey]{benchmarkKey()}}.
+\item \strong{Share it}: \code{\link[=exportWizard]{exportWizard()}} writes a self-contained web page that
+works on a phone, \code{\link[=keyDiagram]{keyDiagram()}} draws a box diagram, and \code{\link[=toNewick]{toNewick()}},
+\code{\link[=toIgraph]{toIgraph()}}, \code{\link[=toTreedata]{toTreedata()}} and \code{\link[=toAuspiceJSON]{toAuspiceJSON()}} hand the key to
+phylogenetics software.
+}
+}
+
+\section{Vignettes}{
+
+\itemize{
+\item \code{vignette("montana-hardwoods", package = "dimoose")}: a key written in a
+spreadsheet, with photos.
+\item \code{vignette("published-key", package = "dimoose")}: from a printed key to
+a regional key on a phone.
+\item \code{vignette("vision-keys", package = "dimoose")}: keys from photos.
+\item \code{vignette("alignment-keys", package = "dimoose")}: keys from aligned
+sequences.
+}
+}
+
+\section{Web services and optional software}{
+
+Reading, building, checking and exporting keys needs nothing beyond the
+packages dimoose imports. \code{\link[=checkNames]{checkNames()}}, \code{\link[=regionalKey]{regionalKey()}},
+\code{\link[=occurrenceWeights]{occurrenceWeights()}}, \code{\link[=importFishbase]{importFishbase()}} and \code{\link[=inatPhotos]{inatPhotos()}} ask public
+web services (GBIF, iNaturalist, FishBase) and need an internet
+connection. The vision functions run a model in Python through the
+reticulate package, which sets Python up on first use;
+\code{\link[=saveEmbeddings]{saveEmbeddings()}} and \code{\link[=loadEmbeddings]{loadEmbeddings()}} let the later steps run without
+it.
+}
+
 \seealso{
 Useful links:
 \itemize{

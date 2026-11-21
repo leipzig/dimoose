@@ -1,0 +1,79 @@
+# Runs R CMD check, tests included, on Linux (release, devel, oldrel-1), macOS
+# and Windows for every push to the main branch and every pull request.
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+name: R-CMD-check
+
+permissions: read-all
+
+jobs:
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: macos-latest,   r: 'release'}
+          - {os: windows-latest, r: 'release'}
+          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,   r: 'release'}
+          - {os: ubuntu-latest,   r: 'oldrel-1'}
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+      # The tests that talk to live services (FishBase, GBIF, Global Names) and
+      # the ones that build a real vision model are guarded by skip_on_cran().
+      # setup-r would set NOT_CRAN=true; keeping it false here makes those tests
+      # skip, so a slow or changed web service cannot fail the build. The tests
+      # that need Python (torch, open_clip) also skip because neither
+      # RETICULATE_PYTHON nor DIMOOSE_CLIP_WEIGHTS is set. Everything else,
+      # including the parsers and the vision code against a fake model, runs.
+      NOT_CRAN: false
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      # The behaviour tests of the interactive page (tests/js, run from
+      # tests/testthat/test-wizard-js.R) need node and the jsdom package; they
+      # skip without them. One job is enough, so only Ubuntu release gets them.
+      # jsdom is installed outside the checkout so that it cannot end up in
+      # the package.
+      - uses: actions/setup-node@v7
+        if: matrix.config.os == 'ubuntu-latest' && matrix.config.r == 'release'
+        with:
+          node-version: 'lts/*'
+
+      - name: Install jsdom for the wizard tests
+        if: matrix.config.os == 'ubuntu-latest' && matrix.config.r == 'release'
+        run: |
+          mkdir -p "$RUNNER_TEMP/dimoose-jsdom"
+          cd "$RUNNER_TEMP/dimoose-jsdom"
+          npm install --no-audit --no-fund jsdom
+          echo "DIMOOSE_JSDOM=$RUNNER_TEMP/dimoose-jsdom/node_modules" >> "$GITHUB_ENV"
+        shell: bash
+
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
+          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'

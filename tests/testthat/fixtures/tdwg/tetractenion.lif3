@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lif3_key xmlns="http://www.lucidcentral.org/2006/LIF3/">
+  <properties>
+    <property key="key_authors" type="java.lang.String" value="Terry Reynolds Berry and Simon van Noort (Iziko South African Museum)"/>
+    <property key="key_description" type="java.lang.String" value="Reynolds Berry T, van Noort S. 2020. Revision of the endemic Afrotropical genus Tetractenion (Hymenoptera; Ichneumonidae) with an identification key to genera of Banchinae for the region. ZooKeys"/>
+    <property key="key_title" type="java.lang.String" value="Identification key to Tetractenion species (Banchinae, Ichneumonidae)"/>
+    <property key="export_key_filename" type="java.lang.String" value="N:\Users\svannoort\ACTIVE Documents 24 Jan 2020\RESEARCH\RESEARCH PROJECTS &amp; FIELDWORK\Ichneumonidae\Banchinae\Banchinae generic paper 2020\Lucid keys\Key outputs for Appendix files\Key to Tetractenion species Banchinae.lif3"/>
+    <property key="export_key_filetype" type="java.lang.Byte" value="2"/>
+    <property key="MediaPanel_last_images_folder" type="java.lang.String" value="N:\Users\svannoort\ACTIVE Documents 24 Jan 2020\Lucid keys\Tectractenion_species_matrix_key\Media\Images"/>
+  </properties>
+  <items>
+    <item item_id="1" name="Tetractenion acaule" item_type="entity" item_uid="fb4d6605-0704-40ad-8344-a29791adf474" revision="false" entity_type="entity" is_list_view_node="true"/>
+    <item item_id="2" name="Tetractenion ibayaensis" item_type="entity" item_uid="8b611f73-e2f3-42fd-9157-037ff1c136e3" revision="false" entity_type="entity" is_list_view_node="true"/>
+    <item item_id="3" name="Tetractenion luteum" item_type="entity" item_uid="4c7b362c-39a8-40b5-b5d9-82370811599f" revision="false" entity_type="entity" is_list_view_node="true"/>
+    <item item_id="4" name="Tetractenion pascali" item_type="entity" item_uid="a8c96bfb-b68f-44be-9162-b5b10729cf05" revision="false" entity_type="entity" is_list_view_node="true"/>
+    <item item_id="5" name="Tetractenion pseudolutea" item_type="entity" item_uid="0c8c946b-8534-4476-80dc-518630adc1ed" revision="false" entity_type="entity" is_list_view_node="true"/>
+    <item item_id="6" name="Tetractenion rosei" item_type="entity" item_uid="9a15856d-2f68-4448-8dcf-d860a507fa9d" revision="false" entity_type="entity" is_list_view_node="true"/>
+    <item item_id="7" name="Head colour" item_type="feature" item_uid="8d6672e4-4204-432e-afa7-06c31a3df4ee" revision="false" score_type="normal" score_weight="1.0" match_type="any" base_unit="none" unit_prefix="none" include_in_best="true" single_choice="false"/>
+    <item item_id="8" name="mostly white (occiput and/or vertex brown/black)" item_type="state" item_uid="8b8b4e0f-e24b-42da-9cf6-b5d5c8b95719" revision="false"/>
+    <item item_id="9" name="mostly yellow (occiput brown/black)" item_type="state" item_uid="af45da72-e5d5-46af-bb83-77510282bb93" revision="false"/>
+    <item item_id="10" name="reddish-brown" item_type="state" item_uid="0fc64da1-a40e-432d-bebb-0b96c7845cbf" revision="false"/>
+    <item item_id="11" name="dark purplish-brown" item_type="state" item_uid="cefdc2a7-2658-4f5a-b050-1c82b4262f3f" revision="false"/>
+    <item item_id="15" name="Malar space length index (ratio of shortest distance between mandible base and compound eye to basal mandibular width)" item_type="feature" item_uid="2c1e8779-0043-4326-a82a-4f142a227e49" revision="false" score_type="normal" score_weight="1.0" match_type="any" base_unit="none" unit_prefix="none" include_in_best="true" single_choice="false"/>
+    <item item_id="16" name="0.5-0.6" item_type="state" item_uid="fe151685-eab7-4c7c-bb50-0373d94efe94" revision="false"/>
+    <item item_id="17" name="0.7-0.9" item_type="state" item_uid="3a886368-cb2c-44fb-b24d-391f9ce4bf53" revision="false"/>
+    <item item_id="18" name="Pronotal collar" item_type="feature" item_uid="32bd7027-9cd2-43ea-b8d5-2023d0b36aba" revision="false" score_type="normal" score_weight="1.0" match_type="any" base_unit="none" unit_prefix="none" include_in_best="true" single_choice="false"/>
+    <item item_id="19" name="with strong carina present" item_type="state" item_uid="0e7ad412-225e-4543-9533-34827a45d439" revision="false"/>
+    <item item_id="20" name="weakly wrinkled" item_type="state" item_uid="485c3cb5-f9d7-432b-9ebb-b08ec45b991e" revision="false"/>
+    <item item_id="21" name="Mesoscutum with keels" item_type="feature" item_uid="fc59fe14-9b97-4c41-aea6-efc59a2ff5b9" revision="false" score_type="normal" score_weight="1.0" match_type="any" base_unit="none" unit_prefix="none" include_in_best="true" single_choice="false"/>
+    <item item_id="22" name="distinctly raised on lobes" item_type="state" item_uid="b90ae471-4826-4509-bc59-76a6c74c5e37" revision="false"/>
+    <item item_id="23" name="only slightly raised on mesoscutal lobes" item_type="state" item_uid="38232b6b-3536-4c32-981a-610380c6a3e6" revision="false"/>
+    <item item_id="24" name="Mesopleuron and propodeum with" item_type="feature" item_uid="406aa8f2-126f-4b7f-b123-226f18319087" revision="false" score_type="normal" score_weight="1.0" match_type="any" base_unit="none" unit_prefix="none" include_in_best="true" single_choice="false"/>
+    <item item_id="25" name="large and deep pits" item_type="state" item_uid="dffa03ad-1b75-4f72-8bf0-d412cda9d900" revision="false"/>
+    <item item_id="26" name="shallow pits" item_type="state" item_uid="dce53dcd-852e-4cb4-a908-3dfdeff21a3f" revision="false"/>
+    <item item_id="27" name="Hind tarsal claw" item_type="feature" item_uid="39a74762-335d-43f3-aee4-e7fe969af577" revision="false" score_type="normal" score_weight="1.0" match_type="any" base_unit="none" unit_prefix="none" include_in_best="true" single_choice="false"/>
+    <item item_id="28" name="simple" item_type="state" item_uid="d8fe82fe-4286-4cd7-99c6-ffa15f564fe9" revision="false"/>
+    <item item_id="29" name="pectinate" item_type="state" item_uid="409a7357-38d9-49df-9f0a-46b753d14a1e" revision="false"/>
+    <item item_id="30" name="Metasomal tergite 1 compression" item_type="feature" item_uid="68002c84-fdbe-41f4-a05d-8ec1b84a7f4c" revision="false" score_type="normal" score_weight="1.0" match_type="any" base_unit="none" unit_prefix="none" include_in_best="true" single_choice="false"/>
+    <item item_id="31" name="distinctly dorso-medially compressed" item_type="state" item_uid="715f5f67-e129-4e81-911f-5fcbcc9efb22" revision="false"/>
+    <item item_id="32" name="Tergites 4-8" item_type="feature" item_uid="ce80b536-c0ad-4d2a-874b-58b9721ce8bb" revision="false" score_type="normal" score_weight="1.0" match_type="any" base_unit="none" unit_prefix="none" include_in_best="true" single_choice="false"/>
+    <item item_id="33" name="white where weakly sclerotized on apical margins" item_type="state" item_uid="4666ac4f-482c-429b-b969-6af93cc145b4" revision="false"/>
+    <item item_id="34" name="strongly sclerotized" item_type="state" item_uid="f51df434-621d-46d1-9248-89c80f995dce" revision="false"/>
+    <item item_id="35" name="Wings with" item_type="feature" item_uid="ff760dce-b106-4ef8-a3c6-eb146b703319" revision="false" score_type="normal" score_weight="1.0" match_type="any" base_unit="none" unit_prefix="none" include_in_best="true" single_choice="false"/>
+    <item item_id="36" name="dense microtrichia" item_type="state" item_uid="38fef25d-9a43-4caa-b3e5-1e6bbc5ec8df" revision="false"/>
+    <item item_id="37" name="sparser microtrichia" item_type="state" item_uid="61885175-3fda-423f-aca7-e68d407716a0" revision="false"/>
+    <item item_id="38" name="Wing venation" item_type="feature" item_uid="1ec004c9-8f9d-4ca1-bbfe-b38400471688" revision="false" score_type="normal" score_weight="1.0" match_type="any" base_unit="none" unit_prefix="none" include_in_best="true" single_choice="false"/>
+    <item item_id="39" name="dark" item_type="state" item_uid="8cd3658c-39f8-4c2d-a026-2615e32f2a03" revision="false"/>
+    <item item_id="40" name="yellow-brown" item_type="state" item_uid="e69158fb-29a2-44d3-bc00-e022da63308b" revision="false"/>
+    <item item_id="41" name="with dorso-medial compression weak, or absent" item_type="state" item_uid="fa4a1a5d-37cf-4d1e-a544-b1467f10932c" revision="false"/>
+  </items>
+  <trees>
+    <tree type="feature">
+      <treenode item_id="7" parent_id="0"/>
+      <treenode item_id="8" parent_id="7"/>
+      <treenode item_id="9" parent_id="7"/>
+      <treenode item_id="10" parent_id="7"/>
+      <treenode item_id="11" parent_id="7"/>
+      <treenode item_id="15" parent_id="0"/>
+      <treenode item_id="16" parent_id="15"/>
+      <treenode item_id="17" parent_id="15"/>
+      <treenode item_id="18" parent_id="0"/>
+      <treenode item_id="19" parent_id="18"/>
+      <treenode item_id="20" parent_id="18"/>
+      <treenode item_id="21" parent_id="0"/>
+      <treenode item_id="22" parent_id="21"/>
+      <treenode item_id="23" parent_id="21"/>
+      <treenode item_id="24" parent_id="0"/>
+      <treenode item_id="25" parent_id="24"/>
+      <treenode item_id="26" parent_id="24"/>
+      <treenode item_id="27" parent_id="0"/>
+      <treenode item_id="28" parent_id="27"/>
+      <treenode item_id="29" parent_id="27"/>
+      <treenode item_id="30" parent_id="0"/>
+      <treenode item_id="31" parent_id="30"/>
+      <treenode item_id="41" parent_id="30"/>
+      <treenode item_id="32" parent_id="0"/>
+      <treenode item_id="33" parent_id="32"/>
+      <treenode item_id="34" parent_id="32"/>
+      <treenode item_id="35" parent_id="0"/>
+      <treenode item_id="36" parent_id="35"/>
+      <treenode item_id="37" parent_id="35"/>
+      <treenode item_id="38" parent_id="0"/>
+      <treenode item_id="39" parent_id="38"/>
+      <treenode item_id="40" parent_id="38"/>
+    </tree>
+    <tree type="entity">
+      <treenode item_id="1" parent_id="0"/>
+      <treenode item_id="2" parent_id="0"/>
+      <treenode item_id="3" parent_id="0"/>
+      <treenode item_id="4" parent_id="0"/>
+      <treenode item_id="5" parent_id="0"/>
+      <treenode item_id="6" parent_id="0"/>
+    </tree>
+    <tree type="filter"/>
+  </trees>
+  <descriptions>
+    <container type="normal">
+      <scoring_item item_id="8">
+        <scored_item item_id="1" value="1"/>
+        <scored_item item_id="2" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="9">
+        <scored_item item_id="3" value="1"/>
+        <scored_item item_id="5" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="10">
+        <scored_item item_id="6" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="11">
+        <scored_item item_id="4" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="16">
+        <scored_item item_id="1" value="1"/>
+        <scored_item item_id="2" value="1"/>
+        <scored_item item_id="5" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="17">
+        <scored_item item_id="3" value="1"/>
+        <scored_item item_id="4" value="1"/>
+        <scored_item item_id="6" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="19">
+        <scored_item item_id="1" value="1"/>
+        <scored_item item_id="6" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="20">
+        <scored_item item_id="2" value="1"/>
+        <scored_item item_id="3" value="1"/>
+        <scored_item item_id="4" value="1"/>
+        <scored_item item_id="5" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="22">
+        <scored_item item_id="1" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="23">
+        <scored_item item_id="2" value="1"/>
+        <scored_item item_id="3" value="1"/>
+        <scored_item item_id="4" value="1"/>
+        <scored_item item_id="5" value="1"/>
+        <scored_item item_id="6" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="25">
+        <scored_item item_id="2" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="26">
+        <scored_item item_id="1" value="1"/>
+        <scored_item item_id="3" value="1"/>
+        <scored_item item_id="4" value="1"/>
+        <scored_item item_id="5" value="1"/>
+        <scored_item item_id="6" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="28">
+        <scored_item item_id="1" value="1"/>
+        <scored_item item_id="3" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="29">
+        <scored_item item_id="2" value="1"/>
+        <scored_item item_id="4" value="1"/>
+        <scored_item item_id="5" value="1"/>
+        <scored_item item_id="6" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="31">
+        <scored_item item_id="1" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="33">
+        <scored_item item_id="1" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="34">
+        <scored_item item_id="2" value="1"/>
+        <scored_item item_id="3" value="1"/>
+        <scored_item item_id="4" value="1"/>
+        <scored_item item_id="5" value="1"/>
+        <scored_item item_id="6" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="36">
+        <scored_item item_id="3" value="1"/>
+        <scored_item item_id="4" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="37">
+        <scored_item item_id="1" value="1"/>
+        <scored_item item_id="2" value="1"/>
+        <scored_item item_id="5" value="1"/>
+        <scored_item item_id="6" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="39">
+        <scored_item item_id="1" value="1"/>
+        <scored_item item_id="2" value="1"/>
+        <scored_item item_id="3" value="1"/>
+        <scored_item item_id="4" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="40">
+        <scored_item item_id="5" value="1"/>
+        <scored_item item_id="6" value="1"/>
+      </scoring_item>
+      <scoring_item item_id="41">
+        <scored_item item_id="2" value="1"/>
+        <scored_item item_id="3" value="1"/>
+        <scored_item item_id="4" value="1"/>
+        <scored_item item_id="5" value="1"/>
+        <scored_item item_id="6" value="1"/>
+      </scoring_item>
+    </container>
+    <container type="numeric"/>
+    <container type="dependency"/>
+    <container type="filter"/>
+    <container type="text"/>
+  </descriptions>
+  <media base_path="C:\Users\svannoort\Documents\Lucid keys\Tetractenion_species_matrix_key\Media">
+    <media_item media_id="12" path="http://waspweb.org/Ichneumonoidea/Ichneumonidae/Banchinae/Tetractenion/Tetractenion_ibayaensis.htm" type="text" path_type="url">
+      <media_details item_id="2" media_index="0" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="13" path="http://waspweb.org/Ichneumonoidea/Ichneumonidae/Banchinae/Tetractenion/Tetractenion_pascali.htm" type="text" path_type="url">
+      <media_details item_id="4" media_index="0" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="14" path="http://waspweb.org/Ichneumonoidea/Ichneumonidae/Banchinae/Tetractenion/Tetractenion_pseudolutea.htm" type="text" path_type="url">
+      <media_details item_id="5" media_index="0" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="42" path="http://waspweb.org/Ichneumonoidea/Ichneumonidae/Banchinae/Tetractenion/Tetractenion_rosei.htm" type="text" path_type="url">
+      <media_details item_id="6" media_index="0" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="43" path="https://www.waspweb.org/Ichneumonoidea/Ichneumonidae/Banchinae/Tetractenion/Tetractenion_acaule.htm" type="text" path_type="url">
+      <media_details item_id="1" media_index="0" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="44" path="https://www.waspweb.org/Ichneumonoidea/Ichneumonidae/Banchinae/Tetractenion/Tetractenion_luteum.htm" type="text" path_type="url">
+      <media_details item_id="3" media_index="0" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="45" path="Images/Head dark purplish-brown.jpg" type="image" path_type="file" thumb_path="Thumbs/Head dark purplish-brown.jpg">
+      <media_details item_id="11" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="46" path="Images/Head red.jpg" type="image" path_type="file" thumb_path="Thumbs/Head red.jpg">
+      <media_details item_id="10" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="47" path="Images/Head white.jpg" type="image" path_type="file" thumb_path="Thumbs/Head white.jpg">
+      <media_details item_id="8" media_index="0" copyright="Photographs of Lectotype © RECOLNAT (ANR-11-INBS-0004) - Christophe Hervé - 2014.  http://coldb.mnhn.fr/catalognumber/mnhn/ey/ey9333" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="48" path="Images/Head yellow.jpg" type="image" path_type="file" thumb_path="Thumbs/Head yellow.jpg">
+      <media_details item_id="9" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="49" path="Images/Mesocutum Keels raised.jpg" type="image" path_type="file" thumb_path="Thumbs/Mesocutum Keels raised.jpg">
+      <media_details item_id="22" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="50" path="Images/Mesocutum Keels slightly raised.jpg" type="image" path_type="file" thumb_path="Thumbs/Mesocutum Keels slightly raised.jpg">
+      <media_details item_id="23" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="51" path="Images/Mesopleural pits DEEP.jpg" type="image" path_type="file" thumb_path="Thumbs/Mesopleural pits DEEP.jpg">
+      <media_details item_id="25" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="52" path="Images/Mesopleural pits SHALLOW.jpg" type="image" path_type="file" thumb_path="Thumbs/Mesopleural pits SHALLOW.jpg">
+      <media_details item_id="26" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="53" path="Images/ML_0.6.jpg" type="image" path_type="file" thumb_path="Thumbs/ML_0.6.jpg">
+      <media_details item_id="16" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="54" path="Images/ML_0.7-0.9-.jpg" type="image" path_type="file" thumb_path="Thumbs/ML_0.7-0.9-.jpg">
+      <media_details item_id="17" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="55" path="Images/Propodeal carina PRESENT.jpg" type="image" path_type="file" thumb_path="Thumbs/Propodeal carina PRESENT.jpg">
+      <media_details item_id="19" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="56" path="Images/Propodeal carina WEAK.jpg" type="image" path_type="file" thumb_path="Thumbs/Propodeal carina WEAK.jpg">
+      <media_details item_id="20" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="57" path="Images/Tarsal claws PECTINATE.jpg" type="image" path_type="file" thumb_path="Thumbs/Tarsal claws PECTINATE.jpg">
+      <media_details item_id="29" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="58" path="Images/Tarsal claws SIMPLE.jpg" type="image" path_type="file" thumb_path="Thumbs/Tarsal claws SIMPLE.jpg">
+      <media_details item_id="28" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="59" path="Images/Tectractenion_acaule_hab.jpg" type="image" path_type="file" thumb_path="Thumbs/Tectractenion_acaule_hab.jpg">
+      <media_details item_id="1" media_index="0" copyright="Photographs of Lectotype © RECOLNAT (ANR-11-INBS-0004) - Christophe Hervé - 2014.  http://coldb.mnhn.fr/catalognumber/mnhn/ey/ey9333" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="60" path="Images/Tectractenion_ibayaensis_hab.jpg" type="image" path_type="file" thumb_path="Thumbs/Tectractenion_ibayaensis_hab.jpg">
+      <media_details item_id="2" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="61" path="Images/Tectractenion_luteum_hab.jpg" type="image" path_type="file" thumb_path="Thumbs/Tectractenion_luteum_hab.jpg">
+      <media_details item_id="3" media_index="0" copyright="Photographs of Lectotype © RECOLNAT (ANR-11-INBS-0004) - Christophe Hervé - 2014.  http://coldb.mnhn.fr/catalognumber/mnhn/ey/ey9334" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="62" path="Images/Tectractenion_pascali_hab.jpg" type="image" path_type="file" thumb_path="Thumbs/Tectractenion_pascali_hab.jpg">
+      <media_details item_id="4" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="63" path="Images/Tectractenion_pseudolutea_hab.jpg" type="image" path_type="file" thumb_path="Thumbs/Tectractenion_pseudolutea_hab.jpg">
+      <media_details item_id="5" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="64" path="Images/Tectractenion_rosei_hab.jpg" type="image" path_type="file" thumb_path="Thumbs/Tectractenion_rosei_hab.jpg">
+      <media_details item_id="6" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="65" path="Images/Tergite1 dorsally compressed.jpg" type="image" path_type="file" thumb_path="Thumbs/Tergite1 dorsally compressed.jpg">
+      <media_details item_id="31" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="66" path="Images/Tergite1 NOT dorsally compressed.jpg" type="image" path_type="file" thumb_path="Thumbs/Tergite1 NOT dorsally compressed.jpg">
+      <media_details item_id="41" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="67" path="Images/Tergites apically UNIFORM.jpg" type="image" path_type="file" thumb_path="Thumbs/Tergites apically UNIFORM.jpg">
+      <media_details item_id="34" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="68" path="Images/Tergites apically white.jpg" type="image" path_type="file" thumb_path="Thumbs/Tergites apically white.jpg">
+      <media_details item_id="33" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="69" path="Images/Wings dense dark brown.jpg" type="image" path_type="file" thumb_path="Thumbs/Wings dense dark brown.jpg">
+      <media_details item_id="36" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="70" path="Images/Wings dense dark brown.jpg" type="image" path_type="file" thumb_path="Thumbs/Wings dense dark brown.jpg">
+      <media_details item_id="39" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="71" path="Images/Wings sparse yellow brown.jpg" type="image" path_type="file" thumb_path="Thumbs/Wings sparse yellow brown.jpg">
+      <media_details item_id="37" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+    <media_item media_id="72" path="Images/Wings sparse yellow brown.jpg" type="image" path_type="file" thumb_path="Thumbs/Wings sparse yellow brown.jpg">
+      <media_details item_id="40" media_index="0" copyright="Photograph by Terry Reynolds Berry © Iziko Museums of South Africa" publish="true" revision="false"/>
+    </media_item>
+  </media>
+</lif3_key>

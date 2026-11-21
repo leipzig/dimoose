@@ -19,7 +19,7 @@
 #'   `ancestral` and `derived`.
 #' @return An integer matrix of 0/1, one row per entry of `haplogroups` (row
 #'   names are the haplogroups) and one column per site.
-#' @seealso [recurrentPositions()], [macroHaplogroup()], [simulateExpression()]
+#' @seealso [recurrentPositions()], [macroHaplogroup()]
 #' @examples
 #' haplotypeMatrix(c("H2a2a1", "U5b", "L0a1b"), sites = c("152", "16311", "16278"))
 #' @export
@@ -130,11 +130,4 @@ macroHaplogroup <- function(haplogroup, level = c("letter", "depth"), depth = 2,
     h
   }, character(1))
   unname(anc[haplogroup])
-}
-
-# Substitution sites on the branches leading into the given haplogroups (the
-# markers that define those clades)
-cladeMarkerSites <- function(haplogroups, mutations = dimoose::phylotree17_mutations) {
-  m <- mutations[mutations$haplogroup %in% haplogroups & mutations$type %in% c("transition", "transversion"), ]
-  unique(mutationSite(m))
 }

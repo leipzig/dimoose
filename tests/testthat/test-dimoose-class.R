@@ -87,6 +87,39 @@ test_that("summary() dispatches to the summary method", {
   expect_equal(s$problems, 0L)
 })
 
+test_that("summary keeps its counts and adds how quickly the key gets to a result", {
+  s <- keyFromLeads(tinyLeads(), "Tiny")$summary()
+  expect_equal(nrow(s), 1)
+  expect_named(s, c("title", "couplets", "leads", "taxa", "depth", "problems", "meanLeadSteps", "meanTaxonSteps",
+                    "expectedSteps", "bound", "efficiency"))
+  expect_equal(s$meanLeadSteps, 5 / 3)
+  expect_equal(s$meanTaxonSteps, 5 / 3)
+  expect_equal(s$expectedSteps, 5 / 3)
+  # three taxa cannot be keyed in fewer steps: one at 1 step, two at 2
+  expect_equal(s$bound, 5 / 3)
+  expect_equal(s$efficiency, 1)
+  expect_type(s$depth, "integer")
+})
+
+test_that("summary takes weights, as a method and as a generic", {
+  k <- keyFromLeads(tinyLeads(), "Tiny")
+  w <- c(Apterygota = 2, Diptera = 1, Other = 1)
+  s <- k$summary(weights = w)
+  expect_equal(s$expectedSteps, 1.5)
+  expect_equal(s$bound, 1.5)
+  expect_equal(s$efficiency, 1)
+  expect_equal(s$meanTaxonSteps, 5 / 3)
+  expect_equal(summary(k, weights = w), s)
+})
+
+test_that("print mentions the mean steps, and an empty key still has a summary", {
+  expect_output(print(keyFromLeads(tinyLeads(), "Tiny")), "up to 2 steps deep (1.7 on average)", fixed = TRUE)
+  empty <- dimoose$new(NULL)
+  expect_equal(empty$summary()$depth, 0L)
+  expect_true(is.na(empty$summary()$meanTaxonSteps))
+  expect_output(print(empty), "0 couplets, 0 leads, 0 taxa, up to 0 steps deep\n", fixed = TRUE)
+})
+
 test_that("rawhtml downloads a key's description and couplet table", {
   dir <- system.file("extdata", "fishbase", package = "dimoose")
   fetched <- NULL

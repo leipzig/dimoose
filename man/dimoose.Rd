@@ -93,15 +93,30 @@ row (see \code{\link[=featureTable]{featureTable()}}), or \code{NULL} for keys m
 \if{html}{\out{<a id="method-dimoose-summary"></a>}}
 \if{latex}{\out{\hypertarget{method-dimoose-summary}{}}}
 \subsection{\code{dimoose$summary()}}{
-  Counts describing the key.
+  Counts describing the key and how quickly it reaches a
+result (see \code{\link[=keyQuality]{keyQuality()}}).
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{dimoose$summary()}
+    \preformatted{dimoose$summary(weights = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{weights}}{Optional named numeric vector of how common each taxon
+is, as for \code{\link[=keyQuality]{keyQuality()}}; by default all taxa count the same.}
+    }
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
     A one-row data frame: \code{title}, \code{couplets}, \code{leads}, \code{taxa},
-\code{depth} (longest path in steps) and \code{problems} (see \code{validate()}).
+\code{depth} (longest path in steps), \code{problems} (see \code{validate()}),
+\code{meanLeadSteps} and \code{meanTaxonSteps} (steps to a result, averaged
+over terminal leads and over taxa), \code{expectedSteps} (averaged over
+taxa by \code{weights}), \code{bound} (the expected steps of the best key
+there could be to these taxa, with couplets no larger than this
+key's largest) and \code{efficiency} (\code{bound / expectedSteps}, 1 for a
+key that could not be shorter).
   }
 }
 

@@ -1,0 +1,6 @@
+# The ONNX Runtime backend: visionModel(backend = "onnx"), no torch.
+# Versions tested with tests/python/test_dimoose_onnx.py (Python 3.14).
+onnxruntime==1.32.0
+tokenizers==0.23.3
+pillow==13.0.0
+numpy==2.5.5

@@ -1,0 +1,268 @@
+# Source: Samuel W. Williston, Manual of North American Diptera, third edition (New Haven: James T.
+# Hathaway, 1908), 'Table of families', pp. 65-69, couplets 1-20. Public domain (published in the United
+# States before 1929). Uncorrected OCR text from the Internet Archive scan 'manualofnorthame00will'.
+# Lines starting with '#' are not part of the text.
+TABLE  OF  FAMILIES. 
+
+Flies  of  a  leathery  or  horny  structure,  living  parasitically  upon 
+warm-blooded  vertebrates  in  the  adult  condition,  the  larvae  born 
+when  nearly  ready  to  pupate;  often  wingless  or  with  vestigial 
+wings.  ..........  65 
+
+Fiies  of  a  softer  structure,  not  ectoparasites  upon  warm-blooded 
+vertebrates,  rarely  viviparous.  ......  2 
+
+Anal  cell  rarely  narrowed  in  the  border  of  the  wing;  antennae  usu- 
+ally composed  of  from  eight  to  sixteen  joints  and  more  or 
+less  freely  articulated  with  each  other,  usually  longer  than  the 
+thorax;  not  with  a  differentiated  style  or  bristle;*  palpi  as  a 
+rule  with  four  or  five  joints;  discal  cell  usually  absent.  .  3 
+
+Anal  cell,  if  present,  closed,  or  much  narrowed  in  the  border  of  the 
+wing;  discal  cell  almost  always  present;  palpi  never  with  more 
+than  two  joints;  antennae  usually  composed  of  three  joints  with 
+a  differentiated  style  or  bristle.  .....  14 
+
+ORTHORRHAPHA. 
+
+A.       NEMOCERA. 
+
+Anal  cell  rarely  (some  Bibionidce,  etc.]  narrowed  in  the  margin, 
+if  present;  discal  cell  present  only  in  many  Tipulidce  and  the  Rhy- 
+phidcc;  second  longitudinal  vein  often  furcate ,  the  third  very  rarely 
+if  ever;  palpi  usually  more  or  less  elongate,  composed  of  from  one  to 
+five,  usually  four  joints,  rarely  absent;  antennce  usually  elongate 
+and  verticillate,  generally  filiform,  rarely  pectinate,  composed  of  from 
+six  to  thirty-nine  joints,  usually  from  eight  to  sixteen,  the  joints  of 
+the  flagellum  homomorphic  and  usually  freely  articulated  with  each 
+other,  a  style  or  arista  very  rarely  differentiated.-  For  the  most 
+part  slender,  delicate  flies. 
+
+3.  Mesonotutn  with  a  complete,  V-shaped  suture  (incompletely  V- 
+shaped  and  sinuous  in  the  Ptychopterinae) .  Wings  many-veined, 
+often  with  a  complete  di>cal  cell;  ocelli  very  rarely  present; 
+both  sexes  dichoptic.  For  the  most  part  large,  always  slender, 
+flies  with  long  legs;  never  very  small.  Daddy-longlegs,  craneflies. 
+
+Tipulidse,  Si. 
+
+*  Chionea,  a  wingless  tipulid,  has  the  third  antennal  joint  ending  in 
+a  slender,  three-jointed  style;  the  flagellum  of  the  Orphnephilidae  is 
+aristiform. 
+
+(8)  65 
+
+
+66  NORTH  AMERICAN  DIPTERA. 
+
+Mesonotum  never  with  a  complete  V-shaped  suture,  rarely  with  any 
+distinct  suture.     For  the  most  part  small  or  very  small  flies.     4 
+
+4.  A  complete  discal  cell  present;  antennae  twelve-sixteen  jointed; 
+
+empodia  developed  pulvilliform,  the  pulvilli  absent. 
+
+Rhyphidse,  157. 
+No  discal  cell.  .........         5 
+
+5.  Antennae  composed  apparently  of  two  joints  and  a  terminal  arista, 
+
+formed  by  nine  or  ten  closely  united  segments;  second  basal 
+
+cell  present  and  small.  Rare,  small  flies.  Orphnephilidae,  153. 
+
+Not  such  flies.  .........  6 
+
+6.  Wings  with  only  a  few  longitudinal  veins  and  no  apparent  cross- 
+
+veins,  almost  always  hairy;  antennae  slender,  usually  twelve 
+to  sixteen-jointed;  coxae  not  elongate;  tibiae  without  terminal 
+spurs;  legs  not  thickened;  ocelli  present  or  absent.  Small  or 
+minute,  delicate,  mostly  gall  producing  flies. 
+
+Cecidoinyidae,  117 
+Not  such  flies.          ......  ...  7 
+
+7.  Ocelli  present.*        .........         12 
+
+No  ocelli.          ..........  8 
+
+8.  The  marginal  vein  is  not  continuous  beyond  the  tip  of  the  wing.  9 
+The  marginal  vein  encompasses  the  wing;  second  and  fourth  long- 
+itudinal veins  furcate;   many  veined.          .         .         .         .         10 
+
+9.  Antennae  slender;  the  joints  more  or  less  constricted,  and  often 
+
+bushy  plumose  in  the  male;  legs  slender,  the  femora  sometimes 
+thickened;  abdomen  slender,  wings  usually  narrow;  no  sexual 
+holopticism.  For  the  most  part  slender,  delicate  gnats;  some 
+small  forms  blood-sucking  ('punkies'.)  Chironomidae,  no 
+Antennae  always  shorter  than  the  thorax,  composed  of  ten  or 
+eleven  closely  united  segments,  and  never  plumose;  legs  strong, 
+the  hind  pair  more  or  less  dilated;  body  thick-set,  the  abdomen 
+ovate;  anterior  veins  of  wings  stout,  the  posterior  ones  weak 
+(compare  certain  Bibionidae  when  in  doubt  as  to  the  ocelli); 
+males  holoptic.  Small  or  minute,  blood-sucking  flies;  black 
+flies,  buffalo  gnats,  turkey  gnats.  .  .  Simuliidse,  144 
+
+10.  Wings  ovate  or  pointed,  with  numerous  longitudinal  veins,  and 
+without  apparent  cross-veins;  veins  very  hairy;  tibiae  without 
+
+*  The  presence  or  absence  of  ocelli  is  not  a  family  character;  a  few 
+forms  among  both  the  Mycetophilidae  and  Bibionidae  appear  to  lack 
+them. 
+
+
+TABLE  OF  FAMILIES. 
+
+
+67 
+
+
+ter:ninil  spurs.  Small  or  minute,  moth-like  flies,  the  wings 
+when  at  rest  folded  roof-shaped;  rarely  (Phlebotomus)  blood- 
+sucking  Psychodidse,  92. 
+
+Anterior  cross-vein  near  middle  of  wing,  distinct;  second  basal 
+cell  large  and  distinct;  wings  not  folded  roof-like  when  at 
+rest.  .  .  .  .  .  .  .  .  .  .  .  ii 
+
+11.  Wings  tomentose;  fringed  on  the  hind  margin;  antennae  of  male 
+
+usually  bushy  plumose;  the  second  and  third  veins  separate  at 
+an  acute  angle.  For  the  most  part  blood-sucking  flies;  mos- 
+quitoes  Culicidse,  96 
+
+Wings  bare;  the  third  vein  arises  from  the  second  near  the  middle 
+of  the  wing,  apparently  continuous,  the  second  vein  arching 
+suddenly  forward;  never  blood-sucking  in  habit.  Dixidse,  94 
+
+12.  Wings  with  a  spider-web-like  secondary  venation. 
+
+Blepharoceridse,  148 
+Wings  not  with  such  secondary  venation.      ....         13 
+
+13.  Coxae  much  elongate  (moderately  so  in  the  Sciarinae) ;  antennae 
+
+usually  elongate,  the  joints  usually  with  constrictions  between 
+them;  three  or  two  ocelli  present;  in  the  latter  case  one  situated 
+near  each  eye  and  sometimes  perceptible  with  difficulty;  rarely 
+the  ocelli  appear  to  be  entirely  absent;  no  sexual  holopticism; 
+all  the  tibiae  spurred;  second  basal  cell  never  complete. 
+
+Mycetophilidae ,  131 
+
+Coxae  short;  the  thorax  not  strongly  arched  above;  antennae  usu- 
+ally shorter  than  the  thorax  and  closely  jointed  without  marked 
+constrictions,  sometimes  14-16  jointed,  longer  and  slender;  legs 
+usually  strong,  the  pulvilli  usually  present  (Bibioninae) ;  eyes 
+of  male  often  large  and  holoptic;  second  basal  cell  often  com- 
+plete. ...  ...  Bibionidae ,  140 
+
+AA.   BRACHYCERA. 
+
+Anal  cell  closed  before  the  border  of  the  wing  or  distinctly  narrowed 
+in  the  border;  if  absent  or  very  short  the  antenncc  are  composed  of 
+two  or  three  simple  joints  with  or  without  a  style  or  arista.     Palpi 
+rarely  elongated,  never  with  more  than  one  freely  articulated  joint, 
+that  is  tivo-jointed  or  one-jointed  or  absent.    Antennce:  (a)  elongate, 
+composed  of  distinctly  separable  joints,  the  joints  of  the  flagellum  ho- 
+momorphous  and  sometimes  as  many  as  thirty  in  number;  (b)  com- 
+posed of  not  more  than  ten  closely  united  joints  w'ithout  style;   (c) 
+the  so-called  third  joint  is  complex,  that  is,  composed  of  from  four 
+to  eight  segments  or  annuli,  I  he  distal  one  or  ones  usually  differ- 
+
+
+68  NORTH  AMERICAN  DIPTERA. 
+
+entiated  into  a  style  or  arista;  (decomposed  of  three  simple  joints 
+(sometimes  apparently  two},  with  or  without  a  differentiated,  one  to 
+three-jointed,  style  or  arista.  Second  vein  of  the  wing  never  furcate, 
+the  third  often;  discal  cell  almost  always  present. 
+
+14.  Antennae  composed  of  two  or  three  simple  joints,  the  distal  one 
+
+not  annulated  nor  segmentated,   usually  with  a  one  to  three- 
+jointed  terminal  or  dorsal  arista  or  terminal  style  (cl) ,     .         18 
+Antennae  of  the  structure  of  (a),  (b) ,  or  (c).         .         .         .         15 
+
+15.  Empodia  undeveloped  or  bristle-like;  antennae  elongate,  the  fla- 
+
+gellum  composed  of  two  or  three  joints,  without  apparent  style; 
+front  concave  between  the  eyes  in  both  sexes.  ...  25 
+Empodia  developed  pulvilliform;  flagellum  of  antennae  with  nu- 
+merous, distinct  joints,  or  forming  the  complex,  so-called  third 
+joint,  with  or  without  a  differentiated  style  or  bristle;  body  not 
+bristly.  ..........  16 
+
+B.  Antenna;  composed  of  more  than  five  joints,  or  the  third-joint 
+complex,  four  to  eight  segmented,  inclusive  of  style  or  arista  zchen 
+present: 
+
+16.  Squamae  rather  large;  third  longitudinal  vein  furcate;  five  poste- 
+
+rior cells  always  present;  the  costal  vein  encompasses  the  wing; 
+flagellum  composed  of  from  four  to  eight  segments,  never  with 
+style  or  arista;  males  holoptic;  proboscis  of  female  adapted  for 
+piercing.  Horseflies,  gadflies,  greenheaded  flies. 
+
+Tabanidge,  176 
+
+Squamae  small  or  vestigial;  for  the  most  part  flower  flies;  males 
+usually  holoptic.  .  .  .  .  .  .  .  .  17 
+
+17.  Tibiae  without  spurs;  wing  veins  not   crowded  anteriorly;  third 
+
+antennal  joint  composed  of  seven  annuli  with  a  terminal  slender 
+style  or  arista;  two  submarginal,  five  posterior  cells  always  pres- 
+ent, the  fourth  closed.  Very  large,  robust,  southern  flies. 
+
+Acanthomeridae,  173 
+
+Tibiae  almost  invariably  without  spurs;  longitudinal  veins  of  the 
+wings  usually  more  or  less  crowded  anteriorly,  the  posterior 
+ones  often  weak;  the  costal  vein  does  not  reach  beyond  the  tip 
+of  the  wing;  scutellum  often  with  spines;  third  vein  almost  al- 
+ways furcate;  four  or  five  posterior  cells,  the  fourth  rarely  or 
+never  closed;  antennae  long  or  short  (b) ,  (c). 
+
+Stratiomyidse,  164 
+
+The  middle  tibiae,  at  least,  with  distinct  spurs;  the  costal  vein  en- 
+
+
+TABLE  OF  FAMILIES.  69 
+
+compasses  the  wing;  third  vein  always  furcate;  five  posterior 
+cells  present,  the  posterior  veins  not  evanescent;  antennae  (a) , 
+(b),  (c).  .  ,  Leptidae,  pt.  157 
+
+BB.     Third  joint  of 'antenna  simple,  not  composed  of  annul i,  with 
+or  without  a  differentiated  style  or  arista. 
+
+18.  Antennae  apparently  two-jointed,  with  a  three-jointed  arista;  wings 
+
+(rarely  wanting)  with  several  stout  veins  anteriorly  and  other, 
+weaker  ones  apparently  connected  with  them  and  running  ob- 
+liquely across  the  wing.  Femora  flattened,  the  hind  ones  elon- 
+gated; antennas  situated  low  down.  Small,  hunchbacked,  quick 
+
+running,  bristly  flies Phoridae,  236 
+
+Not  such  flies,  the  antennae  almost  invariably  with  three  easily 
+distinguishable  joints.  ....  19 
+
+19.  Empodia  developed  pulvilliform,  that  is  three  nearly  equal,  mem- 
+
+branous appendages  on  the  under  side  of  the  claws.  20 
+
+Empodia  wanting,  vestigial  or  linear,  not  developed  like  the  pul- 
+
+villi 22 
+
+20.  Squamae  very  large;  thorax  and  abdomen    inflated;  head  small, 
+
+eyes  relatively  large;  antennae  and  venation  variable. 
+
+Cyrtidae,  182 
+Squamae  of  moderate  size,  or  small.        ....  21 

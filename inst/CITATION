@@ -1,0 +1,38 @@
+year <- if (is.null(meta$Date)) format(Sys.Date(), "%Y") else sub("-.*", "", meta$Date)
+
+bibentry(
+  bibtype = "Manual",
+  header = "To cite dimoose in publications use:",
+  key = "dimoose",
+  title = "dimoose: Tools to Reshape and Manipulate Dichotomous Keys Used in Taxonomic Identification",
+  author = person("Jeremy", "Leipzig", email = "leipzig@gmail.com",
+                  comment = c(ORCID = "0000-0001-7224-9620")),
+  year = year,
+  note = paste("R package version", meta$Version),
+  url = "https://leipzig.github.io/dimoose/"
+)
+
+bibentry(
+  bibtype = "Article",
+  header = paste("If you use phylotreeKey() or the phylotree17 data (PhyloTree Build 17,",
+                 "as distributed by Haplogrep 3), please also cite:"),
+  key = "vanOven2015",
+  title = "PhyloTree Build 17: Growing the human mitochondrial DNA tree",
+  author = person("Mannis", "van Oven"),
+  journal = "Forensic Science International: Genetics Supplement Series",
+  year = "2015",
+  volume = "5",
+  pages = "e392--e394",
+  doi = "10.1016/j.fsigss.2015.09.155"
+)
+
+bibentry(
+  bibtype = "Misc",
+  header = "If you use keys imported with importFishbase() or sharkKey(), please also cite FishBase:",
+  key = "FishBase",
+  title = "FishBase",
+  author = c(person("Rainer", "Froese"), person("Daniel", "Pauly")),
+  year = year,
+  howpublished = "World Wide Web electronic publication",
+  url = "https://www.fishbase.org"
+)

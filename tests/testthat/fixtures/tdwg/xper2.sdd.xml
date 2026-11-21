@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Datasets xmlns="http://rs.tdwg.org/UBIF/2006/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://rs.tdwg.org/UBIF/2006/ http://rs.tdwg.org/UBIF/2006/Schema/1.1/SDD.xsd">
+	<TechnicalMetadata created="2010-01-01T05:25:00">
+		<Generator name="Xper2"
+			notes="Test file laid out the way Xper2 exports SDD"
+			version="1.1" />
+	</TechnicalMetadata>
+	<Dataset xml:lang="fr">
+		<Representation>
+			<Label>Animaux de la ferme</Label>
+			<Detail>Petite base de test pour
+				les exports Xper2.</Detail>
+		</Representation>
+		<RevisionData>
+			<Creators>
+				<Agent ref="a1" role="aut" />
+			</Creators>
+			<DateCreated>2010-01-01T11:02:00</DateCreated>
+		</RevisionData>
+		<Characters>
+			<CategoricalCharacter id="c1">
+				<Representation>
+					<Label>couleur du
+						pelage</Label>
+					<MediaObject ref="m1" />
+				</Representation>
+				<States>
+					<StateDefinition id="s1">
+						<Representation>
+							<Label>blanc</Label>
+						</Representation>
+					</StateDefinition>
+					<StateDefinition id="s2">
+						<Representation>
+							<Label>noir</Label>
+						</Representation>
+					</StateDefinition>
+					<StateDefinition id="s3">
+						<Representation>
+							<Label>roux/brun</Label>
+						</Representation>
+					</StateDefinition>
+				</States>
+			</CategoricalCharacter>
+			<CategoricalCharacter id="c2">
+				<Representation>
+					<Label>cornes</Label>
+				</Representation>
+				<States>
+					<StateDefinition id="s4">
+						<Representation>
+							<Label>présentes</Label>
+						</Representation>
+					</StateDefinition>
+					<StateDefinition id="s5">
+						<Representation>
+							<Label>absentes</Label>
+						</Representation>
+					</StateDefinition>
+				</States>
+			</CategoricalCharacter>
+			<CategoricalCharacter id="c3">
+				<Representation>
+					<Label>forme</Label>
+				</Representation>
+				<States>
+					<StateDefinition id="s6">
+						<Representation>
+							<Label>droites</Label>
+						</Representation>
+					</StateDefinition>
+					<StateDefinition id="s7">
+						<Representation>
+							<Label>enroulées</Label>
+						</Representation>
+					</StateDefinition>
+				</States>
+			</CategoricalCharacter>
+			<CategoricalCharacter id="c5">
+				<Representation>
+					<Label>forme</Label>
+				</Representation>
+				<States>
+					<StateDefinition id="s8">
+						<Representation>
+							<Label>trapue</Label>
+						</Representation>
+					</StateDefinition>
+					<StateDefinition id="s9">
+						<Representation>
+							<Label>élancée</Label>
+						</Representation>
+					</StateDefinition>
+				</States>
+			</CategoricalCharacter>
+			<QuantitativeCharacter id="c4">
+				<Representation>
+					<Label>hauteur au garrot</Label>
+				</Representation>
+			</QuantitativeCharacter>
+		</Characters>
+		<CharacterTrees>
+			<CharacterTree id="ct1">
+				<Representation>
+					<Label>Ordre et dépendance entre caractères</Label>
+				</Representation>
+				<ShouldContainAllCharacters>true</ShouldContainAllCharacters>
+				<Nodes>
+					<CharNode>
+						<Character ref="c1" />
+					</CharNode>
+					<CharNode>
+						<Character ref="c2" />
+					</CharNode>
+					<CharNode>
+						<DependencyRules>
+							<InapplicableIf>
+								<State ref="s5" />
+							</InapplicableIf>
+						</DependencyRules>
+						<Character ref="c3" />
+					</CharNode>
+					<CharNode>
+						<Character ref="c5" />
+					</CharNode>
+					<CharNode>
+						<Character ref="c4" />
+					</CharNode>
+				</Nodes>
+			</CharacterTree>
+		</CharacterTrees>
+		<CodedDescriptions>
+			<CodedDescription id="D1">
+				<Representation>
+					<Label>vache</Label>
+					<MediaObject ref="m2" />
+				</Representation>
+				<SummaryData>
+					<Categorical ref="c1">
+						<State ref="s3" />
+						<State ref="s1" />
+						<State ref="s2" />
+					</Categorical>
+					<Categorical ref="c2">
+						<State ref="s4" />
+						<State ref="s5" />
+					</Categorical>
+					<Categorical ref="c3">
+						<State ref="s6" />
+					</Categorical>
+					<Categorical ref="c5">
+						<State ref="s8" />
+					</Categorical>
+					<Quantitative ref="c4">
+						<Measure type="Min" value="120.0" />
+						<Measure type="Max" value="150.0" />
+					</Quantitative>
+				</SummaryData>
+			</CodedDescription>
+			<CodedDescription id="D2">
+				<Representation>
+					<Label>mouton</Label>
+				</Representation>
+				<SummaryData>
+					<Categorical ref="c1">
+						<State ref="s1" />
+					</Categorical>
+					<Categorical ref="c2">
+						<State ref="s4" />
+					</Categorical>
+					<Categorical ref="c3">
+						<State ref="s7" />
+					</Categorical>
+					<Categorical ref="c5">
+						<State ref="s8" />
+					</Categorical>
+					<Quantitative ref="c4">
+						<Measure type="Min" value="60.0" />
+						<Measure type="Max" value="80.5" />
+					</Quantitative>
+				</SummaryData>
+			</CodedDescription>
+			<CodedDescription id="D3">
+				<Representation>
+					<Label>cheval</Label>
+				</Representation>
+				<SummaryData>
+					<Categorical ref="c1">
+						<State ref="s2" />
+						<State ref="s3" />
+					</Categorical>
+					<Categorical ref="c2">
+						<State ref="s5" />
+					</Categorical>
+					<Categorical ref="c5">
+						<State ref="s9" />
+					</Categorical>
+					<Quantitative ref="c4">
+						<Measure type="Min" value="150.0" />
+						<Measure type="Max" value="150.0" />
+					</Quantitative>
+				</SummaryData>
+			</CodedDescription>
+		</CodedDescriptions>
+		<Agents>
+			<Agent id="a1">
+				<Representation>
+					<Label>Marie Dupont</Label>
+				</Representation>
+			</Agent>
+		</Agents>
+		<MediaObjects>
+			<MediaObject id="m1">
+				<Representation>
+					<Label>pelage</Label>
+				</Representation>
+				<Type>Image</Type>
+				<Source href="http://test.edu/pelage.jpg" />
+			</MediaObject>
+			<MediaObject id="m2">
+				<Representation>
+					<Label>vache</Label>
+				</Representation>
+				<Type>Image</Type>
+				<Source href="http://test.edu/vache.jpg" />
+			</MediaObject>
+		</MediaObjects>
+	</Dataset>
+</Datasets>

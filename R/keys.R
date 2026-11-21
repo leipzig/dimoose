@@ -55,22 +55,24 @@ keyFromLeads <- function(leads, desc = NA, meta = NULL, taxa = NULL, features = 
 #' Converts an [rpart::rpart()] classification tree into a dichotomous key:
 #' every split becomes a couplet with two leads, and every leaf a result.
 #' Taxa that the tree cannot separate share a leaf and are listed together
-#' (`"A / B"`).
+#' (`"A / B"`). A taxon rpart could not send down either side of a split,
+#' because the split's variable is missing for it, is listed at every result
+#' below that split.
 #'
 #' @param fit An `rpart` object with `method = "class"`, e.g. from
 #'   [generateTree()].
 #' @param desc Title of the key.
 #' @param meta Key/value metadata data frame.
 #' @return A [dimoose] object.
-#' @seealso [vibrioKey()]
+#' @seealso [keyFromMatrix()], which builds a key straight from a character
+#'   matrix and handles variable taxa; [vibrioKey()]
 #' @examples
 #' d <- data.frame(
 #'   taxon = factor(c("A", "B", "C")),
 #'   wings = factor(c("+", "-", "-")),
 #'   spots = factor(c("-", "+", "-"))
 #' )
-#' fit <- generateTree(d, "taxon",
-#'   params = list(control = rpart::rpart.control(minsplit = 2, minbucket = 1, cp = 0)))
+#' fit <- generateTree(d, "taxon")
 #' keyFromRpart(fit, "Three taxa")$leads
 #' @export
 keyFromRpart <- function(fit, desc = "Key generated from a classification tree", meta = NULL) {
@@ -82,8 +84,25 @@ keyFromRpart <- function(fit, desc = "Key generated from a classification tree",
   leaf <- frame$var == "<leaf>"
   if (all(leaf)) stop("The tree has no splits", call. = FALSE)
   if (is.null(fit$y)) stop("Refit with y = TRUE so leaf members are known", call. = FALSE)
-  lab <- gsub("=", ": ", labels(fit, minlength = 0L), fixed = TRUE)
+  # A lead reads "character: state". Only the "=" rpart puts after the
+  # character's name is replaced, not one in the name or in a state. (Numeric
+  # splits keep their historical form, "x< 2" and "x>: 2".)
+  lab <- labels(fit, minlength = 0L)
+  asked <- as.character(frame$var)[match(node %/% 2L, node)]
+  byState <- !is.na(asked) & startsWith(lab, paste0(asked, "="))
+  lab[byState] <- paste0(asked[byState], ": ", substring(lab[byState], nchar(asked[byState]) + 2L))
+  lab[!byState] <- gsub("=", ": ", lab[!byState], fixed = TRUE)
   members <- split(attr(fit, "ylevels")[fit$y], factor(fit$where, levels = seq_len(nrow(frame))))
+  # rpart leaves a row at a split when the split's variable is missing for it
+  # and no surrogate places it. Such a taxon could be on either side, so it
+  # is listed at every result below that split.
+  for (k in which(leaf)) {
+    up <- node[k] %/% 2L
+    while (up >= 1L) {
+      members[[k]] <- c(members[[k]], members[[match(up, node)]])
+      up <- up %/% 2L
+    }
+  }
 
   internal <- node[!leaf]
   number <- stats::setNames(as.character(seq_along(internal)), internal)
@@ -119,18 +138,26 @@ keyFromRpart <- function(fit, desc = "Key generated from a classification tree",
 #'   Johnson (2005), the [arachnida] dataset; 11 couplets, 11 orders
 #'   (Schizomida is reached from two couplets).
 #' - `vibrioKey()`: a key generated from the [vibrio] consensus matrix of
-#'   Noguerola & Blanch (2008) with [keyFromRpart()]. Tests scored `+` or
-#'   `(+)` count as positive and `-` or `(-)` as negative; variable (`v`,
-#'   `d`) and not determined (`ND`) results are treated as missing, and rpart
-#'   routes a species past such a test with surrogate splits, so a species
-#'   that varies for a test appears on only one side of it. Species the tests
-#'   cannot separate share a result.
+#'   Noguerola & Blanch (2008) with [keyFromMatrix()] (the matrix itself is
+#'   [vibrioMatrix()]). Tests scored `+` or `(+)` count as positive and `-` or
+#'   `(-)` as negative. With `variable = "both"` (the default) a species
+#'   that is variable for a test (`v`, `d`) is keyed out down both leads of
+#'   every couplet that uses the test, and so is a species the test was not
+#'   determined for (`ND`): 92 couplets, 74 species, 14 of them reached at
+#'   two or three results. With `variable = "missing"` those results are
+#'   treated as missing and the key is an rpart classification tree
+#'   ([keyFromRpart()]), which places such a species on one side of the test
+#'   with surrogate splits: 73 couplets, each species at one result, but a
+#'   strain showing the species' other result is keyed out wrongly.
 #' - `montanaKey()`: the native broadleaf trees of Montana, written for
 #'   dimoose (the [montana] dataset); 10 couplets, 11 species, with photos
 #'   from Wikimedia Commons. It is built with [keyFromSpreadsheet()] from
 #'   `inst/extdata/montana/montana-key.csv`, a template for writing your own.
 #' - [phylotreeKey()]: PhyloTree Build 17.
 #'
+#' @param variable For `vibrioKey()`: `"both"` (default) keys a species
+#'   that is variable for a test out down both leads; `"missing"` treats
+#'   variable results as missing. See [keyFromMatrix()].
 #' @return A [dimoose] object.
 #' @references
 #' Compagno LJV (1998). General remarks. In Carpenter KE, Niem VH (eds.),
@@ -150,6 +177,7 @@ keyFromRpart <- function(fit, desc = "Key generated from a classification tree",
 #' sharks
 #' summary(arachnidaKey())
 #' vibrioKey()$validate()
+#' summary(vibrioKey(variable = "missing"))
 #' \dontrun{
 #' exportWizard(sharkKey(), "sharks.html")
 #' }
@@ -186,27 +214,23 @@ arachnidaKey <- function() {
 
 #' @rdname exampleKeys
 #' @export
-vibrioKey <- function() {
-  matrix <- dimoose::vibrio
-  score <- function(x) {
-    factor(ifelse(x %in% c("+", "(+)"), "+", ifelse(x %in% c("-", "(-)"), "-", NA)), levels = c("+", "-"))
-  }
-  tests <- names(matrix)[-1]
-  data <- data.frame(species = factor(matrix$species), lapply(matrix[tests], score), check.names = FALSE)
-  fit <- rpart::rpart(
-    stats::reformulate(paste0("`", tests, "`"), response = "species"),
-    data = data, method = "class", y = TRUE,
-    control = rpart::rpart.control(minsplit = 2, minbucket = 1, cp = 0, xval = 0, maxcompete = 0)
-  )
-  keyFromRpart(
-    fit,
+vibrioKey <- function(variable = c("both", "missing")) {
+  variable <- match.arg(variable)
+  keyFromMatrix(
+    vibrioMatrix(),
+    variable = variable,
     desc = "Vibrio species (key generated from the Noguerola & Blanch 2008 matrix)",
     meta = data.frame(
       key = "citation",
       value = paste(
         "Noguerola I, Blanch AR (2008). Identification of Vibrio spp. with a set of",
-        "dichotomous keys. J Appl Microbiol 105:175-185. Key generated with rpart;",
-        "variable and not determined results treated as missing."
+        "dichotomous keys. J Appl Microbiol 105:175-185.",
+        if (variable == "both") {
+          paste("Key generated with dimoose; species with variable or undetermined",
+                "results follow both leads.")
+        } else {
+          "Key generated with rpart; variable and not determined results treated as missing."
+        }
       ),
       stringsAsFactors = FALSE
     )
@@ -256,7 +280,8 @@ montanaKey <- function() {
 #' Vibrio consensus identification matrix
 #'
 #' Biochemical and growth test results for 74 *Vibrio* taxa from Noguerola &
-#' Blanch (2008), one row per taxon. [vibrioKey()] generates a key from it.
+#' Blanch (2008), one row per taxon. [vibrioKey()] generates a key from it
+#' and [vibrioMatrix()] recodes it for [keyFromMatrix()].
 #'
 #' @format A data frame with 74 rows and 46 columns: `species`, then 45 tests
 #'   coded as in the paper: `+` positive, `-` negative, `(+)` / `(-)` mostly

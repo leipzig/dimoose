@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Datasets xmlns="http://rs.tdwg.org/UBIF/2006/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://rs.tdwg.org/UBIF/2006/ http://rs.tdwg.org/UBIF/2006/Schema/1.1/SDD.xsd">
+  <TechnicalMetadata created="2026-11-19T10:00:00">
+    <Generator name="Xper3" notes="Example for the dimoose package, laid out the way Xper3 exports SDD" version="1.5.0" />
+  </TechnicalMetadata>
+  <Dataset xml:lang="en">
+    <Representation>
+      <Label>Four cats</Label>
+    </Representation>
+    <TaxonNames>
+      <TaxonName id="t1">
+        <Representation>
+          <Label>Panthera leo</Label>
+          <Detail>&lt;i&gt;Panthera leo&lt;/i&gt; (Linnaeus, 1758)&lt;br&gt;&lt;strong&gt;Common name&lt;/strong&gt;: lion.</Detail>
+        </Representation>
+      </TaxonName>
+      <TaxonName id="t2">
+        <Representation>
+          <Label>Panthera tigris</Label>
+          <Detail>&lt;i&gt;Panthera tigris&lt;/i&gt; (Linnaeus, 1758)&lt;br&gt;&lt;strong&gt;Common name&lt;/strong&gt;: tiger.</Detail>
+        </Representation>
+      </TaxonName>
+      <TaxonName id="t3">
+        <Representation>
+          <Label>Panthera pardus</Label>
+          <Detail>&lt;i&gt;Panthera pardus&lt;/i&gt; (Linnaeus, 1758)&lt;br&gt;&lt;strong&gt;Common name&lt;/strong&gt;: leopard.</Detail>
+        </Representation>
+      </TaxonName>
+      <TaxonName id="t4">
+        <Representation>
+          <Label>Acinonyx jubatus</Label>
+          <Detail>&lt;i&gt;Acinonyx jubatus&lt;/i&gt; (Schreber, 1775)&lt;br&gt;&lt;strong&gt;Common name&lt;/strong&gt;: cheetah.</Detail>
+        </Representation>
+      </TaxonName>
+    </TaxonNames>
+    <TaxonHierarchies>
+      <TaxonHierarchy id="th1">
+        <Representation>
+          <Label>Default Entity Tree</Label>
+        </Representation>
+        <TaxonHierarchyType>UnspecifiedTaxonomy</TaxonHierarchyType>
+        <Nodes>
+          <Node id="tn1">
+            <TaxonName ref="t1" />
+          </Node>
+          <Node id="tn2">
+            <TaxonName ref="t2" />
+          </Node>
+          <Node id="tn3">
+            <TaxonName ref="t3" />
+          </Node>
+          <Node id="tn4">
+            <TaxonName ref="t4" />
+          </Node>
+        </Nodes>
+      </TaxonHierarchy>
+    </TaxonHierarchies>
+    <Characters>
+      <CategoricalCharacter id="c1">
+        <Representation>
+          <Label>Coat pattern</Label>
+          <Detail>Pattern of the adult coat.</Detail>
+        </Representation>
+        <States>
+          <StateDefinition id="s1">
+            <Representation>
+              <Label>plain</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s2">
+            <Representation>
+              <Label>striped</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s3">
+            <Representation>
+              <Label>spotted</Label>
+            </Representation>
+          </StateDefinition>
+        </States>
+      </CategoricalCharacter>
+      <CategoricalCharacter id="c2">
+        <Representation>
+          <Label>Shape of the spots</Label>
+        </Representation>
+        <States>
+          <StateDefinition id="s4">
+            <Representation>
+              <Label>rosettes</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s5">
+            <Representation>
+              <Label>solid spots</Label>
+            </Representation>
+          </StateDefinition>
+        </States>
+      </CategoricalCharacter>
+      <CategoricalCharacter id="c3">
+        <Representation>
+          <Label>Claws</Label>
+        </Representation>
+        <States>
+          <StateDefinition id="s6">
+            <Representation>
+              <Label>fully retractile</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s7">
+            <Representation>
+              <Label>semi-retractile</Label>
+            </Representation>
+          </StateDefinition>
+        </States>
+      </CategoricalCharacter>
+      <CategoricalCharacter id="c4">
+        <Representation>
+          <Label>Mane in adult males</Label>
+        </Representation>
+        <States>
+          <StateDefinition id="s8">
+            <Representation>
+              <Label>present</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s9">
+            <Representation>
+              <Label>absent</Label>
+            </Representation>
+          </StateDefinition>
+        </States>
+      </CategoricalCharacter>
+    </Characters>
+    <CharacterTrees>
+      <CharacterTree id="ct1">
+        <Representation>
+          <Label>_</Label>
+          <Detail>_</Detail>
+        </Representation>
+        <ShouldContainAllCharacters>true</ShouldContainAllCharacters>
+        <Nodes>
+          <CharNode>
+            <Character ref="c1" />
+          </CharNode>
+          <CharNode>
+            <DependencyRules>
+              <InapplicableIf>
+                <State ref="s1" />
+                <State ref="s2" />
+              </InapplicableIf>
+            </DependencyRules>
+            <Character ref="c2" />
+          </CharNode>
+          <CharNode>
+            <Character ref="c3" />
+          </CharNode>
+          <CharNode>
+            <Character ref="c4" />
+          </CharNode>
+        </Nodes>
+      </CharacterTree>
+    </CharacterTrees>
+    <CodedDescriptions>
+      <CodedDescription id="D1">
+        <Representation>
+          <Label>Panthera leo</Label>
+        </Representation>
+        <Scope>
+          <TaxonName ref="t1" />
+        </Scope>
+        <SummaryData>
+          <Categorical ref="c1">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating5of5" />
+            </Ratings>
+            <State ref="s1" />
+          </Categorical>
+          <Categorical ref="c3">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating2of5" />
+            </Ratings>
+            <State ref="s6" />
+          </Categorical>
+          <Categorical ref="c4">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating4of5" />
+            </Ratings>
+            <State ref="s8" />
+          </Categorical>
+        </SummaryData>
+      </CodedDescription>
+      <CodedDescription id="D2">
+        <Representation>
+          <Label>Panthera tigris</Label>
+        </Representation>
+        <Scope>
+          <TaxonName ref="t2" />
+        </Scope>
+        <SummaryData>
+          <Categorical ref="c1">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating5of5" />
+            </Ratings>
+            <State ref="s2" />
+          </Categorical>
+          <Categorical ref="c3">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating2of5" />
+            </Ratings>
+            <State ref="s6" />
+          </Categorical>
+          <Categorical ref="c4">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating4of5" />
+            </Ratings>
+            <State ref="s9" />
+          </Categorical>
+        </SummaryData>
+      </CodedDescription>
+      <CodedDescription id="D3">
+        <Representation>
+          <Label>Panthera pardus</Label>
+        </Representation>
+        <Scope>
+          <TaxonName ref="t3" />
+        </Scope>
+        <SummaryData>
+          <Categorical ref="c1">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating5of5" />
+            </Ratings>
+            <State ref="s3" />
+            <State ref="s1" />
+          </Categorical>
+          <Categorical ref="c2">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating3of5" />
+            </Ratings>
+            <State ref="s4" />
+          </Categorical>
+          <Categorical ref="c3">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating2of5" />
+            </Ratings>
+            <State ref="s6" />
+          </Categorical>
+          <Categorical ref="c4">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating4of5" />
+            </Ratings>
+            <State ref="s9" />
+          </Categorical>
+        </SummaryData>
+      </CodedDescription>
+      <CodedDescription id="D4">
+        <Representation>
+          <Label>Acinonyx jubatus</Label>
+        </Representation>
+        <Scope>
+          <TaxonName ref="t4" />
+        </Scope>
+        <SummaryData>
+          <Categorical ref="c1">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating5of5" />
+            </Ratings>
+            <State ref="s3" />
+          </Categorical>
+          <Categorical ref="c2">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating3of5" />
+            </Ratings>
+            <State ref="s5" />
+          </Categorical>
+          <Categorical ref="c3">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating2of5" />
+            </Ratings>
+            <State ref="s7" />
+          </Categorical>
+          <Categorical ref="c4">
+            <Ratings>
+              <Rating context="ObservationConvenience" rating="Rating4of5" />
+            </Ratings>
+            <Status code="DataUnavailable" />
+          </Categorical>
+        </SummaryData>
+      </CodedDescription>
+    </CodedDescriptions>
+  </Dataset>
+</Datasets>

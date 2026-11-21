@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Datasets xmlns="http://rs.tdwg.org/UBIF/2006/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://rs.tdwg.org/UBIF/2006/ http://rs.tdwg.org/UBIF/2006/Schema/1.1/SDD.xsd">
+  <TechnicalMetadata created="2026-11-19T10:00:00">
+    <Generator name="handcrafted example for the dimoose package" version="1"/>
+  </TechnicalMetadata>
+  <Dataset xml:lang="en">
+    <Representation>
+      <Label>Some orders of insects</Label>
+      <Detail>A dichotomous key stored as an SDD identification key.</Detail>
+    </Representation>
+    <TaxonNames>
+      <TaxonName id="t1">
+        <Representation>
+          <Label>Siphonaptera</Label>
+        </Representation>
+      </TaxonName>
+      <TaxonName id="t2">
+        <Representation>
+          <Label>Zygentoma</Label>
+        </Representation>
+      </TaxonName>
+      <TaxonName id="t3">
+        <Representation>
+          <Label>Diptera</Label>
+        </Representation>
+      </TaxonName>
+      <TaxonName id="t4">
+        <Representation>
+          <Label>Lepidoptera</Label>
+        </Representation>
+      </TaxonName>
+      <TaxonName id="t5">
+        <Representation>
+          <Label>Coleoptera</Label>
+        </Representation>
+      </TaxonName>
+    </TaxonNames>
+    <IdentificationKeys>
+      <IdentificationKey id="k1">
+        <Representation>
+          <Label>Key to some orders of insects</Label>
+        </Representation>
+        <Question>
+          <Text>Does the insect have wings?</Text>
+        </Question>
+        <Leads>
+          <Lead id="L1">
+            <Statement>Wings absent</Statement>
+            <Question>
+              <Text>How is the body flattened?</Text>
+            </Question>
+          </Lead>
+          <Lead id="L2">
+            <Statement>Wings present</Statement>
+            <Question>
+              <Text>What are the forewings like?</Text>
+            </Question>
+          </Lead>
+          <Lead id="L3">
+            <Parent ref="L1"/>
+            <Statement>Body flattened from side to side, 1-2 mm long; jumping</Statement>
+            <TaxonName ref="t1"/>
+          </Lead>
+          <Lead id="L4">
+            <Parent ref="L1"/>
+            <Statement>Body flattened from above, 10-15 mm long, with three tails</Statement>
+            <TaxonName ref="t2"/>
+          </Lead>
+          <Lead id="L5">
+            <Parent ref="L2"/>
+            <Statement>Forewings membranous</Statement>
+          </Lead>
+          <Lead id="L6">
+            <Parent ref="L2"/>
+            <Statement>Forewings hard covers that meet in a straight line</Statement>
+            <TaxonName ref="t5"/>
+          </Lead>
+          <Lead id="L7">
+            <Parent ref="L5"/>
+            <Statement>Hindwings reduced to small knobs</Statement>
+            <TaxonName ref="t3"/>
+          </Lead>
+          <Lead id="L8">
+            <Parent ref="L5"/>
+            <Statement>Hindwings present; wings and body covered with scales</Statement>
+            <TaxonName ref="t4"/>
+          </Lead>
+        </Leads>
+      </IdentificationKey>
+    </IdentificationKeys>
+  </Dataset>
+</Datasets>

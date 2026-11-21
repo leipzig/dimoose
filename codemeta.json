@@ -1,0 +1,313 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "identifier": "dimoose",
+  "name": "dimoose: Tools to Reshape and Manipulate Dichotomous Keys Used in Taxonomic Identification",
+  "description": "Transforms between dichotomous identification keys and a variety of phenotype formats, including feature matrices, and generates interactive dichotomous key wizards. Imports keys from 'FishBase' <https://www.fishbase.se/keys/allkeys.php> and includes PhyloTree Build 17, the human mitochondrial DNA phylogeny (van Oven 2015, <doi:10.1016/j.fsigss.2015.09.155>), as distributed by 'Haplogrep' 3.",
+  "version": "0.3.0",
+  "license": "https://spdx.org/licenses/GPL-3.0-or-later",
+  "codeRepository": "https://github.com/leipzig/dimoose",
+  "issueTracker": "https://github.com/leipzig/dimoose/issues",
+  "url": "https://leipzig.github.io/dimoose/",
+  "relatedLink": "https://leipzig.r-universe.dev/dimoose",
+  "readme": "https://github.com/leipzig/dimoose/blob/master/README.md",
+  "releaseNotes": "https://github.com/leipzig/dimoose/blob/master/NEWS.md",
+  "contIntegration": "https://github.com/leipzig/dimoose/actions/workflows/R-CMD-check.yaml",
+  "developmentStatus": "https://www.repostatus.org/#wip",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "R",
+    "url": "https://r-project.org"
+  },
+  "runtimePlatform": "R (>= 3.5.0)",
+  "applicationCategory": "Taxonomy",
+  "keywords": [
+    "dichotomous key",
+    "identification key",
+    "taxonomy",
+    "species identification",
+    "biodiversity",
+    "phylogenetics",
+    "r",
+    "rstats"
+  ],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Jeremy",
+      "familyName": "Leipzig",
+      "email": "leipzig@gmail.com",
+      "@id": "https://orcid.org/0000-0001-7224-9620"
+    }
+  ],
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Jeremy",
+      "familyName": "Leipzig",
+      "email": "leipzig@gmail.com",
+      "@id": "https://orcid.org/0000-0001-7224-9620"
+    }
+  ],
+  "softwareRequirements": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 3.5.0"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "base64enc",
+      "name": "base64enc",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=base64enc"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "data.tree",
+      "name": "data.tree",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=data.tree"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "httr",
+      "name": "httr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=httr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "R6",
+      "name": "R6",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=R6"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rpart",
+      "name": "rpart",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rpart"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rvest",
+      "name": "rvest",
+      "version": ">= 1.0.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rvest"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "stats",
+      "name": "stats"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "tools",
+      "name": "tools"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "utils",
+      "name": "utils"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "withr",
+      "name": "withr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=withr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "xml2",
+      "name": "xml2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=xml2"
+    }
+  ],
+  "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "ape",
+      "name": "ape",
+      "sameAs": "https://CRAN.R-project.org/package=ape"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "phangorn",
+      "name": "phangorn",
+      "sameAs": "https://CRAN.R-project.org/package=phangorn"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "gbm",
+      "name": "gbm",
+      "sameAs": "https://CRAN.R-project.org/package=gbm"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "igraph",
+      "name": "igraph",
+      "sameAs": "https://CRAN.R-project.org/package=igraph"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "jpeg",
+      "name": "jpeg",
+      "sameAs": "https://CRAN.R-project.org/package=jpeg"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "jsonlite",
+      "name": "jsonlite",
+      "sameAs": "https://CRAN.R-project.org/package=jsonlite"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "knitr",
+      "name": "knitr",
+      "sameAs": "https://CRAN.R-project.org/package=knitr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "magick",
+      "name": "magick",
+      "sameAs": "https://CRAN.R-project.org/package=magick"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "png",
+      "name": "png",
+      "sameAs": "https://CRAN.R-project.org/package=png"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "randomForest",
+      "name": "randomForest",
+      "sameAs": "https://CRAN.R-project.org/package=randomForest"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "reticulate",
+      "name": "reticulate",
+      "version": ">= 1.41.0",
+      "sameAs": "https://CRAN.R-project.org/package=reticulate"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rgnparser",
+      "name": "rgnparser",
+      "sameAs": "https://CRAN.R-project.org/package=rgnparser"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rmarkdown",
+      "name": "rmarkdown",
+      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rsvg",
+      "name": "rsvg",
+      "sameAs": "https://CRAN.R-project.org/package=rsvg"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "taxize",
+      "name": "taxize",
+      "version": ">= 0.9.100",
+      "sameAs": "https://CRAN.R-project.org/package=taxize"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "version": ">= 3.1.7",
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "tibble",
+      "name": "tibble",
+      "sameAs": "https://CRAN.R-project.org/package=tibble"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "tidytree",
+      "name": "tidytree",
+      "sameAs": "https://CRAN.R-project.org/package=tidytree"
+    }
+  ],
+  "citation": [
+    {
+      "@type": "ScholarlyArticle",
+      "name": "PhyloTree Build 17: Growing the human mitochondrial DNA tree",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Mannis",
+          "familyName": "van Oven"
+        }
+      ],
+      "datePublished": "2015",
+      "identifier": "10.1016/j.fsigss.2015.09.155",
+      "sameAs": "https://doi.org/10.1016/j.fsigss.2015.09.155",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "datePublished": "2015",
+        "isPartOf": {
+          "@type": [
+            "PublicationVolume",
+            "Periodical"
+          ],
+          "volumeNumber": "5",
+          "name": "Forensic Science International: Genetics Supplement Series"
+        }
+      }
+    }
+  ]
+}

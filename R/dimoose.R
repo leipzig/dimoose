@@ -110,27 +110,40 @@ dimoose <- R6::R6Class("dimoose",
     print = function(...) {
       s <- self$summary()
       cat("<dimoose key> ", if (is.na(s$title)) "(untitled)" else s$title, "\n", sep = "")
-      cat(sprintf("  %d couplets, %d leads, %d taxa, up to %d steps deep\n",
-        s$couplets, s$leads, s$taxa, s$depth))
+      cat(sprintf("  %d couplets, %d leads, %d taxa, up to %d steps deep%s\n",
+        s$couplets, s$leads, s$taxa, s$depth,
+        if (is.na(s$meanTaxonSteps)) "" else sprintf(" (%.1f on average)", s$meanTaxonSteps)))
       if (s$problems > 0) cat(sprintf("  %d problem(s): see $validate()\n", s$problems))
       invisible(self)
     },
-    #' @description Counts describing the key.
+    #' @description Counts describing the key and how quickly it reaches a
+    #'   result (see [keyQuality()]).
+    #' @param weights Optional named numeric vector of how common each taxon
+    #'   is, as for [keyQuality()]; by default all taxa count the same.
     #' @return A one-row data frame: `title`, `couplets`, `leads`, `taxa`,
-    #'   `depth` (longest path in steps) and `problems` (see `validate()`).
-    summary = function() {
+    #'   `depth` (longest path in steps), `problems` (see `validate()`),
+    #'   `meanLeadSteps` and `meanTaxonSteps` (steps to a result, averaged
+    #'   over terminal leads and over taxa), `expectedSteps` (averaged over
+    #'   taxa by `weights`), `bound` (the expected steps of the best key
+    #'   there could be to these taxa, with couplets no larger than this
+    #'   key's largest) and `efficiency` (`bound / expectedSteps`, 1 for a
+    #'   key that could not be shorter).
+    summary = function(weights = NULL) {
       leads <- normalizeLeads(self$leads)
       check <- checkLeads(leads)
-      parentLead <- match(leads$Statement, leads$Next)
-      terminal <- which(leads$Next == "-")
-      depth <- if (length(terminal)) max(vapply(terminal, function(i) length(pathToLead(leads, i, check$root, parentLead)), 0L)) else 0L
+      quality <- keyQuality(self, weights)
       data.frame(
         title = if (length(private$.desc) == 1) as.character(private$.desc) else NA_character_,
         couplets = length(check$couplets),
         leads = nrow(leads),
         taxa = length(unique(leads$Taxon[leads$Next == "-" & nzchar(leads$Taxon)])),
-        depth = as.integer(depth),
+        depth = quality$depth,
         problems = length(check$problems),
+        meanLeadSteps = quality$meanLeadSteps,
+        meanTaxonSteps = quality$meanTaxonSteps,
+        expectedSteps = quality$expectedSteps,
+        bound = quality$bound,
+        efficiency = quality$efficiency,
         stringsAsFactors = FALSE
       )
     },
@@ -300,5 +313,5 @@ leadsFromPaths <- function(df) {
 
 #' @export
 summary.dimoose <- function(object, ...) {
-  object$summary()
+  object$summary(...)
 }

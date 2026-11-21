@@ -1,0 +1,174 @@
+# Source: Henry B. Ward and George C. Whipple, Fresh-Water Biology (New York: John Wiley & Sons, 1918),
+# 'Key to North American fresh-water Sarcodina', leads 1-27. Public domain (published in the United
+# States before 1929). Uncorrected OCR text from the Internet Archive scan 'freshwaterbiolog00wardrich'.
+# Lines starting with '#' are not part of the text.
+KEY   TO    NORTH   AMERICAN   FRESH-WATER   SARCODINA 
+
+1  (161)     Pseudo podia  without  axial  filaments.     .    .   Class  Rhizopoda  .    .       2 
+
+2  (144)     Pseudopodia  lobose,  sometimes  pointed  but  never  anastomosing. 
+
+Subclass  Amoebea   .   .       3 
+
+3  (21)     Without  shells Order  Gymnamoebida   .    .       4 
+
+4  One  family  recognized.     Characteristics  of  the  order. 
+
+Family  Amoebidae  .    .       5 
+
+5  (6)     Body  and  pseudopodia  bristling  with  minute  spicules. 
+
+Dinamoeba  Leidy. 
+Representative  species Dinamoeba  mirabilis  Leidy  1874. 
+
+Very  changeable  in  shape  with  many  tapering  pseudo- 
+podia. Papillae-like  projections  often  appearing  al  the  pos- 
+terior extremity.  Entire  body  sometimes  surrounded  by  a 
+jelly-like  envelop.  A  contractile  vacuole  and  two  nuclei 
+present.  Habitat  standing  water.  Size  may  reach  200  M, 
+including  pseudopodia. 
+
+FIG.  274.     Dinamoeba  mirabilis.     X  100.     (After  Leidy.) 
+
+6(5)     Body  smooth,  without  spicules 7 
+
+7  (8)     Body  usually  enclosing  symbiotic  bacteria.    Large  size.    Nuclei  many. 
+
+Pelomyxa  Greeff. 
+Representative  species.   ........  Pelomyxa  palustris  Greeff  1870. 
+
+A  very  large  form  moving  slowly  by  broad  extensions 
+of  the  ectoplasm.  Endoplasm  enclosing  sand,  brilliant 
+corpuscles  and  bacteria;  with  numerous  vacuoles  in  the  ecto- 
+plasm. Nuclei  may  number  1000  or  more.  Habitat  ooze 
+of  ponds  and  sphagnous  swamps.  Maximum  length  2000  fi. 
+P.  carolinensis  Wilson,  described  in  American  Naturalist, 
+Vol.  34,  p.  535,  is  apparently  without  symbiotic  bacteria. 
+
+FIG.    275.     Pelomyxa  paluslris.     X  25.     (After  Penard.) 
+
+8(7)     Body  not  enclosing  symbiotic  bacteria.    .    .    .   ;.. 9 
+
+9  (10)     Ectoplasmic  membranes  produced  between  the  pseudopodia. 
+
+Hyalodiscus  Hertwig  and  Lesser. 
+Representative  species.   .    .    .  Hyalodiscus  rubicundus  H.  and  L.  1874. 
+
+Body  discoidal,  moving  by  extending  thin  sheets  of  ecto- 
+plasm which  are  penetrated  by  ray-like  pseudopodia.  En- 
+doplasm reddish-yellow  in  color  enclosing  numerous  vacuoles 
+and  one  or  more  nuclei.  Habitat  ooze  of  ponds,  not  common. 
+Size  40  to  60  n. 
+
+FIG.  276.      Hyalodiscus  rubicundus.     X  315.     (After  Penard.) 
+
+10  (9)     Ectoplasmic  membranes  not  produced  between  the  pseudopodia. 
+
+Amoeba  Ehrenberg  .    .     n 
+
+11(14)     Pseudopodia  sharply  distinguished  from  the  body 12 
+
+12  (13)     Pseudopodia  lobe-like Amoeba  proteus  Leidy  1878. 
+
+Very  changeable  in  form,  usually  with  numerous  pseudo- 
+podia. The  nucleus  is  always  single,  oval  and  of  large  size. 
+Contractile  vacuoles  one  or  more.  Habitat  both  stagnant 
+and  clear  water.  Size,  one  of  the  largest  species  of  the  genus; 
+may  reach  300  n  or  more  when  extended. 
+
+FIG.  277.    Amoeba  Proteus.    X  100.    (Original  from  a  preparation.) 
+
+
+220 
+
+
+FRESH-WATER   BIOLOGY 
+
+
+13  (12) 
+
+
+14(11) 
+15(20) 
+1  6  (17) 
+
+
+17(16) 
+18  (19) 
+
+
+Pseudopodia  ray-like Amoeba  radiosa  Ehrenberg  1830, 
+
+Body  spherical,  with  pseudopodia  more  or  less  rigid,  not  withdrawn 
+and  reformed  rapidly.  Nucleus  spherical.  Habitat,  very  common 
+among  algae;  widely  distributed.  Size,  usually  less  than  100/1  with 
+pseudopodia  extended. 
+
+FIG.  278.    Amoeba  radiosa.    CM,  contractile  vacuole      X  100.    (After  Leidy.) 
+
+Pseudopodia  not  sharply  distinguished  from  the  body.  .,..*'.    .     15 
+Contractile  vacuole  spherical,    ..    .    v  .    . ; »  ..;•-  .    .   .   .  Y  ,..  .    .     16 
+
+Posterior  extremity  villous Amoeba  Umax  Dujardin  1841. 
+
+Slug-like,  usually  moving  with  the  broad  end  forward.  Endo- 
+plasm  filled  with  brilliant  granules.  Contractile  vacuole  usually 
+single.  Nucleus  changeable  in  form.  Habitat  ooze  of  ponds. 
+Size,  large  individuals  usually  less  than  100  M- 
+
+FIG.  279.    Amoeba  Umax,     x  225.     (Alter  Penard.) 
+
+Posterior  extremity  not  villous.      .....    .    .    .   .   .    .' .    .    .    .     19 
+
+Surface  wrinkled,  large  size.      .    .  Amoeba  verrucosa  Ehrenberg  1838. 
+
+A  sluggish  species,  moving  by  a  slow  rolling  motion.  Pseudo- 
+podia short,  broad  lobes.  Body  proper  enclosed  by  a  delicate 
+membrane.  Surface  marked  by  lines  crossing  each  other  re- 
+sulting in  a  wrinkled  appearance.  Habitat  sphagnous  swamps. 
+Large  individuals  may  reach  300  /*  in  length  when  extended. 
+
+FIG.  280.    Amoeba  verrucosa.     X  100     (After  Leidy.) 
+
+19  (18)     Surface  not  wrinkled,  small  size.    .   .    Amoeba  guttula  Dujardin  1841. 
+
+Body  usually  oval  in  outline,  moving  with  the  broad  end  forward. 
+Pseudopodia  short,  broad  lobes  produced  by  sudden  expansions  of  the 
+protoplasm.  Nucleus  single  and  one  large  contractile  vacuole.  Habitat 
+stagnant  water.  Size  30  n. 
+
+Fie.  281.    Amoeba  guttula.     X  400.     (After  Penard.) 
+
+20  (15)     Contractile  vacuole  not  spherical.   .    .    .  Amoeba  striata  Penard  1890. 
+
+Moving  rapidly  by  broad  extensions  of  ectoplasm  but  not  changing 
+form  rapidly.  Usually  from  two  to  four  longitudinal  lines  on  the  surface. 
+Two  contractile  vacuoles  often  present,  the  anterior  one  changeable  in 
+shape.  Habitat  among  algae;  not  abundant.  Size,  from  30  to  60  p. 
+
+
+X  250.     (After  Penard.) 
+
+Order  Testacea 
+
+
+FIG.  282.    Amoeba  striata. 
+
+21  (3)     With  shells. Order  Testacea  .    .     22 
+
+22  (103)  Pseudopodia  thick,  finger-like,  rarely  filiform. 
+
+Family  ARCELLIDAE  .    .  23 
+
+23  (96)     Pseudopodia  thick,  sometimes  pointed 24 
+
+24(35)     Shell  membranous,  more  or  less  flexible ... 25 
+
+25  (32)     Membrane  covered  with  organic  or  foreign  particles 26 
+
+26(29)     Shell  membrane  double Diplochlamys  Greeff.    .  27 
+
+27  (28)     Hemispherical  to  cup-shaped,  loosely  coated  with  organic  and  siliceous 
+particles Diplochlamys  fragilis  Penard  1909. 
+
+Color  gray,  spotted  with  black.  Inner  membrane  very  fragile 

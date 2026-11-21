@@ -41,5 +41,5 @@ substitutions at the same position; a deletion counts as carried.
 haplotypeMatrix(c("H2a2a1", "U5b", "L0a1b"), sites = c("152", "16311", "16278"))
 }
 \seealso{
-\code{\link[=recurrentPositions]{recurrentPositions()}}, \code{\link[=macroHaplogroup]{macroHaplogroup()}}, \code{\link[=simulateExpression]{simulateExpression()}}
+\code{\link[=recurrentPositions]{recurrentPositions()}}, \code{\link[=macroHaplogroup]{macroHaplogroup()}}
 }

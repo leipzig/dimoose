@@ -126,5 +126,18 @@ data/vibrio.rda (source: data-raw/vibrio/vibrio.tsv)
   doi:10.1111/j.1365-2672.2008.03730.x. One table of results from the
   article; the article's text and keys are not included.
 
+tests/testthat/fixtures/textkeys/
+  Short excerpts of uncorrected OCR text of published keys, used to test
+  keyFromText(). All are in the public domain (published in the United
+  States before 1929, or works of the United States Government); the source
+  of each is given in the file's header: Williston (1908), Britton & Brown
+  (1913), Schaffner (1914), Brues & Melander (1915), Rydberg (1917), Ward &
+  Whipple (1918), Hitchcock (1935, USDA Misc. Publ. 200),
+  Jordan & Evermann (1898).
+
+tests/testthat/fixtures/tdwg/tetractenion.lif3
+  Lucid key file from Berry RP, van Noort S (2020), ZooKeys 1007,
+  doi:10.3897/zookeys.1007.55543.suppl2. CC0 1.0.
+
 Rights holders who object to any of this material may contact the
 maintainer (see DESCRIPTION) and it will be removed.

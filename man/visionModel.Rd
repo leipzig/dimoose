@@ -8,7 +8,9 @@ visionModel(
   weights = NULL,
   name = "ViT-B-32",
   pretrained = "openai",
-  python = NULL
+  python = NULL,
+  backend = c("torch", "onnx"),
+  precision = c("fp32", "fp16", "int8")
 )
 }
 \arguments{
@@ -25,6 +27,12 @@ architecture \code{name}; not used for the other kinds of \code{name}.}
 
 \item{python}{Optional path to the Python executable to use (passed to
 \code{\link[reticulate:use_python]{reticulate::use_python()}}).}
+
+\item{backend}{\code{"torch"} (PyTorch and open_clip) or \code{"onnx"} (ONNX
+Runtime, a much smaller install; see below).}
+
+\item{precision}{For \code{backend = "onnx"}: \code{"fp32"}, \code{"fp16"} or \code{"int8"},
+see \code{\link[=onnxModel]{onnxModel()}}.}
 }
 \value{
 An object of class \code{dimooseVisionModel} with \code{py} (the Python model)
@@ -37,13 +45,25 @@ the packages dimoose needs (\code{torch}, \code{open_clip_torch}, \code{pillow},
 and reuses it afterwards. That first call downloads them, which takes a
 few minutes. This needs reticulate 1.41 or later.
 }
-\details{
+\section{A lighter setup, without PyTorch}{
+
+Most of that first download is PyTorch. \code{visionModel(backend = "onnx")}
+runs the same model on ONNX Runtime instead, which needs only the Python
+packages \code{onnxruntime}, \code{tokenizers}, \code{pillow} and \code{numpy} (about 150 MB
+installed) and gives the same embeddings (cosine 1.0000 with the PyTorch
+ones on dimoose's example photos). CLIP ViT-B/32 and ViT-B/16 are
+downloaded ready-made; BioCLIP and other models are converted once with
+\code{\link[=exportOnnxModel]{exportOnnxModel()}}. See \code{\link[=onnxModel]{onnxModel()}}, which this calls, for where models
+come from and for \code{precision}. Use one backend per R session: the Python
+that reticulate sets up for the first one lacks the other's packages.
+
 To use a Python of your own instead, give its path in \code{python}, or select
 it with \code{\link[reticulate:use_python]{reticulate::use_python()}}, \code{\link[reticulate:use_virtualenv]{reticulate::use_virtualenv()}} or the
 \code{RETICULATE_PYTHON} environment variable before the first call, and install
 the packages there with
 \code{reticulate::py_install(c("torch", "open_clip_torch", "pillow", "numpy"))}.
 }
+
 \section{Other models, including BioCLIP}{
 
 Any open_clip model whose image side is a vision transformer works. The
@@ -72,5 +92,6 @@ images only, better than vocabulary questions (\code{\link[=keyFromClusters]{key
 \dontrun{
 model <- visionModel()                    # CLIP ViT-B/32
 model <- visionModel(name = "bioclip")    # BioCLIP, for photos of organisms
+model <- visionModel(backend = "onnx")    # CLIP ViT-B/32 without PyTorch
 }
 }

@@ -1,0 +1,16 @@
+# Source: David Starr Jordan and Barton Warren Evermann, The Fishes of North and Middle America, part 3,
+# Bulletin of the United States National Museum 47 (Washington: Government Printing Office, 1898),
+# key to the species of Eleotris, p. 2199. Public domain (a work of the United States Government,
+# published before 1929). Uncorrected OCR text from the Internet Archive scan 'p3fishesofnorthm00jord'.
+# Lines starting with '#' are not part of the text.
+a. Teeth subequal, those of inner or outer series enlarged. 
+b. Cheek entirely scaled. 
+c. Teeth of inner series of each jaw enlarged. 
+d. Scales in a median series 40 to 51, in a cross series 12 to 20. 
+e. Eye large, 5 to 6 in head; scales 40 to 44—12 to 14. 
+AMBLYOPSIS, 2520. 
+ee. Eye small, 8 in head; scales 51-20. ABACURUS, 2521. 
+dd. Scales in a median series 57 to 66; in a cross series 18 to 24. 
+PISONIS, 2522. 
+bb. Lower half of cheek naked; scales 61. PERNIGER, 2523. 
+aa. Teeth all equal;.scales 60. PICTUS, 2524. 

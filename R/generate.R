@@ -3,6 +3,16 @@
 #' Fits a classification tree (or tree ensemble) with the taxon column as the
 #' response and every other column as a feature.
 #'
+#' The rpart defaults are set for identification data, which usually has one
+#' row per taxon: `rpart.control(minsplit = 2, minbucket = 1, cp = 0)`, so the
+#' tree keeps splitting until every taxon is separated. (rpart's own defaults,
+#' `minsplit = 20, minbucket = 7, cp = 0.01`, make no split at all on such a
+#' matrix.) With many specimens per taxon pass your own `control` in `params`
+#' to get a smaller tree, or just the settings to change, e.g.
+#' `params = list(cp = 0.01)` or `params = list(maxdepth = 3)`. [keyFromRpart()] turns the tree into a key;
+#' [keyFromMatrix()] goes from matrix to key in one step and handles taxa that
+#' are variable for a character.
+#'
 #' @param data A data frame containing the feature matrix.
 #' @param target_col Name of the target/response column.
 #' @param method `"rpart"`, `"randomForest"` (requires the 'randomForest'
@@ -11,16 +21,17 @@
 #'   `"bernoulli"`).
 #' @param params Optional list of arguments passed to the fitting function,
 #'   overriding the defaults.
-#' @return A fitted `rpart`, `randomForest` or `gbm` object.
+#' @return A fitted `rpart`, `randomForest` or `gbm` object. For the last two
+#'   the `call` is the call to `generateTree()`.
 #' @examples
 #' features <- data.frame(
-#'   family = factor(c("A", "B", "C", "A", "B", "C")),
-#'   fin = factor(c("x", "y", "y", "x", "y", "y")),
-#'   head = factor(c("p", "p", "q", "p", "p", "q"))
+#'   family = factor(c("A", "B", "C")),
+#'   fin = factor(c("x", "y", "y")),
+#'   head = factor(c("p", "p", "q"))
 #' )
-#' generateTree(features, "family",
-#'   params = list(control = rpart::rpart.control(minsplit = 2, minbucket = 1))
-#' )
+#' fit <- generateTree(features, "family")
+#' fit
+#' keyFromRpart(fit)$leads
 #' @export
 generateTree <- function(data, target_col, method = c("rpart", "randomForest", "gbm"),
                          params = list()) {
@@ -37,18 +48,34 @@ generateTree <- function(data, target_col, method = c("rpart", "randomForest", "
 
   # Backticks keep non-syntactic names such as "Growth at 3% NaCl" intact
   feature_cols <- setdiff(names(data), target_col)
+  if (length(feature_cols) == 0) {
+    stop("data has no feature columns besides target_col", call. = FALSE)
+  }
   formula <- stats::reformulate(
     termlabels = paste0("`", feature_cols, "`"),
     response = as.name(target_col)
   )
 
-  switch(method,
+  if (nrow(data) == 0) stop("data has no rows", call. = FALSE)
+  if (method == "rpart" && identical(if (is.null(params[["method"]])) "class" else params[["method"]], "class") &&
+      length(unique(stats::na.omit(data[[target_col]]))) < 2) {
+    stop("target_col must hold at least two different taxa", call. = FALSE)
+  }
+
+  fit <- switch(method,
     rpart = {
       defaults <- list(
         method = "class",
-        control = rpart::rpart.control(minsplit = 20, minbucket = 7, cp = 0.01)
+        control = rpart::rpart.control(minsplit = 2, minbucket = 1, cp = 0)
       )
-      do.call(rpart::rpart, c(list(formula = formula, data = data), utils::modifyList(defaults, params)))
+      args <- utils::modifyList(defaults, params)
+      # rpart lets `control` override settings given on their own (cp,
+      # minsplit, maxdepth ...), and here there is always a `control`, so
+      # they are put into it
+      single <- setdiff(intersect(names(args), names(formals(rpart::rpart.control))), "...")
+      args$control[single] <- args[single]
+      args[single] <- NULL
+      do.call(rpart::rpart, c(list(formula = formula, data = data), args))
     },
     randomForest = {
       defaults <- list(ntree = 500, mtry = floor(sqrt(length(feature_cols))))
@@ -67,4 +94,10 @@ generateTree <- function(data, target_col, method = c("rpart", "randomForest", "
       do.call(gbm::gbm, c(list(formula = formula, data = data), utils::modifyList(defaults, params)))
     }
   )
+  # The fit was made with do.call(), which records the whole data frame (and
+  # for gbm the fitting function) as its call, and printing a random forest
+  # or gbm prints that. Record the call to generateTree() instead. An rpart
+  # fit does not print its call and is returned as rpart made it.
+  if (method != "rpart") fit$call <- match.call()
+  fit
 }

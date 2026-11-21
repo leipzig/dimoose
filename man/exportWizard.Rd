@@ -5,17 +5,24 @@
 \title{Export an interactive dichotomous key}
 \usage{
 exportWizard(
-  key,
+  key = NULL,
   file = NULL,
   displayLinks = TRUE,
-  order = c("original", "parsimony"),
+  order = "original",
   title = NULL,
   map = TRUE,
-  staticPaths = NULL
+  staticPaths = NULL,
+  matrix = NULL,
+  characters = NULL,
+  taxon = "Taxon",
+  offline = FALSE,
+  photoModel = NULL,
+  photoRuntime = NULL
 )
 }
 \arguments{
-\item{key}{A \link{dimoose} object, e.g. from \code{\link[=importFishbase]{importFishbase()}}.}
+\item{key}{A \link{dimoose} object, e.g. from \code{\link[=importFishbase]{importFishbase()}}. May be \code{NULL}
+if \code{matrix} is given.}
 
 \item{file}{Path of the HTML file to write. If \code{NULL}, the HTML is returned
 as a string instead.}
@@ -24,8 +31,10 @@ as a string instead.}
 and comes from, as in a printed key. If \code{FALSE}, hide them. Leads stay
 clickable either way.}
 
-\item{order}{Order of couplets. Only \code{"original"} (the key's own order) is
-implemented.}
+\item{order}{Deprecated and ignored. Couplets are always exported in the
+key's own order. \code{"parsimony"} was never implemented; to ask the
+questions that are easiest to observe first, build the key with
+\code{\link[=keyFromMatrix]{keyFromMatrix()}} and give the characters a \code{Cost}.}
 
 \item{title}{Page title. Defaults to the key's description.}
 
@@ -39,10 +48,36 @@ the page, so it shows without JavaScript. If \code{FALSE}, the page builds
 the path in the browser when a result is shown, which keeps large keys
 (such as \code{\link[=phylotreeKey]{phylotreeKey()}} on the whole tree) much smaller. The default
 is \code{TRUE} for keys with up to 1,000 taxa.}
+
+\item{matrix}{Optional character matrix: a data frame with one row per
+taxon, the taxon's name in column \code{taxon} and one column per character.
+Cells are states; several states of one taxon are separated by \code{"/"};
+\code{NA} is unknown or inapplicable. See 'Picking characters in any order'.}
+
+\item{characters}{Optional data frame describing the characters of
+\code{matrix}: column \code{Character} (a column name of \code{matrix}) and any of
+\code{Cost} (lower is easier to observe), \code{Season} (when it can be observed)
+and \code{Needs} (e.g. \code{"hand lens"}).}
+
+\item{taxon}{Name of the column of \code{matrix} that holds the taxon names.}
+
+\item{offline}{If \code{TRUE}, also write a web app manifest, a service worker
+and icons next to \code{file}, so that the page can be installed and opened
+without a connection. Needs \code{file}. See 'Offline use'.}
+
+\item{photoModel}{Optional: a folder written by \code{\link[=exportBrowserModel]{exportBrowserModel()}} for
+this key, or the web address (\verb{https://...}) of one. Adds "Identify from
+a photo" to the page. See 'Identifying from a photo'.}
+
+\item{photoRuntime}{Optional web address of a folder holding the \code{dist}
+files of onnxruntime-web (\code{ort.wasm.min.js}, \code{ort-wasm-simd-threaded.mjs}
+and \code{.wasm}), to serve them yourself instead of loading them from
+jsDelivr. Relative addresses are relative to the page.}
 }
 \value{
 The path to \code{file}, invisibly, or the HTML as a character string if
-\code{file} is \code{NULL}.
+\code{file} is \code{NULL}. With \code{offline = TRUE} or a \code{photoModel} folder the
+paths of the other files written are in attribute \code{"files"}.
 }
 \description{
 Writes a dimoose key as a single self-contained HTML page. With JavaScript
@@ -59,9 +94,174 @@ leads without a taxon, couplets with fewer than two leads and couplets
 that cannot be reached from the first one are reported as warnings and
 marked in the page.
 }
-\examples{
-\dontrun{
-sharks <- importFishbase(1, usePhyloService = "none")
-exportWizard(sharks, "sharks.html")
+\section{Not sure}{
+
+Every couplet has an "I'm not sure" button (keys \code{u} or \verb{?}). It follows
+all leads of the couplet at once. The page then asks the questions of one
+branch at a time, lists the branches still open (click one to answer it
+next), and counts and marks on the map the taxa possible in any of them.
+Each answer narrows its own branch. If the reader stays unsure to the end,
+the page lists every result that is left. Back undoes one step at a time.
+The address of the page records the open branches (\verb{#open=c-3,c-9}), so a
+reload or a shared link returns to the same place; the trail of choices
+comes back too when the browser restores the page's history entry.
 }
+
+\section{Picking characters in any order}{
+
+With \code{matrix}, the page gains a second way in: a list of the characters of
+the matrix, to answer in any order. Picking a state removes the taxa that
+do not have it. A taxon with several states (\code{"a/b"}) fits any of them, and
+a taxon whose state is unknown (\code{NA}) fits all. The characters that still
+separate the remaining taxa are listed first: cheapest first when
+\code{characters} gives a \code{Cost}, then those that leave the fewest taxa on
+average. Taxa of the matrix are matched to the key's taxa by name (ignoring
+case), so the remaining taxa link to their result sections and show on the
+map, and the page offers to continue step by step from the couplet they all
+share. Without JavaScript the matrix is a plain table. The two ways are
+otherwise independent: answers given step by step do not filter the
+character list. With \code{key = NULL} the page is the character list alone.
+}
+
+\section{Offline use}{
+
+The page itself needs no connection once it is open, but a browser will not
+reopen a page it cannot fetch. \code{offline = TRUE} writes four files next to
+\code{file}, named after it: a web app manifest (\verb{<name>.webmanifest}), a
+service worker (\verb{<name>-sw.js}) and two icons (\verb{<name>-icon-192.png},
+\verb{<name>-icon-512.png}; the package logo if the rsvg package is installed,
+otherwise a simple drawn icon). The worker stores the page, the manifest,
+the icons and the figures the page loads from other sites, so that the
+page can be installed on a phone ("Add to Home Screen") and opened without
+signal. Upload all five files to the same folder. Limits:
+\itemize{
+\item Browsers run service workers only on \verb{https://} or \verb{http://localhost}. A
+page opened from disk (\verb{file://}) works as before but is not installed
+and stores nothing.
+\item The page must be opened once with a connection before it works without.
+\item Figures on other sites are fetched when the worker installs and again
+when first shown; any that fail are skipped. A site that does not allow
+cross-origin requests gives an opaque copy, which browsers count as
+several megabytes each against the storage they allow, so a key with
+many such figures may not store them all. Figures embedded in the key
+(see \code{\link[=imageMeta]{imageMeta()}}) are part of the page and always available. Full-size
+figures and taxon pages that open in a new tab are not stored.
+\item The worker only controls the page it was written for (its scope is the
+page's own address), so several keys can share a folder. Serve the page
+under its file name; a server that drops the \code{.html} from addresses puts
+the page outside the worker's scope.
+}
+}
+
+\section{Identifying from a photo}{
+
+\code{photoModel} adds an "Identify from a photo" button. The reader takes or
+picks a photo; the page loads the model and
+\href{https://onnxruntime.ai/docs/tutorials/web/}{onnxruntime-web} (the program
+that runs it, version 1.31.1, about 15 MB, from the jsDelivr CDN unless
+\code{photoRuntime} says otherwise), prepares the picture as the model's
+\code{model.json} says, runs the image encoder in the browser and compares the
+result with the text embeddings of the key's taxa. The photo never leaves
+the reader's device. The page then marks the likely taxa on the map, lists
+the five best with their scores, each linked to its result, and offers to
+narrow the key to them: the leads that reach none of them are greyed and
+the count of remaining taxa follows, but every lead still works. The key
+stays the authority; the photo is a hint.
+
+\code{photoModel} is a folder written by \code{\link[=exportBrowserModel]{exportBrowserModel()}} for the same
+key, or the web address of one. The model is not put into the page. A
+folder is copied next to \code{file} as \verb{<name>_model/} (so \code{file} is needed);
+upload it with the page. A web address is used as it is; a model on
+another site must allow cross-origin requests. What to expect:
+\itemize{
+\item Nothing is downloaded until the reader has chosen a photo, been told the
+size and agreed. An int8 BioCLIP encoder is 90 MB; with the runtime that
+is about 105 MB on first use. The page shows the progress.
+\item With \code{offline = TRUE} the service worker keeps the model and the runtime
+once they have been fetched, so photos can be identified without a
+connection afterwards. That is the same 105 MB or so of storage on the
+reader's device, and the first use still needs a connection.
+\item It needs a browser with WebAssembly, and memory: several times the size
+of the encoder while it loads. If the browser cannot run the model, runs
+out of memory or cannot fetch it, the page says so and the key works as
+before. A page opened from disk (\verb{file://}) cannot load the model.
+\item Only the WebAssembly backend is used, on one thread unless the page is
+served cross-origin isolated. That suits int8 encoders, which WebGPU
+cannot run.
+\item The scores compare the key's taxa with each other and add up to 100\%,
+so a photo of something that is not in the key still gets a confident
+best match. If \code{model.json} has a \code{min_similarity}, a best match whose
+cosine similarity is under it is shown as "Not much like any taxon of
+this key" without a percentage.
+}
+}
+
+\section{Notes on leads}{
+
+A \code{Note} column in the key's leads, as \code{\link[=pruneKey]{pruneKey()}} writes when it
+collapses a couplet (the character of the couplet that is no longer asked),
+is shown under its lead as "Also:" and in the path of each result. A
+\code{pruned_note} in the key's meta (the same for a collapsed first couplet) is
+shown under the title.
+}
+
+\section{Hook for other scripts}{
+
+The page defines \code{window.dimoose} so that another script, for example one
+that identifies a photo in the browser, can work with the page without
+knowing how it is built:
+\itemize{
+\item \code{dimoose.taxa}: array of \verb{\{ id, name \}}, one per result.
+\item \code{dimoose.highlight(scores, opts)}: \code{scores} is an object mapping taxon
+names or ids to numbers, or an array of \verb{\{ taxon, score \}}; \code{null}
+clears. Marks those taxa on the map and in every list of candidates and
+lists the five best above the key, headed by \code{opts.label} (default
+"Suggested"). Scores all within 0 to 1 are shown as percentages. Returns
+the ids it marked, best first.
+\item \code{dimoose.goToTaxon(nameOrId)}: shows that result; \code{false} if unknown.
+\item \code{dimoose.narrow(namesOrIds)}: narrows the key to these taxa (see
+'Identifying from a photo'); \code{null} undoes it. Returns the ids kept.
+\item \code{dimoose.state()}: \verb{\{ shown, open, remaining, picks, narrowed \}}, the
+section shown, the open branches, the ids of the taxa still possible, the
+states picked in the character list and the ids the key is narrowed to
+(or \code{null}).
+\item \code{dimoose.photo} (only with \code{photoModel}): \code{identify(file)}, a promise of
+the ranked taxa, and the pure steps \code{preprocess()} and \code{score()}.
+\item \code{dimoose.onChange(fn)}: calls \code{fn(state)} after every step.
+}
+}
+
+\examples{
+leads <- data.frame(
+  Statement = c("1", "1", "2", "2"), Choice = c("a", "b", "a", "b"),
+  Character = c("Wings present", "Wings absent", "Two wings", "Four wings"),
+  Next = c("2", "-", "-", "-"), Taxon = c("", "Silverfish", "Fly", "Bee")
+)
+key <- keyFromLeads(leads, "A tiny key")
+html <- exportWizard(key)
+substr(html, 1, 15)
+
+# With a character matrix the reader can also pick characters in any order
+insects <- data.frame(
+  Taxon = c("Silverfish", "Fly", "Bee", "Ant"),
+  Wings = c("absent", "present", "present", "present/absent"),
+  Sting = c("absent", "absent", "present", NA)
+)
+characters <- data.frame(Character = c("Wings", "Sting"), Cost = c(1, 3),
+                         Needs = c("", "hand lens"))
+html <- exportWizard(key, matrix = insects, characters = characters)
+
+# A matrix alone makes a page with only the character list
+html <- exportWizard(NULL, matrix = insects, title = "Four insects")
+
+# An installable copy that opens without a connection once it is served
+# over https: the page, a manifest, a service worker and two icons
+dir <- tempfile("key")
+dir.create(dir)
+out <- exportWizard(key, file.path(dir, "insects.html"), offline = TRUE)
+list.files(dir)
+unlink(dir, recursive = TRUE)
+}
+\seealso{
+\code{\link[=keyFromMatrix]{keyFromMatrix()}} to build a key from a character matrix.
 }

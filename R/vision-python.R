@@ -1,6 +1,8 @@
-# The Python packages the vision layer needs, from inst/python/requirements.txt.
-pythonRequirements <- function() {
-  req <- readLines(system.file("python", "requirements.txt", package = "dimoose"), warn = FALSE)
+# The Python packages the vision layer needs, from inst/python/requirements.txt
+# for the torch backend and requirements-onnx.txt for the ONNX Runtime one.
+pythonRequirements <- function(backend = c("torch", "onnx")) {
+  file <- if (match.arg(backend) == "onnx") "requirements-onnx.txt" else "requirements.txt"
+  req <- readLines(system.file("python", file, package = "dimoose"), warn = FALSE)
   req <- trimws(sub("#.*$", "", req))
   req[nzchar(req)]
 }
@@ -41,6 +43,17 @@ pyVision <- local({
 #' and reuses it afterwards. That first call downloads them, which takes a
 #' few minutes. This needs reticulate 1.41 or later.
 #'
+#' @section A lighter setup, without PyTorch:
+#' Most of that first download is PyTorch. `visionModel(backend = "onnx")`
+#' runs the same model on ONNX Runtime instead, which needs only the Python
+#' packages `onnxruntime`, `tokenizers`, `pillow` and `numpy` (about 150 MB
+#' installed) and gives the same embeddings (cosine 1.0000 with the PyTorch
+#' ones on dimoose's example photos). CLIP ViT-B/32 and ViT-B/16 are
+#' downloaded ready-made; BioCLIP and other models are converted once with
+#' [exportOnnxModel()]. See [onnxModel()], which this calls, for where models
+#' come from and for `precision`. Use one backend per R session: the Python
+#' that reticulate sets up for the first one lacks the other's packages.
+#'
 #' To use a Python of your own instead, give its path in `python`, or select
 #' it with [reticulate::use_python()], [reticulate::use_virtualenv()] or the
 #' `RETICULATE_PYTHON` environment variable before the first call, and install
@@ -78,15 +91,33 @@ pyVision <- local({
 #'   architecture `name`; not used for the other kinds of `name`.
 #' @param python Optional path to the Python executable to use (passed to
 #'   [reticulate::use_python()]).
+#' @param backend `"torch"` (PyTorch and open_clip) or `"onnx"` (ONNX
+#'   Runtime, a much smaller install; see below).
+#' @param precision For `backend = "onnx"`: `"fp32"`, `"fp16"` or `"int8"`,
+#'   see [onnxModel()].
 #' @return An object of class `dimooseVisionModel` with `py` (the Python model)
 #'   and `spec` (library, architecture, weights SHA-256, image size, ...).
 #' @examples
 #' \dontrun{
 #' model <- visionModel()                    # CLIP ViT-B/32
 #' model <- visionModel(name = "bioclip")    # BioCLIP, for photos of organisms
+#' model <- visionModel(backend = "onnx")    # CLIP ViT-B/32 without PyTorch
 #' }
 #' @export
-visionModel <- function(weights = NULL, name = "ViT-B-32", pretrained = "openai", python = NULL) {
+visionModel <- function(weights = NULL, name = "ViT-B-32", pretrained = "openai", python = NULL,
+                        backend = c("torch", "onnx"), precision = c("fp32", "fp16", "int8")) {
+  backend <- match.arg(backend)
+  if (backend == "onnx") {
+    if (!is.null(weights)) {
+      # the first argument is `weights`: a folder there is an ONNX model folder
+      if (length(weights) == 1 && dir.exists(weights)) {
+        return(onnxModel(weights, precision = match.arg(precision), python = python))
+      }
+      stop("`weights` is a checkpoint for PyTorch; convert it once with exportOnnxModel(weights = ...) ",
+           "and give the folder it writes as `name`", call. = FALSE)
+    }
+    return(onnxModel(onxNameFor(name, pretrained), precision = match.arg(precision), python = python))
+  }
   if (!requireNamespace("reticulate", quietly = TRUE)) {
     stop("Install the reticulate package to embed images", call. = FALSE)
   }
@@ -156,6 +187,8 @@ embedImages <- function(model, paths, region = NULL, patches = TRUE, tiles = 4, 
   } else {
     ids <- sub("\\.[^.]+$", "", basename(paths))
   }
+  if (!length(paths)) stop("There are no images to embed: `paths` is empty", call. = FALSE)
+  if (anyNA(paths)) stop("`paths` has missing values; every image needs a file", call. = FALSE)
   tiles <- as.integer(tiles[!is.na(tiles) & tiles > 0])
   out <- model$mod$embed_images(model$py, as.list(as.character(paths)), region = region, patches = patches,
                                 tiles = if (length(tiles)) as.list(tiles) else NULL, min_detail = minDetail,
@@ -172,10 +205,13 @@ embedImages <- function(model, paths, region = NULL, patches = TRUE, tiles = 4, 
 
 #' Embed texts
 #' @inheritParams embedImages
-#' @param texts Character vector.
-#' @return A `texts x d` matrix with the texts as row names.
+#' @param texts Character vector, without missing values.
+#' @return A `texts x d` matrix with the texts as row names (no rows for no
+#'   texts).
 #' @export
 embedTexts <- function(model, texts) {
+  if (anyNA(texts)) stop("`texts` has missing values (NA); every text must be a string", call. = FALSE)
+  if (!length(texts)) return(matrix(numeric(0), 0, model$spec$dim, dimnames = list(character(0), NULL)))
   m <- model$mod$embed_texts(model$py, as.list(as.character(texts)))
   rownames(m) <- texts
   m

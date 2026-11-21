@@ -1,0 +1,10 @@
+started: 2026-11-19 16:24 MST
+finished: 2026-11-19 16:36 MST
+photos: 220 from 220 observations of 11 species
+iNaturalist id_below: 415646417 ; seed: 2 ; retrieved: 2026-11-19
+model: hf-hub:imageomics/bioclip-2 / open_clip 3.3.0 / weights sha256 unknown
+lineage for identifyPhotos: GBIF, via checkNames()
+built key (first split): 36 couplets, 37 end points
+build route over 10 splits (seeds 2 to 11): top-1 mean 0.6621, standard deviation 0.0441, range 0.6061 to 0.7576
+R: R version 4.6.1 (2026-06-24)
+dimoose: 0.2.0
