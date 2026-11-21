@@ -1,0 +1,221 @@
+"id","observation_id","actual","names_predicted","names_rank","build_predicted","build_correct","split","identify_name","identify_rank","identify_probability","identify_confident","identify_correct"
+"124168777_210433920","124168777","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,"Black cottonwood (Populus trichocarpa)",TRUE,"test","Populus trichocarpa","species",0.876,TRUE,TRUE
+"124400379_210851888","124400379","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus trichocarpa","species",0.9185,TRUE,TRUE
+"165811302_287060241","165811302","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus trichocarpa","species",0.9988,TRUE,TRUE
+"165924470_291156164","165924470","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus trichocarpa","species",0.9177,TRUE,TRUE
+"165988094_287394087","165988094","Black cottonwood (Populus trichocarpa)","Plains cottonwood (Populus deltoides)",2,NA,NA,"train","Populus deltoides","species",0.8596,TRUE,FALSE
+"166195243_287777086","166195243","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,"Quaking aspen (Populus tremuloides)",FALSE,"test","Populus trichocarpa","species",0.9969,TRUE,TRUE
+"206874087_365863951","206874087","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus trichocarpa","species",0.9996,TRUE,TRUE
+"248525571_444079103","248525571","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,"Black cottonwood (Populus trichocarpa)",TRUE,"test","Populus trichocarpa","species",0.945,TRUE,TRUE
+"248532018_444093491","248532018","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus trichocarpa","species",0.9542,TRUE,TRUE
+"248544635_444114981","248544635","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus","genus",0.9972,TRUE,TRUE
+"290329315_522271251","290329315","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus trichocarpa","species",0.9754,TRUE,TRUE
+"372467480_680620616","372467480","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus trichocarpa","species",0.9516,TRUE,TRUE
+"373067694_681764951","373067694","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,"Quaking aspen (Populus tremuloides)",FALSE,"test","Populus trichocarpa","species",0.9862,TRUE,TRUE
+"373359628_682320093","373359628","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus trichocarpa","species",0.988,TRUE,TRUE
+"41075468_65127079","41075468","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,"Black cottonwood (Populus trichocarpa)",TRUE,"test","Populus trichocarpa","species",0.9993,TRUE,TRUE
+"41313819_65528679","41313819","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus trichocarpa","species",0.9982,TRUE,TRUE
+"414095055_762250126","414095055","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus trichocarpa","species",0.9023,TRUE,TRUE
+"414305535_762679237","414305535","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus trichocarpa","species",0.8485,TRUE,TRUE
+"82623471_135623387","82623471","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,"Quaking aspen (Populus tremuloides)",FALSE,"test","Populus","genus",0.9999,TRUE,TRUE
+"83034055_136333018","83034055","Black cottonwood (Populus trichocarpa)","Black cottonwood (Populus trichocarpa)",1,NA,NA,"train","Populus trichocarpa","species",0.8045,TRUE,TRUE
+"124625575_211252853","124625575","Box elder (Acer negundo)","Box elder (Acer negundo)",1,"Box elder (Acer negundo)",TRUE,"test","Acer negundo","species",0.9996,TRUE,TRUE
+"124653245_211302852","124653245","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9995,TRUE,TRUE
+"166195545_287777665","166195545","Box elder (Acer negundo)","Box elder (Acer negundo)",1,"Box elder (Acer negundo)",TRUE,"test","Acer negundo","species",0.9994,TRUE,TRUE
+"166197813_287781874","166197813","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9994,TRUE,TRUE
+"166242491_287852263","166242491","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9973,TRUE,TRUE
+"207784118_367570531","207784118","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9972,TRUE,TRUE
+"249310176_445643203","249310176","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9952,TRUE,TRUE
+"249310318_445636993","249310318","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9981,TRUE,TRUE
+"249332819_445684214","249332819","Box elder (Acer negundo)","Box elder (Acer negundo)",1,"Box elder (Acer negundo)",TRUE,"test","Acer negundo","species",0.9992,TRUE,TRUE
+"290935630_523416215","290935630","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.8426,TRUE,TRUE
+"373979266_683511998","373979266","Box elder (Acer negundo)","Box elder (Acer negundo)",1,"Box elder (Acer negundo)",TRUE,"test","Acer negundo","species",0.9589,TRUE,TRUE
+"373986977_683526725","373986977","Box elder (Acer negundo)","Box elder (Acer negundo)",1,"Box elder (Acer negundo)",TRUE,"test","Acer negundo","species",0.9988,TRUE,TRUE
+"373999885_684024703","373999885","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9996,TRUE,TRUE
+"41543176_65911786","41543176","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9989,TRUE,TRUE
+"41549377_65920006","41549377","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9957,TRUE,TRUE
+"415501929_765104434","415501929","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9984,TRUE,TRUE
+"415541200_765185515","415541200","Box elder (Acer negundo)","Box elder (Acer negundo)",1,"Box elder (Acer negundo)",TRUE,"test","Acer negundo","species",0.9993,TRUE,TRUE
+"83073457_136405031","83073457","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9986,TRUE,TRUE
+"83115448_136424554","83115448","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9993,TRUE,TRUE
+"83117875_136483046","83117875","Box elder (Acer negundo)","Box elder (Acer negundo)",1,NA,NA,"train","Acer negundo","species",0.9998,TRUE,TRUE
+"124329017_210723493","124329017","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,"Plains cottonwood (Populus deltoides)",FALSE,"test","Quercus macrocarpa","species",1,TRUE,TRUE
+"124476458_210986188","124476458","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",1,TRUE,TRUE
+"166014548_287445377","166014548","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",0.9813,TRUE,TRUE
+"166109914_287617882","166109914","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",1,TRUE,TRUE
+"166136918_287666613","166136918","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",0.9998,TRUE,TRUE
+"166251977_287878385","166251977","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,"Bur oak (Quercus macrocarpa)",TRUE,"test","Quercus macrocarpa","species",1,TRUE,TRUE
+"207082172_366253513","207082172","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,"Quaking aspen (Populus tremuloides)",FALSE,"test","Quercus macrocarpa","species",0.9876,TRUE,TRUE
+"249081516_445187031","249081516","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,"Green ash (Fraxinus pennsylvanica)",FALSE,"test","Quercus macrocarpa","species",0.9999,TRUE,TRUE
+"249104049_445231817","249104049","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",1,TRUE,TRUE
+"249187175_445392887","249187175","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",1,TRUE,TRUE
+"290567097_522726959","290567097","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",1,TRUE,TRUE
+"290700636_522973368","290700636","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",0.9302,TRUE,TRUE
+"373772958_683113918","373772958","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",1,TRUE,TRUE
+"41371742_65626307","41371742","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",1,TRUE,TRUE
+"41503584_65844979","41503584","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",0.9986,TRUE,TRUE
+"415181274_764455782","415181274","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,"Bur oak (Quercus macrocarpa)",TRUE,"test","Quercus macrocarpa","species",1,TRUE,TRUE
+"415353485_764798719","415353485","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",1,TRUE,TRUE
+"82772481_135880471","82772481","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,"Plains cottonwood (Populus deltoides)",FALSE,"test","Quercus macrocarpa","species",0.9929,TRUE,TRUE
+"82936819_136165115","82936819","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",1,TRUE,TRUE
+"83024296_136318895","83024296","Bur oak (Quercus macrocarpa)","Bur oak (Quercus macrocarpa)",1,NA,NA,"train","Quercus macrocarpa","species",1,TRUE,TRUE
+"124528138_211074723","124528138","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",1,TRUE,TRUE
+"124590394_211189545","124590394","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",0.9998,TRUE,TRUE
+"166095882_287592483","166095882","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",0.9993,TRUE,TRUE
+"166152455_287695300","166152455","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,"Green ash (Fraxinus pennsylvanica)",TRUE,"test","Fraxinus pennsylvanica","species",0.9998,TRUE,TRUE
+"166153123_287696036","166153123","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",0.9936,TRUE,TRUE
+"166208836_287802721","166208836","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,"Peachleaf willow (Salix amygdaloides)",FALSE,"test","Fraxinus pennsylvanica","species",0.9518,TRUE,TRUE
+"206597249_365345072","206597249","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",0.9961,TRUE,TRUE
+"248852576_444736552","248852576","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",0.9998,TRUE,TRUE
+"248922864_444872162","248922864","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,"Green ash (Fraxinus pennsylvanica)",TRUE,"test","Fraxinus pennsylvanica","species",0.9981,TRUE,TRUE
+"290754269_523055096","290754269","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",1,TRUE,TRUE
+"373202625_682021537","373202625","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,"Green ash (Fraxinus pennsylvanica)",TRUE,"test","Fraxinus pennsylvanica","species",0.9996,TRUE,TRUE
+"373525353_682645792","373525353","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",1,TRUE,TRUE
+"373582923_682752945","373582923","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",1,TRUE,TRUE
+"40940994_64911187","40940994","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",0.999,TRUE,TRUE
+"41009889_65029037","41009889","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",0.9998,TRUE,TRUE
+"413636101_761325956","413636101","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,"Green ash (Fraxinus pennsylvanica)",TRUE,"test","Fraxinus pennsylvanica","species",0.9999,TRUE,TRUE
+"414186023_762434858","414186023","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",0.9999,TRUE,TRUE
+"82719062_135785863","82719062","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",0.9978,TRUE,TRUE
+"83001346_136278134","83001346","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,NA,NA,"train","Fraxinus pennsylvanica","species",0.9997,TRUE,TRUE
+"83064935_136390304","83064935","Green ash (Fraxinus pennsylvanica)","Green ash (Fraxinus pennsylvanica)",1,"Green ash (Fraxinus pennsylvanica)",TRUE,"test","Fraxinus pennsylvanica","species",1,TRUE,TRUE
+"120058704_203018836","120058704","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.9707,TRUE,TRUE
+"122390497_207214065","122390497","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.9959,TRUE,TRUE
+"164515580_284656495","164515580","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.9867,TRUE,TRUE
+"164846714_285276196","164846714","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.997,TRUE,TRUE
+"164908594_285392281","164908594","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.9935,TRUE,TRUE
+"165644745_286756147","165644745","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,"Bur oak (Quercus macrocarpa)",FALSE,"test","Populus","genus",0.9999,TRUE,TRUE
+"187398240_327712115","187398240","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.9906,TRUE,TRUE
+"246039338_439153657","246039338","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,"Narrowleaf cottonwood (Populus angustifolia)",TRUE,"test","Populus angustifolia","species",0.9913,TRUE,TRUE
+"246105461_439288863","246105461","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Salicaceae","family",1,TRUE,TRUE
+"247341467_441730688","247341467","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.9738,TRUE,TRUE
+"286815250_515661922","286815250","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.9976,TRUE,TRUE
+"29107755_45413528","29107755","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.9986,TRUE,TRUE
+"33137709_52020650","33137709","Narrowleaf cottonwood (Populus angustifolia)","Black cottonwood (Populus trichocarpa)",2,"Black cottonwood (Populus trichocarpa)",FALSE,"test","Populus","genus",0.9926,TRUE,TRUE
+"366204443_668663207","366204443","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,"Narrowleaf cottonwood (Populus angustifolia)",TRUE,"test","Populus angustifolia","species",0.9564,TRUE,TRUE
+"368540931_673135134","368540931","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.9882,TRUE,TRUE
+"409771218_753504144","409771218","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,"Narrowleaf cottonwood (Populus angustifolia)",TRUE,"test","Populus angustifolia","species",0.9595,TRUE,TRUE
+"410810699_755619622","410810699","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.9929,TRUE,TRUE
+"78429563_128355196","78429563","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.9855,TRUE,TRUE
+"82065534_134658248","82065534","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,NA,NA,"train","Populus angustifolia","species",0.9976,TRUE,TRUE
+"82636010_135647921","82636010","Narrowleaf cottonwood (Populus angustifolia)","Narrowleaf cottonwood (Populus angustifolia)",1,"Narrowleaf cottonwood (Populus angustifolia)",TRUE,"test","Populus angustifolia","species",0.9391,TRUE,TRUE
+"124462596_210951810","124462596","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.9996,TRUE,TRUE
+"124540138_211100556","124540138","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula","genus",0.9998,TRUE,TRUE
+"166094813_287588807","166094813","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.9616,TRUE,TRUE
+"166143053_287678251","166143053","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.9879,TRUE,TRUE
+"207098451_367270454","207098451","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.9775,TRUE,TRUE
+"248936277_444899048","248936277","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,"Paper birch (Betula papyrifera)",TRUE,"test","Betula papyrifera","species",0.984,TRUE,TRUE
+"248960550_444946301","248960550","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.999,TRUE,TRUE
+"249047898_445412027","249047898","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,"Paper birch (Betula papyrifera)",TRUE,"test","Betula papyrifera","species",0.9993,TRUE,TRUE
+"290663820_522907199","290663820","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,"Paper birch (Betula papyrifera)",TRUE,"test","Betula papyrifera","species",0.9967,TRUE,TRUE
+"372642875_680958071","372642875","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.9511,TRUE,TRUE
+"373087709_681799942","373087709","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.9919,TRUE,TRUE
+"373244811_682105888","373244811","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.9991,TRUE,TRUE
+"414718844_763509802","414718844","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,"Paper birch (Betula papyrifera)",TRUE,"test","Betula papyrifera","species",0.993,TRUE,TRUE
+"414923550_763928909","414923550","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.9992,TRUE,TRUE
+"41496944_65833848","41496944","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.9997,TRUE,TRUE
+"414975170_764033517","414975170","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.9988,TRUE,TRUE
+"41515958_65866750","41515958","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,"Paper birch (Betula papyrifera)",TRUE,"test","Betula papyrifera","species",0.957,TRUE,TRUE
+"82563396_135518185","82563396","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.9781,TRUE,TRUE
+"82848036_136011537","82848036","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,"Paper birch (Betula papyrifera)",TRUE,"test","Betula papyrifera","species",0.9546,TRUE,TRUE
+"82944481_136161942","82944481","Paper birch (Betula papyrifera)","Paper birch (Betula papyrifera)",1,NA,NA,"train","Betula papyrifera","species",0.9912,TRUE,TRUE
+"119611441_202218554","119611441","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,"Peachleaf willow (Salix amygdaloides)",TRUE,"test","Salix amygdaloides","species",0.9998,TRUE,TRUE
+"121811824_206174236","121811824","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,"Peachleaf willow (Salix amygdaloides)",TRUE,"test","Salix amygdaloides","species",0.9873,TRUE,TRUE
+"145625713_250176041","145625713","Peachleaf willow (Salix amygdaloides)","Black cottonwood (Populus trichocarpa)",2,"Narrowleaf cottonwood (Populus angustifolia)",FALSE,"test","Populus","genus",0.8803,TRUE,FALSE
+"163653723_283077780","163653723","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salix amygdaloides","species",0.9973,TRUE,TRUE
+"164061161_283823258","164061161","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salix amygdaloides","species",0.9988,TRUE,TRUE
+"165990296_287399194","165990296","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salix amygdaloides","species",0.9765,TRUE,TRUE
+"195437629_343823124","195437629","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,"Plains cottonwood (Populus deltoides)",FALSE,"test","Salix amygdaloides","species",0.9456,TRUE,TRUE
+"241747024_430883921","241747024","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salix amygdaloides","species",0.8315,TRUE,TRUE
+"242940574_433138722","242940574","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salix amygdaloides","species",0.9961,TRUE,TRUE
+"245311630_437722030","245311630","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salicaceae","family",1,TRUE,TRUE
+"288146341_518161442","288146341","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salix amygdaloides","species",0.9965,TRUE,TRUE
+"33919273_53325258","33919273","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salix amygdaloides","species",0.9466,TRUE,TRUE
+"366806825_669799511","366806825","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salix amygdaloides","species",0.9211,TRUE,TRUE
+"368512930_673080772","368512930","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salix amygdaloides","species",0.9075,TRUE,TRUE
+"368669402_673373203","368669402","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salix amygdaloides","species",0.6943,FALSE,TRUE
+"407110626_748073922","407110626","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salix amygdaloides","species",0.9783,TRUE,TRUE
+"409207105_752346578","409207105","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salicaceae","family",0.9714,TRUE,TRUE
+"68626717_111173011","68626717","Peachleaf willow (Salix amygdaloides)","Narrowleaf cottonwood (Populus angustifolia)",2,"Narrowleaf cottonwood (Populus angustifolia)",FALSE,"test","Populus angustifolia","species",0.8737,TRUE,FALSE
+"81037223_132872239","81037223","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,"Narrowleaf cottonwood (Populus angustifolia)",FALSE,"test","Salix amygdaloides","species",0.9904,TRUE,TRUE
+"82236694_134955850","82236694","Peachleaf willow (Salix amygdaloides)","Peachleaf willow (Salix amygdaloides)",1,NA,NA,"train","Salix amygdaloides","species",0.9415,TRUE,TRUE
+"124405159_210859251","124405159","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,"Plains cottonwood (Populus deltoides)",TRUE,"test","Populus deltoides","species",0.9922,TRUE,TRUE
+"124543243_211107952","124543243","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,"Quaking aspen (Populus tremuloides)",FALSE,"test","Populus deltoides","species",0.9968,TRUE,TRUE
+"166063238_287531204","166063238","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9823,TRUE,TRUE
+"166133078_287657453","166133078","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9974,TRUE,TRUE
+"166149756_287673922","166149756","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9965,TRUE,TRUE
+"166196400_287775320","166196400","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9066,TRUE,TRUE
+"207556609_367150998","207556609","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9561,TRUE,TRUE
+"249070232_445162684","249070232","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9825,TRUE,TRUE
+"249089724_445203679","249089724","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,"Quaking aspen (Populus tremuloides)",FALSE,"test","Populus","genus",0.995,TRUE,TRUE
+"290794299_523149597","290794299","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9958,TRUE,TRUE
+"373787143_683130107","373787143","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9402,TRUE,TRUE
+"373792992_683152074","373792992","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9826,TRUE,TRUE
+"41488639_65817600","41488639","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,"Green ash (Fraxinus pennsylvanica)",FALSE,"test","Populus","genus",0.9999,TRUE,TRUE
+"41529515_65892418","41529515","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9643,TRUE,TRUE
+"415314891_764724374","415314891","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,"Bur oak (Quercus macrocarpa)",FALSE,"test","Populus deltoides","species",0.9973,TRUE,TRUE
+"415382504_764864937","415382504","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,"Quaking aspen (Populus tremuloides)",FALSE,"test","Populus deltoides","species",0.9154,TRUE,TRUE
+"415436969_764968765","415436969","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9473,TRUE,TRUE
+"82891893_136085818","82891893","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9991,TRUE,TRUE
+"83061316_136383666","83061316","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9979,TRUE,TRUE
+"83079049_136415286","83079049","Plains cottonwood (Populus deltoides)","Plains cottonwood (Populus deltoides)",1,NA,NA,"train","Populus deltoides","species",0.9871,TRUE,TRUE
+"124593161_211194728","124593161","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus","genus",0.9691,TRUE,TRUE
+"124645695_211289420","124645695","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,"Quaking aspen (Populus tremuloides)",TRUE,"test","Populus tremuloides","species",0.9996,TRUE,TRUE
+"166163085_287716609","166163085","Quaking aspen (Populus tremuloides)","Plains cottonwood (Populus deltoides)",2,NA,NA,"train","Populus","genus",0.9987,TRUE,TRUE
+"166182063_287751219","166182063","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,"Plains cottonwood (Populus deltoides)",FALSE,"test","Populus tremuloides","species",0.934,TRUE,TRUE
+"166182471_287751978","166182471","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,"Black cottonwood (Populus trichocarpa)",FALSE,"test","Populus tremuloides","species",0.9991,TRUE,TRUE
+"166231899_287842723","166231899","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus tremuloides","species",0.966,TRUE,TRUE
+"207281566_366624816","207281566","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus tremuloides","species",0.9937,TRUE,TRUE
+"249262986_445545813","249262986","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,"Quaking aspen (Populus tremuloides)",TRUE,"test","Populus tremuloides","species",0.7018,FALSE,TRUE
+"249308467_445639584","249308467","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus tremuloides","species",0.9922,TRUE,TRUE
+"290846808_523251861","290846808","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus tremuloides","species",0.9907,TRUE,TRUE
+"373964163_683477871","373964163","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus tremuloides","species",0.9976,TRUE,TRUE
+"373972984_683738010","373972984","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,"Quaking aspen (Populus tremuloides)",TRUE,"test","Populus tremuloides","species",0.9988,TRUE,TRUE
+"373998948_683549036","373998948","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,"Quaking aspen (Populus tremuloides)",TRUE,"test","Populus tremuloides","species",0.9671,TRUE,TRUE
+"41446947_65752445","41446947","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus tremuloides","species",0.991,TRUE,TRUE
+"41488354_65819504","41488354","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus tremuloides","species",0.9726,TRUE,TRUE
+"415108246_764306126","415108246","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus tremuloides","species",0.9781,TRUE,TRUE
+"415262517_764619235","415262517","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus tremuloides","species",0.9954,TRUE,TRUE
+"83014608_136301357","83014608","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus tremuloides","species",0.9995,TRUE,TRUE
+"83080307_136417503","83080307","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus tremuloides","species",0.9971,TRUE,TRUE
+"83093872_136439237","83093872","Quaking aspen (Populus tremuloides)","Quaking aspen (Populus tremuloides)",1,NA,NA,"train","Populus tremuloides","species",0.9536,TRUE,TRUE
+"124586217_211177359","124586217","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",0.9996,TRUE,TRUE
+"166132151_287671323","166132151","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",1,TRUE,TRUE
+"166153948_287698633","166153948","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",0.9996,TRUE,TRUE
+"166233081_287844667","166233081","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",0.9939,TRUE,TRUE
+"205947701_364206468","205947701","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",1,TRUE,TRUE
+"248831278_444692966","248831278","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,"Rocky Mountain maple (Acer glabrum)",TRUE,"test","Acer glabrum","species",0.9439,TRUE,TRUE
+"248843853_444717132","248843853","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,"Rocky Mountain maple (Acer glabrum)",TRUE,"test","Acer glabrum","species",0.9998,TRUE,TRUE
+"290488766_522571007","290488766","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",0.9999,TRUE,TRUE
+"290547138_522689848","290547138","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",0.989,TRUE,TRUE
+"373416023_682431549","373416023","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",0.9999,TRUE,TRUE
+"373577207_682743047","373577207","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",0.9999,TRUE,TRUE
+"373685845_682943505","373685845","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,"Rocky Mountain maple (Acer glabrum)",TRUE,"test","Acer glabrum","species",0.999,TRUE,TRUE
+"39234386_62220101","39234386","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,"Water birch (Betula occidentalis)",FALSE,"test","Acer glabrum","species",0.9998,TRUE,TRUE
+"40593505_64338433","40593505","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",0.9984,TRUE,TRUE
+"412077675_758173781","412077675","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,"Rocky Mountain maple (Acer glabrum)",TRUE,"test","Acer glabrum","species",0.9996,TRUE,TRUE
+"412537424_759112704","412537424","Rocky Mountain maple (Acer glabrum)","Water birch (Betula occidentalis)",2,NA,NA,"train","Betula occidentalis","species",0.9611,TRUE,FALSE
+"413411715_760872254","413411715","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",0.9999,TRUE,TRUE
+"82557363_135509145","82557363","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,"Box elder (Acer negundo)",FALSE,"test","Acer glabrum","species",0.9993,TRUE,TRUE
+"82958230_136205383","82958230","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",0.9999,TRUE,TRUE
+"82992689_136263779","82992689","Rocky Mountain maple (Acer glabrum)","Rocky Mountain maple (Acer glabrum)",1,NA,NA,"train","Acer glabrum","species",1,TRUE,TRUE
+"119697398_202376205","119697398","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9991,TRUE,TRUE
+"120619871_204032550","120619871","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,"Water birch (Betula occidentalis)",TRUE,"test","Betula occidentalis","species",0.9969,TRUE,TRUE
+"163895238_283524079","163895238","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9986,TRUE,TRUE
+"164860458_285301283","164860458","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,"Water birch (Betula occidentalis)",TRUE,"test","Betula occidentalis","species",0.9992,TRUE,TRUE
+"165058888_285666452","165058888","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9988,TRUE,TRUE
+"165590078_286653806","165590078","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9987,TRUE,TRUE
+"199168787_351193941","199168787","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9969,TRUE,TRUE
+"199569709_351962478","199569709","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9996,TRUE,TRUE
+"247237949_441530427","247237949","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,"Peachleaf willow (Salix amygdaloides)",FALSE,"test","Betula occidentalis","species",0.9821,TRUE,TRUE
+"288819808_519430787","288819808","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,"Black cottonwood (Populus trichocarpa)",FALSE,"test","Betula occidentalis","species",0.9634,TRUE,TRUE
+"289687807_521055061","289687807","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9981,TRUE,TRUE
+"34848294_54896967","34848294","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9967,TRUE,TRUE
+"369122717_674213876","369122717","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9997,TRUE,TRUE
+"370164528_676213843","370164528","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9986,TRUE,TRUE
+"37052463_58674490","37052463","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,"Water birch (Betula occidentalis)",TRUE,"test","Betula occidentalis","species",0.999,TRUE,TRUE
+"370535316_676916883","370535316","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9997,TRUE,TRUE
+"410820086_755635886","410820086","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9758,TRUE,TRUE
+"411778313_757573066","411778313","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9273,TRUE,TRUE
+"81128600_133028817","81128600","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,NA,NA,"train","Betula occidentalis","species",0.9984,TRUE,TRUE
+"82793566_135914129","82793566","Water birch (Betula occidentalis)","Water birch (Betula occidentalis)",1,"Water birch (Betula occidentalis)",TRUE,"test","Betula occidentalis","species",0.9981,TRUE,TRUE

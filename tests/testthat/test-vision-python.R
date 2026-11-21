@@ -175,3 +175,15 @@ test_that("the BioCLIP shortcuts name the Hub repositories", {
   visionModel(name = "BioCLIP-2"); expect_equal(seen, "hf-hub:imageomics/bioclip-2")
   visionModel(name = "ViT-B-16"); expect_equal(seen, "ViT-B-16")
 })
+
+test_that("no images, no texts and missing texts are handled before Python is reached", {
+  fv <- fakeVisionModel()
+  expect_error(embedImages(fv$model, character(0)), "no images to embed")
+  expect_error(embedImages(fv$model, fv$sv$images[0, ]), "no images to embed")
+  expect_error(embedImages(fv$model, c("/synthetic/L1.png", NA)), "missing values")
+  expect_error(embedTexts(fv$model, c("a leaf", NA)), "missing values")
+  none <- embedTexts(fv$model, character(0))
+  expect_equal(dim(none), c(0L, fv$model$spec$dim))
+  expect_length(fv$calls$embed_images, 0); expect_length(fv$calls$embed_texts, 0)
+  expect_equal(rownames(embedTexts(fv$model, c("a leaf", ""))), c("a leaf", ""))
+})

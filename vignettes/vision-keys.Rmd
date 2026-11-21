@@ -82,6 +82,25 @@ reticulate::py_install(c("torch", "open_clip_torch", "pillow", "numpy"))
 Only step 3 (and the example crops in step 5) needs Python. Everything else is
 ordinary R on numeric matrices.
 
+### A smaller install: ONNX Runtime {#onnx}
+
+PyTorch is most of that download. `visionModel(backend = "onnx")` runs the
+same CLIP ViT-B/32 on [ONNX Runtime](https://onnxruntime.ai) instead: the
+Python side is then `onnxruntime`, `tokenizers`, `pillow` and `numpy`, and the
+model is downloaded once, ready-made, from the Hugging Face Hub into
+`onnxCache()`.
+
+```{r}
+model <- visionModel(backend = "onnx")
+model <- visionModel(backend = "onnx", precision = "fp16")   # half the download
+```
+
+The embeddings are the same, and every later step is unchanged: on the
+example photos the key in step 4 comes out identical. Two things differ. The
+ready-made model has no patch tokens, so `embedImages(tiles = 0)` does not
+work with it (the default tiles do). And BioCLIP has no ready-made ONNX copy:
+see [Choosing a model](#models).
+
 ## Step 1: say which photo shows what
 
 `imageSet()` makes a table with one row per photo: an `id`, the file `path`
@@ -171,7 +190,13 @@ features are about the subject.
   tend to say "this is a kiwi", not "this part looks like that part".
 
 This is the slow step: one pass of the model per tile. The later steps take
-seconds.
+seconds. To do it only once, save the result; loading it back needs the
+jsonlite package but no Python:
+
+```{r}
+saveEmbeddings(emb, "pics.safetensors")
+emb <- loadEmbeddings("pics.safetensors")
+```
 
 ## Step 4: build the key
 
@@ -193,7 +218,7 @@ scores   <- snigletScores(emb$patches, sniglets$centroids)
 key      <- keyFromSniglets(scores, images, sniglets, method = "rpart")
 key
 #> <dimoose key> Key generated from sniglets
-#>   5 couplets, 10 leads, 6 taxa, up to 4 steps deep
+#>   5 couplets, 10 leads, 6 taxa, up to 4 steps deep (2.8 on average)
 ```
 
 `keyFromSniglets()` has two tree builders:
@@ -320,6 +345,24 @@ exportWizard(key, "key.html")
 The leads now read "Has a dull, finely textured skin", and the glossary shows the new
 name, the definition and the coined word it replaced.
 
+For a first draft of that spreadsheet, `suggestSnigletNames()` shows each
+sniglet's example crops (from `patchExemplars()`, step 5) to a
+vision-language model and writes its suggestions as the same CSV, for you to
+review:
+
+```{r}
+suggestSnigletNames(key, claudeNamer(), file = "names.csv")
+# ... review and edit names.csv ...
+key <- renameSniglets(key, "names.csv")
+```
+
+The model is any `function(images, prompt)` that returns text.
+`claudeNamer()` makes one that asks Claude through the Anthropic API; it needs
+an API key in `ANTHROPIC_API_KEY`, and its calls are billed to that key. A
+suggestion of more than three words, one that names a class, or one already
+taken is asked for again, and a sniglet with no usable suggestion keeps the
+name it had.
+
 How renaming works:
 
 - **The coined word is the sniglet's identifier and never changes.** The name
@@ -410,6 +453,15 @@ model <- visionModel(name = "bioclip-2")  # BioCLIP 2
   organisms, not on descriptions of what they look like, so vocabulary
   questions (`keyFromClusters()`) work better with regular CLIP.
 - **BioCLIP 2 is a larger model**, so embedding takes several times longer.
+
+With `backend = "onnx"` ([above](#onnx)) BioCLIP and BioCLIP 2 have to be
+converted first, because there is no official ONNX copy of them. Do it once,
+on a computer with PyTorch, and the folder it writes can be used anywhere:
+
+```{r}
+exportOnnxModel("bioclip")                               # once; needs PyTorch
+model <- visionModel(name = "bioclip", backend = "onnx") # afterwards, without it
+```
 
 BioCLIP is downloaded from the Hugging Face Hub on first use.
 `name = "hf-hub:<organisation>/<model>"` loads any other open_clip model

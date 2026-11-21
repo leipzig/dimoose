@@ -12,9 +12,14 @@ sharkKey()
 
 arachnidaKey()
 
-vibrioKey()
+vibrioKey(variable = c("both", "missing"))
 
 montanaKey()
+}
+\arguments{
+\item{variable}{For \code{vibrioKey()}: \code{"both"} (default) keys a species
+that is variable for a test out down both leads; \code{"missing"} treats
+variable results as missing. See \code{\link[=keyFromMatrix]{keyFromMatrix()}}.}
 }
 \value{
 A \link{dimoose} object.
@@ -35,12 +40,17 @@ Western Central Pacific} (Compagno 1998), from saved FishBase pages in
 Johnson (2005), the \link{arachnida} dataset; 11 couplets, 11 orders
 (Schizomida is reached from two couplets).
 \item \code{vibrioKey()}: a key generated from the \link{vibrio} consensus matrix of
-Noguerola & Blanch (2008) with \code{\link[=keyFromRpart]{keyFromRpart()}}. Tests scored \code{+} or
-\verb{(+)} count as positive and \code{-} or \verb{(-)} as negative; variable (\code{v},
-\code{d}) and not determined (\code{ND}) results are treated as missing, and rpart
-routes a species past such a test with surrogate splits, so a species
-that varies for a test appears on only one side of it. Species the tests
-cannot separate share a result.
+Noguerola & Blanch (2008) with \code{\link[=keyFromMatrix]{keyFromMatrix()}} (the matrix itself is
+\code{\link[=vibrioMatrix]{vibrioMatrix()}}). Tests scored \code{+} or \verb{(+)} count as positive and \code{-} or
+\verb{(-)} as negative. With \code{variable = "both"} (the default) a species
+that is variable for a test (\code{v}, \code{d}) is keyed out down both leads of
+every couplet that uses the test, and so is a species the test was not
+determined for (\code{ND}): 92 couplets, 74 species, 14 of them reached at
+two or three results. With \code{variable = "missing"} those results are
+treated as missing and the key is an rpart classification tree
+(\code{\link[=keyFromRpart]{keyFromRpart()}}), which places such a species on one side of the test
+with surrogate splits: 73 couplets, each species at one result, but a
+strain showing the species' other result is keyed out wrongly.
 \item \code{montanaKey()}: the native broadleaf trees of Montana, written for
 dimoose (the \link{montana} dataset); 10 couplets, 11 species, with photos
 from Wikimedia Commons. It is built with \code{\link[=keyFromSpreadsheet]{keyFromSpreadsheet()}} from
@@ -53,6 +63,7 @@ sharks <- sharkKey()
 sharks
 summary(arachnidaKey())
 vibrioKey()$validate()
+summary(vibrioKey(variable = "missing"))
 \dontrun{
 exportWizard(sharkKey(), "sharks.html")
 }

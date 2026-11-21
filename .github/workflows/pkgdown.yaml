@@ -46,6 +46,12 @@ jobs:
           file.create("pkgdown-site/.nojekyll")
         shell: Rscript {0}
 
+      # The page for people who do not use R: upload a spreadsheet, get the
+      # wizard. R runs in the browser (webR); build.R bundles the R code the page
+      # needs and checks it on the Montana key. Served at .../dimoose/webr/
+      - name: Add the spreadsheet-to-wizard page
+        run: Rscript webr/build.R pkgdown-site/webr
+
       - name: Deploy to GitHub pages
         if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4

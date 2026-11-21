@@ -1,6 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.travis\.yml$
 ^\.github$
 ^README\.md$
 ^WARP\.md$
@@ -25,3 +24,8 @@
 ^_pkgdown\.yml$
 ^pkgdown-site$
 ^pkgdown$
+^webr$
+^codemeta\.json$
+^CONTRIBUTING\.md$
+^ropensci-readiness\.md$
+^tests/js$

@@ -42,3 +42,6 @@ WARP.md
 
 # pkgdown website (built by .github/workflows/pkgdown.yaml)
 pkgdown-site/
+
+# The browser page built by webr/build.R (published by the pkgdown workflow)
+webr/_site/

@@ -1,0 +1,9 @@
+*COMMENT A dataset kept in one file, with no character list.
+
+*NUMBER OF CHARACTERS 4
+*CHARACTER TYPES 3,IN 4,TE
+*NUMBERS OF STATES 2,3
+
+*ITEM DESCRIPTIONS
+# First taxon/ 1,1 2,1/3 3,4 4<hello>
+# Second taxon/ 1,2 2,2 3,5-9

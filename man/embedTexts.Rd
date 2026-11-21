@@ -9,10 +9,11 @@ embedTexts(model, texts)
 \arguments{
 \item{model}{A \code{\link[=visionModel]{visionModel()}}.}
 
-\item{texts}{Character vector.}
+\item{texts}{Character vector, without missing values.}
 }
 \value{
-A \verb{texts x d} matrix with the texts as row names.
+A \verb{texts x d} matrix with the texts as row names (no rows for no
+texts).
 }
 \description{
 Embed texts

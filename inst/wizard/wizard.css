@@ -112,6 +112,7 @@ h1 { margin: 0; font-size: clamp(1.6rem, 4.5vw, 2.3rem); line-height: 1.15; font
   text-decoration: none;
 }
 .trail b { color: var(--accent); margin-right: .3rem; }
+.trail .unsure a { background: none; box-shadow: inset 0 0 0 1px var(--rule); font-style: italic; }
 
 main { padding-bottom: 2rem; }
 .couplet, .taxon {
@@ -199,6 +200,115 @@ img.fig { object-fit: contain; }
 .wizard .glossary { display: none; }
 .wizard .glossary.active { display: block; }
 
+/* "I'm not sure": the button under a couplet, the branches being followed,
+   and the results left when no couplet remains. All added by the page script. */
+p.unsure { display: none; margin: .9rem 0 0; }
+.wizard p.unsure { display: block; }
+.unsure-btn, .open-list button, .pick button, .photo button, .narrow button {
+  font: 500 .875rem/1.2 var(--sans);
+  min-height: 44px;
+  padding: .55rem .9rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.unsure-btn { border-style: dashed; }
+.unsure-btn span { color: var(--muted); font-weight: 400; }
+@media (hover: hover) { .unsure-btn:hover, .open-list button:hover, .pick button:not(:disabled):hover, .photo button:hover, .narrow button:hover { border-color: var(--accent); } }
+.open, .likely { display: none; margin: 0 0 1rem; padding: .75rem 1rem; border: 1px dashed var(--rule); border-radius: 12px; font-family: var(--sans); }
+.wizard .open:not([hidden]), .likely:not([hidden]) { display: block; }
+.open-status { margin: 0 0 .5rem; font-size: .875rem; color: var(--muted); }
+.open-list, .likely ul, .pick-chosen, .pick-taxa, .cand-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+.open-list button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.open-list a, .pick-taxa li > *, .likely li > a, .likely li > span:first-child {
+  display: inline-flex; align-items: center; min-height: 44px; padding: .3rem .8rem;
+  border-radius: 8px; background: var(--accent-soft); color: var(--ink); text-decoration: none; font: .875rem/1.2 var(--sans);
+}
+.likely { border-style: solid; border-color: var(--focus); }
+.likely .eyebrow { display: block; margin-bottom: .5rem; }
+.likely li, .pick-taxa li, .cand-list li { display: inline-flex; align-items: center; gap: .35rem; }
+.score { font: 600 .75rem/1 var(--sans); color: var(--muted); }
+li.likely > a, li.likely > span:first-child { box-shadow: inset 0 0 0 2px var(--focus); }
+li.best > a, li.best > span:first-child { font-weight: 700; }
+.candidates { display: none; margin: 0 0 1.5rem; padding: 1.25rem; background: var(--card); border: 1px solid var(--rule); border-left: 6px dashed var(--accent); border-radius: 14px; }
+.candidates.active { display: block; }
+.candidates h2 { margin: 0 0 .5rem; font-size: 1.5rem; font-weight: 600; outline: none; }
+.cand-note { margin: 0 0 1rem; color: var(--muted); font-size: .9rem; }
+.cand-list { display: grid; gap: .5rem; }
+.cand-list li { border: 1.5px solid var(--rule); border-radius: 12px; }
+.cand-list a { flex: 1; padding: .8rem 1rem; min-height: 44px; color: var(--ink); text-decoration: none; font-size: 1.15rem; }
+.cand-list .score { padding-right: 1rem; }
+.cand-list li.likely { border-color: var(--focus); }
+.cand-list li.likely > a { box-shadow: none; }
+@media (hover: hover) { .cand-list li:hover { border-color: var(--accent); background: var(--accent-soft); } }
+.candidates .actions { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; margin: 1rem 0 0; font: 500 .9rem var(--sans); }
+
+/* Character matrix: a table in the plain document, a list of characters to
+   pick from once the page script runs */
+.matrix { margin: 0 0 1.5rem; padding: 1.25rem; background: var(--card); border: 1px solid var(--rule); border-radius: 14px; }
+.matrix h2 { margin: 0 0 .9rem; font-size: 1.35rem; font-weight: 600; outline: none; }
+.matrix .intro { margin: 0 0 1rem; color: var(--muted); font-size: .9rem; }
+.js .matrix .intro { display: none; }
+.wizard .matrix { display: none; }
+.wizard .matrix.active { display: block; }
+.table-scroll { overflow: auto; -webkit-overflow-scrolling: touch; max-height: 70vh; }
+.cmatrix { border-collapse: collapse; font: .8125rem/1.3 var(--sans); }
+.cmatrix th, .cmatrix td { padding: .3rem .55rem; border: 1px solid var(--rule); text-align: left; vertical-align: top; }
+.cmatrix thead th { position: sticky; top: 0; background: var(--card); }
+.cmatrix thead th small { display: block; font-weight: 400; color: var(--muted); }
+.cmatrix td[data-na] { color: var(--muted); }
+.matrix-table { margin-top: 1.25rem; }
+.matrix-table summary, .pick-rest summary { cursor: pointer; font: 500 .875rem var(--sans); color: var(--muted); min-height: 44px; display: flex; align-items: center; list-style: none; }
+.matrix-table summary::-webkit-details-marker, .pick-rest summary::-webkit-details-marker { display: none; }
+.matrix-table summary::before, .pick-rest summary::before { content: "\25B8"; flex: none; width: 1.1em; }
+.matrix-table[open] > summary::before, .pick-rest[open] > summary::before { content: "\25BE"; }
+.pick { font-family: var(--sans); }
+.pick-status { margin: 0 0 .75rem; font: 600 .95rem/1.3 var(--sans); color: var(--accent); }
+.pick h3 { margin: 1.25rem 0 .5rem; font: 600 .75rem var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.pick-chosen button { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.pick-chosen .pick-clear { background: var(--card); border-color: var(--rule); color: var(--ink); }
+.pick-chosen .x { margin-left: .5rem; font-weight: 700; }
+.pick-continue { margin: .75rem 0 0; font: 500 .9rem var(--sans); }
+.pick-chars { list-style: none; margin: 0; padding: 0; }
+.pick-char { padding: .6rem 0; border-top: 1px solid var(--rule); }
+.pick-char:first-child { border-top: 0; }
+.pick-name { display: block; font: 600 .95rem/1.3 var(--serif); }
+.pick-meta { display: block; font-size: .78rem; color: var(--muted); }
+.pick-states { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .4rem; }
+.pick-state .n { margin-left: .45rem; color: var(--muted); font-weight: 400; font-size: .78rem; }
+.pick button:disabled { opacity: .4; cursor: default; }
+.pick-rest { margin-top: .75rem; }
+.pick-rest .pick-char { opacity: .75; }
+
+/* A note on a lead: the character of a couplet pruneKey() collapsed into it */
+.choose .note { grid-column: 2; font-size: .9rem; color: var(--muted); }
+.note b { font: 600 .75rem/1.3 var(--sans); letter-spacing: .04em; margin-right: .35rem; }
+.diagnosis .note { display: block; font-size: .9rem; color: var(--muted); }
+.pruned { margin: .5rem 0 0; color: var(--muted); font-size: .9rem; }
+
+/* Identify from a photo, and the key narrowed to some taxa. Added by the page script. */
+.photo, .narrow { display: none; margin: 0 0 1rem; font-family: var(--sans); }
+.wizard .photo:not([hidden]) { display: flow-root; }
+.wizard .narrow:not([hidden]) { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; padding: .6rem 1rem; border: 1px solid var(--focus); border-radius: 12px; }
+.narrow-status { flex: 1 1 14rem; margin: 0; font-size: .875rem; color: var(--muted); }
+.photo:not([data-state="idle"]) { padding: .75rem 1rem; border: 1px solid var(--rule); border-radius: 12px; background: var(--card); }
+.photo-thumb { float: left; width: 4.5rem; height: 4.5rem; margin: 0 .9rem .4rem 0; object-fit: cover; border: 1px solid var(--rule); border-radius: 8px; }
+.photo [hidden] { display: none !important; }
+.photo-status, .photo-hint, .photo-progress { overflow: hidden; }   /* beside the picture, not under it */
+.photo-status { margin: 0 0 .35rem; font: 600 .95rem/1.35 var(--sans); }
+.photo[data-state="error"] .photo-status { color: var(--warn); }
+.photo-hint { margin: 0 0 .5rem; font-size: .8125rem; color: var(--muted); }
+.photo[data-state="idle"] .photo-hint { margin: .4rem 0 0; }
+.photo-progress { display: block; width: 12rem; max-width: 100%; height: .6rem; margin: 0 0 .6rem; accent-color: var(--accent); }
+.photo-actions { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0; clear: both; }
+.photo-actions:empty { display: none; }
+.photo .photo-pick:first-child, .photo .photo-load, .photo .photo-go { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.lead.unlikely { opacity: .6; border-style: dashed; }
+.lead.unlikely .dest::after { content: " \00B7  not among the taxa the key is narrowed to"; font-weight: 400; color: var(--muted); }
+
 .group { font: 600 .75rem var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 2rem 0 .75rem; }
 .taxon { border-left: 6px solid var(--accent); }
 .taxon h2 { font-size: 1.75rem; }
@@ -260,6 +370,15 @@ footer { padding-bottom: 2.5rem; color: var(--muted); font: .8125rem/1.5 var(--s
 .mnode.here.mcouplet text { fill: var(--accent-ink); }
 .mnode.mleaf.here circle { stroke: var(--focus); stroke-width: 3; }
 .mnode.mleaf.here text, .mnode.mleaf.done text { font-weight: 700; fill: var(--accent); }
+/* other branches still open after "I'm not sure" */
+.mnode.open circle { stroke: var(--focus); stroke-width: 2.5; stroke-dasharray: 3 2; }
+.mnode.mleaf.open circle { fill: var(--accent); }
+.mnode.mleaf.open text { font-weight: 700; }
+/* taxa another script marked as likely (window.dimoose.highlight) */
+.keymap.live .mnode.likely { opacity: 1; }
+.mnode.mleaf.likely circle { fill: var(--focus); stroke: var(--focus); stroke-width: 3; }
+.mnode.mleaf.likely text { fill: var(--ink); text-decoration: underline; }
+.mnode.mleaf.best text { font-weight: 700; }
 .map-legend { margin: .45rem 0 0; font-size: .75rem; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: .3rem 1.2rem; }
 .map-legend .k { display: inline-block; width: .8rem; height: .8rem; border-radius: 50%; margin-right: -.55rem; vertical-align: middle; }
 .map-legend .k.here { background: var(--accent); box-shadow: 0 0 0 2px var(--focus); }
@@ -288,6 +407,7 @@ footer { padding-bottom: 2.5rem; color: var(--muted); font: .8125rem/1.5 var(--s
 /* Step-by-step mode: one section at a time */
 .wizard .couplet, .wizard .taxon, .wizard .group { display: none; }
 .wizard .couplet.active, .wizard .taxon.active { display: block; }
+.picking #mk-mode { display: none; }
 
 /* Phones: toolbar pinned to the bottom within thumb reach, one-line trail */
 @media (max-width: 34rem) {
@@ -323,7 +443,9 @@ footer { padding-bottom: 2.5rem; color: var(--muted); font: .8125rem/1.5 var(--s
   .trail::-webkit-scrollbar { display: none; }
   .trail li { flex: 0 0 auto; }
   .trail a { max-width: 14rem; padding: .45rem .7rem; }
-  .couplet, .taxon { padding: 1rem; border-radius: 12px; }
+  .couplet, .taxon, .matrix, .candidates { padding: 1rem; border-radius: 12px; }
+  .unsure-btn { width: 100%; }
+  .photo[data-state="idle"] button { width: 100%; }
   .couplet h2 { font-size: 1.2rem; }
   .taxon h2 { font-size: 1.5rem; }
   .lead { flex-direction: column; }
@@ -339,8 +461,9 @@ footer { padding-bottom: 2.5rem; color: var(--muted); font: .8125rem/1.5 var(--s
 }
 @media print {
   body { background: #fff; }
-  .toolbar, .trail, .hint, .map { display: none !important; }
-  .wizard .couplet, .wizard .taxon, .wizard .group { display: block; }
+  .toolbar, .trail, .hint, .map, p.unsure, .open, .likely, .pick, .candidates, .photo, .narrow { display: none !important; }
+  .wizard .couplet, .wizard .taxon, .wizard .group, .wizard .matrix { display: block; }
+  .table-scroll { max-height: none; overflow: visible; }
   .couplet, .taxon { break-inside: avoid; }
 }
 @media (prefers-reduced-motion: reduce) { .choose, .lead { transition: none; } }

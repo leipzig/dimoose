@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Datasets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://rs.tdwg.org/UBIF/2006/" xsi:schemaLocation="http://rs.tdwg.org/UBIF/2006/ ../SDD.xsd">
+  <TechnicalMetadata created="2004-09-10T10:00:00">
+    <Generator name="n/a, handcrafted instance document" version="n/a"/>
+  </TechnicalMetadata>
+  <Dataset xml:lang="en-us">
+    <Representation>
+      <Label>Branching key test dataset</Label>
+      <Detail role="Description">A dataset without keys comes first, as in the TDWG test file.</Detail>
+    </Representation>
+  </Dataset>
+  <Dataset xml:lang="en-us">
+    <Representation>
+      <Label xml:lang="en">Garden flowers</Label>
+      <Label xml:lang="de">Gartenblumen</Label>
+    </Representation>
+    <TaxonNames>
+      <TaxonName id="t1">
+        <Representation>
+          <Label>Myosotis</Label>
+        </Representation>
+        <Rank code="gen" />
+      </TaxonName>
+      <TaxonName id="t2">
+        <Representation>
+          <Label>Dianthus</Label>
+        </Representation>
+        <Rank code="gen" />
+      </TaxonName>
+      <TaxonName id="t3">
+        <Representation>
+          <Label>Gentiana</Label>
+        </Representation>
+        <Rank code="gen" />
+      </TaxonName>
+      <TaxonName id="t4">
+        <Representation>
+          <Label>Papaver rhoeas L.</Label>
+        </Representation>
+        <Rank code="sp" />
+      </TaxonName>
+      <TaxonName id="t5">
+        <Representation>
+          <Label>Tulipa</Label>
+        </Representation>
+        <Rank code="gen" />
+      </TaxonName>
+    </TaxonNames>
+    <IdentificationKeys>
+      <IdentificationKey id="k1">
+        <Representation>
+          <Label xml:lang="en-us">First level key</Label>
+          <Detail role="Description" xml:lang="en-us">Three leads at the root: one goes on, one ends with a taxon, one points to a subkey.</Detail>
+        </Representation>
+        <Leads>
+          <Lead id="k1L1">
+            <Statement xml:lang="en-us">Flowers blue</Statement>
+          </Lead>
+          <Lead>
+            <Statement xml:lang="en-us">Flowers pink</Statement>
+            <TaxonName ref="t2"/>
+          </Lead>
+          <Lead>
+            <Statement xml:lang="en-us">Flowers red</Statement>
+            <Subkey ref="k2"/>
+          </Lead>
+          <Lead id="k1L2">
+            <Parent ref="k1L1"/>
+            <Statement xml:lang="en-us">Flowers small, less than 1 cm across</Statement>
+            <TaxonName ref="t1"/>
+          </Lead>
+          <Lead id="k1L3">
+            <Parent ref="k1L1"/>
+            <Statement xml:lang="en-us">Flowers large, trumpet-shaped</Statement>
+            <TaxonName ref="t3"/>
+          </Lead>
+        </Leads>
+      </IdentificationKey>
+      <IdentificationKey id="k2">
+        <Representation>
+          <Label xml:lang="en-us">Subkey 1: Red flowers</Label>
+        </Representation>
+        <Leads>
+          <Lead>
+            <Statement xml:lang="en-us">Petals 4, crumpled in bud</Statement>
+            <TaxonName ref="t4"/>
+          </Lead>
+          <Lead>
+            <Statement xml:lang="en-us">Tepals 6, smooth in bud</Statement>
+            <TaxonName ref="t5"/>
+          </Lead>
+        </Leads>
+      </IdentificationKey>
+      <IdentificationKey id="k3">
+        <Representation>
+          <Label xml:lang="en">Key in question and answer style</Label>
+          <Label xml:lang="de">Schlüssel mit Fragen</Label>
+        </Representation>
+        <Question><Text xml:lang="en">Is the plant mostly green?</Text></Question>
+        <Leads>
+          <Lead id="k3L1">
+            <Statement>yes</Statement>
+            <Question>
+              <Text>Are parts of the plant woody?</Text>
+            </Question>
+          </Lead>
+          <Lead id="k3L2">
+            <Statement>no</Statement>
+            <Question>
+              <Text>Does the plant have leaves?</Text>
+            </Question>
+          </Lead>
+          <Lead>
+            <Parent ref="k3L1"/>
+            <Statement>No, the entire plant is herbaceous</Statement>
+            <Subkey ref="k1"/>
+          </Lead>
+          <Lead>
+            <Parent ref="k3L1"/>
+            <Statement>At least some parts above ground are woody.</Statement>
+            <Subkey ref="k9"/>
+          </Lead>
+          <Lead id="k3L3">
+            <Parent ref="k3L2"/>
+            <Statement>no</Statement>
+          </Lead>
+          <Lead id="k3L4">
+            <Parent ref="k3L2"/>
+            <Statement>yes</Statement>
+            <TaxonName ref="t2"/>
+          </Lead>
+        </Leads>
+      </IdentificationKey>
+    </IdentificationKeys>
+  </Dataset>
+</Datasets>

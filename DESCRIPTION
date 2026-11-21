@@ -2,7 +2,7 @@ Package: dimoose
 Type: Package
 Title: Tools to Reshape and Manipulate Dichotomous Keys Used in Taxonomic
     Identification
-Version: 0.2.0
+Version: 0.3.0
 Authors@R:
     person("Jeremy", "Leipzig", , "leipzig@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7224-9620"))
@@ -13,7 +13,7 @@ Description: Transforms between dichotomous identification keys and a
     and includes PhyloTree Build 17, the human mitochondrial DNA phylogeny
     (van Oven 2015, <doi:10.1016/j.fsigss.2015.09.155>), as distributed by
     'Haplogrep' 3.
-License: GPL
+License: GPL (>= 3)
 Copyright: See inst/COPYRIGHTS for third-party data and example pages.
 URL: https://leipzig.github.io/dimoose/, https://github.com/leipzig/dimoose
 BugReports: https://github.com/leipzig/dimoose/issues
@@ -29,6 +29,7 @@ Imports:
     rpart,
     rvest (>= 1.0.0),
     stats,
+    tools,
     utils,
     withr,
     xml2
@@ -36,14 +37,11 @@ Suggests:
     ape,
     phangorn,
     gbm,
-    glmertree,
     igraph,
     jpeg,
     jsonlite,
     knitr,
-    lme4,
     magick,
-    partykit,
     png,
     randomForest,
     reticulate (>= 1.41.0),

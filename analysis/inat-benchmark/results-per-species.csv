@@ -1,0 +1,12 @@
+"Taxon","names_n","names_top1","names_top3","build_n","build_top1","build_top1_all_splits"
+"Black cottonwood (Populus trichocarpa)",20,0.95,1,6,0.666666666666667,0.666666666666667
+"Box elder (Acer negundo)",20,1,1,6,0.833333333333333,0.8
+"Bur oak (Quercus macrocarpa)",20,1,1,6,0.5,0.65
+"Green ash (Fraxinus pennsylvanica)",20,1,1,6,0.833333333333333,0.8
+"Narrowleaf cottonwood (Populus angustifolia)",20,0.95,1,6,0.833333333333333,0.65
+"Paper birch (Betula papyrifera)",20,1,1,6,0.833333333333333,0.866666666666667
+"Peachleaf willow (Salix amygdaloides)",20,0.9,1,6,0.833333333333333,0.55
+"Plains cottonwood (Populus deltoides)",20,1,1,6,0.166666666666667,0.333333333333333
+"Quaking aspen (Populus tremuloides)",20,0.95,1,6,0.5,0.516666666666667
+"Rocky Mountain maple (Acer glabrum)",20,0.95,1,6,1,0.816666666666667
+"Water birch (Betula occidentalis)",20,1,1,6,0.833333333333333,0.75

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PhoenixKey title="Some orders of insects" CreatedIn="handcrafted example for the dimoose package">
+  <Identity id="i0" name="Siphonaptera" icon="" url="" />
+  <Identity id="i1" name="Zygentoma" icon="" url="" />
+  <Identity id="i2" name="Diptera" icon="" url="" />
+  <Identity id="i3" name="Lepidoptera" icon="" url="" />
+  <Identity id="i4" name="Coleoptera" icon="" url="" />
+  <Steps firstStepID="s0">
+    <Step id="s0" text="Wings">
+      <Lead stepid="s0" leadid="s0l0" goto="s1">
+        <Text>Wings absent</Text>
+      </Lead>
+      <Lead stepid="s0" leadid="s0l1" goto="s2">
+        <Text>Wings present</Text>
+      </Lead>
+    </Step>
+    <Step id="s1" text="Body shape">
+      <Lead stepid="s1" leadid="s1l0" goto="i0">
+        <Text>Body flattened from side to side, 1-2 mm long; jumping</Text>
+      </Lead>
+      <Lead stepid="s1" leadid="s1l1" goto="i1">
+        <Text>Body flattened from above, 10-15 mm long, with three tails</Text>
+      </Lead>
+    </Step>
+    <Step id="s2" text="Forewings">
+      <Lead stepid="s2" leadid="s2l0" goto="s3">
+        <Text>Forewings membranous</Text>
+      </Lead>
+      <Lead stepid="s2" leadid="s2l1" goto="i4">
+        <Text>Forewings hard covers that meet in a straight line</Text>
+      </Lead>
+    </Step>
+    <Step id="s3" text="Hindwings">
+      <Lead stepid="s3" leadid="s3l0" goto="i2">
+        <Text>Hindwings reduced to small knobs</Text>
+      </Lead>
+      <Lead stepid="s3" leadid="s3l1" goto="i3">
+        <Text>Hindwings present; wings and body covered with scales</Text>
+      </Lead>
+    </Step>
+  </Steps>
+</PhoenixKey>

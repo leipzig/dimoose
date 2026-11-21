@@ -22,6 +22,7 @@ vibrio
 }
 \description{
 Biochemical and growth test results for 74 \emph{Vibrio} taxa from Noguerola &
-Blanch (2008), one row per taxon. \code{\link[=vibrioKey]{vibrioKey()}} generates a key from it.
+Blanch (2008), one row per taxon. \code{\link[=vibrioKey]{vibrioKey()}} generates a key from it
+and \code{\link[=vibrioMatrix]{vibrioMatrix()}} recodes it for \code{\link[=keyFromMatrix]{keyFromMatrix()}}.
 }
 \keyword{datasets}

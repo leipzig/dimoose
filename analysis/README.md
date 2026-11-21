@@ -1,3 +1,4 @@
 - bioclip/: runs the photo walkthrough with the real BioCLIP weights (`Rscript analysis/bioclip/check.R`; downloads them from the Hugging Face Hub).
 - fordera/: checks of the vision keys against fordera's outputs (needs a fordera checkout and CLIP weights; see REPORT.md).
-- mecit/: simulation study of mixed-effects conditional inference trees on PhyloTree expression data (`Rscript analysis/mecit/run.R`; see REPORT.md).
+- inat-benchmark/: field-photo benchmark of the eleven Montana broadleaf trees on 220 iNaturalist photos with BioCLIP 2 (`Rscript analysis/inat-benchmark/run.R`; needs the network and the Python vision environment; photos are kept outside the repository; read the limits in its README.md before quoting a number).
+- mecit/: moved to the companion package mecit (see its README.md).

@@ -25,19 +25,31 @@ distribution unless the response is numeric 0/1, which uses
 overriding the defaults.}
 }
 \value{
-A fitted \code{rpart}, \code{randomForest} or \code{gbm} object.
+A fitted \code{rpart}, \code{randomForest} or \code{gbm} object. For the last two
+the \code{call} is the call to \code{generateTree()}.
 }
 \description{
 Fits a classification tree (or tree ensemble) with the taxon column as the
 response and every other column as a feature.
 }
+\details{
+The rpart defaults are set for identification data, which usually has one
+row per taxon: \code{rpart.control(minsplit = 2, minbucket = 1, cp = 0)}, so the
+tree keeps splitting until every taxon is separated. (rpart's own defaults,
+\verb{minsplit = 20, minbucket = 7, cp = 0.01}, make no split at all on such a
+matrix.) With many specimens per taxon pass your own \code{control} in \code{params}
+to get a smaller tree, or just the settings to change, e.g.
+\code{params = list(cp = 0.01)} or \code{params = list(maxdepth = 3)}. \code{\link[=keyFromRpart]{keyFromRpart()}} turns the tree into a key;
+\code{\link[=keyFromMatrix]{keyFromMatrix()}} goes from matrix to key in one step and handles taxa that
+are variable for a character.
+}
 \examples{
 features <- data.frame(
-  family = factor(c("A", "B", "C", "A", "B", "C")),
-  fin = factor(c("x", "y", "y", "x", "y", "y")),
-  head = factor(c("p", "p", "q", "p", "p", "q"))
+  family = factor(c("A", "B", "C")),
+  fin = factor(c("x", "y", "y")),
+  head = factor(c("p", "p", "q"))
 )
-generateTree(features, "family",
-  params = list(control = rpart::rpart.control(minsplit = 2, minbucket = 1))
-)
+fit <- generateTree(features, "family")
+fit
+keyFromRpart(fit)$leads
 }

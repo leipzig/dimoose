@@ -46,14 +46,35 @@ test_that("the example keys have the expected size", {
   expect_equal(summary(sharkKey())[c("couplets", "taxa")], data.frame(couplets = 23L, taxa = 24L))
   expect_equal(summary(arachnidaKey())[c("couplets", "taxa")], data.frame(couplets = 11L, taxa = 11L))
   expect_equal(sum(arachnida$Next == "-"), 12)
-  v <- vibrioKey()
-  expect_equal(summary(v)$couplets, sum(v$leads$Next != "-") + 1)
+  expect_equal(summary(vibrioKey())[c("couplets", "taxa")], data.frame(couplets = 92L, taxa = 74L))
+  expect_equal(summary(vibrioKey(variable = "missing"))[c("couplets", "taxa")],
+               data.frame(couplets = 73L, taxa = 74L))
 })
 
 test_that("vibrioKey reaches every species", {
-  v <- vibrioKey()
-  reached <- unlist(strsplit(v$leads$Taxon[v$leads$Next == "-"], " / ", fixed = TRUE))
-  expect_setequal(reached, vibrio$species)
+  for (variable in c("both", "missing")) {
+    v <- vibrioKey(variable = variable)
+    expect_length(v$validate(), 0)
+    reached <- unlist(strsplit(v$leads$Taxon[v$leads$Next == "-"], " / ", fixed = TRUE))
+    expect_setequal(reached, vibrio$species)
+  }
+})
+
+test_that("vibrioKey(variable = \"missing\") is the rpart tree it always was", {
+  score <- function(x) {
+    factor(ifelse(x %in% c("+", "(+)"), "+", ifelse(x %in% c("-", "(-)"), "-", NA)), levels = c("+", "-"))
+  }
+  tests <- names(vibrio)[-1]
+  data <- data.frame(species = factor(vibrio$species), lapply(vibrio[tests], score), check.names = FALSE)
+  fit <- rpart::rpart(
+    stats::reformulate(paste0("`", tests, "`"), response = "species"),
+    data = data, method = "class", y = TRUE,
+    control = rpart::rpart.control(minsplit = 2, minbucket = 1, cp = 0, xval = 0, maxcompete = 0)
+  )
+  v <- vibrioKey(variable = "missing")
+  expect_equal(v$leads, keyFromRpart(fit)$leads)
+  # every species at exactly one result
+  expect_equal(sum(v$leads$Next == "-"), 74)
 })
 
 test_that("toNewick quotes labels that need it", {

@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lif3_key>
+  <properties>
+    <property key='compile_key_destination' type='java.lang.String' value='C:\Keys\Beetles'/>
+    <property key='KeyVersion' type='java.lang.Float' value='1.2'/>
+    <property key='compile_key_title' type='java.lang.String' value='Key_to_test_beetles'/>
+    <property key='key_description' type='java.lang.String' value='A test key'/>
+    <property key='key_authors' type='java.lang.String' value=''/>
+    <property key='key_title' type='java.lang.String' value=''/>
+  </properties>
+  <items>
+    <item item_id='40' name='Body' item_type='feature' revision='false' list_view_name='Body' score_type='normal' weight='1.0'/>
+    <item item_id='2' name='Colour' item_type='feature' revision='false' list_view_name='Colour' score_type='normal' score_weight='1.0' natural_lang_name='Colour' base_unit='none' unit_prefix='none'/>
+    <item item_id='3' name='black' item_type='state' revision='false' list_view_name='black' score_type='normal'/>
+    <item item_id='4' name='red and/or orange' item_type='state' revision='false' list_view_name='red and/or orange' score_type='normal'/>
+    <item item_id='5' name='metallic green' item_type='state' revision='false' list_view_name='metallic green' score_type='normal'/>
+    <item item_id='6' name='Shape' item_type='feature' revision='false' list_view_name='Shape' score_type='normal' score_weight='1.0' base_unit='none' unit_prefix='none'/>
+    <item item_id='7' name='elongate' item_type='state' revision='false' list_view_name='elongate' score_type='normal'/>
+    <item item_id='8' name='oval' item_type='state' revision='false' list_view_name='oval' score_type='normal'/>
+    <item item_id='41' name='Antennae' item_type='feature' revision='false' list_view_name='Antennae' score_type='normal' weight='1.0'/>
+    <item item_id='9' name='Shape' item_type='feature' revision='false' list_view_name='Shape' score_type='normal' score_weight='1.0' base_unit='none' unit_prefix='none'/>
+    <item item_id='10' name='thread-like' item_type='state' revision='false' list_view_name='thread-like' score_type='normal'/>
+    <item item_id='11' name='clubbed' item_type='state' revision='false' list_view_name='clubbed' score_type='normal'/>
+    <item item_id='12' name='elbowed' item_type='state' revision='false' list_view_name='elbowed' score_type='normal'/>
+    <item item_id='13' name='Body length' item_type='feature' revision='false' list_view_name='Body length' score_type='normal' score_weight='1.0' base_unit='metre' unit_prefix='milli'/>
+    <item item_id='20' name='Carabidae' item_type='entity' revision='false' list_view_name='Carabidae' score_type='normal'/>
+    <item item_id='21' name='Carabus fictus' item_type='entity' revision='false' list_view_name='Carabus fictus' score_type='normal'/>
+    <item item_id='22' name='Coccinella exemplaris' item_type='entity' revision='false' list_view_name='Coccinella exemplaris' score_type='normal'/>
+    <item item_id='23' name='Lucanus imaginarius' item_type='entity' revision='false' list_view_name='Lucanus imaginarius' score_type='normal'/>
+    <item item_id='24' name='Cetonia dubia' item_type='entity' revision='false' list_view_name='Cetonia dubia' score_type='normal'/>
+  </items>
+  <trees>
+    <tree type='feature'>
+      <treenode item_id='40' parent_id='0'/>
+      <treenode item_id='2' parent_id='40'/>
+      <treenode item_id='3' parent_id='2'/>
+      <treenode item_id='4' parent_id='2'/>
+      <treenode item_id='5' parent_id='2'/>
+      <treenode item_id='6' parent_id='40'/>
+      <treenode item_id='7' parent_id='6'/>
+      <treenode item_id='8' parent_id='6'/>
+      <treenode item_id='13' parent_id='40'/>
+      <treenode item_id='41' parent_id='0'/>
+      <treenode item_id='9' parent_id='41'/>
+      <treenode item_id='10' parent_id='9'/>
+      <treenode item_id='11' parent_id='9'/>
+      <treenode item_id='12' parent_id='9'/>
+    </tree>
+    <tree type='entity'>
+      <treenode item_id='20' parent_id='0'/>
+      <treenode item_id='21' parent_id='20'/>
+      <treenode item_id='22' parent_id='0'/>
+      <treenode item_id='23' parent_id='0'/>
+      <treenode item_id='24' parent_id='0'/>
+    </tree>
+    <tree type='filter'/>
+  </trees>
+<descriptions>
+<container type='normal'>
+      <scoring_item item_id='3'>
+        <scored_item item_id='21' value='1'/>
+        <scored_item item_id='23' value='1'/>
+        <scored_item item_id='22' value='2'/>
+        <scored_item item_id='24' value='4'/>
+      </scoring_item>
+      <scoring_item item_id='4'>
+        <scored_item item_id='22' value='1'/>
+        <scored_item item_id='23' value='5'/>
+      </scoring_item>
+      <scoring_item item_id='5'>
+        <scored_item item_id='24' value='1'/>
+        <scored_item item_id='21' value='2'/>
+      </scoring_item>
+      <scoring_item item_id='7'>
+        <scored_item item_id='21' value='1'/>
+        <scored_item item_id='23' value='1'/>
+        <scored_item item_id='24' value='3'/>
+      </scoring_item>
+      <scoring_item item_id='8'>
+        <scored_item item_id='22' value='1'/>
+        <scored_item item_id='24' value='3'/>
+      </scoring_item>
+      <scoring_item item_id='10'>
+        <scored_item item_id='21' value='1'/>
+        <scored_item item_id='24' value='6'/>
+      </scoring_item>
+      <scoring_item item_id='11'>
+        <scored_item item_id='22' value='1'/>
+        <scored_item item_id='23' value='3'/>
+        <scored_item item_id='24' value='6'/>
+      </scoring_item>
+      <scoring_item item_id='12'>
+        <scored_item item_id='23' value='1'/>
+        <scored_item item_id='24' value='6'/>
+      </scoring_item>
+</container>
+<container type='numeric'>
+</container>
+<container type='filter'>
+</container>
+<container type='dependencies'>
+</container>
+</descriptions>
+  <media base_path='C:\Keys\Beetles\Media'>
+    <media_item media_id='129' path='Images/black.jpg' type='image' path_type='file' thumb_path='Thumbs/black_TN.jpg'>
+      <media_details item_id='3' media_index='0' publish='true' revision='false'/>
+    </media_item>
+  </media>
+</lif3_key>

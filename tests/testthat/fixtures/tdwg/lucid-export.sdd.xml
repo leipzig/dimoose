@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Datasets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://rs.tdwg.org/UBIF/2006/" xsi:schemaLocation="http://rs.tdwg.org/UBIF/2006/ ../SDD.xsd">
+  <TechnicalMetadata created="2006-04-20T10:00:00">
+    <Generator name="Lucid" version="3.3" />
+  </TechnicalMetadata>
+  <Dataset xml:lang="en-au">
+    <Representation>
+      <Label>Three ferns</Label>
+      <Detail>A test file with the SDD features that Lucid 3 uses.</Detail>
+    </Representation>
+    <RevisionData>
+      <Creators>
+        <Agent role="aut" ref="a1" />
+        <Agent role="edt" ref="a2" />
+      </Creators>
+      <DateModified>2006-04-08T00:00:00</DateModified>
+    </RevisionData>
+    <IPRStatements>
+      <IPRStatement role="Copyright">
+        <Label xml:lang="en-au">(c) 2006 The test authors</Label>
+      </IPRStatement>
+    </IPRStatements>
+    <TaxonNames>
+      <TaxonName id="t1">
+        <Representation>
+          <Label xml:lang="zxx-x-taxon">Pteridium aquilinum (L.) Kuhn</Label>
+          <MediaObject role="Primary" ref="m1" />
+        </Representation>
+      </TaxonName>
+      <TaxonName id="t2">
+        <Representation>
+          <Label xml:lang="zxx-x-taxon">Azolla filiculoides Lam.</Label>
+        </Representation>
+      </TaxonName>
+      <TaxonName id="t3">
+        <Representation>
+          <Label xml:lang="zxx-x-taxon">Asplenium trichomanes L.</Label>
+        </Representation>
+      </TaxonName>
+    </TaxonNames>
+    <DescriptiveConcepts>
+      <DescriptiveConcept id="dc1">
+        <Representation>
+          <Label>Morphology</Label>
+        </Representation>
+      </DescriptiveConcept>
+      <DescriptiveConcept id="dc2">
+        <Representation>
+          <Label>Fronds</Label>
+        </Representation>
+      </DescriptiveConcept>
+    </DescriptiveConcepts>
+    <Characters>
+      <CategoricalCharacter id="c1">
+        <Representation>
+          <Label> Frond division</Label>
+        </Representation>
+        <States>
+          <StateDefinition id="s1">
+            <Representation>
+              <Label>simple</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s2">
+            <Representation>
+              <Label>once pinnate</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s3">
+            <Representation>
+              <Label>2-3 times pinnate</Label>
+            </Representation>
+          </StateDefinition>
+        </States>
+      </CategoricalCharacter>
+      <CategoricalCharacter id="c4">
+        <Representation>
+          <Label> Habitat</Label>
+        </Representation>
+        <States>
+          <StateDefinition id="s4">
+            <Representation>
+              <Label>on rock</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s5">
+            <Representation>
+              <Label>in soil</Label>
+            </Representation>
+          </StateDefinition>
+          <StateDefinition id="s6">
+            <Representation>
+              <Label>floating on water</Label>
+            </Representation>
+          </StateDefinition>
+        </States>
+      </CategoricalCharacter>
+      <QuantitativeCharacter id="c2">
+        <Representation>
+          <Label>Frond length</Label>
+        </Representation>
+        <MeasurementUnit>
+          <Label role="Abbrev">m</Label>
+        </MeasurementUnit>
+        <Default>
+          <MeasurementUnitPrefix>centi</MeasurementUnitPrefix>
+        </Default>
+      </QuantitativeCharacter>
+      <TextCharacter id="c3">
+        <Representation>
+          <Label xml:lang="en">Remarks</Label>
+        </Representation>
+      </TextCharacter>
+    </Characters>
+    <CharacterTrees>
+      <CharacterTree id="ct1">
+        <Representation>
+          <Label>(Lucid default character list)</Label>
+        </Representation>
+        <Nodes>
+          <Node id="cn1">
+            <DescriptiveConcept ref="dc1" />
+          </Node>
+          <Node id="cn2">
+            <Parent ref="cn1" />
+            <DescriptiveConcept ref="dc2" />
+          </Node>
+          <CharNode>
+            <Parent ref="cn2" />
+            <Character ref="c1" />
+          </CharNode>
+          <CharNode>
+            <Parent ref="cn2" />
+            <Character ref="c2" />
+          </CharNode>
+          <CharNode>
+            <Parent ref="cn1" />
+            <Character ref="c4" />
+          </CharNode>
+        </Nodes>
+      </CharacterTree>
+    </CharacterTrees>
+    <CodedDescriptions>
+      <CodedDescription id="d101">
+        <Representation>
+          <Label>&lt;i&gt;Pteridium aquilinum&lt;/i&gt; as revised April 8, 2006</Label>
+        </Representation>
+        <Scope>
+          <TaxonName ref="t1" />
+        </Scope>
+        <SummaryData>
+          <Categorical ref="c1">
+            <State ref="s3" />
+            <State ref="s2">
+              <Modifier ref="mc40" />
+            </State>
+            <State ref="s1">
+              <Modifier ref="mc42" />
+            </State>
+          </Categorical>
+          <Categorical ref="c4">
+            <State ref="s5" />
+          </Categorical>
+          <Quantitative ref="c2">
+            <Measure type="Min" value="30" />
+            <Measure type="UMethLower" value="60" />
+            <Measure type="UMethUpper" value="200" />
+            <Measure type="Max" value="400" />
+            <Measure type="N" value="20" />
+          </Quantitative>
+        </SummaryData>
+      </CodedDescription>
+      <CodedDescription id="d102">
+        <Representation>
+          <Label>Azolla</Label>
+        </Representation>
+        <Scope>
+          <TaxonName ref="t2" />
+        </Scope>
+        <SummaryData>
+          <Categorical ref="c1">
+            <Status code="NotApplicable" />
+          </Categorical>
+          <Categorical ref="c4">
+            <State ref="s6" />
+            <State ref="s5">
+              <Modifier ref="mc42" />
+            </State>
+          </Categorical>
+          <Quantitative ref="c2">
+            <Measure type="Min" value="1.0" />
+            <Measure type="Max" value="2.5" />
+          </Quantitative>
+          <TextChar ref="c3">
+            <Content>Turns red in autumn &amp; winter</Content>
+          </TextChar>
+        </SummaryData>
+      </CodedDescription>
+      <CodedDescription id="d103">
+        <Representation>
+          <Label>Asplenium</Label>
+        </Representation>
+        <Scope>
+          <TaxonName ref="t3" />
+        </Scope>
+        <SummaryData>
+          <Categorical ref="c1">
+            <State ref="s2" />
+          </Categorical>
+          <Categorical ref="c4">
+            <State ref="s4" />
+          </Categorical>
+          <Categorical ref="c4">
+            <State ref="s5">
+              <Modifier ref="mc41" />
+            </State>
+          </Categorical>
+          <Quantitative ref="c2">
+            <Status code="DataUnavailable" />
+          </Quantitative>
+        </SummaryData>
+      </CodedDescription>
+    </CodedDescriptions>
+    <Agents>
+      <Agent id="a1">
+        <Representation>
+          <Label>Ann Author</Label>
+        </Representation>
+      </Agent>
+      <Agent id="a2">
+        <Representation>
+          <Label>Ed Editor</Label>
+        </Representation>
+      </Agent>
+    </Agents>
+    <MediaObjects>
+      <MediaObject id="m1">
+        <Representation>
+          <Label>A bracken frond</Label>
+        </Representation>
+        <Type>Image</Type>
+        <Source href="http://test.edu/test.jpg" />
+      </MediaObject>
+    </MediaObjects>
+  </Dataset>
+  <Dataset xml:lang="en-au">
+    <Representation>
+      <Label>Fixed set of modifiers (not extensible in Lucid).</Label>
+    </Representation>
+    <DescriptiveConcepts>
+      <DescriptiveConcept id="dc40">
+        <Representation>
+          <Label>Fixed set of modifiers supported in Lucid</Label>
+        </Representation>
+        <Modifiers>
+          <Modifier id="mc40">
+            <Representation>
+              <Label xml:lang="en">rare</Label>
+            </Representation>
+            <ModifierClass>Frequency</ModifierClass>
+            <ProportionRange lowerestimate="0.0" upperestimate="0.25" />
+          </Modifier>
+          <Modifier id="mc41">
+            <Representation>
+              <Label xml:lang="en">perhaps</Label>
+            </Representation>
+            <ModifierClass>Certainty</ModifierClass>
+            <ProportionRange lowerestimate="0" upperestimate="0.5" />
+          </Modifier>
+          <Modifier id="mc42">
+            <Representation>
+              <Label xml:lang="en">misapplied</Label>
+            </Representation>
+            <ModifierClass>TreatAsMisinterpretation</ModifierClass>
+          </Modifier>
+        </Modifiers>
+      </DescriptiveConcept>
+    </DescriptiveConcepts>
+  </Dataset>
+</Datasets>

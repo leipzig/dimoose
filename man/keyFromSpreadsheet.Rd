@@ -44,17 +44,27 @@ ends in a species.
 \code{"Common name (Genus species)"} to have \code{\link[=keyDiagram]{keyDiagram()}} set the
 scientific name in italics.
 \item \code{Choice} (optional): the lead's letter; by default the leads of each
-couplet are lettered a, b, c in the order they appear.
+couplet are lettered a, b, c in the order they appear (after z come
+aa, ab and so on).
 \item \code{Question} (optional): what the couplet asks ("Leaf type?"), shown by
 \code{\link[=keyDiagram]{keyDiagram()}} and \code{\link[=exportWizard]{exportWizard()}}.
 \item \code{Photo} (optional): file names of photos to show with the lead,
-separated by commas or semicolons; the extension may be left out.
+separated by commas or semicolons; the extension may be left out. A
+web address (\verb{https://...}) is kept as a link to the picture instead.
+\item \code{Note} and \code{Label} (optional): a remark on the lead, as \code{\link[=pruneKey]{pruneKey()}}
+writes, and a label to show for the lead in place of couplet and
+letter. Both are kept in the key's leads as they are.
 }
 
 Column names are matched loosely (case, spaces and punctuation do not
 matter) and dimoose's own names work too: \code{Statement}, \code{Character},
-\code{Next}, \code{Taxon} and \code{Image}. Blank rows are skipped. The photos are
-embedded in the key, so the wizard and the diagram work offline.
+\code{Next}, \code{Taxon} and \code{Image}. Other columns are ignored and blank rows are
+skipped. The photos are embedded in the key, so the wizard and the
+diagram work offline.
+
+The file may be as Excel saves it: with or without a byte-order mark, in
+UTF-8 or Windows-1252, and with semicolons between the cells, which is
+what Excel writes where the comma is the decimal mark.
 
 The Montana key that comes with dimoose is a ready-made example to copy:
 \code{system.file("extdata", "montana", "montana-key.csv", package = "dimoose")},
@@ -67,6 +77,7 @@ k
 keyDiagram(k, tempfile(fileext = ".svg"))
 }
 \seealso{
+\code{\link[=keyToSpreadsheet]{keyToSpreadsheet()}} to write a key as such a spreadsheet,
 \code{\link[=keyFromLeads]{keyFromLeads()}} to build a key from a data frame,
 \code{\link[=keyDiagram]{keyDiagram()}} and \code{\link[=exportWizard]{exportWizard()}} to show it.
 }

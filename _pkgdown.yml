@@ -6,39 +6,78 @@ template:
 
 navbar:
   structure:
-    left: [intro, reference, articles, montana, news]
+    left: [intro, reference, articles, montana, webr, news]
     right: [search, github]
   components:
     montana:
       text: Try the Montana key
       href: montana/index.html
+    webr:
+      text: Make a key without R
+      href: webr/index.html
 
 articles:
 - title: Write your own key
   navbar: ~
   contents:
   - montana-hardwoods
+  - published-key
 - title: Generate keys from data
   navbar: Generate keys from data
   contents:
   - vision-keys
   - alignment-keys
-  - mecit
 
 reference:
 - title: Keys
-  desc: The dimoose key object and the ways to build one.
+  desc: The dimoose key object and the ways to write or read one.
   contents:
   - dimoose
   - keyFromSpreadsheet
-  - checkNames
+  - keyToSpreadsheet
+  - keyFromText
+  - parseTextKey
   - keyFromLeads
-  - keyFromRpart
-  - generateTree
-- title: Show and share a key
+  - checkNames
+- title: Exchange formats
+  desc: >
+    Character matrices and keys in the formats of other identification
+    software: SDD (the TDWG standard), DELTA, Lucid and Xper.
   contents:
-  - keyDiagram
+  - readSDD
+  - readSDDKey
+  - readDELTA
+  - readLucid
+  - readLucidKey
+  - readXper
+- title: FishBase
+  contents:
+  - importFishbase
+  - parseFishbase
+  - rawhtml
+- title: Building keys from a matrix
+  desc: A key generated from a table of taxa and their characters.
+  contents:
+  - keyFromMatrix
+  - vibrioMatrix
+  - generateTree
+  - keyFromRpart
+- title: Pruning and merging
+  desc: Cut a key down to some taxa or to a place, or join two keys.
+  contents:
+  - pruneKey
+  - regionalKey
+  - mergeKeys
+- title: Quality
+  desc: How many steps a key takes, and how common each taxon is.
+  contents:
+  - keyQuality
+  - occurrenceWeights
+- title: Show and share a key
+  desc: The interactive page (wizard), diagrams and tree formats.
+  contents:
   - exportWizard
+  - keyDiagram
   - toNewick
   - toIgraph
   - toTreedata
@@ -52,26 +91,31 @@ reference:
   - phylotree17
   - phylotree17_mutations
   - phylotreeKey
-- title: FishBase
-  contents:
-  - importFishbase
-  - parseFishbase
-  - rawhtml
-- title: Keys from photos
+- title: "Vision: models and embeddings"
+  desc: Vision models (PyTorch or ONNX Runtime), photos and their embeddings.
   contents:
   - visionModel
+  - onnxModel
+  - onnxCache
+  - exportOnnxModel
+  - exportBrowserModel
   - modelMeta
-  - embedImages
-  - embedTexts
   - imageSet
   - imageMeta
   - imageMime
+  - embedImages
+  - embedTexts
+  - saveEmbeddings
+- title: "Vision: keys from photos"
+  contents:
   - discoverSniglets
   - snigletScores
+  - keyFromSniglets
   - snigletNames
   - renameSniglets
+  - suggestSnigletNames
+  - claudeNamer
   - inventNames
-  - keyFromSniglets
   - vocabularyPrompts
   - keyFromClusters
   - patchExemplars
@@ -83,6 +127,12 @@ reference:
   - classify
   - evaluateKey
   - looKey
+- title: Benchmark
+  desc: Identification measured on field photos from iNaturalist.
+  contents:
+  - inatPhotos
+  - splitByObservation
+  - benchmarkKey
 - title: Keys from sequences and haplogroups
   contents:
   - keyFromAlignment
@@ -91,9 +141,3 @@ reference:
   - haplotypeMatrix
   - macroHaplogroup
   - recurrentPositions
-- title: Mixed-effects trees
-  contents:
-  - mecit
-  - keyFromMecit
-  - simulateExpression
-  - splitVariables

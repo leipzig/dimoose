@@ -1,0 +1,6 @@
+# Extra packages export_onnx.py needs, on top of requirements.txt (torch and
+# open_clip): converting a model to ONNX, checking and quantising it.
+onnx==1.23.2
+onnxruntime==1.32.0
+onnxconverter-common==1.16.0
+tokenizers==0.23.3

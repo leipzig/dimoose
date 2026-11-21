@@ -1,0 +1,4 @@
+"route","model","seed","test_photos","test_observations","train_photos","correct","top1","top1_lower","top1_upper","top2","top3"
+"names (all photos)","bioclip-2",1,220,220,0,214,0.972727272727273,0.94178709971225,0.987442012248713,1,1
+"names (the build route's test photos)","bioclip-2",1,66,66,0,66,1,0.944997442986459,1,1,1
+"build (sniglet key from the training photos)","bioclip-2",1,66,66,154,47,0.712121212121212,0.593627505913535,0.807280500201933,NA,NA
