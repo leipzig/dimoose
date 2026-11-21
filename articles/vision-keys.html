@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">dimoose</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,14 +38,15 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/montana-hardwoods.html">A photo key to Montana's broadleaf trees</a></li>
+    <li><a class="dropdown-item" href="../articles/published-key.html">From a published key to a field key</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Generate keys from data</h6></li>
     <li><a class="dropdown-item" href="../articles/vision-keys.html">Automated key generation from photos</a></li>
     <li><a class="dropdown-item" href="../articles/alignment-keys.html">Automated key generation from a sequence alignment</a></li>
-    <li><a class="dropdown-item" href="../articles/mecit.html">Mixed-effects conditional inference trees on PhyloTree</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../montana/index.html">Try the Montana key</a></li>
+<li class="nav-item"><a class="nav-link" href="../webr/index.html">Make a key without R</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -146,6 +147,25 @@ packages there:</p>
 <code class="sourceCode R"><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">py_install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"torch"</span>, <span class="st">"open_clip_torch"</span>, <span class="st">"pillow"</span>, <span class="st">"numpy"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Only step 3 (and the example crops in step 5) needs Python.
 Everything else is ordinary R on numeric matrices.</p>
+<div class="section level3">
+<h3 id="onnx">A smaller install: ONNX Runtime<a class="anchor" aria-label="anchor" href="#onnx"></a>
+</h3>
+<p>PyTorch is most of that download.
+<code>visionModel(backend = "onnx")</code> runs the same CLIP ViT-B/32
+on <a href="https://onnxruntime.ai" class="external-link">ONNX Runtime</a> instead: the Python
+side is then <code>onnxruntime</code>, <code>tokenizers</code>,
+<code>pillow</code> and <code>numpy</code>, and the model is downloaded
+once, ready-made, from the Hugging Face Hub into
+<code><a href="../reference/onnxCache.html">onnxCache()</a></code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/visionModel.html">visionModel</a></span><span class="op">(</span>backend <span class="op">=</span> <span class="st">"onnx"</span><span class="op">)</span></span>
+<span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/visionModel.html">visionModel</a></span><span class="op">(</span>backend <span class="op">=</span> <span class="st">"onnx"</span>, precision <span class="op">=</span> <span class="st">"fp16"</span><span class="op">)</span>   <span class="co"># half the download</span></span></code></pre></div>
+<p>The embeddings are the same, and every later step is unchanged: on
+the example photos the key in step 4 comes out identical. Two things
+differ. The ready-made model has no patch tokens, so
+<code>embedImages(tiles = 0)</code> does not work with it (the default
+tiles do). And BioCLIP has no ready-made ONNX copy: see <a href="#models">Choosing a model</a>.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="step-1-say-which-photo-shows-what">Step 1: say which photo shows what<a class="anchor" aria-label="anchor" href="#step-1-say-which-photo-shows-what"></a>
@@ -160,7 +180,7 @@ at the top folder. Each photo takes the name of the folder it is in:</p>
   banana/    0_100.jpg  204_100.jpg  ...
   blueberry/ 0_100.jpg  176_100.jpg  ...
   ...</code></pre>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pics</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"pics"</span>, package <span class="op">=</span> <span class="st">"dimoose"</span><span class="op">)</span></span>
 <span><span class="va">images</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/imageSet.html">imageSet</a></span><span class="op">(</span><span class="va">pics</span><span class="op">)</span></span></code></pre></div>
 <p>The example photos are laid out this way. The other two layouts are
@@ -168,16 +188,16 @@ for your own photos; the folder and file names below are
 placeholders.</p>
 <p><strong>The class is in the file name.</strong> Give a function that
 turns a file name (without its extension) into the label:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># robin_01.jpg, robin_02.jpg, wren_01.jpg -&gt; "robin", "robin", "wren"</span></span>
 <span><span class="va">images</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/imageSet.html">imageSet</a></span><span class="op">(</span><span class="st">"my_photos"</span>, label <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"_.*$"</span>, <span class="st">""</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><strong>The labels are in a table.</strong> Read the spreadsheet and
 pass one label per file:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tab</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"my_labels.csv"</span><span class="op">)</span>          <span class="co"># columns: file, species</span></span>
 <span><span class="va">images</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/imageSet.html">imageSet</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"my_photos"</span>, <span class="va">tab</span><span class="op">$</span><span class="va">file</span><span class="op">)</span>, label <span class="op">=</span> <span class="va">tab</span><span class="op">$</span><span class="va">species</span><span class="op">)</span></span></code></pre></div>
 <p>Check the result before going on:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">images</span><span class="op">$</span><span class="va">label</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     banana  blueberry       kiwi      lemon  pineapple strawberry</span></span>
 <span><span class="co">#&gt;          6          6          6          6          6          6</span></span></code></pre></div>
@@ -187,7 +207,7 @@ pass one label per file:</p>
 </h2>
 <p><code><a href="../reference/visionModel.html">visionModel()</a></code> downloads OpenAI’s CLIP ViT-B/32 the first
 time, or loads a checkpoint you already have:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/visionModel.html">visionModel</a></span><span class="op">(</span><span class="op">)</span>                       <span class="co"># or visionModel("ViT-B-32.pt")</span></span></code></pre></div>
 <p>For photos of organisms, use BioCLIP instead:
 <code>visionModel(name = "bioclip")</code>. See <a href="#models">Choosing a model</a>.</p>
@@ -200,7 +220,7 @@ time, or loads a checkpoint you already have:</p>
 per <strong>tile</strong> of each photo. Tiles are overlapping windows,
 4 x 4 of them by default, each cut out and embedded on its own as if it
 were a whole picture:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">emb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/embedImages.html">embedImages</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">images</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">emb</span><span class="op">$</span><span class="va">image</span><span class="op">)</span>     <span class="co"># photos x dimensions</span></span>
 <span><span class="co">#&gt; [1]  36 512</span></span>
@@ -223,7 +243,11 @@ picture, so the features found tend to say “this is a kiwi”, not “this
 part looks like that part”.</li>
 </ul>
 <p>This is the slow step: one pass of the model per tile. The later
-steps take seconds.</p>
+steps take seconds. To do it only once, save the result; loading it back
+needs the jsonlite package but no Python:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/saveEmbeddings.html">saveEmbeddings</a></span><span class="op">(</span><span class="va">emb</span>, <span class="st">"pics.safetensors"</span><span class="op">)</span></span>
+<span><span class="va">emb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/saveEmbeddings.html">loadEmbeddings</a></span><span class="op">(</span><span class="st">"pics.safetensors"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="step-4-build-the-key">Step 4: build the key<a class="anchor" aria-label="anchor" href="#step-4-build-the-key"></a>
@@ -240,13 +264,13 @@ photos. It has no name, so dimoose coins a pronounceable word for it
 These are <strong>sniglets</strong>. <code><a href="../reference/snigletScores.html">snigletScores()</a></code> scores
 each photo for each sniglet, and <code><a href="../reference/keyFromSniglets.html">keyFromSniglets()</a></code> grows a
 key in which each step asks whether the specimen has one sniglet:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sniglets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/discoverSniglets.html">discoverSniglets</a></span><span class="op">(</span><span class="va">emb</span><span class="op">$</span><span class="va">patches</span>, k <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span>
 <span><span class="va">scores</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/snigletScores.html">snigletScores</a></span><span class="op">(</span><span class="va">emb</span><span class="op">$</span><span class="va">patches</span>, <span class="va">sniglets</span><span class="op">$</span><span class="va">centroids</span><span class="op">)</span></span>
 <span><span class="va">key</span>      <span class="op">&lt;-</span> <span class="fu"><a href="../reference/keyFromSniglets.html">keyFromSniglets</a></span><span class="op">(</span><span class="va">scores</span>, <span class="va">images</span>, <span class="va">sniglets</span>, method <span class="op">=</span> <span class="st">"rpart"</span><span class="op">)</span></span>
 <span><span class="va">key</span></span>
 <span><span class="co">#&gt; &lt;dimoose key&gt; Key generated from sniglets</span></span>
-<span><span class="co">#&gt;   5 couplets, 10 leads, 6 taxa, up to 4 steps deep</span></span></code></pre></div>
+<span><span class="co">#&gt;   5 couplets, 10 leads, 6 taxa, up to 4 steps deep (2.8 on average)</span></span></code></pre></div>
 <p><code><a href="../reference/keyFromSniglets.html">keyFromSniglets()</a></code> has two tree builders:</p>
 <ul>
 <li>
@@ -272,7 +296,7 @@ of held-out photos in the right class and <code>"balanced"</code>
 vocabulary of contrasting features. dimoose clusters the classes into a
 tree and, for each fork, picks the pair that best separates its two
 sides:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vocab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  feature  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a smooth skin"</span>, <span class="st">"a round shape"</span>, <span class="st">"a yellow colour"</span>, <span class="st">"green leaves on top"</span><span class="op">)</span>,</span>
 <span>  opposite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a rough skin"</span>, <span class="st">"a long shape"</span>, <span class="st">"a dark colour"</span>, <span class="st">"no leaves"</span><span class="op">)</span></span>
@@ -300,7 +324,7 @@ forks.</p>
 </h2>
 <p>A key is an ordinary dimoose object, so everything else in the
 package works on it:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">key</span><span class="op">$</span><span class="va">leads</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Statement"</span>, <span class="st">"Character"</span>, <span class="st">"Next"</span>, <span class="st">"Taxon"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;    Statement                           Character Next      Taxon</span></span>
 <span><span class="co">#&gt; 1          1                       Has gaithiark    2</span></span>
@@ -333,7 +357,7 @@ to the missing one.</li>
 </ul>
 <p>The glossary shows each sniglet across all the photos and lists the
 classes it is seen in.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/patchExemplars.html">patchExemplars</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">key</span>, <span class="va">images</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/exportWizard.html">exportWizard</a></span><span class="op">(</span><span class="va">key</span>, <span class="st">"key.html"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -343,7 +367,7 @@ classes it is seen in.</p>
 <p>A coined word tells a reader nothing until they have looked at the
 crops. Once you have looked, you can say what each sniglet is.
 <code><a href="../reference/snigletNames.html">snigletNames()</a></code> lists them:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/snigletNames.html">snigletNames</a></span><span class="op">(</span><span class="va">key</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         sniglet          name definition  used</span></span>
 <span><span class="co">#&gt; 1     gaithiark     gaithiark       &lt;NA&gt;  TRUE</span></span>
@@ -352,12 +376,12 @@ crops. Once you have looked, you can say what each sniglet is.
 <span><span class="co">#&gt; ...</span></span></code></pre></div>
 <p>Only the sniglets the key uses (<code>used</code>) need names. Rename
 a few directly:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/renameSniglets.html">renameSniglets</a></span><span class="op">(</span><span class="va">key</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>gaithiark <span class="op">=</span> <span class="st">"a dull, finely textured skin"</span><span class="op">)</span>,</span>
 <span>  definitions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>gaithiark <span class="op">=</span> <span class="st">"Matt skin with a fine grain, as on a kiwi or a lemon"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>or fill in the table in a spreadsheet and read it back:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="fu"><a href="../reference/snigletNames.html">snigletNames</a></span><span class="op">(</span><span class="va">key</span><span class="op">)</span>, <span class="st">"names.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co"># ... edit the name and definition columns ...</span></span>
 <span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/renameSniglets.html">renameSniglets</a></span><span class="op">(</span><span class="va">key</span>, <span class="st">"names.csv"</span><span class="op">)</span></span>
@@ -365,6 +389,20 @@ a few directly:</p>
 <p>The leads now read “Has a dull, finely textured skin”, and the
 glossary shows the new name, the definition and the coined word it
 replaced.</p>
+<p>For a first draft of that spreadsheet,
+<code><a href="../reference/suggestSnigletNames.html">suggestSnigletNames()</a></code> shows each sniglet’s example crops
+(from <code><a href="../reference/patchExemplars.html">patchExemplars()</a></code>, step 5) to a vision-language model
+and writes its suggestions as the same CSV, for you to review:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/suggestSnigletNames.html">suggestSnigletNames</a></span><span class="op">(</span><span class="va">key</span>, <span class="fu"><a href="../reference/claudeNamer.html">claudeNamer</a></span><span class="op">(</span><span class="op">)</span>, file <span class="op">=</span> <span class="st">"names.csv"</span><span class="op">)</span></span>
+<span><span class="co"># ... review and edit names.csv ...</span></span>
+<span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/renameSniglets.html">renameSniglets</a></span><span class="op">(</span><span class="va">key</span>, <span class="st">"names.csv"</span><span class="op">)</span></span></code></pre></div>
+<p>The model is any <code>function(images, prompt)</code> that returns
+text. <code><a href="../reference/claudeNamer.html">claudeNamer()</a></code> makes one that asks Claude through the
+Anthropic API; it needs an API key in <code>ANTHROPIC_API_KEY</code>,
+and its calls are billed to that key. A suggestion of more than three
+words, one that names a class, or one already taken is asked for again,
+and a sniglet with no usable suggestion keeps the name it had.</p>
 <p>How renaming works:</p>
 <ul>
 <li>
@@ -398,7 +436,7 @@ uses the names:
 and reports how many end at the right class. <code><a href="../reference/looKey.html">looKey()</a></code> is
 the honest version: it rebuilds the key without each photo in turn and
 then tries that photo.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluateKey.html">evaluateKey</a></span><span class="op">(</span><span class="va">key</span>, <span class="va">scores</span>, <span class="va">images</span><span class="op">$</span><span class="va">label</span><span class="op">)</span><span class="op">$</span><span class="va">accuracy</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/looKey.html">looKey</a></span><span class="op">(</span><span class="va">images</span>,</span>
@@ -412,7 +450,7 @@ then tries that photo.</p>
 <p>The key stores how each of its tests is computed from a photo, so a
 machine can follow it. <code><a href="../reference/scoreImages.html">scoreImages()</a></code> embeds new photos and
 scores them, and <code><a href="../reference/classify.html">classify()</a></code> walks the key:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">new</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"new-photos"</span>, package <span class="op">=</span> <span class="st">"dimoose"</span><span class="op">)</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/classify.html">classify</a></span><span class="op">(</span><span class="va">key</span>, <span class="fu"><a href="../reference/scoreImages.html">scoreImages</a></span><span class="op">(</span><span class="va">key</span>, <span class="va">model</span>, <span class="va">new</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         id     result        path</span></span>
@@ -433,7 +471,7 @@ be used directly. If you have a <code>photos x dimensions</code> matrix
 <code>X</code> and a <code>photos x regions x dimensions</code> array
 <code>P</code> from your own encoder, with rows in the order of
 <code>images</code>, skip steps 2 and 3:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sniglets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/discoverSniglets.html">discoverSniglets</a></span><span class="op">(</span><span class="va">P</span>, k <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span>
 <span><span class="va">key</span>      <span class="op">&lt;-</span> <span class="fu"><a href="../reference/keyFromSniglets.html">keyFromSniglets</a></span><span class="op">(</span><span class="fu"><a href="../reference/snigletScores.html">snigletScores</a></span><span class="op">(</span><span class="va">P</span>, <span class="va">sniglets</span><span class="op">$</span><span class="va">centroids</span><span class="op">)</span>, <span class="va">images</span>, <span class="va">sniglets</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -477,7 +515,7 @@ be used directly. If you have a <code>photos x dimensions</code> matrix
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/visionModel.html">visionModel</a></span><span class="op">(</span><span class="op">)</span>                    <span class="co"># regular CLIP</span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/visionModel.html">visionModel</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"bioclip"</span><span class="op">)</span>    <span class="co"># BioCLIP</span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/visionModel.html">visionModel</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"bioclip-2"</span><span class="op">)</span>  <span class="co"># BioCLIP 2</span></span></code></pre></div>
@@ -501,6 +539,13 @@ better with regular CLIP.</li>
 <strong>BioCLIP 2 is a larger model</strong>, so embedding takes
 several times longer.</li>
 </ul>
+<p>With <code>backend = "onnx"</code> (<a href="#onnx">above</a>)
+BioCLIP and BioCLIP 2 have to be converted first, because there is no
+official ONNX copy of them. Do it once, on a computer with PyTorch, and
+the folder it writes can be used anywhere:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/exportOnnxModel.html">exportOnnxModel</a></span><span class="op">(</span><span class="st">"bioclip"</span><span class="op">)</span>                               <span class="co"># once; needs PyTorch</span></span>
+<span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/visionModel.html">visionModel</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"bioclip"</span>, backend <span class="op">=</span> <span class="st">"onnx"</span><span class="op">)</span> <span class="co"># afterwards, without it</span></span></code></pre></div>
 <p>BioCLIP is downloaded from the Hugging Face Hub on first use.
 <code>name = "hf-hub:&lt;organisation&gt;/&lt;model&gt;"</code> loads
 any other open_clip model there whose image side is a vision

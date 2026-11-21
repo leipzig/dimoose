@@ -63,7 +63,7 @@ leads <- data.frame(
 k <- keyFromLeads(leads, "A tiny key")
 k
 #> <dimoose key> A tiny key
-#>   2 couplets, 4 leads, 3 taxa, up to 2 steps deep
+#>   2 couplets, 4 leads, 3 taxa, up to 2 steps deep (1.7 on average)
 k$toNewick()
 #> [1] "((Diptera,Other)2,Apterygota)1;"
 ```

@@ -76,7 +76,7 @@ library(dimoose)
 k <- montanaKey()
 k
 #> <dimoose key> Key to the native broadleaf trees of Montana
-#>   10 couplets, 20 leads, 11 taxa, up to 7 steps deep
+#>   10 couplets, 20 leads, 11 taxa, up to 7 steps deep (4.6 on average)
 ```
 
 [`montanaKey()`](https://leipzig.github.io/dimoose/reference/exampleKeys.md)

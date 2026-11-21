@@ -153,7 +153,7 @@ if (requireNamespace("ape", quietly = TRUE)) {
   keyFromAlignment(mtdna, reference = "H2a2a1", outgroup = "L0a1")
 }
 #> <dimoose key> Key generated from a sequence alignment
-#>   13 couplets, 26 leads, 14 taxa, up to 10 steps deep
+#>   13 couplets, 26 leads, 14 taxa, up to 10 steps deep (6.4 on average)
 if (FALSE) { # \dontrun{
 keyFromAlignment(mtdna, tool = "iqtree", outgroup = "L0a1")   # needs IQ-TREE installed
 } # }

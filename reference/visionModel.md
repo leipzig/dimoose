@@ -13,7 +13,9 @@ visionModel(
   weights = NULL,
   name = "ViT-B-32",
   pretrained = "openai",
-  python = NULL
+  python = NULL,
+  backend = c("torch", "onnx"),
+  precision = c("fp32", "fp16", "int8")
 )
 ```
 
@@ -41,12 +43,35 @@ visionModel(
   Optional path to the Python executable to use (passed to
   [`reticulate::use_python()`](https://rstudio.github.io/reticulate/reference/use_python.html)).
 
+- backend:
+
+  `"torch"` (PyTorch and open_clip) or `"onnx"` (ONNX Runtime, a much
+  smaller install; see below).
+
+- precision:
+
+  For `backend = "onnx"`: `"fp32"`, `"fp16"` or `"int8"`, see
+  [`onnxModel()`](https://leipzig.github.io/dimoose/reference/onnxModel.md).
+
 ## Value
 
 An object of class `dimooseVisionModel` with `py` (the Python model) and
 `spec` (library, architecture, weights SHA-256, image size, ...).
 
-## Details
+## A lighter setup, without PyTorch
+
+Most of that first download is PyTorch. `visionModel(backend = "onnx")`
+runs the same model on ONNX Runtime instead, which needs only the Python
+packages `onnxruntime`, `tokenizers`, `pillow` and `numpy` (about 150 MB
+installed) and gives the same embeddings (cosine 1.0000 with the PyTorch
+ones on dimoose's example photos). CLIP ViT-B/32 and ViT-B/16 are
+downloaded ready-made; BioCLIP and other models are converted once with
+[`exportOnnxModel()`](https://leipzig.github.io/dimoose/reference/exportOnnxModel.md).
+See
+[`onnxModel()`](https://leipzig.github.io/dimoose/reference/onnxModel.md),
+which this calls, for where models come from and for `precision`. Use
+one backend per R session: the Python that reticulate sets up for the
+first one lacks the other's packages.
 
 To use a Python of your own instead, give its path in `python`, or
 select it with
@@ -93,5 +118,6 @@ which use images only, better than vocabulary questions
 if (FALSE) { # \dontrun{
 model <- visionModel()                    # CLIP ViT-B/32
 model <- visionModel(name = "bioclip")    # BioCLIP, for photos of organisms
+model <- visionModel(backend = "onnx")    # CLIP ViT-B/32 without PyTorch
 } # }
 ```

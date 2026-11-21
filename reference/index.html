@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">dimoose</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,13 +19,14 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/montana-hardwoods.html">A photo key to Montana's broadleaf trees</a></li>
+    <li><a class="dropdown-item" href="../articles/published-key.html">From a published key to a field key</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Generate keys from data</h6></li>
     <li><a class="dropdown-item" href="../articles/vision-keys.html">Automated key generation from photos</a></li>
     <li><a class="dropdown-item" href="../articles/alignment-keys.html">Automated key generation from a sequence alignment</a></li>
-    <li><a class="dropdown-item" href="../articles/mecit.html">Mixed-effects conditional inference trees on PhyloTree</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../montana/index.html">Try the Montana key</a></li>
+<li class="nav-item"><a class="nav-link" href="../webr/index.html">Make a key without R</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -43,7 +44,7 @@
     <div class="section level2">
       <h2 id="keys">Keys<a class="anchor" aria-label="anchor" href="#keys"></a></h2>
 
-      <div class="section-desc"><p>The dimoose key object and the ways to build one.</p></div>
+      <div class="section-desc"><p>The dimoose key object and the ways to write or read one.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -66,10 +67,24 @@
 
         <dt>
 
-          <code><a href="checkNames.html">checkNames()</a></code>
+          <code><a href="keyToSpreadsheet.html">keyToSpreadsheet()</a></code>
 
         </dt>
-        <dd>Check a key's species names against GBIF</dd>
+        <dd>Write a key as a spreadsheet</dd>
+
+        <dt>
+
+          <code><a href="keyFromText.html">keyFromText()</a></code>
+
+        </dt>
+        <dd>Read a key written as plain text</dd>
+
+        <dt>
+
+          <code><a href="parseTextKey.html">parseTextKey()</a></code>
+
+        </dt>
+        <dd>Parse a key written as plain text into a table of leads</dd>
 
         <dt>
 
@@ -80,19 +95,63 @@
 
         <dt>
 
-          <code><a href="keyFromRpart.html">keyFromRpart()</a></code>
+          <code><a href="checkNames.html">checkNames()</a></code>
 
         </dt>
-        <dd>Build a dimoose key from a classification tree</dd>
+        <dd>Check a key's species names against GBIF</dd>
+      </dl></div><div class="section level2">
+      <h2 id="exchange-formats">Exchange formats<a class="anchor" aria-label="anchor" href="#exchange-formats"></a></h2>
+
+      <div class="section-desc"><p>Character matrices and keys in the formats of other identification software: SDD (the TDWG standard), DELTA, Lucid and Xper.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="readSDD.html">readSDD()</a></code> <code><a href="readSDD.html">writeSDD()</a></code>
+
+        </dt>
+        <dd>Read and write SDD (TDWG Structured Descriptive Data)</dd>
 
         <dt>
 
-          <code><a href="generateTree.html">generateTree()</a></code>
+          <code><a href="readSDDKey.html">readSDDKey()</a></code> <code><a href="readSDDKey.html">writeSDDKey()</a></code>
 
         </dt>
-        <dd>Generate a tree from a feature matrix</dd>
+        <dd>Read and write a dichotomous key stored in SDD</dd>
+
+        <dt>
+
+          <code><a href="readDELTA.html">readDELTA()</a></code> <code><a href="readDELTA.html">writeDELTA()</a></code>
+
+        </dt>
+        <dd>Read and write DELTA datasets</dd>
+
+        <dt>
+
+          <code><a href="readLucid.html">readLucid()</a></code> <code><a href="readLucid.html">writeLucid()</a></code>
+
+        </dt>
+        <dd>Read and write Lucid matrix keys</dd>
+
+        <dt>
+
+          <code><a href="readLucidKey.html">readLucidKey()</a></code> <code><a href="readLucidKey.html">writeLucidKey()</a></code>
+
+        </dt>
+        <dd>Read and write Lucid pathway (dichotomous) keys</dd>
+
+        <dt>
+
+          <code><a href="readXper.html">readXper()</a></code> <code><a href="readXper.html">writeXper()</a></code>
+
+        </dt>
+        <dd>Read and write Xper2 / Xper3 knowledge bases</dd>
       </dl></div><div class="section level2">
-      <h2 id="show-and-share-a-key">Show and share a key<a class="anchor" aria-label="anchor" href="#show-and-share-a-key"></a></h2>
+      <h2 id="fishbase">FishBase<a class="anchor" aria-label="anchor" href="#fishbase"></a></h2>
 
 
 
@@ -103,17 +162,137 @@
 
       <dl><dt>
 
-          <code><a href="keyDiagram.html">keyDiagram()</a></code>
+          <code><a href="importFishbase.html">importFishbase()</a></code>
 
         </dt>
-        <dd>Draw a key as a box diagram</dd>
+        <dd>Import a dichotomous key from FishBase</dd>
 
         <dt>
+
+          <code><a href="parseFishbase.html">parseFishbase()</a></code>
+
+        </dt>
+        <dd>Build a dimoose object from FishBase key pages</dd>
+
+        <dt>
+
+          <code><a href="rawhtml.html">rawhtml</a></code>
+
+        </dt>
+        <dd>Raw FishBase key tables</dd>
+      </dl></div><div class="section level2">
+      <h2 id="building-keys-from-a-matrix">Building keys from a matrix<a class="anchor" aria-label="anchor" href="#building-keys-from-a-matrix"></a></h2>
+
+      <div class="section-desc"><p>A key generated from a table of taxa and their characters.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="keyFromMatrix.html">keyFromMatrix()</a></code>
+
+        </dt>
+        <dd>Build a dimoose key from a character matrix</dd>
+
+        <dt>
+
+          <code><a href="vibrioMatrix.html">vibrioMatrix()</a></code>
+
+        </dt>
+        <dd>The vibrio dataset as a character matrix</dd>
+
+        <dt>
+
+          <code><a href="generateTree.html">generateTree()</a></code>
+
+        </dt>
+        <dd>Generate a tree from a feature matrix</dd>
+
+        <dt>
+
+          <code><a href="keyFromRpart.html">keyFromRpart()</a></code>
+
+        </dt>
+        <dd>Build a dimoose key from a classification tree</dd>
+      </dl></div><div class="section level2">
+      <h2 id="pruning-and-merging">Pruning and merging<a class="anchor" aria-label="anchor" href="#pruning-and-merging"></a></h2>
+
+      <div class="section-desc"><p>Cut a key down to some taxa or to a place, or join two keys.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pruneKey.html">pruneKey()</a></code>
+
+        </dt>
+        <dd>Prune a key to some of its taxa</dd>
+
+        <dt>
+
+          <code><a href="regionalKey.html">regionalKey()</a></code>
+
+        </dt>
+        <dd>A key to the taxa recorded in a place</dd>
+
+        <dt>
+
+          <code><a href="mergeKeys.html">mergeKeys()</a></code>
+
+        </dt>
+        <dd>Graft one key onto a result of another</dd>
+      </dl></div><div class="section level2">
+      <h2 id="quality">Quality<a class="anchor" aria-label="anchor" href="#quality"></a></h2>
+
+      <div class="section-desc"><p>How many steps a key takes, and how common each taxon is.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="keyQuality.html">keyQuality()</a></code>
+
+        </dt>
+        <dd>How quickly a key gets to a result</dd>
+
+        <dt>
+
+          <code><a href="occurrenceWeights.html">occurrenceWeights()</a></code>
+
+        </dt>
+        <dd>How common each taxon of a key is, from GBIF occurrence records</dd>
+      </dl></div><div class="section level2">
+      <h2 id="show-and-share-a-key">Show and share a key<a class="anchor" aria-label="anchor" href="#show-and-share-a-key"></a></h2>
+
+      <div class="section-desc"><p>The interactive page (wizard), diagrams and tree formats.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="exportWizard.html">exportWizard()</a></code>
 
         </dt>
         <dd>Export an interactive dichotomous key</dd>
+
+        <dt>
+
+          <code><a href="keyDiagram.html">keyDiagram()</a></code>
+
+        </dt>
+        <dd>Draw a key as a box diagram</dd>
 
         <dt>
 
@@ -201,39 +380,9 @@
         </dt>
         <dd>Build an identification key from PhyloTree Build 17</dd>
       </dl></div><div class="section level2">
-      <h2 id="fishbase">FishBase<a class="anchor" aria-label="anchor" href="#fishbase"></a></h2>
+      <h2 id="vision-models-and-embeddings">Vision: models and embeddings<a class="anchor" aria-label="anchor" href="#vision-models-and-embeddings"></a></h2>
 
-
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="importFishbase.html">importFishbase()</a></code>
-
-        </dt>
-        <dd>Import a dichotomous key from FishBase</dd>
-
-        <dt>
-
-          <code><a href="parseFishbase.html">parseFishbase()</a></code>
-
-        </dt>
-        <dd>Build a dimoose object from FishBase key pages</dd>
-
-        <dt>
-
-          <code><a href="rawhtml.html">rawhtml</a></code>
-
-        </dt>
-        <dd>Raw FishBase key tables</dd>
-      </dl></div><div class="section level2">
-      <h2 id="keys-from-photos">Keys from photos<a class="anchor" aria-label="anchor" href="#keys-from-photos"></a></h2>
-
-
+      <div class="section-desc"><p>Vision models (PyTorch or ONNX Runtime), photos and their embeddings.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -249,24 +398,38 @@
 
         <dt>
 
+          <code><a href="onnxModel.html">onnxModel()</a></code>
+
+        </dt>
+        <dd>Load a vision model that runs on ONNX Runtime, without PyTorch</dd>
+
+        <dt>
+
+          <code><a href="onnxCache.html">onnxCache()</a></code>
+
+        </dt>
+        <dd>Folder where dimoose keeps downloaded and converted ONNX models</dd>
+
+        <dt>
+
+          <code><a href="exportOnnxModel.html">exportOnnxModel()</a></code>
+
+        </dt>
+        <dd>Convert an open_clip model to ONNX</dd>
+
+        <dt>
+
+          <code><a href="exportBrowserModel.html">exportBrowserModel()</a></code>
+
+        </dt>
+        <dd>Write what a web page needs to identify photos with a key's species</dd>
+
+        <dt>
+
           <code><a href="modelMeta.html">modelMeta()</a></code>
 
         </dt>
         <dd>Model details as metadata rows</dd>
-
-        <dt>
-
-          <code><a href="embedImages.html">embedImages()</a></code>
-
-        </dt>
-        <dd>Embed images</dd>
-
-        <dt>
-
-          <code><a href="embedTexts.html">embedTexts()</a></code>
-
-        </dt>
-        <dd>Embed texts</dd>
 
         <dt>
 
@@ -291,6 +454,36 @@
 
         <dt>
 
+          <code><a href="embedImages.html">embedImages()</a></code>
+
+        </dt>
+        <dd>Embed images</dd>
+
+        <dt>
+
+          <code><a href="embedTexts.html">embedTexts()</a></code>
+
+        </dt>
+        <dd>Embed texts</dd>
+
+        <dt>
+
+          <code><a href="saveEmbeddings.html">saveEmbeddings()</a></code> <code><a href="saveEmbeddings.html">loadEmbeddings()</a></code>
+
+        </dt>
+        <dd>Save embeddings to a file, and read them back</dd>
+      </dl></div><div class="section level2">
+      <h2 id="vision-keys-from-photos">Vision: keys from photos<a class="anchor" aria-label="anchor" href="#vision-keys-from-photos"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
           <code><a href="discoverSniglets.html">discoverSniglets()</a></code> <code><a href="discoverSniglets.html">discoverTerms()</a></code>
 
         </dt>
@@ -302,6 +495,13 @@
 
         </dt>
         <dd>Score images against sniglets</dd>
+
+        <dt>
+
+          <code><a href="keyFromSniglets.html">keyFromSniglets()</a></code> <code><a href="keyFromSniglets.html">keyFromTerms()</a></code>
+
+        </dt>
+        <dd>Build a key from sniglet scores</dd>
 
         <dt>
 
@@ -319,17 +519,24 @@
 
         <dt>
 
+          <code><a href="suggestSnigletNames.html">suggestSnigletNames()</a></code>
+
+        </dt>
+        <dd>Have a vision-language model suggest names for sniglets</dd>
+
+        <dt>
+
+          <code><a href="claudeNamer.html">claudeNamer()</a></code>
+
+        </dt>
+        <dd>A sniglet namer that asks Claude</dd>
+
+        <dt>
+
           <code><a href="inventNames.html">inventNames()</a></code>
 
         </dt>
         <dd>Invent pronounceable names</dd>
-
-        <dt>
-
-          <code><a href="keyFromSniglets.html">keyFromSniglets()</a></code> <code><a href="keyFromSniglets.html">keyFromTerms()</a></code>
-
-        </dt>
-        <dd>Build a key from sniglet scores</dd>
 
         <dt>
 
@@ -408,6 +615,36 @@
         </dt>
         <dd>Leave-one-out evaluation of a key builder</dd>
       </dl></div><div class="section level2">
+      <h2 id="benchmark">Benchmark<a class="anchor" aria-label="anchor" href="#benchmark"></a></h2>
+
+      <div class="section-desc"><p>Identification measured on field photos from iNaturalist.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="inatPhotos.html">inatPhotos()</a></code>
+
+        </dt>
+        <dd>Download a balanced sample of iNaturalist photos</dd>
+
+        <dt>
+
+          <code><a href="splitByObservation.html">splitByObservation()</a></code>
+
+        </dt>
+        <dd>Split photos into training and test sets by observation</dd>
+
+        <dt>
+
+          <code><a href="benchmarkKey.html">benchmarkKey()</a></code>
+
+        </dt>
+        <dd>Benchmark identification on field photos</dd>
+      </dl></div><div class="section level2">
       <h2 id="keys-from-sequences-and-haplogroups">Keys from sequences and haplogroups<a class="anchor" aria-label="anchor" href="#keys-from-sequences-and-haplogroups"></a></h2>
 
 
@@ -458,43 +695,6 @@
 
         </dt>
         <dd>Recurrent (homoplasic) mutation sites</dd>
-      </dl></div><div class="section level2">
-      <h2 id="mixed-effects-trees">Mixed-effects trees<a class="anchor" aria-label="anchor" href="#mixed-effects-trees"></a></h2>
-
-
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="mecit.html">mecit()</a></code>
-
-        </dt>
-        <dd>Mixed-effects conditional inference trees</dd>
-
-        <dt>
-
-          <code><a href="keyFromMecit.html">keyFromMecit()</a></code>
-
-        </dt>
-        <dd>Turn a mixed-effects tree into a key</dd>
-
-        <dt>
-
-          <code><a href="simulateExpression.html">simulateExpression()</a></code>
-
-        </dt>
-        <dd>Simulate expression data on PhyloTree</dd>
-
-        <dt>
-
-          <code><a href="splitVariables.html">splitVariables()</a></code>
-
-        </dt>
-        <dd>Variables a fitted tree splits on</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

@@ -3,10 +3,10 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   alignment-keys: alignment-keys.html
-  mecit: mecit.html
   montana-hardwoods: montana-hardwoods.html
+  published-key: published-key.html
   vision-keys: vision-keys.html
-last_built: 2026-11-16T04:50Z
+last_built: 2026-11-21T03:44Z
 urls:
   reference: https://leipzig.github.io/dimoose/reference
   article: https://leipzig.github.io/dimoose/articles

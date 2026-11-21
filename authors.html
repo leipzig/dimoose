@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">dimoose</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,13 +19,14 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="articles/montana-hardwoods.html">A photo key to Montana's broadleaf trees</a></li>
+    <li><a class="dropdown-item" href="articles/published-key.html">From a published key to a field key</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Generate keys from data</h6></li>
     <li><a class="dropdown-item" href="articles/vision-keys.html">Automated key generation from photos</a></li>
     <li><a class="dropdown-item" href="articles/alignment-keys.html">Automated key generation from a sequence alignment</a></li>
-    <li><a class="dropdown-item" href="articles/mecit.html">Mixed-effects conditional inference trees on PhyloTree</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="montana/index.html">Try the Montana key</a></li>
+<li class="nav-item"><a class="nav-link" href="webr/index.html">Make a key without R</a></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
@@ -51,18 +52,44 @@
 
     <div class="section level2">
       <h2 id="citation">Citation</h2>
-      <p><small class="dont-index">Source: <a href="https://github.com/leipzig/dimoose/blob/master/DESCRIPTION" class="external-link"><code>DESCRIPTION</code></a></small></p>
+      <p><small class="dont-index">Source: <a href="https://github.com/leipzig/dimoose/blob/master/inst/CITATION" class="external-link"><code>inst/CITATION</code></a></small></p>
 
       <p>Leipzig J (2026).
 <em>dimoose: Tools to Reshape and Manipulate Dichotomous Keys Used in Taxonomic Identification</em>.
-R package version 0.2.0, <a href="https://leipzig.github.io/dimoose/">https://leipzig.github.io/dimoose/</a>.
+R package version 0.3.0, <a href="https://leipzig.github.io/dimoose/">https://leipzig.github.io/dimoose/</a>.
 </p>
-      <pre>@Manual{,
+      <pre>@Manual{dimoose,
   title = {dimoose: Tools to Reshape and Manipulate Dichotomous Keys Used in Taxonomic Identification},
   author = {Jeremy Leipzig},
   year = {2026},
-  note = {R package version 0.2.0},
+  note = {R package version 0.3.0},
   url = {https://leipzig.github.io/dimoose/},
+}</pre>
+      <p>van Oven M (2015).
+“PhyloTree Build 17: Growing the human mitochondrial DNA tree.”
+<em>Forensic Science International: Genetics Supplement Series</em>, <b>5</b>, e392–e394.
+<a href="https://doi.org/10.1016/j.fsigss.2015.09.155" class="external-link">doi:10.1016/j.fsigss.2015.09.155</a>.
+</p>
+      <pre>@Article{vanOven2015,
+  title = {PhyloTree Build 17: Growing the human mitochondrial DNA tree},
+  author = {Mannis {van Oven}},
+  journal = {Forensic Science International: Genetics Supplement Series},
+  year = {2015},
+  volume = {5},
+  pages = {e392--e394},
+  doi = {10.1016/j.fsigss.2015.09.155},
+}</pre>
+      <p>Froese R, Pauly D (2026).
+“FishBase.”
+World Wide Web electronic publication.
+<a href="https://www.fishbase.org" class="external-link">https://www.fishbase.org</a>.
+</p>
+      <pre>@Misc{FishBase,
+  title = {FishBase},
+  author = {Rainer Froese and Daniel Pauly},
+  year = {2026},
+  howpublished = {World Wide Web electronic publication},
+  url = {https://www.fishbase.org},
 }</pre>
     </div>
 

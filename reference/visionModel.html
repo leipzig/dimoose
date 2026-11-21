@@ -15,7 +15,7 @@ few minutes. This needs reticulate 1.41 or later."><meta property="og:image" con
 
     <a class="navbar-brand me-2" href="../index.html">dimoose</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,13 +27,14 @@ few minutes. This needs reticulate 1.41 or later."><meta property="og:image" con
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/montana-hardwoods.html">A photo key to Montana's broadleaf trees</a></li>
+    <li><a class="dropdown-item" href="../articles/published-key.html">From a published key to a field key</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Generate keys from data</h6></li>
     <li><a class="dropdown-item" href="../articles/vision-keys.html">Automated key generation from photos</a></li>
     <li><a class="dropdown-item" href="../articles/alignment-keys.html">Automated key generation from a sequence alignment</a></li>
-    <li><a class="dropdown-item" href="../articles/mecit.html">Mixed-effects conditional inference trees on PhyloTree</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../montana/index.html">Try the Montana key</a></li>
+<li class="nav-item"><a class="nav-link" href="../webr/index.html">Make a key without R</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -64,7 +65,9 @@ few minutes. This needs reticulate 1.41 or later.</p>
 <span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"ViT-B-32"</span>,</span>
 <span>  pretrained <span class="op">=</span> <span class="st">"openai"</span>,</span>
-<span>  python <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  python <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  backend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"torch"</span>, <span class="st">"onnx"</span><span class="op">)</span>,</span>
+<span>  precision <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fp32"</span>, <span class="st">"fp16"</span>, <span class="st">"int8"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -93,6 +96,16 @@ architecture <code>name</code>; not used for the other kinds of <code>name</code
 <dd><p>Optional path to the Python executable to use (passed to
 <code><a href="https://rstudio.github.io/reticulate/reference/use_python.html" class="external-link">reticulate::use_python()</a></code>).</p></dd>
 
+
+<dt id="arg-backend">backend<a class="anchor" aria-label="anchor" href="#arg-backend"></a></dt>
+<dd><p><code>"torch"</code> (PyTorch and open_clip) or <code>"onnx"</code> (ONNX
+Runtime, a much smaller install; see below).</p></dd>
+
+
+<dt id="arg-precision">precision<a class="anchor" aria-label="anchor" href="#arg-precision"></a></dt>
+<dd><p>For <code>backend = "onnx"</code>: <code>"fp32"</code>, <code>"fp16"</code> or <code>"int8"</code>,
+see <code><a href="onnxModel.html">onnxModel()</a></code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -100,8 +113,19 @@ architecture <code>name</code>; not used for the other kinds of <code>name</code
 and <code>spec</code> (library, architecture, weights SHA-256, image size, ...).</p>
     </div>
     <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>To use a Python of your own instead, give its path in <code>python</code>, or select
+    <h2 id="a-lighter-setup-without-pytorch">A lighter setup, without PyTorch<a class="anchor" aria-label="anchor" href="#a-lighter-setup-without-pytorch"></a></h2>
+
+
+<p>Most of that first download is PyTorch. <code>visionModel(backend = "onnx")</code>
+runs the same model on ONNX Runtime instead, which needs only the Python
+packages <code>onnxruntime</code>, <code>tokenizers</code>, <code>pillow</code> and <code>numpy</code> (about 150 MB
+installed) and gives the same embeddings (cosine 1.0000 with the PyTorch
+ones on dimoose's example photos). CLIP ViT-B/32 and ViT-B/16 are
+downloaded ready-made; BioCLIP and other models are converted once with
+<code><a href="exportOnnxModel.html">exportOnnxModel()</a></code>. See <code><a href="onnxModel.html">onnxModel()</a></code>, which this calls, for where models
+come from and for <code>precision</code>. Use one backend per R session: the Python
+that reticulate sets up for the first one lacks the other's packages.</p>
+<p>To use a Python of your own instead, give its path in <code>python</code>, or select
 it with <code><a href="https://rstudio.github.io/reticulate/reference/use_python.html" class="external-link">reticulate::use_python()</a></code>, <code><a href="https://rstudio.github.io/reticulate/reference/use_python.html" class="external-link">reticulate::use_virtualenv()</a></code> or the
 <code>RETICULATE_PYTHON</code> environment variable before the first call, and install
 the packages there with
@@ -133,6 +157,7 @@ images only, better than vocabulary questions (<code><a href="keyFromClusters.ht
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">visionModel</span><span class="op">(</span><span class="op">)</span>                    <span class="co"># CLIP ViT-B/32</span></span></span>
 <span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">visionModel</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"bioclip"</span><span class="op">)</span>    <span class="co"># BioCLIP, for photos of organisms</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">visionModel</span><span class="op">(</span>backend <span class="op">=</span> <span class="st">"onnx"</span><span class="op">)</span>    <span class="co"># CLIP ViT-B/32 without PyTorch</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

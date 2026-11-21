@@ -15,7 +15,7 @@ exportWizard()."><meta property="og:image" content="https://leipzig.github.io/di
 
     <a class="navbar-brand me-2" href="../index.html">dimoose</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,13 +27,14 @@ exportWizard()."><meta property="og:image" content="https://leipzig.github.io/di
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/montana-hardwoods.html">A photo key to Montana's broadleaf trees</a></li>
+    <li><a class="dropdown-item" href="../articles/published-key.html">From a published key to a field key</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Generate keys from data</h6></li>
     <li><a class="dropdown-item" href="../articles/vision-keys.html">Automated key generation from photos</a></li>
     <li><a class="dropdown-item" href="../articles/alignment-keys.html">Automated key generation from a sequence alignment</a></li>
-    <li><a class="dropdown-item" href="../articles/mecit.html">Mixed-effects conditional inference trees on PhyloTree</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../montana/index.html">Try the Montana key</a></li>
+<li class="nav-item"><a class="nav-link" href="../webr/index.html">Make a key without R</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -64,11 +65,21 @@ five are ordinary dimoose objects: they share the same fields (<code>leads</code
 <span></span>
 <span><span class="fu">arachnidaKey</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">vibrioKey</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">vibrioKey</span><span class="op">(</span>variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"both"</span>, <span class="st">"missing"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">montanaKey</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-variable">variable<a class="anchor" aria-label="anchor" href="#arg-variable"></a></dt>
+<dd><p>For <code>vibrioKey()</code>: <code>"both"</code> (default) keys a species
+that is variable for a test out down both leads; <code>"missing"</code> treats
+variable results as missing. See <code><a href="keyFromMatrix.html">keyFromMatrix()</a></code>.</p></dd>
+
+</dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A <a href="dimoose.html">dimoose</a> object.</p>
@@ -83,12 +94,17 @@ Western Central Pacific</em> (Compagno 1998), from saved FishBase pages in
 Johnson (2005), the <a href="arachnida.html">arachnida</a> dataset; 11 couplets, 11 orders
 (Schizomida is reached from two couplets).</p></li>
 <li><p><code>vibrioKey()</code>: a key generated from the <a href="vibrio.html">vibrio</a> consensus matrix of
-Noguerola &amp; Blanch (2008) with <code><a href="keyFromRpart.html">keyFromRpart()</a></code>. Tests scored <code>+</code> or
-<code>(+)</code> count as positive and <code>-</code> or <code>(-)</code> as negative; variable (<code>v</code>,
-<code>d</code>) and not determined (<code>ND</code>) results are treated as missing, and rpart
-routes a species past such a test with surrogate splits, so a species
-that varies for a test appears on only one side of it. Species the tests
-cannot separate share a result.</p></li>
+Noguerola &amp; Blanch (2008) with <code><a href="keyFromMatrix.html">keyFromMatrix()</a></code> (the matrix itself is
+<code><a href="vibrioMatrix.html">vibrioMatrix()</a></code>). Tests scored <code>+</code> or <code>(+)</code> count as positive and <code>-</code> or
+<code>(-)</code> as negative. With <code>variable = "both"</code> (the default) a species
+that is variable for a test (<code>v</code>, <code>d</code>) is keyed out down both leads of
+every couplet that uses the test, and so is a species the test was not
+determined for (<code>ND</code>): 92 couplets, 74 species, 14 of them reached at
+two or three results. With <code>variable = "missing"</code> those results are
+treated as missing and the key is an rpart classification tree
+(<code><a href="keyFromRpart.html">keyFromRpart()</a></code>), which places such a species on one side of the test
+with surrogate splits: 73 couplets, each species at one result, but a
+strain showing the species' other result is keyed out wrongly.</p></li>
 <li><p><code>montanaKey()</code>: the native broadleaf trees of Montana, written for
 dimoose (the <a href="montana.html">montana</a> dataset); 10 couplets, 11 species, with photos
 from Wikimedia Commons. It is built with <code><a href="keyFromSpreadsheet.html">keyFromSpreadsheet()</a></code> from
@@ -114,11 +130,20 @@ of dichotomous keys. <em>Journal of Applied Microbiology</em> 105, 175-185.
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">sharks</span> <span class="op">&lt;-</span> <span class="fu">sharkKey</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sharks</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;dimoose key&gt; Key to the families of sharks in the Western Central Pacific.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   23 couplets, 46 leads, 24 taxa, up to 12 steps deep</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   23 couplets, 46 leads, 24 taxa, up to 12 steps deep (7.5 on average)</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">arachnidaKey</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                            title couplets leads taxa depth problems</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 Key to the Orders of Arachnida       11    22   11     6        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   meanLeadSteps meanTaxonSteps expectedSteps    bound efficiency</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      4.333333       4.227273      4.227273 3.545455  0.8387097</span>
 <span class="r-in"><span><span class="fu">vibrioKey</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">vibrioKey</span><span class="op">(</span>variable <span class="op">=</span> <span class="st">"missing"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                    title</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Vibrio species (key generated from the Noguerola &amp; Blanch 2008 matrix)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   couplets leads taxa depth problems meanLeadSteps meanTaxonSteps expectedSteps</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       73   146   74    16        0      9.527027       9.527027      9.527027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     bound efficiency</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 6.27027   0.658156</span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="exportWizard.html">exportWizard</a></span><span class="op">(</span><span class="fu">sharkKey</span><span class="op">(</span><span class="op">)</span>, <span class="st">"sharks.html"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">dimoose</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,13 +19,14 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/montana-hardwoods.html">A photo key to Montana's broadleaf trees</a></li>
+    <li><a class="dropdown-item" href="../articles/published-key.html">From a published key to a field key</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Generate keys from data</h6></li>
     <li><a class="dropdown-item" href="../articles/vision-keys.html">Automated key generation from photos</a></li>
     <li><a class="dropdown-item" href="../articles/alignment-keys.html">Automated key generation from a sequence alignment</a></li>
-    <li><a class="dropdown-item" href="../articles/mecit.html">Mixed-effects conditional inference trees on PhyloTree</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../montana/index.html">Try the Montana key</a></li>
+<li class="nav-item"><a class="nav-link" href="../webr/index.html">Make a key without R</a></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -41,6 +42,114 @@
       <small>Source: <a href="https://github.com/leipzig/dimoose/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="dimoose-030-development-version">dimoose 0.3.0 (development version)<a class="anchor" aria-label="anchor" href="#dimoose-030-development-version"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-3-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-3-0"></a></h3>
+<ul><li>
+<code>mecit()</code>, <code>keyFromMecit()</code>, <code>splitVariables()</code> and <code>simulateExpression()</code> have moved to the companion package <a href="https://github.com/leipzig/mecit" class="external-link">mecit</a>, with their vignette and simulation study. <code><a href="../reference/haplotypeMatrix.html">haplotypeMatrix()</a></code>, <code><a href="../reference/recurrentPositions.html">recurrentPositions()</a></code> and <code><a href="../reference/macroHaplogroup.html">macroHaplogroup()</a></code> stay in dimoose.</li>
+<li>
+<code><a href="../reference/exampleKeys.html">vibrioKey()</a></code> gains <code>variable = c("both", "missing")</code> and now defaults to <code>"both"</code>: species with variable or undetermined test results are reached down both leads (92 couplets instead of 73; 14 species have two or three results). <code>vibrioKey(variable = "missing")</code> returns the previous rpart-based key unchanged.</li>
+<li>
+<code><a href="../reference/generateTree.html">generateTree()</a></code> now defaults to <code>rpart.control(minsplit = 2, minbucket = 1, cp = 0)</code>; rpart’s own defaults made no split on a matrix with one row per taxon.</li>
+<li>
+<code>exportWizard(order = )</code> is deprecated and ignored; <code>"parsimony"</code> (never implemented) now warns instead of stopping. To ask the easiest questions first, build the key with <code>keyFromMatrix(characters = )</code> and give the characters a <code>Cost</code>.</li>
+<li>The licence is now stated as <code>GPL (&gt;= 3)</code>; it was the unversioned <code>GPL</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="reading-keys-and-matrices-0-3-0">Reading keys and matrices<a class="anchor" aria-label="anchor" href="#reading-keys-and-matrices-0-3-0"></a></h3>
+<ul><li>
+<code><a href="../reference/keyFromText.html">keyFromText()</a></code> reads keys written as plain text (bracketed or indented layouts; <code>1a</code>/<code>1b</code>, primes, dashes, <code>A.</code>/<code>AA.</code>, back-references such as <code>3(1).</code>; dot leaders, tabs or gaps before the destination; wrapped leads, page headers) and builds a checked dimoose key.</li>
+<li>
+<code><a href="../reference/parseTextKey.html">parseTextKey()</a></code> returns the lead table and a report of problems, repairs and notes, each with its line number; <code>strict = TRUE</code> stops instead of repairing OCR noise.</li>
+<li>Both accept <code>llm</code>, a user-supplied function for a first pass over messy scans; its answer is checked against the source and mistakes are reported by line. dimoose calls no model itself.</li>
+<li>Example text keys are in <code>inst/extdata/textkeys/</code>.</li>
+<li>
+<code><a href="../reference/readSDD.html">readSDD()</a></code> and <code><a href="../reference/readSDD.html">writeSDD()</a></code> read and write TDWG SDD 1.1 (Structured Descriptive Data) as a character matrix: categorical, quantitative and text characters, variable taxa, not-applicable codings, dependency rules and ratings.</li>
+<li>
+<code><a href="../reference/readSDDKey.html">readSDDKey()</a></code> and <code><a href="../reference/readSDDKey.html">writeSDDKey()</a></code> read and write dichotomous keys stored in SDD (<code>&lt;IdentificationKey&gt;</code>), following subkeys; <code>writeSDD(key = )</code> stores a matrix and a key in one file.</li>
+<li>
+<code><a href="../reference/readDELTA.html">readDELTA()</a></code> and <code><a href="../reference/readDELTA.html">writeDELTA()</a></code> read and write DELTA datasets (specs, chars and items files), including implicit values, dependent characters, variant items and comments.</li>
+<li>
+<code><a href="../reference/readLucid.html">readLucid()</a></code> and <code><a href="../reference/readLucid.html">writeLucid()</a></code> exchange matrix keys with Lucid through the Builder’s CSV format and SDD; <code><a href="../reference/readLucid.html">readLucid()</a></code> also reads the multistate scores of LIF3 files.</li>
+<li>
+<code><a href="../reference/readLucidKey.html">readLucidKey()</a></code> and <code><a href="../reference/readLucidKey.html">writeLucidKey()</a></code> read and write Lucid pathway keys as Lucid Phoenix XML (.lpxk), CSV, text and SDD.</li>
+<li>
+<code><a href="../reference/readXper.html">readXper()</a></code> and <code><a href="../reference/readXper.html">writeXper()</a></code> exchange knowledge bases with Xper2/Xper3 through their SDD export.</li>
+<li>Small example files for these formats are in <code>inst/extdata/tdwg/</code>. Files written by dimoose have not yet been opened in Lucid, Xper or a DELTA program.</li>
+<li>
+<code><a href="../reference/keyToSpreadsheet.html">keyToSpreadsheet()</a></code> writes a key as the CSV that <code><a href="../reference/keyFromSpreadsheet.html">keyFromSpreadsheet()</a></code> reads, with embedded photos written out as files, so imported or generated keys can be edited by hand and read back.</li>
+<li>
+<code><a href="../reference/keyFromSpreadsheet.html">keyFromSpreadsheet()</a></code> keeps web addresses in the <code>Photo</code> column as links, and a <code>#</code> in a cell no longer hides the rest of the row from the too-many-cells check.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="keys-from-a-character-matrix-0-3-0">Keys from a character matrix<a class="anchor" aria-label="anchor" href="#keys-from-a-character-matrix-0-3-0"></a></h3>
+<ul><li>
+<code><a href="../reference/keyFromMatrix.html">keyFromMatrix()</a></code> builds a key from a taxon-by-character matrix. A taxon that is variable for a character (<code>"+/-"</code>) or unknown (<code>NA</code>) is keyed out down both leads of every couplet that uses it, so every state a specimen can show ends at its taxon. Multi-state characters are keyed out one state at a time; taxa that cannot be separated share a result.</li>
+<li>
+<code><a href="../reference/keyFromMatrix.html">keyFromMatrix()</a></code> takes an optional <code>characters</code> table: <code>Cost</code> makes cheap characters come first (the split with the most separated pairs of taxa per unit cost is chosen), and <code>season</code> keeps only characters observable in that season, e.g. <code>season = "winter"</code> for a bark and twig key.</li>
+<li>
+<code><a href="../reference/vibrioMatrix.html">vibrioMatrix()</a></code> returns the <code>vibrio</code> dataset as a character matrix for <code><a href="../reference/keyFromMatrix.html">keyFromMatrix()</a></code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="pruning-merging-and-quality-0-3-0">Pruning, merging and quality<a class="anchor" aria-label="anchor" href="#pruning-merging-and-quality-0-3-0"></a></h3>
+<ul><li>
+<code><a href="../reference/pruneKey.html">pruneKey()</a></code> keeps or drops named taxa, removes dead leads and collapses couplets that no longer split anything, optionally renumbering in reading order; the confirming character of a collapsed couplet is kept in a <code>Note</code> column.</li>
+<li>
+<code><a href="../reference/regionalKey.html">regionalKey()</a></code> prunes a key to the taxa recorded in a place according to GBIF (GADM region, country, polygon or place name) or iNaturalist, with a minimum record count and an auditable table of counts in <code>attr(x, "records")</code>.</li>
+<li>
+<code><a href="../reference/mergeKeys.html">mergeKeys()</a></code> grafts one key onto a terminal taxon of another, combining leads, metadata, images, taxa and features.</li>
+<li>
+<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> on a key now reports how quickly it reaches a result: mean steps over terminal leads and over taxa, expected steps weighted by how common each taxon is (<code>summary(key, weights = )</code>), the steps the best possible key to the same taxa would need (<code>bound</code>) and an efficiency ratio; <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> shows the mean steps.</li>
+<li>
+<code><a href="../reference/keyQuality.html">keyQuality()</a></code> returns the detail: steps per taxon and per terminal lead, bound, efficiency, entropy and bits per step, for keys with multi-lead couplets, taxa keyed out more than once and reticulate keys.</li>
+<li>
+<code><a href="../reference/occurrenceWeights.html">occurrenceWeights()</a></code> counts GBIF occurrence records per taxon of a key, optionally within a country or GADM region, for use as weights.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="the-interactive-page-0-3-0">The interactive page<a class="anchor" aria-label="anchor" href="#the-interactive-page-0-3-0"></a></h3>
+<ul><li>
+<code><a href="../reference/exportWizard.html">exportWizard()</a></code>: every couplet has an “I’m not sure” choice (keys <code>u</code> or <code>?</code>) that follows all its leads; the page tracks the open branches, counts and maps the taxa possible in any of them, and lists the candidates if the reader stays unsure. Back undoes one step, and the address records the open branches.</li>
+<li>
+<code>exportWizard(matrix = , characters = )</code>: with a character matrix the page also offers “pick any character you can see”, cheapest characters first, with variable (<code>"a/b"</code>) and unknown (<code>NA</code>) states handled; <code>exportWizard(NULL, matrix = )</code> makes a multi-access page without a key.</li>
+<li>
+<code>exportWizard(offline = TRUE)</code> writes a web app manifest, a service worker and icons next to the page, so the key can be installed on a phone and opened without a connection (needs https or localhost).</li>
+<li>The exported page defines <code>window.dimoose</code> (<code>taxa</code>, <code>highlight()</code>, <code>goToTaxon()</code>, <code>state()</code>, <code>onChange()</code>) so other scripts, such as in-browser photo identification, can mark likely taxa on the map and in candidate lists.</li>
+<li>
+<code>exportWizard(photoModel = )</code>, given a folder written by <code><a href="../reference/exportBrowserModel.html">exportBrowserModel()</a></code>, adds “Identify from a photo”: the image encoder runs in the reader’s browser with onnxruntime-web, the photo never leaves the device, and the page marks the likely taxa and offers to narrow the key to them. The model is downloaded only after the reader agrees.</li>
+<li>The wizard’s remaining-taxa count is now correct for keys where a couplet is reached from more than one lead, and is computed without the map.</li>
+<li>A web page turns a key spreadsheet (CSV, with optional photos) into the interactive wizard without installing R: R runs in the browser through webR. It is built by <code>webr/build.R</code> and published with the website at <a href="https://leipzig.github.io/dimoose/webr/" class="uri">https://leipzig.github.io/dimoose/webr/</a>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="keys-from-photos-0-3-0">Keys from photos<a class="anchor" aria-label="anchor" href="#keys-from-photos-0-3-0"></a></h3>
+<ul><li>
+<code>visionModel(backend = "onnx")</code> and <code><a href="../reference/onnxModel.html">onnxModel()</a></code> embed images and texts with ONNX Runtime instead of PyTorch, a much smaller Python install, with the same embeddings on the example photos. CLIP ViT-B/32 is downloaded ready-made from the Hugging Face Hub; <code>precision = "fp16"</code> or <code>"int8"</code> picks a smaller copy.</li>
+<li>
+<code><a href="../reference/exportOnnxModel.html">exportOnnxModel()</a></code> converts BioCLIP, BioCLIP 2 and other open_clip models to ONNX once (image and text encoders, tokenizer, optional int8 and fp16 copies), for use without PyTorch afterwards.</li>
+<li>
+<code><a href="../reference/saveEmbeddings.html">saveEmbeddings()</a></code> and <code><a href="../reference/saveEmbeddings.html">loadEmbeddings()</a></code> keep embeddings in a small safetensors file, so keys can be built and scored from precomputed embeddings with no Python at all.</li>
+<li>
+<code><a href="../reference/exportBrowserModel.html">exportBrowserModel()</a></code> writes what a web page needs to identify photos on the visitor’s device: an image encoder, its preprocessing constants, and text embeddings of a key’s species.</li>
+<li>
+<code><a href="../reference/suggestSnigletNames.html">suggestSnigletNames()</a></code> has a vision-language model propose a name and a one-sentence definition for each sniglet from its example crops, and returns the names table <code><a href="../reference/renameSniglets.html">renameSniglets()</a></code> takes (or writes it as the CSV it reads), so naming becomes reviewing suggestions. Names are kept short, distinct and descriptive: class and species names are refused.</li>
+<li>
+<code><a href="../reference/claudeNamer.html">claudeNamer()</a></code> is a ready-made model for <code><a href="../reference/suggestSnigletNames.html">suggestSnigletNames()</a></code> that asks Claude through the Anthropic Messages API (needs an API key; calls are billed to it). It has been tested against a stand-in for the API only.</li>
+<li>
+<code><a href="../reference/inatPhotos.html">inatPhotos()</a></code> downloads a balanced, reproducible sample of research-grade, openly licensed iNaturalist photos for a set of species, with a manifest (observation, photo, licence, attribution, URL) so a benchmark can be cited and re-run.</li>
+<li>
+<code><a href="../reference/benchmarkKey.html">benchmarkKey()</a></code> measures identification on field photos (top-1 and top-k accuracy, per-species accuracy, confusion table) for species ranked by name, for a key followed by machine, or for a photo key built from the training photos; <code><a href="../reference/splitByObservation.html">splitByObservation()</a></code> keeps every observation on one side of the train/test split.</li>
+<li>New <code>analysis/inat-benchmark/</code>: a first benchmark on 220 iNaturalist photos of the eleven Montana broadleaf trees with BioCLIP 2 (script, manifest, results and limits).</li>
+<li>The Python tests skip instead of failing where PyTorch is not installed.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-and-infrastructure-0-3-0">Documentation and infrastructure<a class="anchor" aria-label="anchor" href="#documentation-and-infrastructure-0-3-0"></a></h3>
+<ul><li>New vignette, “From a published key to a field key”: a text key is read, checked, cut down to a county, measured and exported for offline use.</li>
+<li>The README no longer lists features the package does not have (YAML, lexical analysis), and describes the ones added here.</li>
+<li>
+<code>citation("dimoose")</code> now gives how to cite the package, plus PhyloTree Build 17 and FishBase for users of those data.</li>
+<li>The package is checked on Linux, macOS and Windows with GitHub Actions (replacing Travis; <code>.travis.yml</code> is removed), and test coverage is reported to Codecov; added <code>CONTRIBUTING.md</code> and <code>codemeta.json</code>.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="dimoose-020">dimoose 0.2.0<a class="anchor" aria-label="anchor" href="#dimoose-020"></a></h2>
 <ul><li>
@@ -80,7 +189,7 @@
 <code><a href="../reference/exportWizard.html">exportWizard()</a></code> writes a self-contained, mobile-friendly HTML key.</li>
 <li>Automated key generation from photos: sniglets, recurring visual features given coined names (<code><a href="../reference/discoverSniglets.html">discoverSniglets()</a></code>, <code><a href="../reference/keyFromSniglets.html">keyFromSniglets()</a></code>) that can be renamed afterwards (<code><a href="../reference/renameSniglets.html">renameSniglets()</a></code>); vocabulary questions (<code><a href="../reference/keyFromClusters.html">keyFromClusters()</a></code>); machine classification and evaluation (<code><a href="../reference/classify.html">classify()</a></code>, <code><a href="../reference/evaluateKey.html">evaluateKey()</a></code>, <code><a href="../reference/looKey.html">looKey()</a></code>); and an optional open_clip vision layer through reticulate (<code><a href="../reference/visionModel.html">visionModel()</a></code>), including BioCLIP.</li>
 <li>Automated key generation from a multiple sequence alignment (<code><a href="../reference/keyFromAlignment.html">keyFromAlignment()</a></code>), with the tree built by ape, phangorn, FastTree or IQ-TREE.</li>
-<li>Mixed-effects conditional inference trees (<code><a href="../reference/mecit.html">mecit()</a></code>, <code><a href="../reference/keyFromMecit.html">keyFromMecit()</a></code>) and simulated expression data on PhyloTree (<code><a href="../reference/simulateExpression.html">simulateExpression()</a></code>).</li>
+<li>Mixed-effects conditional inference trees (<code>mecit()</code>, <code>keyFromMecit()</code>) and simulated expression data on PhyloTree (<code>simulateExpression()</code>).</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

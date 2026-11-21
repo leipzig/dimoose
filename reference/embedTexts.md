@@ -17,8 +17,8 @@ embedTexts(model, texts)
 
 - texts:
 
-  Character vector.
+  Character vector, without missing values.
 
 ## Value
 
-A `texts x d` matrix with the texts as row names.
+A `texts x d` matrix with the texts as row names (no rows for no texts).

@@ -116,16 +116,30 @@ Print a short overview of the key.
 
 ### `dimoose$summary()`
 
-Counts describing the key.
+Counts describing the key and how quickly it reaches a result (see
+[`keyQuality()`](https://leipzig.github.io/dimoose/reference/keyQuality.md)).
 
 #### Usage
 
-    dimoose$summary()
+    dimoose$summary(weights = NULL)
+
+#### Arguments
+
+- `weights`:
+
+  Optional named numeric vector of how common each taxon is, as for
+  [`keyQuality()`](https://leipzig.github.io/dimoose/reference/keyQuality.md);
+  by default all taxa count the same.
 
 #### Returns
 
 A one-row data frame: `title`, `couplets`, `leads`, `taxa`, `depth`
-(longest path in steps) and `problems` (see `validate()`).
+(longest path in steps), `problems` (see `validate()`), `meanLeadSteps`
+and `meanTaxonSteps` (steps to a result, averaged over terminal leads
+and over taxa), `expectedSteps` (averaged over taxa by `weights`),
+`bound` (the expected steps of the best key there could be to these
+taxa, with couplets no larger than this key's largest) and `efficiency`
+(`bound / expectedSteps`, 1 for a key that could not be shorter).
 
 ------------------------------------------------------------------------
 

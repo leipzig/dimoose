@@ -9,7 +9,7 @@ Google Sheets: File &amp;gt; Save as / Download &amp;gt; CSV). Each row is one l
 
     <a class="navbar-brand me-2" href="../index.html">dimoose</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,13 +21,14 @@ Google Sheets: File &amp;gt; Save as / Download &amp;gt; CSV). Each row is one l
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/montana-hardwoods.html">A photo key to Montana's broadleaf trees</a></li>
+    <li><a class="dropdown-item" href="../articles/published-key.html">From a published key to a field key</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Generate keys from data</h6></li>
     <li><a class="dropdown-item" href="../articles/vision-keys.html">Automated key generation from photos</a></li>
     <li><a class="dropdown-item" href="../articles/alignment-keys.html">Automated key generation from a sequence alignment</a></li>
-    <li><a class="dropdown-item" href="../articles/mecit.html">Mixed-effects conditional inference trees on PhyloTree</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../montana/index.html">Try the Montana key</a></li>
+<li class="nav-item"><a class="nav-link" href="../webr/index.html">Make a key without R</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -103,22 +104,32 @@ ends in a species.</p></li>
 <code>"Common name (Genus species)"</code> to have <code><a href="keyDiagram.html">keyDiagram()</a></code> set the
 scientific name in italics.</p></li>
 <li><p><code>Choice</code> (optional): the lead's letter; by default the leads of each
-couplet are lettered a, b, c in the order they appear.</p></li>
+couplet are lettered a, b, c in the order they appear (after z come
+aa, ab and so on).</p></li>
 <li><p><code>Question</code> (optional): what the couplet asks ("Leaf type?"), shown by
 <code><a href="keyDiagram.html">keyDiagram()</a></code> and <code><a href="exportWizard.html">exportWizard()</a></code>.</p></li>
 <li><p><code>Photo</code> (optional): file names of photos to show with the lead,
-separated by commas or semicolons; the extension may be left out.</p></li>
+separated by commas or semicolons; the extension may be left out. A
+web address (<code>https://...</code>) is kept as a link to the picture instead.</p></li>
+<li><p><code>Note</code> and <code>Label</code> (optional): a remark on the lead, as <code><a href="pruneKey.html">pruneKey()</a></code>
+writes, and a label to show for the lead in place of couplet and
+letter. Both are kept in the key's leads as they are.</p></li>
 </ul><p>Column names are matched loosely (case, spaces and punctuation do not
 matter) and dimoose's own names work too: <code>Statement</code>, <code>Character</code>,
-<code>Next</code>, <code>Taxon</code> and <code>Image</code>. Blank rows are skipped. The photos are
-embedded in the key, so the wizard and the diagram work offline.</p>
+<code>Next</code>, <code>Taxon</code> and <code>Image</code>. Other columns are ignored and blank rows are
+skipped. The photos are embedded in the key, so the wizard and the
+diagram work offline.</p>
+<p>The file may be as Excel saves it: with or without a byte-order mark, in
+UTF-8 or Windows-1252, and with semicolons between the cells, which is
+what Excel writes where the comma is the decimal mark.</p>
 <p>The Montana key that comes with dimoose is a ready-made example to copy:
 <code>system.file("extdata", "montana", "montana-key.csv", package = "dimoose")</code>,
 with its photos in the same folder.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="keyFromLeads.html">keyFromLeads()</a></code> to build a key from a data frame,
+    <div class="dont-index"><p><code><a href="keyToSpreadsheet.html">keyToSpreadsheet()</a></code> to write a key as such a spreadsheet,
+<code><a href="keyFromLeads.html">keyFromLeads()</a></code> to build a key from a data frame,
 <code><a href="keyDiagram.html">keyDiagram()</a></code> and <code><a href="exportWizard.html">exportWizard()</a></code> to show it.</p></div>
     </div>
 
@@ -128,7 +139,7 @@ with its photos in the same folder.</p>
 <span class="r-in"><span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu">keyFromSpreadsheet</span><span class="op">(</span><span class="va">csv</span>, desc <span class="op">=</span> <span class="st">"Native broadleaf trees of Montana"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">k</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;dimoose key&gt; Native broadleaf trees of Montana</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   10 couplets, 20 leads, 11 taxa, up to 7 steps deep</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   10 couplets, 20 leads, 11 taxa, up to 7 steps deep (4.6 on average)</span>
 <span class="r-in"><span><span class="fu"><a href="keyDiagram.html">keyDiagram</a></span><span class="op">(</span><span class="va">k</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".svg"</span><span class="op">)</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>

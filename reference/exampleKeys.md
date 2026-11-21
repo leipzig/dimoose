@@ -19,10 +19,19 @@ sharkKey()
 
 arachnidaKey()
 
-vibrioKey()
+vibrioKey(variable = c("both", "missing"))
 
 montanaKey()
 ```
+
+## Arguments
+
+- variable:
+
+  For `vibrioKey()`: `"both"` (default) keys a species that is variable
+  for a test out down both leads; `"missing"` treats variable results as
+  missing. See
+  [`keyFromMatrix()`](https://leipzig.github.io/dimoose/reference/keyFromMatrix.md).
 
 ## Value
 
@@ -44,12 +53,20 @@ object.
 - `vibrioKey()`: a key generated from the
   [vibrio](https://leipzig.github.io/dimoose/reference/vibrio.md)
   consensus matrix of Noguerola & Blanch (2008) with
-  [`keyFromRpart()`](https://leipzig.github.io/dimoose/reference/keyFromRpart.md).
+  [`keyFromMatrix()`](https://leipzig.github.io/dimoose/reference/keyFromMatrix.md)
+  (the matrix itself is
+  [`vibrioMatrix()`](https://leipzig.github.io/dimoose/reference/vibrioMatrix.md)).
   Tests scored `+` or `(+)` count as positive and `-` or `(-)` as
-  negative; variable (`v`, `d`) and not determined (`ND`) results are
-  treated as missing, and rpart routes a species past such a test with
-  surrogate splits, so a species that varies for a test appears on only
-  one side of it. Species the tests cannot separate share a result.
+  negative. With `variable = "both"` (the default) a species that is
+  variable for a test (`v`, `d`) is keyed out down both leads of every
+  couplet that uses the test, and so is a species the test was not
+  determined for (`ND`): 92 couplets, 74 species, 14 of them reached at
+  two or three results. With `variable = "missing"` those results are
+  treated as missing and the key is an rpart classification tree
+  ([`keyFromRpart()`](https://leipzig.github.io/dimoose/reference/keyFromRpart.md)),
+  which places such a species on one side of the test with surrogate
+  splits: 73 couplets, each species at one result, but a strain showing
+  the species' other result is keyed out wrongly.
 
 - `montanaKey()`: the native broadleaf trees of Montana, written for
   dimoose (the
@@ -85,11 +102,20 @@ set of dichotomous keys. *Journal of Applied Microbiology* 105, 175-185.
 sharks <- sharkKey()
 sharks
 #> <dimoose key> Key to the families of sharks in the Western Central Pacific.
-#>   23 couplets, 46 leads, 24 taxa, up to 12 steps deep
+#>   23 couplets, 46 leads, 24 taxa, up to 12 steps deep (7.5 on average)
 summary(arachnidaKey())
 #>                            title couplets leads taxa depth problems
 #> 1 Key to the Orders of Arachnida       11    22   11     6        0
+#>   meanLeadSteps meanTaxonSteps expectedSteps    bound efficiency
+#> 1      4.333333       4.227273      4.227273 3.545455  0.8387097
 vibrioKey()$validate()
+summary(vibrioKey(variable = "missing"))
+#>                                                                    title
+#> 1 Vibrio species (key generated from the Noguerola & Blanch 2008 matrix)
+#>   couplets leads taxa depth problems meanLeadSteps meanTaxonSteps expectedSteps
+#> 1       73   146   74    16        0      9.527027       9.527027      9.527027
+#>     bound efficiency
+#> 1 6.27027   0.658156
 if (FALSE) { # \dontrun{
 exportWizard(sharkKey(), "sharks.html")
 } # }

@@ -3,7 +3,10 @@
 Biochemical and growth test results for 74 *Vibrio* taxa from Noguerola
 & Blanch (2008), one row per taxon.
 [`vibrioKey()`](https://leipzig.github.io/dimoose/reference/exampleKeys.md)
-generates a key from it.
+generates a key from it and
+[`vibrioMatrix()`](https://leipzig.github.io/dimoose/reference/vibrioMatrix.md)
+recodes it for
+[`keyFromMatrix()`](https://leipzig.github.io/dimoose/reference/keyFromMatrix.md).
 
 ## Usage
 

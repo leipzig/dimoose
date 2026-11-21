@@ -51,8 +51,7 @@ are the haplogroups) and one column per site.
 ## See also
 
 [`recurrentPositions()`](https://leipzig.github.io/dimoose/reference/recurrentPositions.md),
-[`macroHaplogroup()`](https://leipzig.github.io/dimoose/reference/macroHaplogroup.md),
-[`simulateExpression()`](https://leipzig.github.io/dimoose/reference/simulateExpression.md)
+[`macroHaplogroup()`](https://leipzig.github.io/dimoose/reference/macroHaplogroup.md)
 
 ## Examples
 

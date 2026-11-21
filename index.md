@@ -1,6 +1,12 @@
 # dimoose
 
-An R package to manage dichotomous keys.
+An R package to read, build, check, cut down and share dichotomous keys.
+
+**No R? Use the browser page.**
+<https://leipzig.github.io/dimoose/webr/> turns a key kept as a
+spreadsheet (CSV, with optional photos) into the interactive page
+described below. R runs inside your browser, and your files stay on your
+computer.
 
 ## Dichotomous keys
 
@@ -25,20 +31,53 @@ DNA phylogeny, as distributed by Haplogrep 3).
 
 ## Package methods
 
-This package provides tools to: - convert from and to popular formats
-including consensus matrices, `ape` phylo, `data.tree`, data frames,
-JSON, YAML, and Newick - merge and prune dichotomous keys - generate
-interactive dichotomous keys (“wizards”) as self-contained,
-mobile-friendly HTML - **generate keys automatically** from a pile of
-labelled photos with a vision model (CLIP, or any model that produces
-embeddings) or from a multiple sequence alignment with a phylogeny
-program, and **follow those keys by machine** - produce training data
-for machine learning using splits - interoperate with the phylogenetics
-ecosystem (`ggtree`/`treeio`, `igraph`, Nextstrain/Auspice, Haplogrep) -
-metadata slots for provenance and supporting guide images - perform
-basic lexical analysis, and specialized data types (single nucleotide
-variations) of criteria and taxa - build mixed effects conditional
-inference trees (mecits)
+This package provides tools to: - **read keys people have already
+written**: plain text as printed in a flora
+([`keyFromText()`](https://leipzig.github.io/dimoose/reference/keyFromText.md)),
+a spreadsheet
+([`keyFromSpreadsheet()`](https://leipzig.github.io/dimoose/reference/keyFromSpreadsheet.md)),
+FishBase
+([`importFishbase()`](https://leipzig.github.io/dimoose/reference/importFishbase.md)),
+and the keys and character matrices of SDD, DELTA, Lucid and Xper
+([`readSDD()`](https://leipzig.github.io/dimoose/reference/readSDD.md),
+[`readDELTA()`](https://leipzig.github.io/dimoose/reference/readDELTA.md),
+[`readLucid()`](https://leipzig.github.io/dimoose/reference/readLucid.md),
+[`readXper()`](https://leipzig.github.io/dimoose/reference/readXper.md)
+and their writers) - **check a key**: `key$validate()` for its
+structure,
+[`checkNames()`](https://leipzig.github.io/dimoose/reference/checkNames.md)
+for its species names against GBIF, and
+[`summary()`](https://rdrr.io/r/base/summary.html) /
+[`keyQuality()`](https://leipzig.github.io/dimoose/reference/keyQuality.md)
+for how many steps it takes to reach a result - **cut a key down and
+join keys up**:
+[`pruneKey()`](https://leipzig.github.io/dimoose/reference/pruneKey.md)
+keeps or drops taxa,
+[`regionalKey()`](https://leipzig.github.io/dimoose/reference/regionalKey.md)
+keeps the taxa recorded in a place,
+[`mergeKeys()`](https://leipzig.github.io/dimoose/reference/mergeKeys.md)
+grafts one key onto a result of another - **generate a key from a
+character matrix**
+([`keyFromMatrix()`](https://leipzig.github.io/dimoose/reference/keyFromMatrix.md)),
+with taxa that vary in a character reached down both leads, cheap
+characters asked first and characters limited to a season - **generate
+keys from photos or sequences** with a vision model (CLIP, BioCLIP, or
+any model that produces embeddings) or from a multiple sequence
+alignment with a phylogeny program, and **follow those keys by
+machine** - **share a key** as a self-contained, mobile-friendly HTML
+page
+([`exportWizard()`](https://leipzig.github.io/dimoose/reference/exportWizard.md):
+“I’m not sure”, offline use, characters in any order), a box diagram
+([`keyDiagram()`](https://leipzig.github.io/dimoose/reference/keyDiagram.md))
+or a spreadsheet
+([`keyToSpreadsheet()`](https://leipzig.github.io/dimoose/reference/keyToSpreadsheet.md)) -
+**test photo identification on field photos**
+([`inatPhotos()`](https://leipzig.github.io/dimoose/reference/inatPhotos.md),
+[`benchmarkKey()`](https://leipzig.github.io/dimoose/reference/benchmarkKey.md)) -
+convert a key to a `data.tree` (`key$toDataTree()`), Newick, `igraph`, a
+`tidytree` `treedata` for `ggtree`, and Nextstrain/Auspice JSON, and
+read Haplogrep trees - keep provenance and guide images with the key
+(`key$meta`)
 
 # Getting started
 
@@ -71,7 +110,9 @@ optional packages, which are only needed if you use that feature:
 |----|----|
 | Keys from a sequence alignment ([`keyFromAlignment()`](https://leipzig.github.io/dimoose/reference/keyFromAlignment.md)) | `ape`, and `phangorn` for midpoint rooting, UPGMA, parsimony, maximum likelihood and proteins |
 | Keys from photos ([`visionModel()`](https://leipzig.github.io/dimoose/reference/visionModel.md), [`embedImages()`](https://leipzig.github.io/dimoose/reference/embedImages.md)) | `reticulate` (1.41 or later), which sets up Python and its packages on first use |
-| Mixed-effects conditional inference trees ([`mecit()`](https://leipzig.github.io/dimoose/reference/mecit.md)) | `partykit` and `lme4`, and `glmertree` for `method = "mob"` |
+| Keys from photos without PyTorch (`visionModel(backend = "onnx")`), saved embeddings ([`saveEmbeddings()`](https://leipzig.github.io/dimoose/reference/saveEmbeddings.md)) | `reticulate` and `jsonlite`; `jsonlite` alone to load saved embeddings |
+| Regional keys and occurrence weights ([`regionalKey()`](https://leipzig.github.io/dimoose/reference/regionalKey.md), [`occurrenceWeights()`](https://leipzig.github.io/dimoose/reference/occurrenceWeights.md)), name checks ([`checkNames()`](https://leipzig.github.io/dimoose/reference/checkNames.md)) | an internet connection; no extra packages |
+| Diagrams as PNG or PDF, small thumbnails, the app icon of an offline key | `rsvg`, `magick` |
 | Phylogenetics exports ([`toTreedata()`](https://leipzig.github.io/dimoose/reference/toTreedata.md), [`toIgraph()`](https://leipzig.github.io/dimoose/reference/toIgraph.md), [`toAuspiceJSON()`](https://leipzig.github.io/dimoose/reference/toAuspiceJSON.md)) | `tidytree`, `tibble` and `ape`; `igraph`; `jsonlite` |
 
 To install all of the optional R packages at once, and build the
@@ -95,12 +136,13 @@ exportWizard(sharks, "sharks.html")   # an interactive, self-contained wizard
 To write your own key in a spreadsheet, see [A photo key to Montana’s
 broadleaf
 trees](https://leipzig.github.io/dimoose/vignettes/montana-hardwoods.Rmd).
+To start from a key somebody else published, see [From a published key
+to a field
+key](https://leipzig.github.io/dimoose/vignettes/published-key.Rmd).
 There are also vignettes on automated key generation [from
 photos](https://leipzig.github.io/dimoose/vignettes/vision-keys.Rmd) and
 [from a sequence
-alignment](https://leipzig.github.io/dimoose/vignettes/alignment-keys.Rmd),
-and on [mixed-effects conditional inference
-trees](https://leipzig.github.io/dimoose/vignettes/mecit.Rmd).
+alignment](https://leipzig.github.io/dimoose/vignettes/alignment-keys.Rmd).
 
 ## Included datasets
 
@@ -146,12 +188,20 @@ written by a person. The `vibrio` dataset is the identification matrix
 of Noguerola & Blanch (2008), **74 taxa × 45 tests**
 (`+`/`-`/`(+)`/`(-)`/`v`/`ND`).
 [`vibrioKey()`](https://leipzig.github.io/dimoose/reference/exampleKeys.md)
-scores the tests, fits an `rpart` classification tree, and converts it
-with
-[`keyFromRpart()`](https://leipzig.github.io/dimoose/reference/keyFromRpart.md)
-into a **73-couplet** key reaching all 74 species. Species the tests
-cannot separate share a result. This is the template for turning any
-feature matrix into a dichotomous key.
+recodes it with
+[`vibrioMatrix()`](https://leipzig.github.io/dimoose/reference/vibrioMatrix.md)
+(`+` and `(+)` positive, `-` and `(-)` negative, `v` variable, `ND`
+unknown) and builds the key with
+[`keyFromMatrix()`](https://leipzig.github.io/dimoose/reference/keyFromMatrix.md):
+a **92-couplet** key, up to 10 steps deep, that separates all 74
+species. A species that is variable or undetermined for a test is
+reached down both leads of every couplet that uses the test, so 14
+species turn up at two or three results (93 results in all).
+`vibrioKey(variable = "missing")` gives the earlier `rpart` tree instead
+([`keyFromRpart()`](https://leipzig.github.io/dimoose/reference/keyFromRpart.md)):
+73 couplets, up to 18 steps deep, each species at one result, with
+variable results treated as missing. This is the template for turning
+any feature matrix into a dichotomous key.
 
 ### PhyloTree — `phylotreeKey()` (datasets `phylotree17`, `phylotree17_mutations`)
 
@@ -192,14 +242,222 @@ Montana](reference/figures/montana-key.svg)
 
 Key to the native broadleaf trees of Montana
 
+# Working with keys people have written
+
+## A key from plain text
+
+Most keys exist only as text in a flora or a paper.
+[`keyFromText()`](https://leipzig.github.io/dimoose/reference/keyFromText.md)
+reads the usual layouts (bracketed `1a`/`1b`, `1.`/`1'.`, lettered,
+indented; dot leaders, wrapped lines, page headers) and builds a checked
+key:
+
+``` r
+
+file  <- system.file("extdata", "textkeys", "trees-bracketed.txt", package = "dimoose")
+trees <- keyFromText(file)        # a file, one string, or lines of text
+trees
+#> <dimoose key> Key to the Broadleaf Trees of the Cottonwood Bottoms
+#>   8 couplets, 16 leads, 9 taxa, up to 5 steps deep (3.6 on average)
+attr(trees, "problems")           # problems, repairs and notes, each with its line number
+parseTextKey(file)                # the lead table and the report, without building the key
+```
+
+A lead with no destination, a couplet with one lead or a number the scan
+garbled is reported with its line, and nothing is dropped. Common OCR
+slips (`l` for 1, lost dot leaders) are repaired and reported;
+`strict = TRUE` stops instead. For a bad scan, `llm =` takes a function
+of your own that makes a first pass with a language model; its answer is
+checked against the source. dimoose calls no model itself.
+
+## A regional key: the trees of Flathead County in one line
+
+``` r
+
+flathead <- regionalKey(montanaKey(), "Flathead County, Montana", kingdom = "Plantae")
+#> Kept 10 of 11 taxa recorded in Flathead, Montana, United States (GADM USA.27.15_1) (GBIF)
+attr(flathead, "records")         # every taxon, its record count and whether it was kept
+```
+
+[`regionalKey()`](https://leipzig.github.io/dimoose/reference/regionalKey.md)
+asks [GBIF](https://www.gbif.org) (or iNaturalist, with
+`source = "inat"`) which of the key’s taxa have been recorded in a
+place, drops the others and closes up the couplets that no longer split
+anything. (Not run here: it needs the internet. On 19 November 2026 GBIF
+had no bur oak record from the county, so the key lost one species and
+one couplet.) `pruneKey(key, keep = "Populus")` does the same from a
+list of names, and `mergeKeys(families, genera, at = "Salicaceae")`
+grafts a second key onto a result of the first. The character of a
+couplet that was closed up is kept in a `Note` column of the leads.
+
+## Exchange with SDD, DELTA, Lucid and Xper
+
+dimoose reads and writes the formats other identification software uses:
+SDD, the TDWG standard
+([`readSDD()`](https://leipzig.github.io/dimoose/reference/readSDD.md) /
+[`writeSDD()`](https://leipzig.github.io/dimoose/reference/readSDD.md)
+for a matrix,
+[`readSDDKey()`](https://leipzig.github.io/dimoose/reference/readSDDKey.md)
+/
+[`writeSDDKey()`](https://leipzig.github.io/dimoose/reference/readSDDKey.md)
+for a key), DELTA
+([`readDELTA()`](https://leipzig.github.io/dimoose/reference/readDELTA.md)
+/
+[`writeDELTA()`](https://leipzig.github.io/dimoose/reference/readDELTA.md)),
+Lucid
+([`readLucid()`](https://leipzig.github.io/dimoose/reference/readLucid.md)
+/
+[`writeLucid()`](https://leipzig.github.io/dimoose/reference/readLucid.md)
+for matrix keys,
+[`readLucidKey()`](https://leipzig.github.io/dimoose/reference/readLucidKey.md)
+/
+[`writeLucidKey()`](https://leipzig.github.io/dimoose/reference/readLucidKey.md)
+for pathway keys) and Xper2/Xper3 through their SDD export
+([`readXper()`](https://leipzig.github.io/dimoose/reference/readXper.md)
+/
+[`writeXper()`](https://leipzig.github.io/dimoose/reference/readXper.md)).
+Every matrix reader returns the same list, and its `$matrix` goes
+straight into
+[`keyFromMatrix()`](https://leipzig.github.io/dimoose/reference/keyFromMatrix.md):
+
+``` r
+
+d <- readDELTA(system.file("extdata", "tdwg", "beetles-delta", package = "dimoose"))
+d$matrix[1:4]
+#>                 Taxon antennal club     pronotum           eyes
+#> 1 Aphodius exemplaris       present black/yellow of normal size
+#> 2      Carabus fictus        absent    red/black     very large
+#> 3 Lucanus imaginarius       present        black of normal size
+key <- keyFromMatrix(d$matrix)
+writeSDD(d, "beetles.sdd.xml", key = key)   # the matrix and the key in one SDD file
+writeLucid(d, "beetles.csv")                # for the Lucid Builder
+```
+
+The files dimoose writes have not yet been opened in Lucid, Xper or a
+DELTA program; the help pages say what each format can and cannot carry.
+
+## How good is a key?
+
+``` r
+
+montanaKey()
+#> <dimoose key> Key to the native broadleaf trees of Montana
+#>   10 couplets, 20 leads, 11 taxa, up to 7 steps deep (4.6 on average)
+summary(montanaKey())[c("meanTaxonSteps", "expectedSteps", "bound", "efficiency")]
+keyQuality(montanaKey())$taxa     # steps to reach each taxon
+```
+
+`bound` is the average number of steps the best possible key to the same
+taxa would need, and `efficiency` is that bound over the steps this key
+takes. A key that reaches common species quickly is better than its
+plain average says:
+`summary(key, weights = occurrenceWeights(key, region = "USA.27_1", kingdom = "Plantae"))`
+weights each taxon by its GBIF records in a region, here Montana (not
+run here: needs the internet). Real keys rarely reach an efficiency of
+1, because the characters that would split the taxa evenly may not
+exist; use it to compare keys to the same taxa.
+
+## Edit any key in a spreadsheet
+
+``` r
+
+csv   <- keyToSpreadsheet(sharkKey(), "sharks/key.csv")   # the CSV keyFromSpreadsheet() reads
+# ... edit it in Excel or Google Sheets ...
+key   <- keyFromSpreadsheet(csv, desc = "Sharks")
+```
+
+Photos embedded in the key are written beside the CSV. Only the
+template’s seven columns are written: the title, the citation and links
+to taxon pages are not.
+
+# The interactive page
+
+`exportWizard(key, "key.html")` writes one HTML file that asks one
+couplet at a time, with a trail, Back and a map of the key. Without
+JavaScript it reads as a plain key.
+
+- **“I’m not sure.”** Every couplet has this choice. It follows all the
+  leads; the page keeps the branches that are still open, counts the
+  taxa still possible and lists the candidates at the end.
+- **Offline.** `exportWizard(key, "key.html", offline = TRUE)` also
+  writes a web app manifest, a service worker and two icons. Put all
+  five files in one folder of an `https` site, open the page once, and
+  it can be installed on a phone and opened without signal. This has
+  been tested with a simulated browser, not yet on a phone.
+- **Any character first.**
+  `exportWizard(key, "key.html", matrix = m, characters = ch)` adds a
+  list of the matrix’s characters to answer in any order, cheapest
+  first; a taxon that varies in a character fits either state.
+  `exportWizard(NULL, "key.html", matrix = m)` makes that page with no
+  key at all.
+- **From a photo.** `exportWizard(key, "key.html", photoModel = dir)`,
+  with `dir` a folder written by
+  [`exportBrowserModel()`](https://leipzig.github.io/dimoose/reference/exportBrowserModel.md)
+  for the same key, adds an “Identify from a photo” button. The model
+  runs in the reader’s browser, so the photo never leaves the device;
+  the page marks the likely taxa and offers to narrow the key to them.
+  The photo is a hint and the key stays the authority. The model is a
+  large download (an int8 BioCLIP encoder is about 90 MB), fetched only
+  when the reader agrees to it. See
+  [`?exportWizard`](https://leipzig.github.io/dimoose/reference/exportWizard.md).
+
 # Automated key generation
 
 Most keys are written by people. dimoose can also generate one from
-data: from a multiple sequence alignment, or from a pile of photos.
-Either way the result is an ordinary dimoose key that works with
+data: from a character matrix, a multiple sequence alignment, or a pile
+of photos. Either way the result is an ordinary dimoose key that works
+with
 [`exportWizard()`](https://leipzig.github.io/dimoose/reference/exportWizard.md),
 [`classify()`](https://leipzig.github.io/dimoose/reference/classify.md)
 and the phylogenetics exports.
+
+## From a character matrix
+
+A matrix has one row per taxon and one column per character. `"/"`
+separates the states of a taxon that varies, and `NA` means unknown:
+
+``` r
+
+trees <- data.frame(
+  Taxon    = c("Box elder", "Green ash", "Paper birch", "Water birch"),
+  Leaves   = c("compound", "compound", "simple", "simple"),
+  Leaflets = c("3/5", "5/7", NA, NA),
+  Bark     = c("furrowed", "furrowed", "white, peeling", "coppery, not peeling"))
+key <- keyFromMatrix(trees)
+key$leads[c("Statement", "Character", "Next", "Taxon")]
+#>   Statement                  Character Next                 Taxon
+#> 1         1           Leaves: compound    2
+#> 2         1             Leaves: simple    4
+#> 3         2                Leaflets: 3    -             Box elder
+#> 4         2           Leaflets: 5 or 7    3
+#> 5         3                Leaflets: 5    - Box elder / Green ash
+#> 6         3                Leaflets: 7    -             Green ash
+#> 7         4       Bark: white, peeling    -           Paper birch
+#> 8         4 Bark: coppery, not peeling    -           Water birch
+```
+
+Box elder has three or five leaflets, so it is reached down both leads
+of couplet 2, and a leaf with five, which could be either tree, ends at
+both names. An optional table of characters says what each one costs to
+observe and when it can be seen; cheap characters are asked first, and
+`season` leaves out the ones that are not there:
+
+``` r
+
+chars <- data.frame(Character = c("Leaves", "Leaflets", "Bark"),
+                    Cost = c(1, 1, 2), Season = c("summer", "summer", ""))
+keyFromMatrix(trees, characters = chars, season = "winter")$leads[c("Character", "Taxon")]
+#>                                      Character                 Taxon
+#> 1                               Bark: furrowed Box elder / Green ash
+#> 2 Bark: white, peeling or coppery, not peeling
+#> 3                         Bark: white, peeling           Paper birch
+#> 4                   Bark: coppery, not peeling           Water birch
+```
+
+[`generateTree()`](https://leipzig.github.io/dimoose/reference/generateTree.md)
+and
+[`keyFromRpart()`](https://leipzig.github.io/dimoose/reference/keyFromRpart.md)
+fit an `rpart` classification tree instead.
 
 ## From a multiple sequence alignment
 
@@ -274,7 +532,9 @@ runs in Python, but there is nothing to install by hand: the first
 [`visionModel()`](https://leipzig.github.io/dimoose/reference/visionModel.md)
 call sets up a private Python with the packages it needs (through
 `reticulate`, 1.41 or later) and reuses it afterwards. That first call
-downloads several gigabytes, mostly PyTorch.
+downloads several gigabytes, mostly PyTorch. For a much smaller install,
+or none, see [a lighter
+setup](#a-lighter-setup-onnx-and-saved-embeddings).
 
 Then it is five steps. They run as written on the example photos that
 ship with dimoose: 36 small photos of six fruits, from the
@@ -436,40 +696,98 @@ have embeddings from some other encoder, pass them straight to
 and
 [`featureScores()`](https://leipzig.github.io/dimoose/reference/featureScores.md).
 
-# Mixed-effects conditional inference trees
+### A lighter setup: ONNX and saved embeddings
 
-A mixed-effects conditional inference tree (MECIT) is a decision tree
-for clustered data. A random effect absorbs the differences between
-clusters, so the tree only splits on variables that matter within them.
-In mtDNA, this means a recurrent mutation can be found even though each
-large haplogroup has its own background, and the tree does not split on
-clade markers that merely track the haplogroup.
-[`mecit()`](https://leipzig.github.io/dimoose/reference/mecit.md)
-implements RE-EM trees with conditional inference trees (Fu & Simonoff
-2015). `method = "mob"` uses `glmertree` instead (Fokkema et al. 2018).
-A fitted tree is a key:
+- **Without PyTorch.** `visionModel(backend = "onnx")` runs the same
+  CLIP ViT-B/32 on ONNX Runtime, a much smaller Python install, and
+  gives the same embeddings: on the 36 example photos the key above
+  comes out the same. `precision = "fp16"` or `"int8"` picks a smaller
+  copy of the model. BioCLIP has no ready-made ONNX copy; convert it
+  once with `exportOnnxModel("bioclip")` on a computer that has PyTorch,
+  then use `visionModel(name = "bioclip", backend = "onnx")` anywhere.
+
+- **Without Python.** Embed once and keep the result:
+
+  ``` r
+
+  saveEmbeddings(embedImages(model, images), "pics.safetensors")
+  emb <- loadEmbeddings("pics.safetensors")   # needs only jsonlite
+  ```
+
+  [`discoverSniglets()`](https://leipzig.github.io/dimoose/reference/discoverSniglets.md),
+  [`snigletScores()`](https://leipzig.github.io/dimoose/reference/snigletScores.md)
+  and
+  [`keyFromSniglets()`](https://leipzig.github.io/dimoose/reference/keyFromSniglets.md)
+  then run as in step 4.
+
+- **In a browser.** `exportBrowserModel(key, model, dir)` writes an
+  image encoder and the embedded names of a key’s species, the files a
+  web page needs to rank those species for a photo on the visitor’s own
+  device.
+
+### Suggested names for sniglets
+
+[`suggestSnigletNames()`](https://leipzig.github.io/dimoose/reference/suggestSnigletNames.md)
+shows a vision-language model each sniglet’s example crops and returns
+the table
+[`renameSniglets()`](https://leipzig.github.io/dimoose/reference/renameSniglets.md)
+takes, so naming becomes reviewing suggestions:
 
 ``` r
 
-sim <- simulateExpression(n = 1000, genes = 20, seed = 1)   # PhyloTree haplotypes + expression
-fit <- mecit(sim$expr[, 1], sim$X, cluster = sim$samples$macro)
-splitVariables(fit)
-key <- keyFromMecit(fit)          # couplets: "Carries 150" / "Does not carry 150"
-classify(key, sim$X)              # place samples in expression strata
+suggestSnigletNames(key, claudeNamer(), file = "names.csv")   # after patchExemplars()
+# ... review names.csv ...
+key <- renameSniglets(key, "names.csv")
 ```
 
+The model is any `function(images, prompt)` that returns text.
+[`claudeNamer()`](https://leipzig.github.io/dimoose/reference/claudeNamer.md)
+makes one for the Anthropic API; it needs an `ANTHROPIC_API_KEY`, its
+calls are billed to that key, and it has not yet been run against the
+live API (the snippet above was run with a stand-in model). Names are
+kept short and distinct, and a name that contains a class or species
+name is refused.
+
+### How well does it do on field photos?
+
+``` r
+
+photos <- inatPhotos(montanaKey(), n = 20, dir = "~/inat-photos")   # research-grade, openly licensed; writes manifest.csv
+model  <- visionModel(name = "bioclip-2")
+benchmarkKey(montanaKey(), photos, model)   # species ranked from their names
+benchmarkKey(model, photos)                 # a photo key built from 70% of the observations, tested on the rest
+```
+
+A first run is in
+[`analysis/inat-benchmark/`](https://leipzig.github.io/dimoose/analysis/inat-benchmark/):
+220 iNaturalist photos, 20 for each of the eleven Montana species, with
+BioCLIP 2, on 19 November 2026.
+
+| Route | Test photos | Top-1 | Top-2 |
+|----|----|----|----|
+| names: the key’s eleven species ranked from their scientific names | 220 | 97.3% (214) | 100% |
+| build: a sniglet key built from 154 training photos | 66 | 71.2% (47) | n/a |
+
+Read the limits before quoting these numbers. It is one run on one small
+sample, with one split and one model. BioCLIP 2 has very likely seen
+photos like these, perhaps these very ones, so 97% is an upper estimate
+of what to expect on your own photos. The model only had to choose among
+the key’s own eleven species, the photos are research-grade observations
+from the species’ whole range and not from Montana, and 101 of the 220
+were taken in June. The [benchmark’s
+README](https://leipzig.github.io/dimoose/analysis/inat-benchmark/README.md)
+has the full list.
+
+# Mixed-effects conditional inference trees
+
+`mecit()`, `keyFromMecit()` and `simulateExpression()` now live in the
+companion package [mecit](https://github.com/leipzig/mecit);
 [`haplotypeMatrix()`](https://leipzig.github.io/dimoose/reference/haplotypeMatrix.md),
 [`recurrentPositions()`](https://leipzig.github.io/dimoose/reference/recurrentPositions.md)
 and
-[`macroHaplogroup()`](https://leipzig.github.io/dimoose/reference/macroHaplogroup.md)
-turn PhyloTree haplogroups into the 0/1 site matrix these trees split
-on. In a simulation study (`analysis/mecit/`), plain `ctree` and `rpart`
-split on clade markers for every gene that had only a haplogroup
-baseline. The MECIT made no false splits in 360 genes, and found every
-true site at effects of 1 SD or more. See the [MECIT
-vignette](https://leipzig.github.io/dimoose/vignettes/mecit.Rmd). These
-functions need the suggested packages `partykit` and `lme4`, plus
-`glmertree` for `method = "mob"`.
+[`macroHaplogroup()`](https://leipzig.github.io/dimoose/reference/macroHaplogroup.md),
+which turn PhyloTree haplogroups into the 0/1 site matrix those trees
+split on, are still here.
 
 # Interoperating with phylogenetics tools
 
@@ -487,11 +805,25 @@ toAuspiceJSON(k)                    # Nextstrain/Auspice v2 JSON
 readHaplogrep("tree.xml")           # load any Haplogrep / PhyloTree tree XML
 ```
 
+# Related software
+
+[Lucid](https://www.lucidcentral.org), [Xper3](https://www.xper3.fr) and
+the [DELTA](https://www.delta-intkey.com) programs build and run
+interactive keys from character matrices; dimoose reads and writes their
+exchange formats rather than replacing them. In R, `rfishbase` gives
+FishBase’s data tables and `taxize` resolves taxonomic names; dimoose
+imports FishBase’s keys and checks a key’s names against GBIF.
+
+# Citing and contributing
+
+To cite dimoose, run `citation("dimoose")`. Bug reports, keys that fail
+to import and pull requests are welcome: see
+[CONTRIBUTING.md](https://leipzig.github.io/dimoose/CONTRIBUTING.md).
+
 # Acknowledgments
 
 dimoose stores keys as an R6 object over a lead table, uses data.tree
-and rpart for its trees, and bridges to ape, partykit, tidytree and
-igraph.
+and rpart for its trees, and bridges to ape, tidytree and igraph.
 
 FishBase key import is made possible by the work of Scott Chamberlain
 and Carl Boettiger on rOpenSci’s `rfishbase` and the R tooling for

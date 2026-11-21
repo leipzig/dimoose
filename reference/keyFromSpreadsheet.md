@@ -62,7 +62,8 @@ A [dimoose](https://leipzig.github.io/dimoose/reference/dimoose.md) key.
   set the scientific name in italics.
 
 - `Choice` (optional): the lead's letter; by default the leads of each
-  couplet are lettered a, b, c in the order they appear.
+  couplet are lettered a, b, c in the order they appear (after z come
+  aa, ab and so on).
 
 - `Question` (optional): what the couplet asks ("Leaf type?"), shown by
   [`keyDiagram()`](https://leipzig.github.io/dimoose/reference/keyDiagram.md)
@@ -70,12 +71,23 @@ A [dimoose](https://leipzig.github.io/dimoose/reference/dimoose.md) key.
   [`exportWizard()`](https://leipzig.github.io/dimoose/reference/exportWizard.md).
 
 - `Photo` (optional): file names of photos to show with the lead,
-  separated by commas or semicolons; the extension may be left out.
+  separated by commas or semicolons; the extension may be left out. A
+  web address (`https://...`) is kept as a link to the picture instead.
+
+- `Note` and `Label` (optional): a remark on the lead, as
+  [`pruneKey()`](https://leipzig.github.io/dimoose/reference/pruneKey.md)
+  writes, and a label to show for the lead in place of couplet and
+  letter. Both are kept in the key's leads as they are.
 
 Column names are matched loosely (case, spaces and punctuation do not
 matter) and dimoose's own names work too: `Statement`, `Character`,
-`Next`, `Taxon` and `Image`. Blank rows are skipped. The photos are
-embedded in the key, so the wizard and the diagram work offline.
+`Next`, `Taxon` and `Image`. Other columns are ignored and blank rows
+are skipped. The photos are embedded in the key, so the wizard and the
+diagram work offline.
+
+The file may be as Excel saves it: with or without a byte-order mark, in
+UTF-8 or Windows-1252, and with semicolons between the cells, which is
+what Excel writes where the comma is the decimal mark.
 
 The Montana key that comes with dimoose is a ready-made example to copy:
 `system.file("extdata", "montana", "montana-key.csv", package = "dimoose")`,
@@ -83,6 +95,8 @@ with its photos in the same folder.
 
 ## See also
 
+[`keyToSpreadsheet()`](https://leipzig.github.io/dimoose/reference/keyToSpreadsheet.md)
+to write a key as such a spreadsheet,
 [`keyFromLeads()`](https://leipzig.github.io/dimoose/reference/keyFromLeads.md)
 to build a key from a data frame,
 [`keyDiagram()`](https://leipzig.github.io/dimoose/reference/keyDiagram.md)
@@ -97,6 +111,6 @@ csv <- system.file("extdata", "montana", "montana-key.csv", package = "dimoose")
 k <- keyFromSpreadsheet(csv, desc = "Native broadleaf trees of Montana")
 k
 #> <dimoose key> Native broadleaf trees of Montana
-#>   10 couplets, 20 leads, 11 taxa, up to 7 steps deep
+#>   10 couplets, 20 leads, 11 taxa, up to 7 steps deep (4.6 on average)
 keyDiagram(k, tempfile(fileext = ".svg"))
 ```

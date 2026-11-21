@@ -1,0 +1,283 @@
+# From a published key to a field key
+
+Most keys already exist: as text in a flora, a revision or a field
+guide. This vignette takes one from the printed page to a phone in five
+steps: read the text, check it, cut it down to the place you work in,
+see how quickly it reaches a result, and export it as a page that opens
+without signal.
+
+The steps that ask a web service (GBIF) are shown with the output of a
+run on 19 November 2026 and are not run when the vignette is built.
+Everything else runs as written.
+
+``` r
+
+library(dimoose)
+```
+
+## 1. Read the text
+
+The example is a short key to the broadleaf trees of a river bottom,
+written for dimoose in the layout of a regional flora: numbered couplets
+with `a` and `b` leads, dot leaders, wrapped lines, authorities, common
+names and page references.
+
+``` r
+
+file <- system.file("extdata", "textkeys", "trees-bracketed.txt", package = "dimoose")
+writeLines(readLines(file)[1:11])
+#> Key to the Broadleaf Trees of the Cottonwood Bottoms
+#> 
+#> 1a. Leaves opposite on the twig ........................................ 2
+#> 1b. Leaves alternate on the twig ....................................... 4
+#> 2a. Leaves simple, palmately lobed, the lobes sharply
+#>     toothed ................... Acer glabrum Torr. (Rocky Mountain maple)
+#> 2b. Leaves pinnately compound .......................................... 3
+#> 3a. Leaflets 3 to 5, coarsely toothed or shallowly lobed; fruit a
+#>     paired samara ........................... Acer negundo L. (boxelder)
+#> 3b. Leaflets 5 to 9, finely toothed; fruit a single pad-
+#>     dle-shaped samara ........... Fraxinus pennsylvanica Marshall, p. 118
+```
+
+[`keyFromText()`](https://leipzig.github.io/dimoose/reference/keyFromText.md)
+takes a file, one string or a vector of lines:
+
+``` r
+
+trees <- keyFromText(file)
+trees
+#> <dimoose key> Key to the Broadleaf Trees of the Cottonwood Bottoms
+#>   8 couplets, 16 leads, 9 taxa, up to 5 steps deep (3.6 on average)
+trees$leads[1:6, c("Statement", "Choice", "Character", "Next", "Taxon", "CommonName")]
+#>   Statement Choice                                                                   Character Next
+#> 1         1      a                                                 Leaves opposite on the twig    2
+#> 2         1      b                                                Leaves alternate on the twig    4
+#> 3         2      a                   Leaves simple, palmately lobed, the lobes sharply toothed    -
+#> 4         2      b                                                   Leaves pinnately compound    3
+#> 5         3      a Leaflets 3 to 5, coarsely toothed or shallowly lobed; fruit a paired samara    -
+#> 6         3      b        Leaflets 5 to 9, finely toothed; fruit a single paddle-shaped samara    -
+#>                    Taxon           CommonName
+#> 1                                            
+#> 2                                            
+#> 3           Acer glabrum Rocky Mountain maple
+#> 4                                            
+#> 5           Acer negundo             boxelder
+#> 6 Fraxinus pennsylvanica
+```
+
+Each lead’s destination is a couplet number or a taxon. The authority,
+the common name and the page are split off into columns of their own, so
+`Taxon` holds the bare name. It also reads leads marked `1.`/`1'.`,
+`A.`/`AA.`, a number and a dash, back-references such as `3(1).`, and
+indented keys. Indented keys whose leads have no number or letter at all
+are not handled.
+
+## 2. Check it
+
+[`keyFromText()`](https://leipzig.github.io/dimoose/reference/keyFromText.md)
+checks what it built and keeps a report with the key. Here the only
+entry is a note: a word hyphenated at a line end was joined.
+
+``` r
+
+trees$validate()          # no structural problems
+attr(trees, "problems")
+#>   Line Couplet Lead Kind         Type                                   Message
+#> 1   10       3   3b note dehyphenated joined 1 word(s) hyphenated at a line end
+```
+
+Scanned text is rougher.
+[`parseTextKey()`](https://leipzig.github.io/dimoose/reference/parseTextKey.md)
+gives the lead table and the report without building the key, which is
+the place to start with a scan. This one has a `l` where a `1` should be
+and a lead that lost its dot leaders:
+
+``` r
+
+scan <- system.file("extdata", "textkeys", "meadow-ocr.txt", package = "dimoose")
+parseTextKey(scan)
+#> <parsed text key> 8 leads in 4 couplets, bracketed layout
+#>   Key to the Grasslike Plants of the Wet Meadow
+#>   0 problem(s), 2 repair(s), 3 note(s)
+#>   line 3: read the label 'l.' as couplet 1 [repaired]
+#>   line 15: no dot leaders before the destination; took the trailing 'Scirpus microcarpus' as the taxon [repaired]
+```
+
+Repairs are reported, never silent, and `strict = TRUE` stops instead of
+repairing. A lead with no destination, a couplet with one lead or a
+missing couplet is a problem, reported with its line; no lead is
+dropped. These checks were written against keys made for the purpose;
+expect to correct a few lines by hand on a real scan.
+
+A printed key’s names may be out of date.
+[`checkNames()`](https://leipzig.github.io/dimoose/reference/checkNames.md)
+looks them up in the GBIF backbone taxonomy:
+
+``` r
+
+checkNames(trees, kingdom = "Plantae")[, c("Taxon", "status", "accepted")]
+#>                                    Taxon  status               accepted
+#> 1                           Acer glabrum      ok           Acer glabrum
+#> 2                           Acer negundo      ok           Acer negundo
+#> 3                 Fraxinus pennsylvanica      ok Fraxinus pennsylvanica
+#> 4                                  Salix      ok                  Salix
+#> 5                      Betula papyrifera      ok      Betula papyrifera
+#> 6                    Betula occidentalis      ok    Betula occidentalis
+#> 7                    Populus tremuloides      ok    Populus tremuloides
+#> 8                   Populus angustifolia      ok   Populus angustifolia
+#> 9 Populus balsamifera subsp. trichocarpa synonym    Populus trichocarpa
+```
+
+## 3. Cut it down to a place
+
+A regional flora covers more than any one county.
+[`regionalKey()`](https://leipzig.github.io/dimoose/reference/regionalKey.md)
+asks GBIF which of the key’s taxa have been recorded in a place, drops
+the others, and closes up the couplets that no longer split anything.
+Here the place is Flathead County, Montana, by its GADM id, and a taxon
+needs five records to stay:
+
+``` r
+
+local <- regionalKey(trees, "USA.27.15_1", kingdom = "Plantae", minRecords = 5, renumber = TRUE)
+#> Kept 8 of 9 taxa recorded in GADM region USA.27.15_1 (GBIF)
+attr(local, "records")[, c("Taxon", "records", "kept")]
+#>                                    Taxon records  kept
+#> 1                           Acer glabrum     272  TRUE
+#> 2                           Acer negundo      11  TRUE
+#> 3                 Fraxinus pennsylvanica       1 FALSE
+#> 4                                  Salix     348  TRUE
+#> 5                      Betula papyrifera      70  TRUE
+#> 6                    Betula occidentalis      13  TRUE
+#> 7                    Populus tremuloides      93  TRUE
+#> 8                   Populus angustifolia       7  TRUE
+#> 9 Populus balsamifera subsp. trichocarpa      56  TRUE
+```
+
+The table is the audit trail: every taxon, the number of records and
+whether it was kept. A place can also be a name
+(`"Flathead County, Montana"`), a two-letter country code or a polygon,
+and `source = "inat"` counts iNaturalist research-grade observations
+instead. With the default `minRecords = 1` all nine taxa of this key
+stay. Record counts say where people have looked as much as what grows
+there, so read the table before trusting the cut.
+
+[`pruneKey()`](https://leipzig.github.io/dimoose/reference/pruneKey.md)
+makes the same cut from a list of names, with no web service. So that
+the rest of this vignette runs offline, it is used here to drop the one
+taxon GBIF dropped above:
+
+``` r
+
+local <- pruneKey(trees, drop = "Fraxinus pennsylvanica", renumber = TRUE)
+local
+#> <dimoose key> Key to the Broadleaf Trees of the Cottonwood Bottoms
+#>   7 couplets, 14 leads, 8 taxa, up to 5 steps deep (3.5 on average)
+local$validate()
+local$leads[1:4, c("Statement", "Character", "Next", "Taxon", "Note")]
+#>   Statement                                                 Character Next        Taxon
+#> 1         1                               Leaves opposite on the twig    2             
+#> 2         1                              Leaves alternate on the twig    3             
+#> 3         2 Leaves simple, palmately lobed, the lobes sharply toothed    - Acer glabrum
+#> 4         2                                 Leaves pinnately compound    - Acer negundo
+#>                                                                          Note
+#> 1                                                                            
+#> 2                                                                            
+#> 3                                                                            
+#> 4 Leaflets 3 to 5, coarsely toothed or shallowly lobed; fruit a paired samara
+```
+
+Couplet 3 of the original told box elder from green ash. With green ash
+gone it no longer splits anything, so it was removed and its lead now
+ends at box elder directly. What it said about box elder is kept in the
+`Note` column, as a character to confirm the result with.
+[`mergeKeys()`](https://leipzig.github.io/dimoose/reference/mergeKeys.md)
+goes the other way and grafts a second key onto a result, for example a
+key to the willows onto *Salix*.
+
+## 4. How quickly does it reach a result?
+
+``` r
+
+summary(local)[c("couplets", "taxa", "depth", "meanTaxonSteps", "bound", "efficiency")]
+#>   couplets taxa depth meanTaxonSteps bound efficiency
+#> 1        7    8     5            3.5     3  0.8571429
+```
+
+`meanTaxonSteps` is the number of couplets a reader answers, on average
+over the eight taxa. `bound` is what the best possible key to the same
+taxa would need: eight equally common taxa cannot be told apart in fewer
+than three two-way steps. `efficiency` is the bound over the steps
+taken.
+
+The taxa are not equally likely, though. Weighted by the record counts
+above (which
+`occurrenceWeights(local, region = "USA.27.15_1", kingdom = "Plantae")`
+fetches in one call), the key does better than its plain average,
+because the two commonest taxa key out in two steps:
+
+``` r
+
+w <- c("Acer glabrum" = 272, "Acer negundo" = 11, "Salix" = 348, "Betula papyrifera" = 70,
+       "Betula occidentalis" = 13, "Populus tremuloides" = 93, "Populus angustifolia" = 7,
+       "Populus balsamifera subsp. trichocarpa" = 56)
+summary(local, weights = w)[c("meanTaxonSteps", "expectedSteps", "bound", "efficiency")]
+#>   meanTaxonSteps expectedSteps    bound efficiency
+#> 1            3.5      2.621839 2.224138  0.8483121
+q <- keyQuality(local, weights = w)$taxa
+q[order(-q$weight), c("Taxon", "steps", "weight")]
+#>                                    Taxon steps      weight
+#> 3                                  Salix     2 0.400000000
+#> 1                           Acer glabrum     2 0.312643678
+#> 6                    Populus tremuloides     4 0.106896552
+#> 4                      Betula papyrifera     4 0.080459770
+#> 8 Populus balsamifera subsp. trichocarpa     5 0.064367816
+#> 5                    Betula occidentalis     4 0.014942529
+#> 2                           Acer negundo     2 0.012643678
+#> 7                   Populus angustifolia     5 0.008045977
+```
+
+Real keys rarely reach an efficiency of 1, because the characters that
+would split the taxa evenly may not exist. Use it to compare keys to the
+same taxa, not as a mark out of one.
+
+## 5. Take it into the field
+
+``` r
+
+site <- file.path(tempdir(), "site")
+dir.create(site, showWarnings = FALSE)
+page <- exportWizard(local, file.path(site, "flathead-trees.html"), offline = TRUE)
+list.files(site)
+#> [1] "flathead-trees-icon-192.png" "flathead-trees-icon-512.png" "flathead-trees-sw.js"       
+#> [4] "flathead-trees.html"         "flathead-trees.webmanifest"
+```
+
+`flathead-trees.html` is the whole key in one file: it asks one couplet
+at a time, has an “I’m not sure” choice that follows both leads, a map
+of the key, and Back. `offline = TRUE` adds a web app manifest, a
+service worker and two icons. Put all five files in one folder of an
+`https` website, open the page once on the phone while it has a
+connection, and add it to the home screen; after that it opens without
+signal. A page opened straight from disk works too, but is not
+installed. The offline part has been tested with a simulated browser and
+not yet on a phone, so try it before you rely on it.
+
+To correct a lead or add photos, write the key out as the spreadsheet
+[`keyFromSpreadsheet()`](https://leipzig.github.io/dimoose/reference/keyFromSpreadsheet.md)
+reads, edit it, and read it back (see
+[`vignette("montana-hardwoods")`](https://leipzig.github.io/dimoose/articles/montana-hardwoods.md)):
+
+``` r
+
+csv <- keyToSpreadsheet(local, file.path(site, "flathead-trees.csv"))
+#> Not written to the spreadsheet: the leads' Authority, CommonName, Page, Line columns
+back <- keyFromSpreadsheet(csv, desc = "Trees of Flathead County")
+back
+#> <dimoose key> Trees of Flathead County
+#>   7 couplets, 14 leads, 8 taxa, up to 5 steps deep (3.5 on average)
+```
+
+The spreadsheet keeps the leads and their photos; the title and the
+extra columns (`Note`, `Authority`, `CommonName`, `Page`) are not
+written.

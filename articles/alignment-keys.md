@@ -49,7 +49,7 @@ The key built above from `aligned.fasta`, the 15 wood mouse sequences:
 
 key
 #> <dimoose key> Key generated from a sequence alignment
-#>   14 couplets, 28 leads, 15 taxa, up to 6 steps deep
+#>   14 couplets, 28 leads, 15 taxa, up to 6 steps deep (4.5 on average)
 head(key$leads[, c("Statement", "Character", "Next", "Taxon")], 8)
 #>   Statement      Character Next   Taxon
 #> 1         1       106G 35G    2        
@@ -116,7 +116,7 @@ labels must be the sequence names. Polytomies are resolved by the sites:
 newick <- system.file("extdata", "aligned.nwk", package = "dimoose")    # e.g. RAxML's bestTree file
 keyFromAlignment(fasta, tree = newick)
 #> <dimoose key> Key generated from a sequence alignment
-#>   14 couplets, 28 leads, 15 taxa, up to 6 steps deep
+#>   14 couplets, 28 leads, 15 taxa, up to 6 steps deep (4.5 on average)
 ```
 
 ## Rooting
@@ -154,7 +154,7 @@ mtdna <- system.file("extdata", "mtdna.fasta", package = "dimoose")
 mt <- keyFromAlignment(mtdna, reference = "H2a2a1", outgroup = "L0a1")
 mt
 #> <dimoose key> Key generated from a sequence alignment
-#>   13 couplets, 26 leads, 14 taxa, up to 10 steps deep
+#>   13 couplets, 26 leads, 14 taxa, up to 10 steps deep (6.4 on average)
 mt$leads[1:8, c("Statement", "Character", "Next", "Taxon")]
 #>   Statement          Character Next Taxon
 #> 1         1       93A 95A 236T    2      

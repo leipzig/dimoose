@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="index.html">dimoose</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,14 +41,15 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/montana-hardwoods.html">A photo key to Montana's broadleaf trees</a></li>
+    <li><a class="dropdown-item" href="articles/published-key.html">From a published key to a field key</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Generate keys from data</h6></li>
     <li><a class="dropdown-item" href="articles/vision-keys.html">Automated key generation from photos</a></li>
     <li><a class="dropdown-item" href="articles/alignment-keys.html">Automated key generation from a sequence alignment</a></li>
-    <li><a class="dropdown-item" href="articles/mecit.html">Mixed-effects conditional inference trees on PhyloTree</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="montana/index.html">Try the Montana key</a></li>
+<li class="nav-item"><a class="nav-link" href="webr/index.html">Make a key without R</a></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -68,7 +69,10 @@
 <img src="logo.svg" class="logo" alt=""><h1 id="dimoose-">dimoose <a class="anchor" aria-label="anchor" href="#dimoose-"></a>
 </h1>
 </div>
-<p>An R package to manage dichotomous keys.</p>
+<!-- badges: start -->
+
+<p>An R package to read, build, check, cut down and share dichotomous keys.</p>
+<p><strong>No R? Use the browser page.</strong> <a href="https://leipzig.github.io/dimoose/webr/" class="uri">https://leipzig.github.io/dimoose/webr/</a> turns a key kept as a spreadsheet (CSV, with optional photos) into the interactive page described below. R runs inside your browser, and your files stay on your computer.</p>
 <div class="section level2">
 <h2 id="dichotomous-keys">Dichotomous keys<a class="anchor" aria-label="anchor" href="#dichotomous-keys"></a>
 </h2>
@@ -83,7 +87,7 @@
 <div class="section level2">
 <h2 id="package-methods">Package methods<a class="anchor" aria-label="anchor" href="#package-methods"></a>
 </h2>
-<p>This package provides tools to: - convert from and to popular formats including consensus matrices, <code>ape</code> phylo, <code>data.tree</code>, data frames, JSON, YAML, and Newick - merge and prune dichotomous keys - generate interactive dichotomous keys (“wizards”) as self-contained, mobile-friendly HTML - <strong>generate keys automatically</strong> from a pile of labelled photos with a vision model (CLIP, or any model that produces embeddings) or from a multiple sequence alignment with a phylogeny program, and <strong>follow those keys by machine</strong> - produce training data for machine learning using splits - interoperate with the phylogenetics ecosystem (<code>ggtree</code>/<code>treeio</code>, <code>igraph</code>, Nextstrain/Auspice, Haplogrep) - metadata slots for provenance and supporting guide images - perform basic lexical analysis, and specialized data types (single nucleotide variations) of criteria and taxa - build mixed effects conditional inference trees (mecits)</p>
+<p>This package provides tools to: - <strong>read keys people have already written</strong>: plain text as printed in a flora (<code><a href="reference/keyFromText.html">keyFromText()</a></code>), a spreadsheet (<code><a href="reference/keyFromSpreadsheet.html">keyFromSpreadsheet()</a></code>), FishBase (<code><a href="reference/importFishbase.html">importFishbase()</a></code>), and the keys and character matrices of SDD, DELTA, Lucid and Xper (<code><a href="reference/readSDD.html">readSDD()</a></code>, <code><a href="reference/readDELTA.html">readDELTA()</a></code>, <code><a href="reference/readLucid.html">readLucid()</a></code>, <code><a href="reference/readXper.html">readXper()</a></code> and their writers) - <strong>check a key</strong>: <code>key$validate()</code> for its structure, <code><a href="reference/checkNames.html">checkNames()</a></code> for its species names against GBIF, and <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> / <code><a href="reference/keyQuality.html">keyQuality()</a></code> for how many steps it takes to reach a result - <strong>cut a key down and join keys up</strong>: <code><a href="reference/pruneKey.html">pruneKey()</a></code> keeps or drops taxa, <code><a href="reference/regionalKey.html">regionalKey()</a></code> keeps the taxa recorded in a place, <code><a href="reference/mergeKeys.html">mergeKeys()</a></code> grafts one key onto a result of another - <strong>generate a key from a character matrix</strong> (<code><a href="reference/keyFromMatrix.html">keyFromMatrix()</a></code>), with taxa that vary in a character reached down both leads, cheap characters asked first and characters limited to a season - <strong>generate keys from photos or sequences</strong> with a vision model (CLIP, BioCLIP, or any model that produces embeddings) or from a multiple sequence alignment with a phylogeny program, and <strong>follow those keys by machine</strong> - <strong>share a key</strong> as a self-contained, mobile-friendly HTML page (<code><a href="reference/exportWizard.html">exportWizard()</a></code>: “I’m not sure”, offline use, characters in any order), a box diagram (<code><a href="reference/keyDiagram.html">keyDiagram()</a></code>) or a spreadsheet (<code><a href="reference/keyToSpreadsheet.html">keyToSpreadsheet()</a></code>) - <strong>test photo identification on field photos</strong> (<code><a href="reference/inatPhotos.html">inatPhotos()</a></code>, <code><a href="reference/benchmarkKey.html">benchmarkKey()</a></code>) - convert a key to a <code>data.tree</code> (<code>key$toDataTree()</code>), Newick, <code>igraph</code>, a <code>tidytree</code> <code>treedata</code> for <code>ggtree</code>, and Nextstrain/Auspice JSON, and read Haplogrep trees - keep provenance and guide images with the key (<code>key$meta</code>)</p>
 </div>
 </div>
 <div class="section level1">
@@ -122,9 +126,18 @@
 <code>reticulate</code> (1.41 or later), which sets up Python and its packages on first use</td>
 </tr>
 <tr>
-<td>Mixed-effects conditional inference trees (<code><a href="reference/mecit.html">mecit()</a></code>)</td>
+<td>Keys from photos without PyTorch (<code>visionModel(backend = "onnx")</code>), saved embeddings (<code><a href="reference/saveEmbeddings.html">saveEmbeddings()</a></code>)</td>
 <td>
-<code>partykit</code> and <code>lme4</code>, and <code>glmertree</code> for <code>method = "mob"</code>
+<code>reticulate</code> and <code>jsonlite</code>; <code>jsonlite</code> alone to load saved embeddings</td>
+</tr>
+<tr>
+<td>Regional keys and occurrence weights (<code><a href="reference/regionalKey.html">regionalKey()</a></code>, <code><a href="reference/occurrenceWeights.html">occurrenceWeights()</a></code>), name checks (<code><a href="reference/checkNames.html">checkNames()</a></code>)</td>
+<td>an internet connection; no extra packages</td>
+</tr>
+<tr>
+<td>Diagrams as PNG or PDF, small thumbnails, the app icon of an offline key</td>
+<td>
+<code>rsvg</code>, <code>magick</code>
 </td>
 </tr>
 <tr>
@@ -147,7 +160,7 @@
 <span><span class="va">sharks</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/exampleKeys.html">sharkKey</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">sharks</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/exportWizard.html">exportWizard</a></span><span class="op">(</span><span class="va">sharks</span>, <span class="st">"sharks.html"</span><span class="op">)</span>   <span class="co"># an interactive, self-contained wizard</span></span></code></pre></div>
-<p>To write your own key in a spreadsheet, see <a href="vignettes/montana-hardwoods.Rmd">A photo key to Montana’s broadleaf trees</a>. There are also vignettes on automated key generation <a href="vignettes/vision-keys.Rmd">from photos</a> and <a href="vignettes/alignment-keys.Rmd">from a sequence alignment</a>, and on <a href="vignettes/mecit.Rmd">mixed-effects conditional inference trees</a>.</p>
+<p>To write your own key in a spreadsheet, see <a href="vignettes/montana-hardwoods.Rmd">A photo key to Montana’s broadleaf trees</a>. To start from a key somebody else published, see <a href="vignettes/published-key.Rmd">From a published key to a field key</a>. There are also vignettes on automated key generation <a href="vignettes/vision-keys.Rmd">from photos</a> and <a href="vignettes/alignment-keys.Rmd">from a sequence alignment</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="included-datasets">Included datasets<a class="anchor" aria-label="anchor" href="#included-datasets"></a>
@@ -167,7 +180,7 @@
 <div class="section level3">
 <h3 id="vibrio--vibriokey-dataset-vibrio">Vibrio — <code>vibrioKey()</code> (dataset <code>vibrio</code>)<a class="anchor" aria-label="anchor" href="#vibrio--vibriokey-dataset-vibrio"></a>
 </h3>
-<p>A key <strong>generated</strong> from a biochemical consensus matrix rather than written by a person. The <code>vibrio</code> dataset is the identification matrix of Noguerola &amp; Blanch (2008), <strong>74 taxa × 45 tests</strong> (<code>+</code>/<code>-</code>/<code>(+)</code>/<code>(-)</code>/<code>v</code>/<code>ND</code>). <code><a href="reference/exampleKeys.html">vibrioKey()</a></code> scores the tests, fits an <code>rpart</code> classification tree, and converts it with <code><a href="reference/keyFromRpart.html">keyFromRpart()</a></code> into a <strong>73-couplet</strong> key reaching all 74 species. Species the tests cannot separate share a result. This is the template for turning any feature matrix into a dichotomous key.</p>
+<p>A key <strong>generated</strong> from a biochemical consensus matrix rather than written by a person. The <code>vibrio</code> dataset is the identification matrix of Noguerola &amp; Blanch (2008), <strong>74 taxa × 45 tests</strong> (<code>+</code>/<code>-</code>/<code>(+)</code>/<code>(-)</code>/<code>v</code>/<code>ND</code>). <code><a href="reference/exampleKeys.html">vibrioKey()</a></code> recodes it with <code><a href="reference/vibrioMatrix.html">vibrioMatrix()</a></code> (<code>+</code> and <code>(+)</code> positive, <code>-</code> and <code>(-)</code> negative, <code>v</code> variable, <code>ND</code> unknown) and builds the key with <code><a href="reference/keyFromMatrix.html">keyFromMatrix()</a></code>: a <strong>92-couplet</strong> key, up to 10 steps deep, that separates all 74 species. A species that is variable or undetermined for a test is reached down both leads of every couplet that uses the test, so 14 species turn up at two or three results (93 results in all). <code>vibrioKey(variable = "missing")</code> gives the earlier <code>rpart</code> tree instead (<code><a href="reference/keyFromRpart.html">keyFromRpart()</a></code>): 73 couplets, up to 18 steps deep, each species at one result, with variable results treated as missing. This is the template for turning any feature matrix into a dichotomous key.</p>
 </div>
 <div class="section level3">
 <h3 id="phylotree--phylotreekey-datasets-phylotree17-phylotree17_mutations">PhyloTree — <code>phylotreeKey()</code> (datasets <code>phylotree17</code>, <code>phylotree17_mutations</code>)<a class="anchor" aria-label="anchor" href="#phylotree--phylotreekey-datasets-phylotree17-phylotree17_mutations"></a>
@@ -185,14 +198,125 @@
 </div>
 </div>
 <div class="section level1">
+<h1 id="working-with-keys-people-have-written">Working with keys people have written<a class="anchor" aria-label="anchor" href="#working-with-keys-people-have-written"></a>
+</h1>
+<div class="section level2">
+<h2 id="a-key-from-plain-text">A key from plain text<a class="anchor" aria-label="anchor" href="#a-key-from-plain-text"></a>
+</h2>
+<p>Most keys exist only as text in a flora or a paper. <code><a href="reference/keyFromText.html">keyFromText()</a></code> reads the usual layouts (bracketed <code>1a</code>/<code>1b</code>, <code>1.</code>/<code>1'.</code>, lettered, indented; dot leaders, wrapped lines, page headers) and builds a checked key:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">file</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"textkeys"</span>, <span class="st">"trees-bracketed.txt"</span>, package <span class="op">=</span> <span class="st">"dimoose"</span><span class="op">)</span></span>
+<span><span class="va">trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/keyFromText.html">keyFromText</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>        <span class="co"># a file, one string, or lines of text</span></span>
+<span><span class="va">trees</span></span>
+<span><span class="co">#&gt; &lt;dimoose key&gt; Key to the Broadleaf Trees of the Cottonwood Bottoms</span></span>
+<span><span class="co">#&gt;   8 couplets, 16 leads, 9 taxa, up to 5 steps deep (3.6 on average)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">trees</span>, <span class="st">"problems"</span><span class="op">)</span>           <span class="co"># problems, repairs and notes, each with its line number</span></span>
+<span><span class="fu"><a href="reference/parseTextKey.html">parseTextKey</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>                <span class="co"># the lead table and the report, without building the key</span></span></code></pre></div>
+<p>A lead with no destination, a couplet with one lead or a number the scan garbled is reported with its line, and nothing is dropped. Common OCR slips (<code>l</code> for 1, lost dot leaders) are repaired and reported; <code>strict = TRUE</code> stops instead. For a bad scan, <code>llm =</code> takes a function of your own that makes a first pass with a language model; its answer is checked against the source. dimoose calls no model itself.</p>
+</div>
+<div class="section level2">
+<h2 id="a-regional-key-the-trees-of-flathead-county-in-one-line">A regional key: the trees of Flathead County in one line<a class="anchor" aria-label="anchor" href="#a-regional-key-the-trees-of-flathead-county-in-one-line"></a>
+</h2>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">flathead</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/regionalKey.html">regionalKey</a></span><span class="op">(</span><span class="fu"><a href="reference/exampleKeys.html">montanaKey</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"Flathead County, Montana"</span>, kingdom <span class="op">=</span> <span class="st">"Plantae"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Kept 10 of 11 taxa recorded in Flathead, Montana, United States (GADM USA.27.15_1) (GBIF)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">flathead</span>, <span class="st">"records"</span><span class="op">)</span>         <span class="co"># every taxon, its record count and whether it was kept</span></span></code></pre></div>
+<p><code><a href="reference/regionalKey.html">regionalKey()</a></code> asks <a href="https://www.gbif.org" class="external-link">GBIF</a> (or iNaturalist, with <code>source = "inat"</code>) which of the key’s taxa have been recorded in a place, drops the others and closes up the couplets that no longer split anything. (Not run here: it needs the internet. On 19 November 2026 GBIF had no bur oak record from the county, so the key lost one species and one couplet.) <code>pruneKey(key, keep = "Populus")</code> does the same from a list of names, and <code>mergeKeys(families, genera, at = "Salicaceae")</code> grafts a second key onto a result of the first. The character of a couplet that was closed up is kept in a <code>Note</code> column of the leads.</p>
+</div>
+<div class="section level2">
+<h2 id="exchange-with-sdd-delta-lucid-and-xper">Exchange with SDD, DELTA, Lucid and Xper<a class="anchor" aria-label="anchor" href="#exchange-with-sdd-delta-lucid-and-xper"></a>
+</h2>
+<p>dimoose reads and writes the formats other identification software uses: SDD, the TDWG standard (<code><a href="reference/readSDD.html">readSDD()</a></code> / <code><a href="reference/readSDD.html">writeSDD()</a></code> for a matrix, <code><a href="reference/readSDDKey.html">readSDDKey()</a></code> / <code><a href="reference/readSDDKey.html">writeSDDKey()</a></code> for a key), DELTA (<code><a href="reference/readDELTA.html">readDELTA()</a></code> / <code><a href="reference/readDELTA.html">writeDELTA()</a></code>), Lucid (<code><a href="reference/readLucid.html">readLucid()</a></code> / <code><a href="reference/readLucid.html">writeLucid()</a></code> for matrix keys, <code><a href="reference/readLucidKey.html">readLucidKey()</a></code> / <code><a href="reference/readLucidKey.html">writeLucidKey()</a></code> for pathway keys) and Xper2/Xper3 through their SDD export (<code><a href="reference/readXper.html">readXper()</a></code> / <code><a href="reference/readXper.html">writeXper()</a></code>). Every matrix reader returns the same list, and its <code>$matrix</code> goes straight into <code><a href="reference/keyFromMatrix.html">keyFromMatrix()</a></code>:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/readDELTA.html">readDELTA</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"tdwg"</span>, <span class="st">"beetles-delta"</span>, package <span class="op">=</span> <span class="st">"dimoose"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">d</span><span class="op">$</span><span class="va">matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span>
+<span><span class="co">#&gt;                 Taxon antennal club     pronotum           eyes</span></span>
+<span><span class="co">#&gt; 1 Aphodius exemplaris       present black/yellow of normal size</span></span>
+<span><span class="co">#&gt; 2      Carabus fictus        absent    red/black     very large</span></span>
+<span><span class="co">#&gt; 3 Lucanus imaginarius       present        black of normal size</span></span>
+<span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/keyFromMatrix.html">keyFromMatrix</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/readSDD.html">writeSDD</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"beetles.sdd.xml"</span>, key <span class="op">=</span> <span class="va">key</span><span class="op">)</span>   <span class="co"># the matrix and the key in one SDD file</span></span>
+<span><span class="fu"><a href="reference/readLucid.html">writeLucid</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"beetles.csv"</span><span class="op">)</span>                <span class="co"># for the Lucid Builder</span></span></code></pre></div>
+<p>The files dimoose writes have not yet been opened in Lucid, Xper or a DELTA program; the help pages say what each format can and cannot carry.</p>
+</div>
+<div class="section level2">
+<h2 id="how-good-is-a-key">How good is a key?<a class="anchor" aria-label="anchor" href="#how-good-is-a-key"></a>
+</h2>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/exampleKeys.html">montanaKey</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;dimoose key&gt; Key to the native broadleaf trees of Montana</span></span>
+<span><span class="co">#&gt;   10 couplets, 20 leads, 11 taxa, up to 7 steps deep (4.6 on average)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="reference/exampleKeys.html">montanaKey</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"meanTaxonSteps"</span>, <span class="st">"expectedSteps"</span>, <span class="st">"bound"</span>, <span class="st">"efficiency"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="reference/keyQuality.html">keyQuality</a></span><span class="op">(</span><span class="fu"><a href="reference/exampleKeys.html">montanaKey</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">taxa</span>     <span class="co"># steps to reach each taxon</span></span></code></pre></div>
+<p><code>bound</code> is the average number of steps the best possible key to the same taxa would need, and <code>efficiency</code> is that bound over the steps this key takes. A key that reaches common species quickly is better than its plain average says: <code>summary(key, weights = occurrenceWeights(key, region = "USA.27_1", kingdom = "Plantae"))</code> weights each taxon by its GBIF records in a region, here Montana (not run here: needs the internet). Real keys rarely reach an efficiency of 1, because the characters that would split the taxa evenly may not exist; use it to compare keys to the same taxa.</p>
+</div>
+<div class="section level2">
+<h2 id="edit-any-key-in-a-spreadsheet">Edit any key in a spreadsheet<a class="anchor" aria-label="anchor" href="#edit-any-key-in-a-spreadsheet"></a>
+</h2>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">csv</span>   <span class="op">&lt;-</span> <span class="fu"><a href="reference/keyToSpreadsheet.html">keyToSpreadsheet</a></span><span class="op">(</span><span class="fu"><a href="reference/exampleKeys.html">sharkKey</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"sharks/key.csv"</span><span class="op">)</span>   <span class="co"># the CSV keyFromSpreadsheet() reads</span></span>
+<span><span class="co"># ... edit it in Excel or Google Sheets ...</span></span>
+<span><span class="va">key</span>   <span class="op">&lt;-</span> <span class="fu"><a href="reference/keyFromSpreadsheet.html">keyFromSpreadsheet</a></span><span class="op">(</span><span class="va">csv</span>, desc <span class="op">=</span> <span class="st">"Sharks"</span><span class="op">)</span></span></code></pre></div>
+<p>Photos embedded in the key are written beside the CSV. Only the template’s seven columns are written: the title, the citation and links to taxon pages are not.</p>
+</div>
+</div>
+<div class="section level1">
+<h1 id="the-interactive-page">The interactive page<a class="anchor" aria-label="anchor" href="#the-interactive-page"></a>
+</h1>
+<p><code>exportWizard(key, "key.html")</code> writes one HTML file that asks one couplet at a time, with a trail, Back and a map of the key. Without JavaScript it reads as a plain key.</p>
+<ul>
+<li>
+<strong>“I’m not sure.”</strong> Every couplet has this choice. It follows all the leads; the page keeps the branches that are still open, counts the taxa still possible and lists the candidates at the end.</li>
+<li>
+<strong>Offline.</strong> <code>exportWizard(key, "key.html", offline = TRUE)</code> also writes a web app manifest, a service worker and two icons. Put all five files in one folder of an <code>https</code> site, open the page once, and it can be installed on a phone and opened without signal. This has been tested with a simulated browser, not yet on a phone.</li>
+<li>
+<strong>Any character first.</strong> <code>exportWizard(key, "key.html", matrix = m, characters = ch)</code> adds a list of the matrix’s characters to answer in any order, cheapest first; a taxon that varies in a character fits either state. <code>exportWizard(NULL, "key.html", matrix = m)</code> makes that page with no key at all.</li>
+<li>
+<strong>From a photo.</strong> <code>exportWizard(key, "key.html", photoModel = dir)</code>, with <code>dir</code> a folder written by <code><a href="reference/exportBrowserModel.html">exportBrowserModel()</a></code> for the same key, adds an “Identify from a photo” button. The model runs in the reader’s browser, so the photo never leaves the device; the page marks the likely taxa and offers to narrow the key to them. The photo is a hint and the key stays the authority. The model is a large download (an int8 BioCLIP encoder is about 90 MB), fetched only when the reader agrees to it. See <code><a href="reference/exportWizard.html">?exportWizard</a></code>.</li>
+</ul>
+</div>
+<div class="section level1">
 <h1 id="automated-key-generation">Automated key generation<a class="anchor" aria-label="anchor" href="#automated-key-generation"></a>
 </h1>
-<p>Most keys are written by people. dimoose can also generate one from data: from a multiple sequence alignment, or from a pile of photos. Either way the result is an ordinary dimoose key that works with <code><a href="reference/exportWizard.html">exportWizard()</a></code>, <code><a href="reference/classify.html">classify()</a></code> and the phylogenetics exports.</p>
+<p>Most keys are written by people. dimoose can also generate one from data: from a character matrix, a multiple sequence alignment, or a pile of photos. Either way the result is an ordinary dimoose key that works with <code><a href="reference/exportWizard.html">exportWizard()</a></code>, <code><a href="reference/classify.html">classify()</a></code> and the phylogenetics exports.</p>
+<div class="section level2">
+<h2 id="from-a-character-matrix">From a character matrix<a class="anchor" aria-label="anchor" href="#from-a-character-matrix"></a>
+</h2>
+<p>A matrix has one row per taxon and one column per character. <code>"/"</code> separates the states of a taxon that varies, and <code>NA</code> means unknown:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Taxon    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Box elder"</span>, <span class="st">"Green ash"</span>, <span class="st">"Paper birch"</span>, <span class="st">"Water birch"</span><span class="op">)</span>,</span>
+<span>  Leaves   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"compound"</span>, <span class="st">"compound"</span>, <span class="st">"simple"</span>, <span class="st">"simple"</span><span class="op">)</span>,</span>
+<span>  Leaflets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"3/5"</span>, <span class="st">"5/7"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  Bark     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"furrowed"</span>, <span class="st">"furrowed"</span>, <span class="st">"white, peeling"</span>, <span class="st">"coppery, not peeling"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/keyFromMatrix.html">keyFromMatrix</a></span><span class="op">(</span><span class="va">trees</span><span class="op">)</span></span>
+<span><span class="va">key</span><span class="op">$</span><span class="va">leads</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Statement"</span>, <span class="st">"Character"</span>, <span class="st">"Next"</span>, <span class="st">"Taxon"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;   Statement                  Character Next                 Taxon</span></span>
+<span><span class="co">#&gt; 1         1           Leaves: compound    2</span></span>
+<span><span class="co">#&gt; 2         1             Leaves: simple    4</span></span>
+<span><span class="co">#&gt; 3         2                Leaflets: 3    -             Box elder</span></span>
+<span><span class="co">#&gt; 4         2           Leaflets: 5 or 7    3</span></span>
+<span><span class="co">#&gt; 5         3                Leaflets: 5    - Box elder / Green ash</span></span>
+<span><span class="co">#&gt; 6         3                Leaflets: 7    -             Green ash</span></span>
+<span><span class="co">#&gt; 7         4       Bark: white, peeling    -           Paper birch</span></span>
+<span><span class="co">#&gt; 8         4 Bark: coppery, not peeling    -           Water birch</span></span></code></pre></div>
+<p>Box elder has three or five leaflets, so it is reached down both leads of couplet 2, and a leaf with five, which could be either tree, ends at both names. An optional table of characters says what each one costs to observe and when it can be seen; cheap characters are asked first, and <code>season</code> leaves out the ones that are not there:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">chars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Character <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Leaves"</span>, <span class="st">"Leaflets"</span>, <span class="st">"Bark"</span><span class="op">)</span>,</span>
+<span>                    Cost <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, Season <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"summer"</span>, <span class="st">"summer"</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/keyFromMatrix.html">keyFromMatrix</a></span><span class="op">(</span><span class="va">trees</span>, characters <span class="op">=</span> <span class="va">chars</span>, season <span class="op">=</span> <span class="st">"winter"</span><span class="op">)</span><span class="op">$</span><span class="va">leads</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Character"</span>, <span class="st">"Taxon"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;                                      Character                 Taxon</span></span>
+<span><span class="co">#&gt; 1                               Bark: furrowed Box elder / Green ash</span></span>
+<span><span class="co">#&gt; 2 Bark: white, peeling or coppery, not peeling</span></span>
+<span><span class="co">#&gt; 3                         Bark: white, peeling           Paper birch</span></span>
+<span><span class="co">#&gt; 4                   Bark: coppery, not peeling           Water birch</span></span></code></pre></div>
+<p><code><a href="reference/generateTree.html">generateTree()</a></code> and <code><a href="reference/keyFromRpart.html">keyFromRpart()</a></code> fit an <code>rpart</code> classification tree instead.</p>
+</div>
 <div class="section level2">
 <h2 id="from-a-multiple-sequence-alignment">From a multiple sequence alignment<a class="anchor" aria-label="anchor" href="#from-a-multiple-sequence-alignment"></a>
 </h2>
 <p>One command takes aligned sequences to a key. A phylogeny program builds the tree, dimoose roots it, and every fork becomes a couplet whose leads are the alignment sites that tell its two sides apart:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://leipzig.github.io/dimoose/">dimoose</a></span><span class="op">)</span></span>
 <span><span class="va">fasta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"aligned.fasta"</span>, package <span class="op">=</span> <span class="st">"dimoose"</span><span class="op">)</span>   <span class="co"># or the path of your own FASTA file</span></span>
 <span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/keyFromAlignment.html">keyFromAlignment</a></span><span class="op">(</span><span class="va">fasta</span><span class="op">)</span></span>
@@ -205,7 +329,7 @@
 <span><span class="co">#&gt; 3         2 201T 234C 297G    -   No305</span></span>
 <span><span class="co">#&gt; 4         2 201C 234T 297A    - No1114S</span></span></code></pre></div>
 <p><code>aligned.fasta</code> is an example that ships with dimoose: 15 wood mouse cytochrome <em>b</em> sequences. A second one, <code>mtdna.fasta</code>, has whole human mitochondrial genomes for 14 haplogroups. Numbered by the sequence of the rCRS’s haplogroup and rooted on L0, its key asks about the familiar PhyloTree positions:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtdna</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"mtdna.fasta"</span>, package <span class="op">=</span> <span class="st">"dimoose"</span><span class="op">)</span></span>
 <span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/keyFromAlignment.html">keyFromAlignment</a></span><span class="op">(</span><span class="va">mtdna</span>, reference <span class="op">=</span> <span class="st">"H2a2a1"</span>, outgroup <span class="op">=</span> <span class="st">"L0a1"</span><span class="op">)</span></span>
 <span><span class="va">mt</span><span class="op">$</span><span class="va">leads</span><span class="op">[</span><span class="fl">7</span><span class="op">:</span><span class="fl">8</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Statement"</span>, <span class="st">"Character"</span>, <span class="st">"Next"</span><span class="op">)</span><span class="op">]</span></span>
@@ -232,9 +356,9 @@
 </h2>
 <p><a href="media/sniglets.mp4"><img src="media/sniglets.gif" width="560" alt="Stepping through a key built from photos of six fruits: each lead shows example crops of a sniglet, and the map shows which fruits are still possible"></a></p>
 <p><em>A key built from the example photos, followed in the wizard that <code><a href="reference/exportWizard.html">exportWizard()</a></code> writes. Each choice asks about one sniglet and shows crops of it. (<a href="media/sniglets.mp4">Full-quality video</a>)</em></p>
-<p>You need photos, and a label for each one saying what it shows. The photos are embedded with a vision model (CLIP ViT-B/32 by default) that runs in Python, but there is nothing to install by hand: the first <code><a href="reference/visionModel.html">visionModel()</a></code> call sets up a private Python with the packages it needs (through <code>reticulate</code>, 1.41 or later) and reuses it afterwards. That first call downloads several gigabytes, mostly PyTorch.</p>
+<p>You need photos, and a label for each one saying what it shows. The photos are embedded with a vision model (CLIP ViT-B/32 by default) that runs in Python, but there is nothing to install by hand: the first <code><a href="reference/visionModel.html">visionModel()</a></code> call sets up a private Python with the packages it needs (through <code>reticulate</code>, 1.41 or later) and reuses it afterwards. That first call downloads several gigabytes, mostly PyTorch. For a much smaller install, or none, see <a href="#a-lighter-setup-onnx-and-saved-embeddings">a lighter setup</a>.</p>
 <p>Then it is five steps. They run as written on the example photos that ship with dimoose: 36 small photos of six fruits, from the <a href="https://github.com/fruits-360/fruits-360-100x100" class="external-link">Fruits-360</a> dataset (CC BY-SA 4.0). For your own photos, give the path of your folder instead.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://leipzig.github.io/dimoose/">dimoose</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 1. Photos and labels. With one folder per class (pics/banana/..., pics/kiwi/...),</span></span>
@@ -269,7 +393,7 @@
 <h3 id="sniglets-and-renaming-them">Sniglets, and renaming them<a class="anchor" aria-label="anchor" href="#sniglets-and-renaming-them"></a>
 </h3>
 <p>The features in step 4 are found by the model, by clustering the tiles of all the photos: each one is a kind of region that several photos have in common, such as a rough skin or a stem end. They have no names, so dimoose coins a pronounceable word for each one (<code>gaithiark</code>, <code>glienglaund</code>) and calls these <strong>sniglets</strong>. Both leads of a couplet describe something: one reads “Has glienglaund” and the other, where it can, says what those photos have instead (“Lacks glienglaund; has laussym”). The wizard shows example tiles on both leads, taken from every class that follows that lead. Once you have looked at them, give the sniglets real names:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/snigletNames.html">snigletNames</a></span><span class="op">(</span><span class="va">key</span><span class="op">)</span>                 <span class="co"># coined word, current name, definition, used by the key?</span></span>
 <span></span>
 <span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/renameSniglets.html">renameSniglets</a></span><span class="op">(</span><span class="va">key</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>gaithiark <span class="op">=</span> <span class="st">"a dull, finely textured skin"</span><span class="op">)</span>,</span>
@@ -285,7 +409,7 @@
 <h3 id="questions-from-a-vocabulary">Questions from a vocabulary<a class="anchor" aria-label="anchor" href="#questions-from-a-vocabulary"></a>
 </h3>
 <p>To ask questions in plain words from the start, give a vocabulary of contrasting features instead:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vocab</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>feature  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a smooth skin"</span>, <span class="st">"a round shape"</span>, <span class="st">"a yellow colour"</span>, <span class="st">"green leaves on top"</span><span class="op">)</span>,</span>
 <span>                     opposite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a rough skin"</span>, <span class="st">"a long shape"</span>, <span class="st">"a dark colour"</span>, <span class="st">"no leaves"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">txt</span>    <span class="op">&lt;-</span> <span class="fu"><a href="reference/embedTexts.html">embedTexts</a></span><span class="op">(</span><span class="va">model</span>, <span class="fu"><a href="reference/vocabularyPrompts.html">vocabularyPrompts</a></span><span class="op">(</span><span class="va">vocab</span>, <span class="st">"a photo of a fruit with {x}"</span><span class="op">)</span><span class="op">)</span></span>
@@ -331,7 +455,7 @@
 </tbody>
 </table>
 <p>For example, to build the key above with BioCLIP, replace step 2 with:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/visionModel.html">visionModel</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"bioclip"</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>
@@ -344,32 +468,89 @@
 <strong>BioCLIP 2 is a larger model</strong>, so embedding takes several times longer.</li>
 </ul>
 <p>BioCLIP 2 also recognises many species from their scientific name alone, with no example photos. <code><a href="reference/suggestSpecies.html">suggestSpecies()</a></code> uses this to check a photo against a key you already have: it ranks only the key’s own species, which is far more reliable than asking the model to pick from every species it knows.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/visionModel.html">visionModel</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"bioclip-2"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/suggestSpecies.html">suggestSpecies</a></span><span class="op">(</span><span class="fu"><a href="reference/exampleKeys.html">montanaKey</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">model</span>, <span class="st">"my-tree.jpg"</span><span class="op">)</span>   <span class="co"># the 3 best of the key's 11 species, with probabilities</span></span></code></pre></div>
 <p><code><a href="reference/identifyPhotos.html">identifyPhotos()</a></code> gives one answer per photo instead, and steps up to the genus, family or order (from GBIF) when no single species is likely enough: a cottonwood it cannot place between the key’s two cottonwoods comes back as genus <em>Populus</em>.</p>
 <p>Other models: <code>name = "hf-hub:&lt;organisation&gt;/&lt;model&gt;"</code> loads any open_clip model on the Hugging Face Hub whose image side is a vision transformer, and <code>name = "local-dir:&lt;folder&gt;"</code> loads a copy you have downloaded.</p>
 <p>No Python at all: the R side works on plain matrices, so if you already have embeddings from some other encoder, pass them straight to <code><a href="reference/discoverSniglets.html">discoverSniglets()</a></code>, <code><a href="reference/keyFromSniglets.html">keyFromSniglets()</a></code>, <code><a href="reference/keyFromClusters.html">keyFromClusters()</a></code> and <code><a href="reference/featureScores.html">featureScores()</a></code>.</p>
 </div>
+<div class="section level3">
+<h3 id="a-lighter-setup-onnx-and-saved-embeddings">A lighter setup: ONNX and saved embeddings<a class="anchor" aria-label="anchor" href="#a-lighter-setup-onnx-and-saved-embeddings"></a>
+</h3>
+<ul>
+<li><p><strong>Without PyTorch.</strong> <code>visionModel(backend = "onnx")</code> runs the same CLIP ViT-B/32 on ONNX Runtime, a much smaller Python install, and gives the same embeddings: on the 36 example photos the key above comes out the same. <code>precision = "fp16"</code> or <code>"int8"</code> picks a smaller copy of the model. BioCLIP has no ready-made ONNX copy; convert it once with <code>exportOnnxModel("bioclip")</code> on a computer that has PyTorch, then use <code>visionModel(name = "bioclip", backend = "onnx")</code> anywhere.</p></li>
+<li>
+<p><strong>Without Python.</strong> Embed once and keep the result:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/saveEmbeddings.html">saveEmbeddings</a></span><span class="op">(</span><span class="fu"><a href="reference/embedImages.html">embedImages</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">images</span><span class="op">)</span>, <span class="st">"pics.safetensors"</span><span class="op">)</span></span>
+<span><span class="va">emb</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/saveEmbeddings.html">loadEmbeddings</a></span><span class="op">(</span><span class="st">"pics.safetensors"</span><span class="op">)</span>   <span class="co"># needs only jsonlite</span></span></code></pre></div>
+<p><code><a href="reference/discoverSniglets.html">discoverSniglets()</a></code>, <code><a href="reference/snigletScores.html">snigletScores()</a></code> and <code><a href="reference/keyFromSniglets.html">keyFromSniglets()</a></code> then run as in step 4.</p>
+</li>
+<li><p><strong>In a browser.</strong> <code>exportBrowserModel(key, model, dir)</code> writes an image encoder and the embedded names of a key’s species, the files a web page needs to rank those species for a photo on the visitor’s own device.</p></li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="suggested-names-for-sniglets">Suggested names for sniglets<a class="anchor" aria-label="anchor" href="#suggested-names-for-sniglets"></a>
+</h3>
+<p><code><a href="reference/suggestSnigletNames.html">suggestSnigletNames()</a></code> shows a vision-language model each sniglet’s example crops and returns the table <code><a href="reference/renameSniglets.html">renameSniglets()</a></code> takes, so naming becomes reviewing suggestions:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/suggestSnigletNames.html">suggestSnigletNames</a></span><span class="op">(</span><span class="va">key</span>, <span class="fu"><a href="reference/claudeNamer.html">claudeNamer</a></span><span class="op">(</span><span class="op">)</span>, file <span class="op">=</span> <span class="st">"names.csv"</span><span class="op">)</span>   <span class="co"># after patchExemplars()</span></span>
+<span><span class="co"># ... review names.csv ...</span></span>
+<span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/renameSniglets.html">renameSniglets</a></span><span class="op">(</span><span class="va">key</span>, <span class="st">"names.csv"</span><span class="op">)</span></span></code></pre></div>
+<p>The model is any <code>function(images, prompt)</code> that returns text. <code><a href="reference/claudeNamer.html">claudeNamer()</a></code> makes one for the Anthropic API; it needs an <code>ANTHROPIC_API_KEY</code>, its calls are billed to that key, and it has not yet been run against the live API (the snippet above was run with a stand-in model). Names are kept short and distinct, and a name that contains a class or species name is refused.</p>
+</div>
+<div class="section level3">
+<h3 id="how-well-does-it-do-on-field-photos">How well does it do on field photos?<a class="anchor" aria-label="anchor" href="#how-well-does-it-do-on-field-photos"></a>
+</h3>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">photos</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/inatPhotos.html">inatPhotos</a></span><span class="op">(</span><span class="fu"><a href="reference/exampleKeys.html">montanaKey</a></span><span class="op">(</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">20</span>, dir <span class="op">=</span> <span class="st">"~/inat-photos"</span><span class="op">)</span>   <span class="co"># research-grade, openly licensed; writes manifest.csv</span></span>
+<span><span class="va">model</span>  <span class="op">&lt;-</span> <span class="fu"><a href="reference/visionModel.html">visionModel</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"bioclip-2"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/benchmarkKey.html">benchmarkKey</a></span><span class="op">(</span><span class="fu"><a href="reference/exampleKeys.html">montanaKey</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">photos</span>, <span class="va">model</span><span class="op">)</span>   <span class="co"># species ranked from their names</span></span>
+<span><span class="fu"><a href="reference/benchmarkKey.html">benchmarkKey</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">photos</span><span class="op">)</span>                 <span class="co"># a photo key built from 70% of the observations, tested on the rest</span></span></code></pre></div>
+<p>A first run is in <a href="analysis/inat-benchmark/"><code>analysis/inat-benchmark/</code></a>: 220 iNaturalist photos, 20 for each of the eleven Montana species, with BioCLIP 2, on 19 November 2026.</p>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+</colgroup>
+<thead><tr>
+<th>Route</th>
+<th>Test photos</th>
+<th>Top-1</th>
+<th>Top-2</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>names: the key’s eleven species ranked from their scientific names</td>
+<td>220</td>
+<td>97.3% (214)</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>build: a sniglet key built from 154 training photos</td>
+<td>66</td>
+<td>71.2% (47)</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<p>Read the limits before quoting these numbers. It is one run on one small sample, with one split and one model. BioCLIP 2 has very likely seen photos like these, perhaps these very ones, so 97% is an upper estimate of what to expect on your own photos. The model only had to choose among the key’s own eleven species, the photos are research-grade observations from the species’ whole range and not from Montana, and 101 of the 220 were taken in June. The <a href="analysis/inat-benchmark/README.html">benchmark’s README</a> has the full list.</p>
+</div>
 </div>
 </div>
 <div class="section level1">
 <h1 id="mixed-effects-conditional-inference-trees">Mixed-effects conditional inference trees<a class="anchor" aria-label="anchor" href="#mixed-effects-conditional-inference-trees"></a>
 </h1>
-<p>A mixed-effects conditional inference tree (MECIT) is a decision tree for clustered data. A random effect absorbs the differences between clusters, so the tree only splits on variables that matter within them. In mtDNA, this means a recurrent mutation can be found even though each large haplogroup has its own background, and the tree does not split on clade markers that merely track the haplogroup. <code><a href="reference/mecit.html">mecit()</a></code> implements RE-EM trees with conditional inference trees (Fu &amp; Simonoff 2015). <code>method = "mob"</code> uses <code>glmertree</code> instead (Fokkema et al. 2018). A fitted tree is a key:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/simulateExpression.html">simulateExpression</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1000</span>, genes <span class="op">=</span> <span class="fl">20</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>   <span class="co"># PhyloTree haplotypes + expression</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mecit.html">mecit</a></span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">expr</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">sim</span><span class="op">$</span><span class="va">X</span>, cluster <span class="op">=</span> <span class="va">sim</span><span class="op">$</span><span class="va">samples</span><span class="op">$</span><span class="va">macro</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/splitVariables.html">splitVariables</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
-<span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/keyFromMecit.html">keyFromMecit</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>          <span class="co"># couplets: "Carries 150" / "Does not carry 150"</span></span>
-<span><span class="fu"><a href="reference/classify.html">classify</a></span><span class="op">(</span><span class="va">key</span>, <span class="va">sim</span><span class="op">$</span><span class="va">X</span><span class="op">)</span>              <span class="co"># place samples in expression strata</span></span></code></pre></div>
-<p><code><a href="reference/haplotypeMatrix.html">haplotypeMatrix()</a></code>, <code><a href="reference/recurrentPositions.html">recurrentPositions()</a></code> and <code><a href="reference/macroHaplogroup.html">macroHaplogroup()</a></code> turn PhyloTree haplogroups into the 0/1 site matrix these trees split on. In a simulation study (<code>analysis/mecit/</code>), plain <code>ctree</code> and <code>rpart</code> split on clade markers for every gene that had only a haplogroup baseline. The MECIT made no false splits in 360 genes, and found every true site at effects of 1 SD or more. See the <a href="vignettes/mecit.Rmd">MECIT vignette</a>. These functions need the suggested packages <code>partykit</code> and <code>lme4</code>, plus <code>glmertree</code> for <code>method = "mob"</code>.</p>
+<p><code>mecit()</code>, <code>keyFromMecit()</code> and <code>simulateExpression()</code> now live in the companion package <a href="https://github.com/leipzig/mecit" class="external-link">mecit</a>; <code><a href="reference/haplotypeMatrix.html">haplotypeMatrix()</a></code>, <code><a href="reference/recurrentPositions.html">recurrentPositions()</a></code> and <code><a href="reference/macroHaplogroup.html">macroHaplogroup()</a></code>, which turn PhyloTree haplogroups into the 0/1 site matrix those trees split on, are still here.</p>
 </div>
 <div class="section level1">
 <h1 id="interoperating-with-phylogenetics-tools">Interoperating with phylogenetics tools<a class="anchor" aria-label="anchor" href="#interoperating-with-phylogenetics-tools"></a>
 </h1>
 <p>A dimoose key is a tree, so it can be handed to the usual phylogenetics software:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/phylotreeKey.html">phylotreeKey</a></span><span class="op">(</span><span class="st">"H2a"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/toNewick.html">toNewick</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span>                         <span class="co"># quoted Newick, or labels = "safe" + a sidecar table</span></span>
 <span><span class="fu"><a href="reference/toNewick.html">toNewick</a></span><span class="op">(</span><span class="va">k</span>, annotate <span class="op">=</span> <span class="st">"nhx"</span><span class="op">)</span>       <span class="co"># lead text as NHX/BEAST comments</span></span>
@@ -379,9 +560,19 @@
 <span><span class="fu"><a href="reference/readHaplogrep.html">readHaplogrep</a></span><span class="op">(</span><span class="st">"tree.xml"</span><span class="op">)</span>           <span class="co"># load any Haplogrep / PhyloTree tree XML</span></span></code></pre></div>
 </div>
 <div class="section level1">
+<h1 id="related-software">Related software<a class="anchor" aria-label="anchor" href="#related-software"></a>
+</h1>
+<p><a href="https://www.lucidcentral.org" class="external-link">Lucid</a>, <a href="https://www.xper3.fr" class="external-link">Xper3</a> and the <a href="https://www.delta-intkey.com" class="external-link">DELTA</a> programs build and run interactive keys from character matrices; dimoose reads and writes their exchange formats rather than replacing them. In R, <code>rfishbase</code> gives FishBase’s data tables and <code>taxize</code> resolves taxonomic names; dimoose imports FishBase’s keys and checks a key’s names against GBIF.</p>
+</div>
+<div class="section level1">
+<h1 id="citing-and-contributing">Citing and contributing<a class="anchor" aria-label="anchor" href="#citing-and-contributing"></a>
+</h1>
+<p>To cite dimoose, run <code>citation("dimoose")</code>. Bug reports, keys that fail to import and pull requests are welcome: see <a href="CONTRIBUTING.html">CONTRIBUTING.md</a>.</p>
+</div>
+<div class="section level1">
 <h1 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h1>
-<p>dimoose stores keys as an R6 object over a lead table, uses data.tree and rpart for its trees, and bridges to ape, partykit, tidytree and igraph.</p>
+<p>dimoose stores keys as an R6 object over a lead table, uses data.tree and rpart for its trees, and bridges to ape, tidytree and igraph.</p>
 <p>FishBase key import is made possible by the work of Scott Chamberlain and Carl Boettiger on rOpenSci’s <code>rfishbase</code> and the R tooling for FishBase data.</p>
 <p>The bundled PhyloTree Build 17 is taken from <a href="https://haplogrep.i-med.ac.at/" class="external-link">Haplogrep</a>, whose tree files and documentation of PhyloTree’s notation made the PhyloTree key possible. Thanks to the Haplogrep authors (Schönherr, Weissensteiner, and others) at the Institute of Genetic Epidemiology, Medical University of Innsbruck and to Mannis van Oven for PhyloTree itself.</p>
 <p>The image-based key work builds on the <a href="https://imageomics.osu.edu/" class="external-link">Imageomics Institute</a> and the NSF HDR-BGNN (Harnessing the Data Revolution — Biology-Guided Neural Networks) effort, whose BioCLIP and TreeOfLife models make domain-specific biological embeddings possible.</p>
@@ -399,10 +590,16 @@
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>GPL</li>
+<li>GPL (&gt;= 3)</li>
 </ul>
 </div>
 
+<div class="community">
+<h2 data-toc-skip>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+</ul>
+</div>
 
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
@@ -418,7 +615,13 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/leipzig/dimoose/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/leipzig/dimoose/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/leipzig/dimoose" class="external-link"><img src="https://codecov.io/gh/leipzig/dimoose/branch/master/graph/badge.svg" alt="Codecov"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>

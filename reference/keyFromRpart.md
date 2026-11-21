@@ -3,7 +3,10 @@
 Converts an [`rpart::rpart()`](https://rdrr.io/pkg/rpart/man/rpart.html)
 classification tree into a dichotomous key: every split becomes a
 couplet with two leads, and every leaf a result. Taxa that the tree
-cannot separate share a leaf and are listed together (`"A / B"`).
+cannot separate share a leaf and are listed together (`"A / B"`). A
+taxon rpart could not send down either side of a split, because the
+split's variable is missing for it, is listed at every result below that
+split.
 
 ## Usage
 
@@ -37,6 +40,9 @@ object.
 
 ## See also
 
+[`keyFromMatrix()`](https://leipzig.github.io/dimoose/reference/keyFromMatrix.md),
+which builds a key straight from a character matrix and handles variable
+taxa;
 [`vibrioKey()`](https://leipzig.github.io/dimoose/reference/exampleKeys.md)
 
 ## Examples
@@ -47,8 +53,7 @@ d <- data.frame(
   wings = factor(c("+", "-", "-")),
   spots = factor(c("-", "+", "-"))
 )
-fit <- generateTree(d, "taxon",
-  params = list(control = rpart::rpart.control(minsplit = 2, minbucket = 1, cp = 0)))
+fit <- generateTree(d, "taxon")
 keyFromRpart(fit, "Three taxa")$leads
 #>   Statement Choice Character Next Taxon
 #> 1         1      a  wings: +    -     A

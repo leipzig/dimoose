@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">dimoose</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,14 +38,15 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/montana-hardwoods.html">A photo key to Montana's broadleaf trees</a></li>
+    <li><a class="dropdown-item" href="../articles/published-key.html">From a published key to a field key</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Generate keys from data</h6></li>
     <li><a class="dropdown-item" href="../articles/vision-keys.html">Automated key generation from photos</a></li>
     <li><a class="dropdown-item" href="../articles/alignment-keys.html">Automated key generation from a sequence alignment</a></li>
-    <li><a class="dropdown-item" href="../articles/mecit.html">Mixed-effects conditional inference trees on PhyloTree</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../montana/index.html">Try the Montana key</a></li>
+<li class="nav-item"><a class="nav-link" href="../webr/index.html">Make a key without R</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -127,7 +128,7 @@ mouse sequences:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">key</span></span>
 <span><span class="co">#&gt; &lt;dimoose key&gt; Key generated from a sequence alignment</span></span>
-<span><span class="co">#&gt;   14 couplets, 28 leads, 15 taxa, up to 6 steps deep</span></span>
+<span><span class="co">#&gt;   14 couplets, 28 leads, 15 taxa, up to 6 steps deep (4.5 on average)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">key</span><span class="op">$</span><span class="va">leads</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Statement"</span>, <span class="st">"Character"</span>, <span class="st">"Next"</span>, <span class="st">"Taxon"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Statement      Character Next   Taxon</span></span>
 <span><span class="co">#&gt; 1         1       106G 35G    2        </span></span>
@@ -182,7 +183,7 @@ sites:</p>
 <code class="sourceCode R"><span><span class="va">newick</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"aligned.nwk"</span>, package <span class="op">=</span> <span class="st">"dimoose"</span><span class="op">)</span>    <span class="co"># e.g. RAxML's bestTree file</span></span>
 <span><span class="fu"><a href="../reference/keyFromAlignment.html">keyFromAlignment</a></span><span class="op">(</span><span class="va">fasta</span>, tree <span class="op">=</span> <span class="va">newick</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;dimoose key&gt; Key generated from a sequence alignment</span></span>
-<span><span class="co">#&gt;   14 couplets, 28 leads, 15 taxa, up to 6 steps deep</span></span></code></pre></div>
+<span><span class="co">#&gt;   14 couplets, 28 leads, 15 taxa, up to 6 steps deep (4.5 on average)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="rooting">Rooting<a class="anchor" aria-label="anchor" href="#rooting"></a>
@@ -215,7 +216,7 @@ tree, which makes it the outgroup:</p>
 <span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/keyFromAlignment.html">keyFromAlignment</a></span><span class="op">(</span><span class="va">mtdna</span>, reference <span class="op">=</span> <span class="st">"H2a2a1"</span>, outgroup <span class="op">=</span> <span class="st">"L0a1"</span><span class="op">)</span></span>
 <span><span class="va">mt</span></span>
 <span><span class="co">#&gt; &lt;dimoose key&gt; Key generated from a sequence alignment</span></span>
-<span><span class="co">#&gt;   13 couplets, 26 leads, 14 taxa, up to 10 steps deep</span></span>
+<span><span class="co">#&gt;   13 couplets, 26 leads, 14 taxa, up to 10 steps deep (6.4 on average)</span></span>
 <span><span class="va">mt</span><span class="op">$</span><span class="va">leads</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Statement"</span>, <span class="st">"Character"</span>, <span class="st">"Next"</span>, <span class="st">"Taxon"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;   Statement          Character Next Taxon</span></span>
 <span><span class="co">#&gt; 1         1       93A 95A 236T    2      </span></span>

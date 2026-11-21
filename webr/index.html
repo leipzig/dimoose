@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Make a key from a spreadsheet | dimoose</title>
+<meta name="description" content="Turn a dichotomous key written in a spreadsheet into an interactive, offline web page. Nothing to install: R runs in your browser.">
+<style>
+  :root {
+    --bg: #f6f3eb; --panel: #fffdf7; --ink: #1d2a2b; --muted: #5b6a6b; --line: #d9d2c0;
+    --accent: #2f6f5e; --accent-ink: #ffffff; --bad: #a3341f; --warn-bg: #fbf1d3;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #131a1b; --panel: #1b2526; --ink: #e8e6df; --muted: #a2afaf; --line: #33413f;
+      --accent: #7cc4ae; --accent-ink: #10201c; --bad: #f0907c; --warn-bg: #3a3320;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 60rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  h1 { font-size: 1.7rem; line-height: 1.2; margin: 0 0 .4rem; }
+  h2 { font-size: 1.15rem; margin: 0 0 .6rem; }
+  p { margin: 0 0 .8rem; }
+  a { color: var(--accent); }
+  .lede { color: var(--muted); max-width: 44rem; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+           padding: 1rem 1.1rem; margin-top: 1.2rem; }
+  label { display: block; font-weight: 600; margin: .8rem 0 .25rem; }
+  .hint { font-weight: 400; color: var(--muted); font-size: .9rem; }
+  input[type=file], input[type=text] { display: block; width: 100%; max-width: 34rem; font: inherit;
+           color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: .45rem .5rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; align-items: center; }
+  button, a.button { font: inherit; font-weight: 600; border-radius: 6px; padding: .5rem .9rem; cursor: pointer;
+           border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); text-decoration: none; }
+  button.plain { background: transparent; color: var(--accent); }
+  button:disabled { opacity: .5; cursor: default; }
+  #status { margin-top: .9rem; color: var(--muted); min-height: 1.5em; }
+  #status.error { color: var(--bad); white-space: pre-wrap; font-weight: 600; }
+  #notes { background: var(--warn-bg); border-radius: 6px; padding: .6rem .9rem .6rem 1.9rem; margin: .8rem 0 0; }
+  table { border-collapse: collapse; font-size: .9rem; margin: .4rem 0 .8rem; }
+  th, td { border: 1px solid var(--line); padding: .25rem .5rem; text-align: left; vertical-align: top; }
+  th { background: var(--bg); }
+  .scroll { overflow-x: auto; }
+  iframe { width: 100%; height: 75vh; min-height: 30rem; border: 1px solid var(--line); border-radius: 8px;
+           background: #fff; margin-top: .9rem; }
+  [hidden] { display: none !important; }
+  footer { color: var(--muted); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Make a key from a spreadsheet</h1>
+  <p class="lede">Write a dichotomous key in Excel or Google Sheets, save it as CSV, and turn it here into an
+    interactive page that works offline on a phone. There is nothing to install: this page runs
+    <a href="https://leipzig.github.io/dimoose/">dimoose</a> in your browser, and your files never leave your computer.</p>
+
+  <section class="panel" aria-labelledby="h-make">
+    <h2 id="h-make">1. Choose your files</h2>
+    <form id="form">
+      <label for="csv">Spreadsheet <span class="hint">(a .csv file)</span></label>
+      <input type="file" id="csv" accept=".csv,text/csv">
+      <label for="photos">Photos <span class="hint">(optional: the files named in the Photo column; choose them all at once)</span></label>
+      <input type="file" id="photos" accept="image/*" multiple>
+      <label for="title">Title of the key</label>
+      <input type="text" id="title" placeholder="Trees of my county">
+      <div class="actions">
+        <button type="submit" id="make" disabled>Make the key</button>
+        <button type="button" class="plain" id="example" disabled>Try the Montana example</button>
+      </div>
+    </form>
+    <p id="status" role="status" aria-live="polite">Starting R in your browser&hellip;</p>
+  </section>
+
+  <section class="panel" id="result" hidden aria-labelledby="h-result">
+    <h2 id="h-result">2. Your key</h2>
+    <p id="summary"></p>
+    <ul id="notes" hidden></ul>
+    <div class="actions">
+      <a class="button" id="download" download="key.html">Download the key</a>
+      <span class="hint">One HTML file with the photos inside it. Open it in any browser, email it, or put it on a website.</span>
+    </div>
+    <iframe id="preview" title="Preview of your key"></iframe>
+  </section>
+
+  <section class="panel" aria-labelledby="h-how">
+    <h2 id="h-how">How to write the spreadsheet</h2>
+    <p>One row for each lead (each choice). The two or more leads of a couplet share its number.
+      <a href="example/montana-key.csv" download>Download the Montana spreadsheet</a> to use as a template.</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>Couplet</th><th>Question</th><th>Description</th><th>Goes to</th><th>Species</th><th>Photo</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Leaf type?</td><td>Leaves compound, divided into leaflets.</td><td>2</td><td></td><td>ash_leaf.jpg</td></tr>
+        <tr><td>1</td><td>Leaf type?</td><td>Leaves simple, a single blade.</td><td>3</td><td></td><td></td></tr>
+        <tr><td>2</td><td>Leaflets?</td><td>3 leaflets with a few coarse teeth.</td><td></td><td>Box elder (Acer negundo)</td><td>boxelder</td></tr>
+        <tr><td>2</td><td>Leaflets?</td><td>5 to 7 leaflets with toothed margins.</td><td></td><td>Green ash (Fraxinus pennsylvanica)</td><td></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><strong>Couplet</strong> and <strong>Description</strong> are required. Each row needs either <strong>Goes to</strong>
+      (the couplet it leads to) or <strong>Species</strong> (the result), not both. <strong>Question</strong> and
+      <strong>Photo</strong> are optional; several photos are separated by semicolons and the file extension may be left out.
+      If a description contains a comma, the spreadsheet program puts it in quotes for you when it saves the CSV.</p>
+    <p>Problems in the sheet are reported by row number, so you can fix the row and try again.</p>
+  </section>
+
+  <footer>
+    <p>Made with <a href="https://github.com/leipzig/dimoose">dimoose</a> running on
+      <a href="https://docs.r-wasm.org/webr/latest/">webR</a><span id="versions"></span>.
+      The first visit downloads R, which can take a little while; after that the browser keeps it.
+      R users get more: <code>keyFromSpreadsheet()</code>, <code>keyDiagram()</code> and name checking against GBIF.</p>
+  </footer>
+</main>
+
+<script type="module">
+// webR is pinned to a release so the page keeps working when a new one comes out.
+// See https://docs.r-wasm.org/webr/latest/ for the API used here.
+const WEBR = 'https://webr.r-wasm.org/v0.6.1/';
+// The only packages the spreadsheet-to-wizard path needs (stringi comes with data.tree)
+const PACKAGES = ['R6', 'data.tree', 'base64enc'];
+// Photos with a longer side than this are scaled down before they go into the key
+const MAX_PHOTO = 1200;
+
+const $ = (id) => document.getElementById(id);
+const statusEl = $('status');
+function say(text, isError = false) {
+  statusEl.textContent = text;
+  statusEl.classList.toggle('error', isError);
+}
+
+let webR;
+let job = 0;
+let lastUrl = null;
+
+async function start() {
+  const { WebR } = await import(WEBR + 'webr.mjs');
+  webR = new WebR({ baseUrl: WEBR });
+  await webR.init();
+  say('Installing R packages…');
+  // quiet: the download messages would otherwise go to the browser console
+  await webR.installPackages(PACKAGES, { quiet: true });
+  say('Loading dimoose…');
+  const bundle = await fetch('dimoose-bundle.R');
+  if (!bundle.ok) {
+    throw new Error('dimoose-bundle.R is missing. Build the page first: Rscript webr/build.R');
+  }
+  await webR.FS.writeFile('/tmp/dimoose-bundle.R', new Uint8Array(await bundle.arrayBuffer()));
+  await webR.evalRVoid('source("/tmp/dimoose-bundle.R", encoding = "UTF-8")');
+  $('versions').textContent = ` ${webR.version} (R ${webR.versionR})`;
+  say('Ready. Choose a spreadsheet, or try the example.');
+  $('make').disabled = false;
+  $('example').disabled = false;
+  document.body.dataset.ready = 'yes';
+}
+
+// A photo as bytes, scaled down in the browser if it is large (R in the
+// browser has no image library to do it). Anything that cannot be decoded is
+// passed on unchanged, and R says so if it is not an image.
+async function photoBytes(file) {
+  try {
+    const bitmap = await createImageBitmap(file);
+    const scale = MAX_PHOTO / Math.max(bitmap.width, bitmap.height);
+    if (scale < 1) {
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(bitmap.width * scale);
+      canvas.height = Math.round(bitmap.height * scale);
+      canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      const type = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, type, 0.85));
+      if (blob) return new Uint8Array(await blob.arrayBuffer());
+    }
+  } catch (e) { /* not decodable here: fall through */ }
+  return new Uint8Array(await file.arrayBuffer());
+}
+
+// File names go into R's virtual file system; keep them to one path segment
+const safeName = (name) => name.replace(/[\/\\\0]/g, '_');
+const rString = (s) => JSON.stringify(String(s));
+
+// csv: {name, bytes}; photos: [{name, bytes}]
+async function makeKey(csv, photos, title) {
+  job += 1;
+  const dir = `/tmp/key${job}`;
+  await webR.FS.mkdir(dir);
+  await webR.FS.writeFile(`${dir}/key.csv`, csv.bytes);
+  for (const p of photos) await webR.FS.writeFile(`${dir}/${safeName(p.name)}`, p.bytes);
+  const out = `${dir}/key.html.out`;
+  const titleArg = title ? rString(title) : 'NA';
+  let report;
+  try {
+    report = await webR.evalRString(`webrWizard(${rString(dir + '/key.csv')}, ${rString(out)}, ${titleArg})`);
+  } catch (e) {
+    // dimoose's messages name the spreadsheet row; hide the virtual folder
+    const message = String(e.message || e).replace(/^Error( in [^:\n]*)?:\s*/, '');
+    throw new Error(message.split(dir).join('the photos you chose'));
+  }
+  const html = await webR.FS.readFile(out);
+  return { html, report };
+}
+
+function show(html, report, title) {
+  const fields = {};
+  const notes = [];
+  for (const line of report.split('\n')) {
+    const at = line.indexOf(': ');
+    if (at < 0) continue;
+    if (line.slice(0, at) === 'note') notes.push(line.slice(at + 2)); else fields[line.slice(0, at)] = line.slice(at + 2).trim();
+  }
+  const count = (n, one, many) => `${n} ${Number(n) === 1 ? one : many}`;
+  $('summary').textContent = `${count(fields.couplets, 'couplet', 'couplets')} leading to ` +
+    `${count(fields.results, 'result', 'results')}, with ${count(fields.photos, 'photo', 'photos')}.`;
+  const list = $('notes');
+  list.replaceChildren(...notes.map((n) => Object.assign(document.createElement('li'), { textContent: n })));
+  list.hidden = notes.length === 0;
+
+  if (lastUrl) URL.revokeObjectURL(lastUrl);
+  lastUrl = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+  const slug = (title || 'key').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'key';
+  $('download').href = lastUrl;
+  $('download').download = slug + '.html';
+  $('preview').src = lastUrl;
+  $('result').hidden = false;
+  $('result').dataset.done = String(job);
+  $('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function run(getInput) {
+  $('make').disabled = true;
+  $('example').disabled = true;
+  try {
+    const { csv, photos, title } = await getInput();
+    say('Building the key…');
+    const { html, report } = await makeKey(csv, photos, title);
+    show(html, report, title);
+    say('Done. The key is below.');
+  } catch (e) {
+    say(String(e.message || e), true);
+  } finally {
+    $('make').disabled = false;
+    $('example').disabled = false;
+  }
+}
+
+// The title follows the chosen file's name until the user types their own
+let titleIsOurs = true;
+$('title').addEventListener('input', () => { titleIsOurs = $('title').value === ''; });
+$('csv').addEventListener('change', () => {
+  const f = $('csv').files[0];
+  if (f && titleIsOurs) $('title').value = f.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ');
+});
+
+$('form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  run(async () => {
+    const f = $('csv').files[0];
+    if (!f) throw new Error('Choose a spreadsheet (.csv) first, or try the example.');
+    say('Reading your files…');
+    const photos = [];
+    for (const p of $('photos').files) photos.push({ name: p.name, bytes: await photoBytes(p) });
+    return { csv: { name: f.name, bytes: new Uint8Array(await f.arrayBuffer()) }, photos, title: $('title').value.trim() };
+  });
+});
+
+$('example').addEventListener('click', () => {
+  run(async () => {
+    say('Fetching the Montana example…');
+    const get = async (name) => {
+      const r = await fetch('example/' + name);
+      if (!r.ok) throw new Error('Could not fetch example/' + name);
+      return { name, bytes: new Uint8Array(await r.arrayBuffer()) };
+    };
+    const list = await (await fetch('example/files.json')).json();
+    const photos = await Promise.all(list.photos.map(get));
+    $('title').value = list.title;
+    titleIsOurs = true;
+    return { csv: await get(list.csv), photos, title: list.title };
+  });
+});
+
+start().catch((e) => say('R could not start in this browser: ' + (e.message || e), true));
+</script>
+</body>
+</html>
